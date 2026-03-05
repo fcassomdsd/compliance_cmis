@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="vso:vsoModel"
+       xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+  <description>Operational Safety Oversight Model for Alfresco 25.2</description>
+  <author>VSO Team</author>
+  <version>1.1</version>
+
+  <!-- ========================================================= -->
+  <!-- Imports -->
+  <!-- ========================================================= -->
+  <imports>
+    <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+    <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+  </imports>
+
+  <!-- ========================================================= -->
+  <!-- Namespace -->
+  <!-- ========================================================= -->
+  <namespaces>
+    <namespace uri="http://example.org/model/operational-safety/1.0"
+               prefix="vso"/>
+  </namespaces>
+
+  <!-- ========================================================= -->
+  <!-- Constraints -->
+  <!-- ========================================================= -->
+  <constraints>
+    <constraint name="vso:complianceStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Compliant</value>
+          <value>Non-Compliant</value>
+          <value>Not Applicable</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:findingLevelList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Non-Compliance</value>
+          <value>Observation</value>
+          <value>Recommendation</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:riskLevelList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Low</value>
+          <value>Medium</value>
+          <value>High</value>
+          <value>Critical</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:ceList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>CE-1</value>
+          <value>CE-2</value>
+          <value>CE-3</value>
+          <value>CE-4</value>
+          <value>CE-5</value>
+          <value>CE-6</value>
+          <value>CE-7</value>
+          <value>CE-8</value>
+        </list>
+      </parameter>
+    </constraint>
+  </constraints>
+
+  <!-- ========================================================= -->
+  <!-- Types -->
+  <!-- ========================================================= -->
+  <types>
+
+    <!-- ===================== Inspection ====================== -->
+    <type name="vso:inspection">
+      <title>Inspección</title>
+      <parent>cm:folder</parent>
+
+      <properties>
+        <property name="vso:inspectionType">
+          <title>Tipo de inspección</title>
+          <description>Type of inspection (initial, routine, follow-up)</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:startDate">
+          <title>Fecha de inicio</title>
+          <description>Inspection start date</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:endDate">
+          <title>Fecha de cierre</title>
+          <description>Inspection end date</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:inspectionStatus">
+          <title>Estatus inspección</title>
+          <description>Current inspection lifecycle status</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <associations>
+        <child-association name="vso:hasChecklist">
+          <source>
+            <mandatory>true</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:inspectionChecklist</class>
+            <mandatory>true</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
+      </associations>
+
+      <mandatory-aspects>
+        <aspect>vso:inspectionContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Inspection Checklist ================= -->
+    <type name="vso:inspectionChecklist">
+      <title>Lista de Verificación</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:checklistId">
+          <title>ID lista de verificación</title>
+          <description>Unique identifier of the checklist</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:scope">
+          <title>Alcance lista de verificación</title>
+          <description>Checklist scope or inspection area</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:completionDate">
+          <title>Fecha completado</title>
+          <description>Date checklist was completed</description>
+          <type>d:date</type>
+        </property>
+      </properties>
+
+      <associations>
+        <child-association name="vso:hasChecklistItem">
+          <source>
+            <mandatory>true</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:checklistItem</class>
+            <mandatory>true</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
+      </associations>
+    </type>
+
+    <!-- ================= Checklist Item ================= -->
+    <type name="vso:checklistItem">
+      <title>Checklist Item</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:itemId">
+          <title>ID pregunta inspección</title>
+          <description>Checklist item identifier</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:requirementText">
+          <title>Texto requisito</title>
+          <description>Regulatory requirement being assessed</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:itemVerificationMethod">
+          <title>Método de verificación</title>
+          <description>Method used to verify compliance</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:complianceStatus">
+          <title>Estado de cumplimiento</title>
+          <description>Compliance assessment result</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:complianceStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:inspectorComment">
+          <title>Comentario del inspector</title>
+          <description>Inspector observations or remarks</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:riskClassification">
+          <title>Clasificación de riesgo</title>
+          <description>Risk level associated with non-compliance</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>vso:regulatoryTraceability</aspect>
+        <aspect>vso:inspectionContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Evidence Item ================= -->
+    <type name="vso:evidenceItem">
+      <title>Evidence Item</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:evidenceId">
+          <title>ID evidencia</title>
+          <description>Unique evidence identifier</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:evidenceType">
+          <title>Tipo de evidencia</title>
+          <description>Type of evidence (document, photo, log)</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:source">
+          <title>Fuente de evidencia</title>
+          <description>Origin or system from which evidence was collected</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:collectionDate">
+          <title>Fecha de obtención</title>
+          <description>Date evidence was collected</description>
+          <type>d:date</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>vso:evidenceIntegrity</aspect>
+        <aspect>vso:inspectionContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Finding ================= -->
+    <type name="vso:finding">
+      <title>Finding</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:findingId">
+          <title>ID hallazgo</title>
+          <description>Finding identifier</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:findingLevel">
+          <title>Clasificación hallazgo</title>
+          <description>Finding classification</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:findingLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:regulationBreached">
+          <title>Regulación incumplida</title>
+          <description>Regulatory reference breached</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:description">
+          <title>Descripción hallazgo</title>
+          <description>Detailed finding description</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:findingStatus">
+          <title>Estatus hallazgo</title>
+          <description>Finding lifecycle status</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <associations>
+        <child-association name="vso:hasCorrectiveAction">
+          <source>
+            <mandatory>true</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:correctiveAction</class>
+            <mandatory>true</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
+      </associations>
+
+      <mandatory-aspects>
+        <aspect>vso:regulatoryTraceability</aspect>
+        <aspect>vso:inspectionContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Corrective Action ================= -->
+    <type name="vso:correctiveAction">
+      <title>Corrective Action</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:capId">
+          <title>ID Plan de Acción Correctiva</title>
+          <description>Corrective Action Plan identifier</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:proposedAction">
+          <title>Acción propuesta</title>
+          <description>Description of corrective action</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:responsibleEntity">
+          <title>Entidad responsable</title>
+          <description>Entity responsible for implementation</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:dueDate">
+          <title>Fecha de vencimiento</title>
+          <description>Corrective action due date</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:acceptanceStatus">
+          <title>Estado de aceptación</title>
+          <description>Acceptance status by authority</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <associations>
+        <child-association name="vso:verifiedBy">
+          <source>
+            <mandatory>true</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:closureReport</class>
+            <mandatory>true</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+      </associations>
+
+      <mandatory-aspects>
+        <aspect>vso:inspectionContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Closure Report ================= -->
+    <type name="vso:closureReport">
+      <title>Closure Report</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:closureDate">
+          <title>Fecha de cierre</title>
+          <description>Date corrective action was closed</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:closureVerificationMethod">
+          <title>Método de verificación</title>
+          <description>Method used to verify effectiveness</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:effectivenessConfirmed">
+          <title>Efectividad confirmada?</title>
+          <description>Effectiveness verification result</description>
+          <type>d:boolean</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>vso:inspectionContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+  </types>
+
+  <!-- ========================================================= -->
+  <!-- Aspects -->
+  <!-- ========================================================= -->
+  <aspects>
+
+    <aspect name="vso:inspectionContext">
+      <title>Inspection Context</title>
+      <properties>
+        <property name="vso:inspectionId">
+          <title>ID inspección</title>
+          <description>Associated inspection identifier</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:domain">
+          <title>Especialidad</title>
+          <description>Oversight domain (CNS, AGA, OPS)</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:provider">
+          <title>Proveedor u Operador</title>
+          <description>Service provider under oversight</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="vso:regulatoryTraceability">
+      <title>Regulatory Traceability</title>
+      <properties>
+        <property name="vso:icaoReference">
+          <title>Referencia SARPs OACI</title>
+          <description>ICAO SARPs reference</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:nationalRegulation">
+          <title>Referencia regulación nacional</title>
+          <description>National regulation reference</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:ceMapping">
+          <title>Elemento crítico relacionado</title>
+          <description>USOAP Critical Element mapping</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:ceList"/>
+          </constraints>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="vso:evidenceIntegrity">
+      <title>Evidence Integrity</title>
+      <properties>
+        <property name="vso:hashValue">
+          <title>Hash criptográfico</title>
+          <description>Cryptographic hash of evidence</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:immutable">
+          <title>Inmutable?</title>
+          <description>Indicates if evidence is sealed</description>
+          <type>d:boolean</type>
+        </property>
+        <property name="vso:sealedDate">
+          <title>Fecha sellado</title>
+          <description>Date evidence was sealed</description>
+          <type>d:date</type>
+        </property>
+      </properties>
+    </aspect>
+
+  </aspects>
+
+</model>
+

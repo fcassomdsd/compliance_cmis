@@ -1,0 +1,9 @@
+<webscript>
+   <shortname>Generate Inspection Plan From JSON</shortname>
+   <description>Generate formatted inspection plan from raw JSON payload</description>
+   <url>/api/inspection/generate</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>
+
