@@ -230,44 +230,77 @@ try {
         throw new Error(model.error);
     }
     
-    // 7. Generate unique filename
-    var timestamp = new Date().getTime();
-    var outputName = FILE_PREFIX + timestamp + FILE_EXTENSION;
-    
-    // 8. Create document
-    var outputFile = destFolder.createFile(outputName);
-    if (!outputFile) {
-        setError(500, "Failed to create output file");
+    // 7. Validate inspectionNo and build filename
+    if (!inputData.inspectionNo) {
+        setError(400, "Missing required field: inspectionNo");
         throw new Error(model.error);
     }
-    
-    // 9. Set content and properties
+    var outputName = FILE_PREFIX + inputData.inspectionNo + FILE_EXTENSION;
+
+    // 7.5. Get content
     var engine = new MiniFreemarker();
     var templateStr = String(templateNode.content);
     var generatedContent = engine.render(templateStr, inputData);
 
-    outputFile.content = generatedContent;
+    // 8. Create document or check out new version if it already exists
+    function createNewVersion(destination, fileName, content) {
+    
+      const outFile = destination.childByNamePath(fileName);
+      if (!outFile.hasAspect("cm:versionable")) {
+          outFile.addAspect("cm:versionable");
+      }
+      const workFile = outFile.checkout();
+      workFile.content = content;
+      
+      return workFile.checkin("Update content via script", false);
+    
+    }
+    
+    function createNewFile(destination, fileName, content) {
+    
+      const outFile = destination.createFile(fileName);
+      if (!outFile) {
+        setError(500, "Failed to create output file");
+        throw new Error(model.error);
+      }
+      outFile.addAspect("cm:versionable");
+      
+      outFile.content = content;
+      outFile.save();
+      
+      return outFile;
+    
+    }
+    
+    var outputFile = (destFolder.childByNamePath(outputName)) 
+        ? createNewVersion(destFolder, outputName, generatedContent) 
+        : createNewFile(destFolder, outputName, generatedContent); 
+
+    // 9. Set properties
     outputFile.mimetype = MIMETYPE;
     
     // Use proper property setting
     outputFile.properties["cm:title"] = inputData.title || "Generated Inspection Plan";
     outputFile.properties["cm:description"] = "Auto-generated on " + new Date().toISOString();
     outputFile.save();
+    var isNewVersion = (outputFile.properties["cm.versionLabel"] != "1.0")
     
     // 10. Success response
-    status.code = 201; // Created
+    status.code = isNewVersion ? 200 : 201; // 200 Updated, 201 Created
     model.success = true;
     model.result = {
-//        nodeRef: outputFile.nodeRef.toString(),
+        nodeRef: outputFile.nodeRef.toString(),
         name: outputFile.name,
         url: outputFile.url,
         downloadUrl: outputFile.downloadUrl,
         path: destFolder.displayPath + "/" + outputFile.name,
-        createdDate: outputFile.properties["cm:created"]
+        createdDate: outputFile.properties["cm:created"],
+        version: outputFile.properties["cm:versionLabel"],
+        isNewVersion: isNewVersion
     };
     
     // Optional: Log success
-    logger.info("Successfully created document: " + outputFile.name);
+    logger.info((isNewVersion ? "New minor version created for: " : "Successfully created document: ") + outputFile.name);
     
 } catch (e) {
     // Catch any unexpected errors

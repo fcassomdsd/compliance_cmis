@@ -2,7 +2,9 @@
   "status": "success",
   "generatedFile": {
     "name": "${result.name}",
-    "path": "${result.path}"
+    "path": "${result.path}",
+    "version" : "${result.version}",
+    "downloadURL" : "${result.downloadUrl}"
   }
 }
 
