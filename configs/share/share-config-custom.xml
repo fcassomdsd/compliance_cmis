@@ -377,6 +377,7 @@
             <aspect name="smf:customConfigSmartFolder" />
             <aspect name="smf:systemConfigSmartFolder" />
             <aspect name="vso:inspectionContext" />
+            <aspect name="vso:serviceContext" />
             <aspect name="vso:regulatoryTraceability" />
             <aspect name="vso:evidenceIntegrity" />
          </visible>
@@ -415,12 +416,12 @@
       <types>
          <type name="cm:content">
             <subtype name="smf:smartFolderTemplate" />
-            <subtype name="vso:inspectionChecklist" />
             <subtype name="vso:checklistItem" />
             <subtype name="vso:evidenceItem" />
             <subtype name="vso:finding" />
             <subtype name="vso:correctiveAction" />
-            <subtype name="vso:closureReport" />
+            <subtype name="vso:followUpReport" />
+            <subtype name="vso:inspectionChecklist" />
          </type>
 
           <type name="cm:folder">
@@ -755,11 +756,14 @@
             <field-visibility>
                <show id="vso:inspectionId" />
                <show id="vso:domain" />
-               <show id="vso:provider" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
                <show id="vso:inspectionType" />
                <show id="vso:startDate" />
                <show id="vso:endDate" />
-               <show id="vso:status" />
+               <show id="vso:inspectionStatus" />
             </field-visibility>
             <appearance>
                <set id="vso-context" appearance="caption" label="Inspection Context" />
@@ -767,12 +771,43 @@
                
                <field id="vso:inspectionId" set="vso-context" />
                <field id="vso:domain" set="vso-context" />
-               <field id="vso:provider" set="vso-context" />
+               <field id="vso:providerId" set="vso-context" />
+               <field id="vso:providerName" set="vso-context" />
+               <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationName" set="vso-context" />
                
                <field id="vso:inspectionType" set="vso-details" />
                <field id="vso:startDate" set="vso-details" />
                <field id="vso:endDate" set="vso-details" />
-               <field id="vso:status" set="vso-details" />
+               <field id="vso:inspectionStatus" set="vso-details" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="node-type" condition="vso:inspectionChecklist">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:checklistId" />
+               <show id="vso:scope" />
+               <show id="vso:completionDate" />
+               <show id="vso:hasChecklistItem" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-checklist-info" appearance="caption" label="Checklist Info" />
+               <set id="vso-associations" appearance="caption" label="Related Records" />
+
+               <field id="vso:checklistId" set="vso-checklist-info" />
+               <field id="vso:scope" set="vso-checklist-info" />
+               <field id="vso:completionDate" set="vso-checklist-info" />
+
+               <field id="vso:hasChecklistItem" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
             </appearance>
          </form>
       </forms>
@@ -782,6 +817,12 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="vso:inspectionId" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
+               <show id="vso:domain" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
                <show id="vso:itemId" />
                <show id="vso:requirementText" />
                <show id="vso:complianceStatus" />
@@ -789,10 +830,21 @@
                <show id="vso:icaoReference" />
                <show id="vso:nationalRegulation" />
                <show id="vso:ceMapping" />
+               <show id="vso:supportedByEvidence" />
+               <show id="vso:hasFinding" />
             </field-visibility>
             <appearance>
+               <set id="vso-context" appearance="caption" label="Inspection Context" />
                <set id="vso-item-info" appearance="caption" label="Checklist Item Info" />
                <set id="vso-traceability" appearance="caption" label="Regulatory Traceability" />
+               <set id="vso-associations" appearance="caption" label="Related Records" />
+
+               <field id="vso:inspectionId" set="vso-context" />
+               <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationName" set="vso-context" />
+               <field id="vso:domain" set="vso-context" />
+               <field id="vso:providerId" set="vso-context" />
+               <field id="vso:providerName" set="vso-context" />
                
                <field id="vso:itemId" set="vso-item-info" />
                <field id="vso:requirementText" set="vso-item-info">
@@ -804,6 +856,103 @@
                <field id="vso:icaoReference" set="vso-traceability" />
                <field id="vso:nationalRegulation" set="vso-traceability" />
                <field id="vso:ceMapping" set="vso-traceability" />
+               <field id="vso:supportedByEvidence" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
+               <field id="vso:hasFinding" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="node-type" condition="vso:correctiveAction">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:inspectionId" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
+               <show id="vso:domain" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
+               <show id="vso:capId" />
+               <show id="vso:proposedAction" />
+               <show id="vso:responsibleEntity" />
+               <show id="vso:dueDate" />
+               <show id="vso:acceptanceStatus" />
+               <show id="vso:verifiedBy" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-context" appearance="caption" label="Inspection Context" />
+               <set id="vso-cap-info" appearance="caption" label="Corrective Action" />
+               <set id="vso-associations" appearance="caption" label="Related Records" />
+
+               <field id="vso:inspectionId" set="vso-context" />
+               <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationName" set="vso-context" />
+               <field id="vso:domain" set="vso-context" />
+               <field id="vso:providerId" set="vso-context" />
+               <field id="vso:providerName" set="vso-context" />
+
+               <field id="vso:capId" set="vso-cap-info" />
+               <field id="vso:proposedAction" set="vso-cap-info">
+                  <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+               </field>
+               <field id="vso:responsibleEntity" set="vso-cap-info" />
+               <field id="vso:dueDate" set="vso-cap-info" />
+               <field id="vso:acceptanceStatus" set="vso-cap-info" />
+
+               <field id="vso:verifiedBy" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="node-type" condition="vso:followUpReport">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:inspectionId" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
+               <show id="vso:domain" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
+               <show id="vso:closureDate" />
+               <show id="vso:closureVerificationMethod" />
+               <show id="vso:effectivenessConfirmed" />
+               <show id="vso:findingClosed" />
+               <show id="vso:percentComplete" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-context" appearance="caption" label="Inspection Context" />
+               <set id="vso-followup-info" appearance="caption" label="Follow-up Info" />
+
+               <field id="vso:inspectionId" set="vso-context" />
+               <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationName" set="vso-context" />
+               <field id="vso:domain" set="vso-context" />
+               <field id="vso:providerId" set="vso-context" />
+               <field id="vso:providerName" set="vso-context" />
+
+               <field id="vso:closureDate" set="vso-followup-info" />
+               <field id="vso:closureVerificationMethod" set="vso-followup-info" />
+               <field id="vso:effectivenessConfirmed" set="vso-followup-info" />
+               <field id="vso:findingClosed" set="vso-followup-info" />
+               <field id="vso:percentComplete" set="vso-followup-info" />
             </appearance>
          </form>
       </forms>
@@ -813,15 +962,43 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="vso:inspectionId" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
+               <show id="vso:domain" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
                <show id="vso:findingId" />
                <show id="vso:findingLevel" />
                <show id="vso:regulationBreached" />
                <show id="vso:description" />
-               <show id="vso:status" />
+               <show id="vso:findingStatus" />
+               <show id="vso:hasCorrectiveAction" />
             </field-visibility>
             <appearance>
-               <field id="vso:description">
+               <set id="vso-context" appearance="caption" label="Inspection Context" />
+               <set id="vso-finding-info" appearance="caption" label="Finding Info" />
+               <set id="vso-associations" appearance="caption" label="Related Records" />
+
+               <field id="vso:inspectionId" set="vso-context" />
+               <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationName" set="vso-context" />
+               <field id="vso:domain" set="vso-context" />
+               <field id="vso:providerId" set="vso-context" />
+               <field id="vso:providerName" set="vso-context" />
+
+               <field id="vso:findingId" set="vso-finding-info" />
+               <field id="vso:findingLevel" set="vso-finding-info" />
+               <field id="vso:regulationBreached" set="vso-finding-info" />
+               <field id="vso:description" set="vso-finding-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+               </field>
+               <field id="vso:findingStatus" set="vso-finding-info" />
+               <field id="vso:hasCorrectiveAction" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
                </field>
             </appearance>
          </form>
