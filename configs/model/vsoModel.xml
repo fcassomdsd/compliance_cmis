@@ -78,6 +78,20 @@
   <!-- ========================================================= -->
   <types>
 
+    <!-- ===================== Base VSO Content ====================== -->
+    <type name="vso:vsoContent">
+      <title>VSO Content</title>
+      <parent>cm:content</parent>
+
+      <properties>
+        <property name="vso:contentType">
+          <title>Tipo de contenido VSO</title>
+          <description>VSO business content classification</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+    </type>
+
     <!-- ===================== Inspection ====================== -->
     <type name="vso:inspection">
       <title>Inspección</title>
@@ -129,7 +143,7 @@
     <!-- ================= Inspection Checklist ================= -->
     <type name="vso:inspectionChecklist">
       <title>Lista de Verificación</title>
-      <parent>cm:content</parent>
+      <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:checklistId">
@@ -169,7 +183,7 @@
     <!-- ================= Checklist Item ================= -->
     <type name="vso:checklistItem">
       <title>Checklist Item</title>
-      <parent>cm:content</parent>
+      <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:itemId">
@@ -246,7 +260,7 @@
     <!-- ================= Evidence Item ================= -->
     <type name="vso:evidenceItem">
       <title>Evidence Item</title>
-      <parent>cm:content</parent>
+      <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:evidenceId">
@@ -282,7 +296,7 @@
     <!-- ================= Finding ================= -->
     <type name="vso:finding">
       <title>Finding</title>
-      <parent>cm:content</parent>
+      <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:findingId">
@@ -340,7 +354,7 @@
     <!-- ================= Corrective Action ================= -->
     <type name="vso:correctiveAction">
       <title>Corrective Action</title>
-      <parent>cm:content</parent>
+      <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:capId">
@@ -393,7 +407,7 @@
     <!-- ================= Follow-up Report ================= -->
     <type name="vso:followUpReport">
       <title>Follow-up Report</title>
-      <parent>cm:content</parent>
+      <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:closureDate">

@@ -3,6 +3,7 @@ model.vso_vsoModel.title=Operational Safety Oversight Model
 model.vso_vsoModel.description=Model for managing inspections, findings, and corrective actions.
 
 # Types
+type.vso_vsoContent.title=VSO Content
 type.vso_inspection.title=Inspection
 type.vso_inspectionChecklist.title=Inspection Checklist
 type.vso_checklistItem.title=Checklist Item
@@ -18,6 +19,7 @@ aspect.vso_regulatoryTraceability.title=Regulatory Traceability
 aspect.vso_evidenceIntegrity.title=Evidence Integrity
 
 # Properties
+prop.vso_contentType.title=VSO Content Type
 prop.vso_inspectionId.title=Inspection ID
 prop.vso_domain.title=Domain/Functional Area
 prop.vso_providerId.title=Service Provider ID
