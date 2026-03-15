@@ -416,6 +416,10 @@
       <types>
          <type name="cm:content">
             <subtype name="smf:smartFolderTemplate" />
+            <subtype name="vso:vsoContent" />
+         </type>
+
+         <type name="vso:vsoContent">
             <subtype name="vso:checklistItem" />
             <subtype name="vso:evidenceItem" />
             <subtype name="vso:finding" />
@@ -750,6 +754,52 @@
    </config>
    -->
 
+   <config evaluator="node-type" condition="vso:vsoContent">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:contentType" />
+               <show id="vso:inspectionId" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
+               <show id="vso:domain" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
+               <show id="vso:icaoReference" />
+               <show id="vso:nationalRegulation" />
+               <show id="vso:ceMapping" />
+               <show id="vso:hashValue" />
+               <show id="vso:immutable" />
+               <show id="vso:sealedDate" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-base" appearance="caption" label="VSO Base" />
+               <set id="vso-context" appearance="caption" label="Inspection Context" />
+               <set id="vso-service" appearance="caption" label="Service Context" />
+               <set id="vso-traceability" appearance="caption" label="Regulatory Traceability" />
+               <set id="vso-integrity" appearance="caption" label="Evidence Integrity" />
+
+               <field id="vso:contentType" set="vso-base" />
+               <field id="vso:inspectionId" set="vso-context" />
+               <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationName" set="vso-context" />
+
+               <field id="vso:domain" set="vso-service" />
+               <field id="vso:providerId" set="vso-service" />
+               <field id="vso:providerName" set="vso-service" />
+
+               <field id="vso:icaoReference" set="vso-traceability" />
+               <field id="vso:nationalRegulation" set="vso-traceability" />
+               <field id="vso:ceMapping" set="vso-traceability" />
+
+               <field id="vso:hashValue" set="vso-integrity" />
+               <field id="vso:immutable" set="vso-integrity" />
+               <field id="vso:sealedDate" set="vso-integrity" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
    <config evaluator="node-type" condition="vso:inspection">
       <forms>
          <form>
@@ -789,6 +839,7 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="vso:contentType" />
                <show id="vso:checklistId" />
                <show id="vso:scope" />
                <show id="vso:completionDate" />
@@ -798,6 +849,7 @@
                <set id="vso-checklist-info" appearance="caption" label="Checklist Info" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
+               <field id="vso:contentType" set="vso-checklist-info" />
                <field id="vso:checklistId" set="vso-checklist-info" />
                <field id="vso:scope" set="vso-checklist-info" />
                <field id="vso:completionDate" set="vso-checklist-info" />
@@ -817,45 +869,32 @@
       <forms>
          <form>
             <field-visibility>
-               <show id="vso:inspectionId" />
-               <show id="vso:locationId" />
-               <show id="vso:locationName" />
-               <show id="vso:domain" />
-               <show id="vso:providerId" />
-               <show id="vso:providerName" />
+               <show id="vso:contentType" />
                <show id="vso:itemId" />
                <show id="vso:requirementText" />
+               <show id="vso:itemVerificationMethod" />
                <show id="vso:complianceStatus" />
+               <show id="vso:inspectorComment" />
                <show id="vso:riskClassification" />
-               <show id="vso:icaoReference" />
-               <show id="vso:nationalRegulation" />
-               <show id="vso:ceMapping" />
                <show id="vso:supportedByEvidence" />
                <show id="vso:hasFinding" />
             </field-visibility>
             <appearance>
-               <set id="vso-context" appearance="caption" label="Inspection Context" />
                <set id="vso-item-info" appearance="caption" label="Checklist Item Info" />
-               <set id="vso-traceability" appearance="caption" label="Regulatory Traceability" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
-               <field id="vso:inspectionId" set="vso-context" />
-               <field id="vso:locationId" set="vso-context" />
-               <field id="vso:locationName" set="vso-context" />
-               <field id="vso:domain" set="vso-context" />
-               <field id="vso:providerId" set="vso-context" />
-               <field id="vso:providerName" set="vso-context" />
-               
+               <field id="vso:contentType" set="vso-item-info" />
                <field id="vso:itemId" set="vso-item-info" />
                <field id="vso:requirementText" set="vso-item-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
+               <field id="vso:itemVerificationMethod" set="vso-item-info" />
                <field id="vso:complianceStatus" set="vso-item-info" />
+               <field id="vso:inspectorComment" set="vso-item-info">
+                  <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+               </field>
                <field id="vso:riskClassification" set="vso-item-info" />
-               
-               <field id="vso:icaoReference" set="vso-traceability" />
-               <field id="vso:nationalRegulation" set="vso-traceability" />
-               <field id="vso:ceMapping" set="vso-traceability" />
+
                <field id="vso:supportedByEvidence" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>
@@ -873,16 +912,34 @@
       </forms>
    </config>
 
+   <config evaluator="node-type" condition="vso:evidenceItem">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:contentType" />
+               <show id="vso:evidenceId" />
+               <show id="vso:evidenceType" />
+               <show id="vso:source" />
+               <show id="vso:collectionDate" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-evidence-info" appearance="caption" label="Evidence Info" />
+
+               <field id="vso:contentType" set="vso-evidence-info" />
+               <field id="vso:evidenceId" set="vso-evidence-info" />
+               <field id="vso:evidenceType" set="vso-evidence-info" />
+               <field id="vso:source" set="vso-evidence-info" />
+               <field id="vso:collectionDate" set="vso-evidence-info" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
    <config evaluator="node-type" condition="vso:correctiveAction">
       <forms>
          <form>
             <field-visibility>
-               <show id="vso:inspectionId" />
-               <show id="vso:locationId" />
-               <show id="vso:locationName" />
-               <show id="vso:domain" />
-               <show id="vso:providerId" />
-               <show id="vso:providerName" />
+               <show id="vso:contentType" />
                <show id="vso:capId" />
                <show id="vso:proposedAction" />
                <show id="vso:responsibleEntity" />
@@ -891,17 +948,10 @@
                <show id="vso:verifiedBy" />
             </field-visibility>
             <appearance>
-               <set id="vso-context" appearance="caption" label="Inspection Context" />
                <set id="vso-cap-info" appearance="caption" label="Corrective Action" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
-               <field id="vso:inspectionId" set="vso-context" />
-               <field id="vso:locationId" set="vso-context" />
-               <field id="vso:locationName" set="vso-context" />
-               <field id="vso:domain" set="vso-context" />
-               <field id="vso:providerId" set="vso-context" />
-               <field id="vso:providerName" set="vso-context" />
-
+               <field id="vso:contentType" set="vso-cap-info" />
                <field id="vso:capId" set="vso-cap-info" />
                <field id="vso:proposedAction" set="vso-cap-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
@@ -925,12 +975,7 @@
       <forms>
          <form>
             <field-visibility>
-               <show id="vso:inspectionId" />
-               <show id="vso:locationId" />
-               <show id="vso:locationName" />
-               <show id="vso:domain" />
-               <show id="vso:providerId" />
-               <show id="vso:providerName" />
+               <show id="vso:contentType" />
                <show id="vso:closureDate" />
                <show id="vso:closureVerificationMethod" />
                <show id="vso:effectivenessConfirmed" />
@@ -938,16 +983,9 @@
                <show id="vso:percentComplete" />
             </field-visibility>
             <appearance>
-               <set id="vso-context" appearance="caption" label="Inspection Context" />
                <set id="vso-followup-info" appearance="caption" label="Follow-up Info" />
 
-               <field id="vso:inspectionId" set="vso-context" />
-               <field id="vso:locationId" set="vso-context" />
-               <field id="vso:locationName" set="vso-context" />
-               <field id="vso:domain" set="vso-context" />
-               <field id="vso:providerId" set="vso-context" />
-               <field id="vso:providerName" set="vso-context" />
-
+               <field id="vso:contentType" set="vso-followup-info" />
                <field id="vso:closureDate" set="vso-followup-info" />
                <field id="vso:closureVerificationMethod" set="vso-followup-info" />
                <field id="vso:effectivenessConfirmed" set="vso-followup-info" />
@@ -962,12 +1000,7 @@
       <forms>
          <form>
             <field-visibility>
-               <show id="vso:inspectionId" />
-               <show id="vso:locationId" />
-               <show id="vso:locationName" />
-               <show id="vso:domain" />
-               <show id="vso:providerId" />
-               <show id="vso:providerName" />
+               <show id="vso:contentType" />
                <show id="vso:findingId" />
                <show id="vso:findingLevel" />
                <show id="vso:regulationBreached" />
@@ -976,17 +1009,10 @@
                <show id="vso:hasCorrectiveAction" />
             </field-visibility>
             <appearance>
-               <set id="vso-context" appearance="caption" label="Inspection Context" />
                <set id="vso-finding-info" appearance="caption" label="Finding Info" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
-               <field id="vso:inspectionId" set="vso-context" />
-               <field id="vso:locationId" set="vso-context" />
-               <field id="vso:locationName" set="vso-context" />
-               <field id="vso:domain" set="vso-context" />
-               <field id="vso:providerId" set="vso-context" />
-               <field id="vso:providerName" set="vso-context" />
-
+               <field id="vso:contentType" set="vso-finding-info" />
                <field id="vso:findingId" set="vso-finding-info" />
                <field id="vso:findingLevel" set="vso-finding-info" />
                <field id="vso:regulationBreached" set="vso-finding-info" />
@@ -1000,6 +1026,78 @@
                      <control-param name="displayMode">items</control-param>
                   </control>
                </field>
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:inspectionContext">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:inspectionId" />
+               <show id="vso:locationId" />
+               <show id="vso:locationName" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-inspection-context" appearance="bordered-panel" label-id="aspect.vso_inspectionContext" />
+               <field set="vso-inspection-context" id="vso:inspectionId" />
+               <field set="vso-inspection-context" id="vso:locationId" />
+               <field set="vso-inspection-context" id="vso:locationName" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:serviceContext">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:domain" />
+               <show id="vso:providerId" />
+               <show id="vso:providerName" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-service-context" appearance="bordered-panel" label-id="aspect.vso_serviceContext" />
+               <field set="vso-service-context" id="vso:domain" />
+               <field set="vso-service-context" id="vso:providerId" />
+               <field set="vso-service-context" id="vso:providerName" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:regulatoryTraceability">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:icaoReference" />
+               <show id="vso:nationalRegulation" />
+               <show id="vso:ceMapping" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-reg-traceability" appearance="bordered-panel" label-id="aspect.vso_regulatoryTraceability" />
+               <field set="vso-reg-traceability" id="vso:icaoReference" />
+               <field set="vso-reg-traceability" id="vso:nationalRegulation" />
+               <field set="vso-reg-traceability" id="vso:ceMapping" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:evidenceIntegrity">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:hashValue" />
+               <show id="vso:immutable" />
+               <show id="vso:sealedDate" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-evidence-integrity" appearance="bordered-panel" label-id="aspect.vso_evidenceIntegrity" />
+               <field set="vso-evidence-integrity" id="vso:hashValue" />
+               <field set="vso-evidence-integrity" id="vso:immutable" />
+               <field set="vso-evidence-integrity" id="vso:sealedDate" />
             </appearance>
          </form>
       </forms>

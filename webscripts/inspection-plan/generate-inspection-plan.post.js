@@ -100,7 +100,7 @@ function MiniFreemarker() {
           }
           
           const body = parse(tokenList);
-          logger.error("body = " + JSON.stringify(body.data));
+         // logger.error("body = " + JSON.stringify(body.data));
           return { count : body.count + 2,
                    data : {
                      type: 'list',
@@ -249,6 +249,9 @@ try {
       if (!outFile.hasAspect("cm:versionable")) {
           outFile.addAspect("cm:versionable");
       }
+      if (!outFile.hasAspect("vso:inspectionContext")) {
+          outFile.addAspect("vso:inspectionContext");
+      }
       const workFile = outFile.checkout();
       workFile.content = content;
       
@@ -258,12 +261,13 @@ try {
     
     function createNewFile(destination, fileName, content) {
     
-      const outFile = destination.createFile(fileName);
+      const outFile = destination.createNode(fileName, "vso:vsoContent");
       if (!outFile) {
         setError(500, "Failed to create output file");
         throw new Error(model.error);
       }
       outFile.addAspect("cm:versionable");
+      outFile.addAspect("vso:inspectionContext");
       
       outFile.content = content;
       outFile.save();
@@ -282,6 +286,12 @@ try {
     // Use proper property setting
     outputFile.properties["cm:title"] = inputData.title || "Generated Inspection Plan";
     outputFile.properties["cm:description"] = "Auto-generated on " + new Date().toISOString();
+    outputFile.properties["vso:inspectionId"] = inputData.inspectionNo;
+    outputFile.properties["vso:startDate"] = inputData.startDate;
+    outputFile.properties["vso:endDate"] = inputData.endDate;
+    outputFile.properties["vso:locationId"] = inputData.locationId;
+    outputFile.properties["vso:locationName"] = inputData.locationName;
+    outputFile.properties["vso:inspectionStatus"] = "Planned";
     outputFile.save();
     var isNewVersion = (outputFile.properties["cm.versionLabel"] != "1.0")
     
