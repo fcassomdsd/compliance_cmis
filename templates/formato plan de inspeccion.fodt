@@ -1239,7 +1239,7 @@
     <table:table-row>
      <table:table-cell table:style-name="Table2.A13" table:number-columns-spanned="3" office:value-type="string">
       <text:p text:style-name="P17">Lista de distribución del informe final:</text:p>
-      <text:p text:style-name="Table_20_Contents">[#list providers as provider]<text:span text:style-name="T14">${provider.contact.name}</text:span>, ${provider.contact.position}</text:p>
+      <text:p text:style-name="Table_20_Contents">[#list providers as provider]<text:span text:style-name="T14">${provider.contact.name}</text:span>, ${provider.contact.position} </text:p>
       <text:p text:style-name="Table_20_Contents">[/#list]</text:p>
       <text:p text:style-name="P17">Fecha de entrega del informe final:</text:p>
      </table:table-cell>
