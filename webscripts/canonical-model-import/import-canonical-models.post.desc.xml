@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>Import Canonical Inspection Models</shortname>
+   <description>Import checklist and finding canonical JSON into the VSO repository model</description>
+   <url>/api/inspection/import-canonical</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>
