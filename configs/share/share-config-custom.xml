@@ -758,6 +758,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:inspectionId" />
                <show id="vso:locationId" />
@@ -773,12 +775,15 @@
                <show id="vso:sealedDate" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-base" appearance="caption" label="VSO Base" />
                <set id="vso-context" appearance="caption" label="Inspection Context" />
                <set id="vso-service" appearance="caption" label="Service Context" />
                <set id="vso-traceability" appearance="caption" label="Regulatory Traceability" />
                <set id="vso-integrity" appearance="caption" label="Evidence Integrity" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-base" />
                <field id="vso:inspectionId" set="vso-context" />
                <field id="vso:locationId" set="vso-context" />
@@ -839,6 +844,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:checklistId" />
                <show id="vso:scope" />
@@ -846,9 +853,12 @@
                <show id="vso:hasChecklistItem" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-checklist-info" appearance="caption" label="Checklist Info" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-checklist-info" />
                <field id="vso:checklistId" set="vso-checklist-info" />
                <field id="vso:scope" set="vso-checklist-info" />
@@ -869,6 +879,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:itemId" />
                <show id="vso:requirementText" />
@@ -880,9 +892,12 @@
                <show id="vso:hasFinding" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-item-info" appearance="caption" label="Checklist Item Info" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-item-info" />
                <field id="vso:itemId" set="vso-item-info" />
                <field id="vso:requirementText" set="vso-item-info">
@@ -916,6 +931,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:evidenceId" />
                <show id="vso:evidenceType" />
@@ -923,8 +940,11 @@
                <show id="vso:collectionDate" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-evidence-info" appearance="caption" label="Evidence Info" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-evidence-info" />
                <field id="vso:evidenceId" set="vso-evidence-info" />
                <field id="vso:evidenceType" set="vso-evidence-info" />
@@ -939,6 +959,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:capId" />
                <show id="vso:proposedAction" />
@@ -948,9 +970,12 @@
                <show id="vso:verifiedBy" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-cap-info" appearance="caption" label="Corrective Action" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-cap-info" />
                <field id="vso:capId" set="vso-cap-info" />
                <field id="vso:proposedAction" set="vso-cap-info">
@@ -975,6 +1000,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:closureDate" />
                <show id="vso:closureVerificationMethod" />
@@ -983,8 +1010,11 @@
                <show id="vso:percentComplete" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-followup-info" appearance="caption" label="Follow-up Info" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-followup-info" />
                <field id="vso:closureDate" set="vso-followup-info" />
                <field id="vso:closureVerificationMethod" set="vso-followup-info" />
@@ -1000,6 +1030,8 @@
       <forms>
          <form>
             <field-visibility>
+               <show id="cm:name" />
+               <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:findingId" />
                <show id="vso:findingLevel" />
@@ -1009,9 +1041,12 @@
                <show id="vso:hasCorrectiveAction" />
             </field-visibility>
             <appearance>
+               <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-finding-info" appearance="caption" label="Finding Info" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
+               <field id="cm:name" set="cm-info" />
+               <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-finding-info" />
                <field id="vso:findingId" set="vso-finding-info" />
                <field id="vso:findingLevel" set="vso-finding-info" />

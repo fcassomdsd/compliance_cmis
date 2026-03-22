@@ -123,12 +123,12 @@
       <associations>
         <child-association name="vso:hasChecklist">
           <source>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>false</many>
           </source>
           <target>
             <class>vso:inspectionChecklist</class>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>true</many>
           </target>
         </child-association>
@@ -338,7 +338,7 @@
           </source>
           <target>
             <class>vso:correctiveAction</class>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>true</many>
           </target>
         </child-association>
@@ -392,7 +392,7 @@
           </source>
           <target>
             <class>vso:followUpReport</class>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>false</many>
           </target>
         </child-association>

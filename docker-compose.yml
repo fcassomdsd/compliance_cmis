@@ -60,6 +60,7 @@ services:
       - ./configs/model/vso-bootstrap-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/vso-bootstrap-context.xml
       - ./configs/messages/vsoModel:/usr/local/tomcat/shared/classes/alfresco/extension/vsoModel.properties
       - ./configs/module.properties:/usr/local/tomcat/shared/classes/alfresco/extension/module.properties
+      - ./webscripts:/usr/local/tomcat/shared/classes/alfresco/extension/templates/webscripts
     extends:
       file: commons/base.yaml
       service: alfresco
