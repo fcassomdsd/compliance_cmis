@@ -1,0 +1,804 @@
+{
+  "id": "vso-vigilancia-datos-bucketed",
+  "name": "Datos",
+  "nodes": [
+    {
+      "id": "vso-inspecciones",
+      "name": "Inspecciones",
+      "description": "Contenido de tipo vso:inspection",
+      "nodes": [
+        {
+          "id": "vso-inspecciones-por-anio",
+          "name": "Por año",
+          "nodes": [
+            {
+              "id": "vso-inspecciones-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso:startDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "vso-inspecciones-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:startDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "vso-inspecciones-year-before-last",
+              "name": "Año antepasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:startDate:[NOW-2YEAR/YEAR TO NOW-1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "vso-inspecciones-other-previous-years",
+              "name": "Otros años anteriores",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:startDate:[MIN TO NOW-2YEAR/YEAR>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "vso-inspecciones-por-localidad",
+          "name": "Por localidad",
+          "nodes": [
+            {
+              "id": "vso-inspecciones-localidad-mdab",
+              "name": "MDAB",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpcwe3sv2tgsekfr54qp\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdbh",
+              "name": "MDBH",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpdee2r9hhcadnj006mg\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdcy",
+              "name": "MDCY",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpdge0j96ay3nhycdz6k\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdjb",
+              "name": "MDJB",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpdcefy92tkfjtys65ek\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdlr",
+              "name": "MDLR",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpd5e6bt3av11mdtd6jk\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdpc",
+              "name": "MDPC",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpdke0svjk57kwkqqed0\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdpp",
+              "name": "MDPP",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qc0yxte2xts3r9btk77ft6\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdsd",
+              "name": "MDSD",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpd9edmtb26aj4n2tacd\""
+              }
+            },
+            {
+              "id": "vso-inspecciones-localidad-mdst",
+              "name": "MDST",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "TYPE:\"vso:inspection\" AND @vso\\:locationId:\"a01k5qjgpd7ecnv2khh0cav47py\""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vso-hallazgos",
+      "name": "Hallazgos",
+      "description": "Contenido de tipo vso:finding",
+      "search": {
+        "language": "fts-alfresco",
+        "query": "TYPE:\"vso:finding\""
+      },
+      "nodes": [
+        {
+          "id": "vso-hallazgos-abiertos",
+          "name": "Abiertos",
+          "search": {
+            "language": "fts-alfresco",
+            "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\""
+          },
+          "nodes": [
+            {
+              "id": "vso-hallazgos-abiertos-por-localidad",
+              "name": "Por localidad",
+              "nodes": [
+                {
+                  "id": "vso-hallazgos-abiertos-mdab",
+                  "name": "MDAB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpcwe3sv2tgsekfr54qp\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdbh",
+                  "name": "MDBH",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdee2r9hhcadnj006mg\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdcy",
+                  "name": "MDCY",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdge0j96ay3nhycdz6k\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdjb",
+                  "name": "MDJB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdcefy92tkfjtys65ek\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdlr",
+                  "name": "MDLR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpd5e6bt3av11mdtd6jk\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdpc",
+                  "name": "MDPC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdke0svjk57kwkqqed0\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdpp",
+                  "name": "MDPP",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qc0yxte2xts3r9btk77ft6\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdsd",
+                  "name": "MDSD",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpd9edmtb26aj4n2tacd\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-mdst",
+                  "name": "MDST",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpd7ecnv2khh0cav47py\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "vso-hallazgos-abiertos-por-proveedor",
+              "name": "Por proveedor",
+              "nodes": [
+                {
+                  "id": "vso-hallazgos-abiertos-aerodom-mdab",
+                  "name": "AERODOM - MDAB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyhme9hsvq397qnkrt5n\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-aerodom-mdsd",
+                  "name": "AERODOM - MDSD",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyj1e6tr1f846f0sg1sr\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-aerodom-mdpp",
+                  "name": "AERODOM - MDPP",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyjee80tvsgr2kxv9vg8\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-aerodom-mdjb",
+                  "name": "AERODOM - MDJB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyjte1qr7vbpa5zjym4d\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-aerodom-mdbh",
+                  "name": "AERODOM - MDBH",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyk6e9v9hhry79bkatff\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-aerodom-mdcy",
+                  "name": "AERODOM - MDCY",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkykheadvnrt9xj4neb92\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-aic",
+                  "name": "AIC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-central-romana-corp",
+                  "name": "Central Romana Corp.",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-dtic",
+                  "name": "DTIC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01kkq6arvbeef8ssmsd2aqnvyb\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-idac",
+                  "name": "IDAC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-grupo-punta-cana",
+                  "name": "Grupo Punta Cana",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-indomet",
+                  "name": "INDOMET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "vso-hallazgos-abiertos-por-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "vso-hallazgos-abiertos-ayudas-visuales",
+                  "name": "Ayudas Visuales",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"AY/VIS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-busqueda-salvamento",
+                  "name": "Búsqueda y Salvamento",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"SAR\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-cartografia-aeronautica",
+                  "name": "Cartografía Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"CHT\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-comunicaciones-radio",
+                  "name": "Comunicaciones de Radio",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"COM\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-control-fauna-silvestre",
+                  "name": "Control de Fauna Silvestre",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"FAU\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-control-transito-aereo",
+                  "name": "Control de Tránsito Aéreo",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"ATS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-energia-cns",
+                  "name": "Energía CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"ECNS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-equipos-meteorologicos",
+                  "name": "Equipos Meteorológicos",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"EMET\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-gestion-pavimento-caracteristicas-fisicas",
+                  "name": "Gestión de Pavimento y Caracteristicas Físicas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"PAV\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-gestion-plataformas",
+                  "name": "Gestión de Plataformas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"PTFM\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-salvamento-extincion-incendios",
+                  "name": "Servicios de Salvamento y Extinción de Incendios",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"SSEI\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-meteorologia-aeronautica",
+                  "name": "Meteorología Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"MET/AD\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-publicaciones-aeronauticas",
+                  "name": "Publicaciones Aeronáuticas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"PUB\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-radioayudas-navegacion",
+                  "name": "Radioayudas a la Navegación",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"RNA\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-servicio-informacion-aeronautica",
+                  "name": "Servicio de Información Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"FIS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-servicio-notam",
+                  "name": "Servicio de NOTAM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"NOTAM\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-abiertos-sistemas-vigilancia",
+                  "name": "Sistemas de Vigilancia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND -@vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"VIG\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "vso-hallazgos-cerrados",
+          "name": "Cerrados",
+          "search": {
+            "language": "fts-alfresco",
+            "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\""
+          },
+          "nodes": [
+            {
+              "id": "vso-hallazgos-cerrados-por-localidad",
+              "name": "Por localidad",
+              "nodes": [
+                {
+                  "id": "vso-hallazgos-cerrados-mdab",
+                  "name": "MDAB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpcwe3sv2tgsekfr54qp\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdbh",
+                  "name": "MDBH",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdee2r9hhcadnj006mg\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdcy",
+                  "name": "MDCY",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdge0j96ay3nhycdz6k\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdjb",
+                  "name": "MDJB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdcefy92tkfjtys65ek\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdlr",
+                  "name": "MDLR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpd5e6bt3av11mdtd6jk\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdpc",
+                  "name": "MDPC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpdke0svjk57kwkqqed0\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdpp",
+                  "name": "MDPP",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qc0yxte2xts3r9btk77ft6\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdsd",
+                  "name": "MDSD",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpd9edmtb26aj4n2tacd\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-mdst",
+                  "name": "MDST",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:locationId:\"a01k5qjgpd7ecnv2khh0cav47py\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "vso-hallazgos-cerrados-por-proveedor",
+              "name": "Por proveedor",
+              "nodes": [
+                {
+                  "id": "vso-hallazgos-cerrados-aerodom-mdab",
+                  "name": "AERODOM - MDAB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyhme9hsvq397qnkrt5n\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-aerodom-mdsd",
+                  "name": "AERODOM - MDSD",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyj1e6tr1f846f0sg1sr\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-aerodom-mdpp",
+                  "name": "AERODOM - MDPP",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyjee80tvsgr2kxv9vg8\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-aerodom-mdjb",
+                  "name": "AERODOM - MDJB",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyjte1qr7vbpa5zjym4d\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-aerodom-mdbh",
+                  "name": "AERODOM - MDBH",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkyk6e9v9hhry79bkatff\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-aerodom-mdcy",
+                  "name": "AERODOM - MDCY",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5zfkykheadvnrt9xj4neb92\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-aic",
+                  "name": "AIC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-central-romana-corp",
+                  "name": "Central Romana Corp.",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-dtic",
+                  "name": "DTIC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01kkq6arvbeef8ssmsd2aqnvyb\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-idac",
+                  "name": "IDAC",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-grupo-punta-cana",
+                  "name": "Grupo Punta Cana",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-indomet",
+                  "name": "INDOMET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "vso-hallazgos-cerrados-por-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "vso-hallazgos-cerrados-ayudas-visuales",
+                  "name": "Ayudas Visuales",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"AY/VIS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-busqueda-salvamento",
+                  "name": "Búsqueda y Salvamento",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"SAR\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-cartografia-aeronautica",
+                  "name": "Cartografía Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"CHT\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-comunicaciones-radio",
+                  "name": "Comunicaciones de Radio",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"COM\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-control-fauna-silvestre",
+                  "name": "Control de Fauna Silvestre",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"FAU\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-control-transito-aereo",
+                  "name": "Control de Tránsito Aéreo",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"ATS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-energia-cns",
+                  "name": "Energía CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"ECNS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-equipos-meteorologicos",
+                  "name": "Equipos Meteorológicos",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"EMET\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-gestion-pavimento-caracteristicas-fisicas",
+                  "name": "Gestión de Pavimento y Caracteristicas Físicas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"PAV\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-gestion-plataformas",
+                  "name": "Gestión de Plataformas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"PTFM\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-salvamento-extincion-incendios",
+                  "name": "Servicios de Salvamento y Extinción de Incendios",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"SSEI\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-meteorologia-aeronautica",
+                  "name": "Meteorología Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"MET/AD\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-publicaciones-aeronauticas",
+                  "name": "Publicaciones Aeronáuticas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"PUB\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-radioayudas-navegacion",
+                  "name": "Radioayudas a la Navegación",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"RNA\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-servicio-informacion-aeronautica",
+                  "name": "Servicio de Información Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"FIS\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-servicio-notam",
+                  "name": "Servicio de NOTAM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"NOTAM\""
+                  }
+                },
+                {
+                  "id": "vso-hallazgos-cerrados-sistemas-vigilancia",
+                  "name": "Sistemas de Vigilancia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\" AND @vso\\:domain:\"VIG\""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
