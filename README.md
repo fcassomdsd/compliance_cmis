@@ -1,6 +1,19 @@
 # compliance-CMIS
 
 
+## Path configuration (Alfresco)
+
+Alfresco folder paths used by scripts/webscripts are centralized in:
+
+- `webscripts/common/vso-paths.lib.js`
+
+Update only this file when store paths change. Current keys are:
+
+- `inspectionInProcessPath` → destination inspection folder
+- `canonicalSourceBasePath` → canonical models source folder
+- `inspectionPlanTemplateDataPath` → generated inspection-plan destination folder
+
+
 
 ## Getting started
 
