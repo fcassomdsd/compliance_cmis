@@ -1,6 +1,40 @@
+// Path configuration is centralized.
+// Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
 // Constants for better maintainability
 var TEMPLATE_PATH = "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt";
-var DESTINATION_PATH = "Sites/vigilancia-de-la-so/documentLibrary/Inspecciones/Inspecciones/Planes de Inspeccion";
+function resolveVsoPaths() {
+  var defaults = {
+    inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
+    canonicalSourceBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo",
+    inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data"
+  };
+
+  if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+    return __VSO_PATHS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-paths.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-paths.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+          return __VSO_PATHS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return defaults;
+}
+
+var VSO_PATHS = resolveVsoPaths();
+var DESTINATION_PATH = VSO_PATHS.inspectionPlanTemplateDataPath;
 var FILE_PREFIX = "Plan de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
 var MIMETYPE = "application/vnd.oasis.opendocument.text";

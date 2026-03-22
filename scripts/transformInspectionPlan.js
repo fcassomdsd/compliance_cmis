@@ -1,4 +1,38 @@
-var TARGET_BASE_PATH = "Sites/vigilancia-de-la-so/documentLibrary/Inspecciones/Inspecciones/En proceso";
+// Path configuration is centralized.
+// Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
+function resolveVsoPaths() {
+  var defaults = {
+    inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
+    canonicalSourceBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo",
+    inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data"
+  };
+
+  if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+    return __VSO_PATHS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../webscripts/common/vso-paths.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-paths.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+          return __VSO_PATHS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return defaults;
+}
+
+var VSO_PATHS = resolveVsoPaths();
+var TARGET_BASE_PATH = VSO_PATHS.inspectionInProcessPath;
 var PDF_MIMETYPE = "application/pdf";
 
 function fail(message) {
