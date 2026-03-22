@@ -56,6 +56,12 @@ function resolveOrCreateFolder(baseFolder, folderName) {
   return baseFolder.createFolder(folderName);
 }
 
+function ensureInspectionFolderType(folderNode) {
+  if (!folderNode.isSubType("vso:inspection")) {
+    folderNode.specializeType("vso:inspection");
+  }
+}
+
 function ensureVersionable(node) {
   if (!node.hasAspect("cm:versionable")) {
     node.addAspect("cm:versionable");
@@ -99,6 +105,7 @@ function execute() {
   }
 
   var inspectionFolder = resolveOrCreateFolder(baseFolder, inspectionId);
+  ensureInspectionFolderType(inspectionFolder);
   syncInspectionContextToFolder(document, inspectionFolder, inspectionId);
 
 

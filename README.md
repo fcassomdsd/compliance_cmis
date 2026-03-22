@@ -13,6 +13,53 @@ Update only this file when store paths change. Current keys are:
 - `canonicalSourceBasePath` → canonical models source folder
 - `inspectionPlanTemplateDataPath` → generated inspection-plan destination folder
 
+## Smart folders (Vigilancia/Datos)
+
+Template file:
+
+- `templates/vigilancia-datos-smart-folders.json`
+- `templates/vigilancia-datos-smart-folders-bucketed.json` (explicit value buckets)
+
+This template defines these Smart Folder groups under `Datos`:
+
+- `Planes de inspeccion`
+	- `year`
+	- `location`
+- `Listas de verificacion`
+	- `year`
+	- `specialty`
+	- `location`
+- `Hallazgos`
+	- `year`
+	- `specialty`
+	- `location`
+
+To apply in Alfresco Share:
+
+1. Ensure Smart Folders are enabled (`smart.folders.enabled=true`).
+2. Upload `templates/vigilancia-datos-smart-folders.json` to `Repository/Data Dictionary/Smart Folder Templates`.
+3. Change type of the uploaded file to `smf:smartFolderTemplate` (Smart Folder Template).
+4. Go to `Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos`.
+5. Manage Aspects and add `smf:systemConfigSmartFolder`.
+6. Edit Properties and select `vigilancia-datos-smart-folders.json` as template.
+
+For explicit buckets (fixed values):
+
+- Use `vigilancia-datos-smart-folders-bucketed.json` instead.
+- Current hierarchy in this template:
+	- `Inspecciones`
+		- `Por año`: `2026`, `2025`, `2024`
+		- `Por localidad`: `MDSD`, `MDJB`
+	- `Hallazgos`
+		- `Abiertos` (`vso:findingStatus <> Closed`)
+			- `Por localidad`: `MDSD`, `MDJB`
+			- `Por proveedor`: `AERODOM`, `DINA`, `INDOMET`
+			- `Por especialidad`: `VIG`, `COM`, `FAU`
+		- `Cerrados` (`vso:findingStatus = Closed`)
+			- `Por localidad`: `MDSD`, `MDJB`
+			- `Por proveedor`: `AERODOM`, `DINA`, `INDOMET`
+			- `Por especialidad`: `VIG`, `COM`, `FAU`
+
 
 
 ## Getting started
