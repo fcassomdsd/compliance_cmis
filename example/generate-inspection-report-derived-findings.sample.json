@@ -1,12 +1,6 @@
 {
-  "inspectionCode": "INSP-2026-0226",
-  "title": "Informe final de inspección MDSD - DNA (hallazgos derivados)",
-  "startDate": "2026-03-29",
-  "endDate": "2026-03-30",
-  "locationId": "MDSD",
-  "locationName": "Aeropuerto Internacional Las Américas",
-  "providerName": "Dirección de Navegación Aérea",
-  "dateRange": "29 al 30 de marzo del 2026",
+  "inspectionCode": "MDPP-2026-0226",
+  "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
   "reportDate": "2026-03-31",
   "mainInspector": "Ing. Laura Gómez",
   "inspectors": [
@@ -18,36 +12,5 @@
       "name": "Téc. Rafael Pérez",
       "specialty": "VIG"
     }
-  ],
-  "checklist": {
-    "inspectionCode": "INSP-2026-0226",
-    "startDate": "2026-03-29",
-    "endDate": "2026-03-30",
-    "locationId": "MDSD",
-    "locationName": "Aeropuerto Internacional Las Américas",
-    "providerName": "Dirección de Navegación Aérea",
-    "items": [
-      {
-        "itemCode": "VIG-3.2",
-        "domain": "VIG",
-        "complianceStatus": "Non-Compliant",
-        "comment": "No se evidenció respaldo completo de registros de vigilancia.",
-        "nationalRegulation": "RAC 11, numeral 5.1"
-      },
-      {
-        "itemCode": "COM-2.4",
-        "domain": "COM",
-        "complianceStatus": "Compliant",
-        "comment": "Procedimiento aplicado correctamente",
-        "nationalRegulation": "RAC 172, Sección 2"
-      },
-      {
-        "itemCode": "COM-5.1",
-        "domain": "COM",
-        "complianceStatus": "Non-Compliant",
-        "comment": "Bitácora con campos obligatorios incompletos.",
-        "nationalRegulation": "RAC 172, Apéndice B"
-      }
-    ]
-  }
+  ]
 }
