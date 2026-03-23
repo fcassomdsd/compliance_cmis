@@ -297,7 +297,7 @@ function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistD
   ensureAspect(inspectionFolder, "vso:serviceContext");
 
   setPropertyIfPresent(inspectionFolder, "cm:title", importRequest.inspectionCode);
-  setPropertyIfPresent(inspectionFolder, "vso:inspectionId", checklistData.inspectionId || importRequest.inspectionCode);
+  setPropertyIfPresent(inspectionFolder, "vso:inspectionId", checklistData.inspectionCode || importRequest.inspectionCode);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionType", importRequest.inspectionType);
   setDatePropertyIfPresent(inspectionFolder, "vso:startDate", importRequest.startDate);
   setDatePropertyIfPresent(inspectionFolder, "vso:endDate", importRequest.endDate);
@@ -323,7 +323,7 @@ function upsertDomainFolder(inspectionFolder, checklistPayload, summary) {
   ensureAspect(domainFolder, "vso:serviceContext");
 
   setPropertyIfPresent(domainFolder, "cm:title", domainName);
-  setPropertyIfPresent(domainFolder, "vso:inspectionId", checklistPayload.inspectionId);
+  setPropertyIfPresent(domainFolder, "vso:inspectionId", checklistPayload.inspectionCode);
   setPropertyIfPresent(domainFolder, "vso:locationId", checklistPayload.locationId);
   setPropertyIfPresent(domainFolder, "vso:locationName", checklistPayload.locationName);
   setPropertyIfPresent(domainFolder, "vso:domain", checklistPayload.domain);
@@ -351,7 +351,7 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   setPropertyIfPresent(checklistNode, "cm:title", checklistPayload.checklistId);
   setPropertyIfPresent(checklistNode, "vso:contentType", "inspectionChecklist");
   setPropertyIfPresent(checklistNode, "vso:checklistId", checklistPayload.checklistId);
-  setPropertyIfPresent(checklistNode, "vso:inspectionId", checklistPayload.inspectionId);
+  setPropertyIfPresent(checklistNode, "vso:inspectionId", checklistPayload.inspectionCode);
   setPropertyIfPresent(checklistNode, "vso:locationId", checklistPayload.locationId);
   setPropertyIfPresent(checklistNode, "vso:locationName", checklistPayload.locationName);
   setPropertyIfPresent(checklistNode, "vso:domain", checklistPayload.domain);
@@ -461,7 +461,7 @@ function upsertEvidence(inspectionFolder, checklistData, itemPayload, sourceDoma
   setPropertyIfPresent(evidenceNode, "vso:evidenceId", itemPayload.evidence.evidenceId);
   setPropertyIfPresent(evidenceNode, "vso:evidenceType", itemPayload.evidence.evidenceType);
   setPropertyIfPresent(evidenceNode, "vso:source", itemPayload.evidence.evidenceSource);
-  setPropertyIfPresent(evidenceNode, "vso:inspectionId", checklistData.inspectionId);
+  setPropertyIfPresent(evidenceNode, "vso:inspectionId", checklistData.inspectionCode);
   setPropertyIfPresent(evidenceNode, "vso:locationId", checklistData.locationId);
   setPropertyIfPresent(evidenceNode, "vso:locationName", checklistData.locationName);
   setPropertyIfPresent(evidenceNode, "vso:domain", checklistData.domain);
@@ -496,13 +496,13 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
 
   setPropertyIfPresent(itemNode, "cm:title", itemPayload.itemCode || itemPayload.itemId);
   setPropertyIfPresent(itemNode, "vso:contentType", "checklistItem");
-  setPropertyIfPresent(itemNode, "vso:itemId", itemPayload.itemId);
+  setPropertyIfPresent(itemNode, "vso:itemId", itemPayload.itemCode);
   setPropertyIfPresent(itemNode, "vso:requirementText", itemPayload.requirement);
   setPropertyIfPresent(itemNode, "vso:itemVerificationMethod", itemPayload.verificationMethod);
   setPropertyIfPresent(itemNode, "vso:complianceStatus", normalizeComplianceStatus(itemPayload.compliance));
   setPropertyIfPresent(itemNode, "vso:inspectorComment", itemPayload.comment);
   setPropertyIfPresent(itemNode, "vso:riskClassification", itemPayload.riskLevel);
-  setPropertyIfPresent(itemNode, "vso:inspectionId", checklistData.inspectionId);
+  setPropertyIfPresent(itemNode, "vso:inspectionId", checklistData.inspectionCode);
   setPropertyIfPresent(itemNode, "vso:locationId", checklistData.locationId);
   setPropertyIfPresent(itemNode, "vso:locationName", checklistData.locationName);
   setPropertyIfPresent(itemNode, "vso:domain", checklistData.domain);
@@ -541,7 +541,7 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, relatedI
   setPropertyIfPresent(findingNode, "vso:regulationBreached", findingPayload.requirementBreached);
   setPropertyIfPresent(findingNode, "vso:description", findingPayload.description);
   setPropertyIfPresent(findingNode, "vso:findingStatus", "Open");
-  setPropertyIfPresent(findingNode, "vso:inspectionId", checklistData.inspectionId);
+  setPropertyIfPresent(findingNode, "vso:inspectionId", checklistData.inspectionCode);
   setPropertyIfPresent(findingNode, "vso:locationId", findingPayload.locationId || checklistData.locationId);
   setPropertyIfPresent(findingNode, "vso:locationName", findingPayload.locationName || checklistData.locationName);
   setPropertyIfPresent(findingNode, "vso:domain", findingPayload.domain || checklistData.domain);

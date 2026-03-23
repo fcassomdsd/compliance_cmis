@@ -26757,7 +26757,7 @@
    <text:p text:style-name="P12">${providerName}</text:p>
    <text:p text:style-name="P11" loext:marker-style-name="T9"/>
    <text:p text:style-name="P11" loext:marker-style-name="T9"/>
-   <text:p text:style-name="P14" loext:marker-style-name="T12"><text:span text:style-name="T12">REALIZADO EN FECHA<text:line-break/>DEL </text:span><text:span text:style-name="T13">${dateRange}</text:span></text:p>
+   <text:p text:style-name="P14" loext:marker-style-name="T12"><text:span text:style-name="T12">REALIZADO EN FECHA<text:line-break/>DEL </text:span><text:span text:style-name="T3">${dateRange}</text:span></text:p>
    <text:p text:style-name="P15" loext:marker-style-name="T12"/>
    <text:p text:style-name="P15" loext:marker-style-name="T12"><draw:frame draw:style-name="fr2" draw:name="Imagen 1" text:anchor-type="char" svg:y="0.2in" svg:width="4.6874in" svg:height="2.5626in" draw:z-index="20"><draw:image draw:mime-type="image/jpeg">
       <office:binary-data>/9j/4RMHRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAAB
@@ -39672,7 +39672,7 @@
     </text:list-item>
    </text:list>
    <text:p text:style-name="Informe_20_texto" loext:marker-style-name="T3"><text:span text:style-name="T3">El Departamento de </text:span><text:span text:style-name="T17">Control de</text:span><text:span text:style-name="T23"> </text:span><text:span text:style-name="T3">Vigilancia SNA/AGA tiene como objetivo, asegurar <text:s/>mediante un sistema de inspecciones ordinarias y extraordinarias, que los prestadores de servicios de navegación aérea, mantengan un sistema de seguridad operacional acorde con los estándares <text:s/>descritos en los Reglamentos Aeronáuticos Dominicanos y manuales específicos de cada área.</text:span></text:p>
-   <text:p text:style-name="Informe_20_texto" loext:marker-style-name="T3"><text:span text:style-name="T3">La inspección de vigilancia de la seguridad operacional del </text:span><text:span text:style-name="T24">${locationName}</text:span><text:span text:style-name="T3"> fue </text:span><text:span text:style-name="T25">realizado en fecha del </text:span><text:span text:style-name="T24">${dateRange}</text:span><text:span text:style-name="T3"> de acuerdo con los procedimientos normales de vigilancia descritos en el </text:span><text:span text:style-name="T26">M</text:span><text:span text:style-name="T17">anual de </text:span><text:span text:style-name="T27">P</text:span><text:span text:style-name="T17">rocedimientos </text:span><text:span text:style-name="T27">E</text:span><text:span text:style-name="T17">specíficos del </text:span><text:span text:style-name="T27">D</text:span><text:span text:style-name="T17">epartamento de </text:span><text:span text:style-name="T27">C</text:span><text:span text:style-name="T17">ontrol de Vigilancia SNA/AGA (IDAC-DCSO-12</text:span><text:span text:style-name="T3">000).</text:span></text:p>
+   <text:p text:style-name="Informe_20_texto" loext:marker-style-name="T3"><text:span text:style-name="T3">La inspección de vigilancia de la seguridad operacional del </text:span><text:span text:style-name="T24">${locationName}</text:span><text:span text:style-name="T3"> fue </text:span><text:span text:style-name="T25">realizado en fecha del </text:span><text:span text:style-name="T3">${dateRange}</text:span><text:span text:style-name="T3"> de acuerdo con los procedimientos normales de vigilancia descritos en el </text:span><text:span text:style-name="T26">M</text:span><text:span text:style-name="T17">anual de </text:span><text:span text:style-name="T27">P</text:span><text:span text:style-name="T17">rocedimientos </text:span><text:span text:style-name="T27">E</text:span><text:span text:style-name="T17">specíficos del </text:span><text:span text:style-name="T27">D</text:span><text:span text:style-name="T17">epartamento de </text:span><text:span text:style-name="T27">C</text:span><text:span text:style-name="T17">ontrol de Vigilancia SNA/AGA (IDAC-DCSO-12</text:span><text:span text:style-name="T3">000).</text:span></text:p>
    <text:p text:style-name="P31" loext:marker-style-name="T3"><text:span text:style-name="T3">Los resultados de la inspección, incluidas las constataciones y recomendaciones que figuran en este informe, reflejan las capacidades y las limitaciones de los sistema de navegación aérea del </text:span><text:span text:style-name="T24">${locationName}</text:span><text:span text:style-name="T3">, según la evaluación realizada por el equipo de inspección. Por lo tanto, se basan en los datos recopilados durante entrevistas efectuadas por el equipo de inspección con los técnicos de servicio en dicho Aeropuerto y en la información de fondo que proporcionó dicho personal.</text:span></text:p>
    <text:p text:style-name="P31" loext:marker-style-name="T3"><text:span text:style-name="T3">Tomando en cuenta el tiempo de que se dispuso para realizar la inspección y el hecho de que los miembros del equipo de inspección de la seguridad operacional sólo pudieron examinar y analizar información y documentación que proporcionó el controlado, es posible que durante la inspección no se hayan identificado algunas cuestiones de seguridad operacional. Las constataciones y recomendaciones relacionadas con cada área objeto de inspección se encuentran en el Apéndice de este informe.</text:span></text:p>
    <text:list text:continue-numbering="true" text:style-name="WWNum1">
@@ -39685,7 +39685,7 @@
    <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T4">Realizado en:</text:span><text:span text:style-name="T3"> el </text:span><text:span text:style-name="T28">${locationName}</text:span><text:span text:style-name="T3">.</text:span></text:p>
    <text:p text:style-name="P34">${providerName}</text:p>
    <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T4">Código de control:</text:span><text:span text:style-name="T3"> </text:span><text:span text:style-name="T28">${inspectionCode}</text:span></text:p>
-   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T4">Fecha de Control:</text:span><text:span text:style-name="T29"> </text:span><text:span text:style-name="T3">Realizado </text:span><text:span text:style-name="T26">e</text:span><text:span text:style-name="T3">n </text:span><text:span text:style-name="T26">f</text:span><text:span text:style-name="T3">echa del </text:span><text:span text:style-name="T28">${dateRange}</text:span></text:p>
+   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T4">Fecha de Control:</text:span><text:span text:style-name="T29"> </text:span><text:span text:style-name="T3">Realizado </text:span><text:span text:style-name="T26">e</text:span><text:span text:style-name="T3">n </text:span><text:span text:style-name="T26">f</text:span><text:span text:style-name="T3">echa del </text:span><text:span text:style-name="T3">${dateRange}</text:span></text:p>
    <text:p text:style-name="P35"/>
    <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T4">Objetivo: </text:span><text:span text:style-name="T3">Controlar el funcionamiento de las operaciones para asegurar la vigilancia de la seguridad operacional a los servicios </text:span><text:span text:style-name="T26">brindados po</text:span><text:span text:style-name="T30">r </text:span><text:span text:style-name="T31">el</text:span><text:span text:style-name="T32"> </text:span><text:span text:style-name="T33">${providerName}</text:span><text:span text:style-name="T3">, verificando su nivel de cumplimiento con los requisitos regulatorios.</text:span></text:p>
    <text:p text:style-name="P36"><text:span text:style-name="T4">Alcance: </text:span><text:span text:style-name="T3">Este procedimiento será aplicado por Inspectores del Departamento de Control de Vigilancia SNA/AGA, a todas las aéreas de</text:span><text:span text:style-name="T34">l</text:span><text:span text:style-name="T3"> </text:span><text:span text:style-name="T28">${providerName}</text:span><text:span text:style-name="T3"> que prestan servicio en el </text:span><text:span text:style-name="T28">${locationName}</text:span></text:p>
@@ -39792,13 +39792,54 @@
    <text:list text:style-name="L1">
     <text:p text:style-name="P56">[#list findings as finding]</text:p>
     <text:list-item>
-     <text:p text:style-name="P54">Pregunta: ${finding.itemCode}</text:p>
+     <text:p text:style-name="P54">Pregunta ${finding.itemCode}: ${finding.requirementText}</text:p>
      <text:p text:style-name="P55"><text:span text:style-name="T41">Especialidad:</text:span> <text:span text:style-name="T41">${finding.domain}</text:span></text:p>
+     <text:p text:style-name="P55"><text:span text:style-name="T41">Clase de hallazgo:</text:span> <text:span text:style-name="T41">${finding.level}</text:span></text:p>
      <text:p text:style-name="P55"><text:span text:style-name="T41">Descripcion hallazgo: ${finding.description}</text:span>.</text:p>
-     <text:p text:style-name="P56">Reglamentacion: ${finding.nationalRegulation}</text:p>
+     <text:p text:style-name="P56">Reglamentacion nacional: ${finding.nationalRegulation}</text:p>
+     <text:p text:style-name="P56">Referencia OACI: ${finding.icaoReference}</text:p>
+     <text:p text:style-name="P56">Elemento critico: ${finding.ceMapping}</text:p>
     </text:list-item>
     <text:p text:style-name="P56">[/#list]</text:p>
    </text:list>
+   <text:p text:style-name="P53"/>
+   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T4">Resumen del checklist de inspeccion</text:span></text:p>
+   <table:table table:name="ChecklistSummary" table:style-name="Table10">
+    <table:table-column table:style-name="Table10.C"/>
+    <table:table-column table:style-name="Table10.B"/>
+    <table:table-column table:style-name="Table10.C"/>
+    <table:table-column table:style-name="Table10.E"/>
+    <table:table-row table:style-name="Table10.1">
+     <table:table-cell table:style-name="Table10.A1" office:value-type="string">
+      <text:p text:style-name="Table_20_Heading">Codigo</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table10.B1" office:value-type="string">
+      <text:p text:style-name="Table_20_Heading">Requisito</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table10.A1" office:value-type="string">
+      <text:p text:style-name="Table_20_Heading">Especialidad</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table10.E3" office:value-type="string">
+      <text:p text:style-name="Table_20_Heading">Estado</text:p>
+     </table:table-cell>
+    </table:table-row>
+    [#list checklistSummary as item]
+    <table:table-row table:style-name="Table10.3">
+     <table:table-cell table:style-name="Table10.A1" office:value-type="string">
+      <text:p text:style-name="Table_20_Contents">${item.itemCode}</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table10.B1" office:value-type="string">
+      <text:p text:style-name="Table_20_Contents">${item.requirementText}</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table10.A1" office:value-type="string">
+      <text:p text:style-name="Table_20_Contents">${item.domain}</text:p>
+     </table:table-cell>
+     <table:table-cell table:style-name="Table10.E3" office:value-type="string">
+      <text:p text:style-name="Table_20_Contents">${item.complianceStatus}</text:p>
+     </table:table-cell>
+    </table:table-row>
+    [/#list]
+   </table:table>
    <text:p text:style-name="P53"/>
    <text:list text:continue-list="list231744202153116" text:style-name="WWNum1">
     <text:list-item>

@@ -1,12 +1,6 @@
 {
-  "inspectionCode": "INSP-2026-0225",
-  "title": "Informe final de inspección MDSD - DNA",
-  "startDate": "2026-03-26",
-  "endDate": "2026-03-27",
-  "locationId": "MDSD",
-  "locationName": "Aeropuerto Internacional Las Américas",
-  "providerName": "Dirección de Navegación Aérea",
-  "dateRange": "26 al 27 de marzo del 2026",
+  "inspectionCode": "MDPP-2026-01",
+  "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
   "reportDate": "2026-03-28",
   "mainInspector": "Ing. Laura Gómez",
   "inspectors": [
@@ -17,20 +11,6 @@
     {
       "name": "Téc. Rafael Pérez",
       "specialty": "VIG"
-    }
-  ],
-  "findings": [
-    {
-      "itemCode": "VIG-2.3",
-      "domain": "VIG",
-      "description": "No se evidenció ejecución completa del plan de inspecciones semanales.",
-      "nationalRegulation": "RAC 11, numeral 4.2"
-    },
-    {
-      "itemCode": "COM-4.1",
-      "domain": "COM",
-      "description": "Inconsistencias entre bitácora electrónica y registros físicos.",
-      "nationalRegulation": "RAC 172, Apéndice B"
     }
   ]
 }

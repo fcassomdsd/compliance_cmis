@@ -34,7 +34,7 @@ function resolveVsoPaths() {
 
 function importTemplateGenerationLibrary() {
   if (typeof TemplateGeneration !== "undefined" && TemplateGeneration) {
-    logger.error("[inspection-report] TemplateGeneration source: preloaded");
+    logger.info("[inspection-report] TemplateGeneration source: preloaded");
     return;
   }
 
@@ -54,7 +54,7 @@ function importTemplateGenerationLibrary() {
       try {
         importScript(candidates[index]);
         if (typeof TemplateGeneration !== "undefined" && TemplateGeneration) {
-          logger.error("[inspection-report] TemplateGeneration source: imported from " + candidates[index]);
+          logger.info("[inspection-report] TemplateGeneration source: imported from " + candidates[index]);
           return;
         }
       } catch (error) {
@@ -244,123 +244,206 @@ function importTemplateGenerationLibrary() {
   };
 }
 
-function firstNonEmpty() {
-  for (var index = 0; index < arguments.length; index++) {
-    var value = TemplateGeneration.trimToNull(arguments[index]);
-    if (value !== null) {
-      return value;
-    }
+function trimProp(node, propName) {
+  var val = node.properties[propName];
+  if (val === null || val === undefined) {
+    return "";
   }
-  return null;
+  return String(val).replace(/^\s+|\s+$/g, "");
 }
 
-function toArray(value) {
-  return Array.isArray(value) ? value : [];
-}
+function formatSpanishDateRange(startDate, endDate) {
+  var MONTHS = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
 
-function normalizeInspectors(inputData) {
-  var sourceInspectors = toArray(inputData.inspectors);
-  if (sourceInspectors.length === 0 && inputData.checklist && Array.isArray(inputData.checklist.inspectors)) {
-    sourceInspectors = inputData.checklist.inspectors;
-  }
-
-  var result = [];
-  for (var index = 0; index < sourceInspectors.length; index++) {
-    var inspector = sourceInspectors[index] || {};
-    result.push({
-      name: firstNonEmpty(inspector.name, inspector.inspectorName) || "",
-      specialty: firstNonEmpty(inspector.specialty, inspector.domain, inspector.area) || ""
-    });
-  }
-
-  return result;
-}
-
-function normalizeFindings(inputData) {
-  var findings = toArray(inputData.findings);
-  if (findings.length > 0) {
-    return findings;
-  }
-
-  var checklistItems = [];
-  if (inputData.checklist && Array.isArray(inputData.checklist.items)) {
-    checklistItems = inputData.checklist.items;
-  }
-
-  var derivedFindings = [];
-  for (var index = 0; index < checklistItems.length; index++) {
-    var item = checklistItems[index] || {};
-    var status = String(item.complianceStatus || "").toLowerCase();
-    var isNonCompliant =
-      status === "non-compliant" ||
-      status === "non compliant" ||
-      status === "non-compliance";
-
-    if (!isNonCompliant) {
-      continue;
+  function toDateParts(value) {
+    if (!value) {
+      return null;
     }
 
-    derivedFindings.push({
-      itemCode: firstNonEmpty(item.itemCode, item.code) || "",
-      domain: firstNonEmpty(item.domain, item.specialty) || "",
-      description: firstNonEmpty(item.comment, item.description) || "",
-      nationalRegulation: firstNonEmpty(item.nationalRegulation, item.regulation) || ""
-    });
+    var dateObj = null;
+
+    if (Object.prototype.toString.call(value) === "[object Date]") {
+      dateObj = value;
+    } else if (typeof value.getTime === "function") {
+      dateObj = new Date(value.getTime());
+    } else {
+      var parsed = new Date(String(value));
+      if (!isNaN(parsed.getTime())) {
+        dateObj = parsed;
+      }
+    }
+
+    if (!dateObj || isNaN(dateObj.getTime())) {
+      return null;
+    }
+
+    return {
+      day: dateObj.getDate(),
+      month: dateObj.getMonth(),
+      year: dateObj.getFullYear()
+    };
   }
 
-  return derivedFindings;
+  var start = toDateParts(startDate);
+  var end = toDateParts(endDate);
+
+  if (!start && !end) {
+    return "";
+  }
+  if (!start) {
+    return end.day + " de " + MONTHS[end.month] + " del año " + end.year;
+  }
+  if (!end) {
+    return start.day + " de " + MONTHS[start.month] + " del año " + start.year;
+  }
+  if (start.month === end.month && start.year === end.year) {
+    return start.day + " al " + end.day + " de " + MONTHS[start.month] + " del año " + start.year;
+  }
+  return (
+    start.day + " de " + MONTHS[start.month] +
+    " al " + end.day + " de " + MONTHS[end.month] +
+    " del año " + end.year
+  );
 }
 
 function sanitizeFileNameToken(value) {
-  return String(value).replace(/[\\\\/:*?"<>|]+/g, "-").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
+  return String(value).replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
 }
 
-function buildDateRange(inputData) {
-  var dateRange = firstNonEmpty(inputData.dateRange, inputData.checklist ? inputData.checklist.dateRange : null);
-  if (dateRange !== null) {
-    return dateRange;
+function lookupInspectionData(inspectionCode, providerId) {
+  var inspectionFolderPath = VSO_PATHS.inspectionInProcessPath + "/" + inspectionCode;
+  var inspectionFolder = companyhome.childByNamePath(inspectionFolderPath);
+
+  if (!inspectionFolder || !inspectionFolder.exists()) {
+    TemplateGeneration.fail(404, "Inspection not found: " + inspectionCode);
+  }
+  if (!inspectionFolder.isContainer) {
+    TemplateGeneration.fail(409, "Inspection node is not a folder: " + inspectionCode);
   }
 
-  var startDate = firstNonEmpty(inputData.startDate, inputData.checklist ? inputData.checklist.startDate : null);
-  var endDate = firstNonEmpty(inputData.endDate, inputData.checklist ? inputData.checklist.endDate : null);
+  var startDate = inspectionFolder.properties["vso:startDate"];
+  var endDate = inspectionFolder.properties["vso:endDate"];
+  var locationId = trimProp(inspectionFolder, "vso:locationId");
+  var locationName = trimProp(inspectionFolder, "vso:locationName");
+  var providerName = "";
 
-  if (startDate !== null && endDate !== null) {
-    return startDate + " al " + endDate;
+  var findings = [];
+  var allChildren = inspectionFolder.children;
+
+  // Collect findings from direct children
+  for (var ci = 0; ci < allChildren.length; ci++) {
+    var child = allChildren[ci];
+    if (!child.isSubType("vso:finding")) {
+      continue;
+    }
+    if (trimProp(child, "vso:providerId") !== providerId) {
+      continue;
+    }
+    if (!providerName) {
+      providerName = trimProp(child, "vso:providerName");
+    }
+
+    var findingJson = {};
+    try {
+      findingJson = JSON.parse(String(child.content));
+    } catch (parseErr) {}
+    var findingPayload = findingJson.finding || findingJson;
+
+    findings.push({
+      itemCode: trimProp(child, "vso:itemId") || (findingPayload.itemId || ""),
+      domain: trimProp(child, "vso:domain"),
+      level: trimProp(child, "vso:findingLevel"),
+      description: trimProp(child, "vso:description"),
+      nationalRegulation: trimProp(child, "vso:nationalRegulation"),
+      icaoReference: trimProp(child, "vso:icaoReference"),
+      ceMapping: trimProp(child, "vso:ceMapping"),
+      requirementText: findingPayload.requirementText || ""
+    });
   }
 
-  return startDate || endDate || "";
-}
+  var checklistSummary = [];
+  var domainFolders = inspectionFolder.childFileFolders(false, true);
 
-function buildReportContext(inputData) {
-  var context = {};
-  for (var key in inputData) {
-    if (inputData.hasOwnProperty(key)) {
-      context[key] = inputData[key];
+  for (var di = 0; di < domainFolders.length; di++) {
+    var domainFolder = domainFolders[di];
+    var domainChildren = domainFolder.children;
+
+    // Collect findings from domain folder
+    for (var dfi = 0; dfi < domainChildren.length; dfi++) {
+      var domainFinding = domainChildren[dfi];
+      if (!domainFinding.isSubType("vso:finding")) {
+        continue;
+      }
+      if (trimProp(domainFinding, "vso:providerId") !== providerId) {
+        continue;
+      }
+      if (!providerName) {
+        providerName = trimProp(domainFinding, "vso:providerName");
+      }
+
+      var domainFindingJson = {};
+      try {
+        domainFindingJson = JSON.parse(String(domainFinding.content));
+      } catch (parseErr) {}
+      var domainFindingPayload = domainFindingJson.finding || domainFindingJson;
+
+      findings.push({
+        itemCode: trimProp(domainFinding, "vso:itemId") || (domainFindingPayload.itemId || ""),
+        domain: trimProp(domainFinding, "vso:domain"),
+        level: trimProp(domainFinding, "vso:findingLevel"),
+        description: trimProp(domainFinding, "vso:description"),
+        nationalRegulation: trimProp(domainFinding, "vso:nationalRegulation"),
+        icaoReference: trimProp(domainFinding, "vso:icaoReference"),
+        ceMapping: trimProp(domainFinding, "vso:ceMapping"),
+        requirementText: domainFindingPayload.requirementText || ""
+      });
+    }
+
+    
+    // Collect checklists from domain folder
+    for (var dci = 0; dci < domainChildren.length; dci++) {
+      var checklistNode = domainChildren[dci];
+      if (!checklistNode.isSubType("vso:inspectionChecklist")) {
+        continue;
+      }
+      if (trimProp(checklistNode, "vso:providerId") !== providerId) {
+        continue;
+      }
+      if (!providerName) {
+        providerName = trimProp(checklistNode, "vso:providerName");
+      }
+
+      var itemNodes = checklistNode.children;
+      for (var ici = 0; ici < itemNodes.length; ici++) {
+        var itemNode = itemNodes[ici];
+        if (!itemNode.isSubType("vso:checklistItem")) {
+          continue;
+        }
+        checklistSummary.push({
+          itemCode: trimProp(itemNode, "vso:itemId"),
+          domain: trimProp(itemNode, "vso:domain"),
+          requirementText: trimProp(itemNode, "vso:requirementText"),
+          complianceStatus: trimProp(itemNode, "vso:complianceStatus")
+        });
+      }
     }
   }
 
-  var inspectionCode = firstNonEmpty(inputData.inspectionCode, inputData.inspectionNo, inputData.checklist ? inputData.checklist.inspectionCode : null);
-  var locationName = firstNonEmpty(inputData.locationName, inputData.checklist ? inputData.checklist.locationName : null);
-  var providerName = firstNonEmpty(
-    inputData.providerName,
-    inputData.serviceProviderName,
-    inputData.checklist ? inputData.checklist.providerName : null,
-    inputData.checklist ? inputData.checklist.serviceProviderName : null
-  );
-
-  var inspectors = normalizeInspectors(inputData);
-  var findings = normalizeFindings(inputData);
-
-  context.inspectionCode = inspectionCode || "";
-  context.locationName = locationName || "";
-  context.providerName = providerName || "";
-  context.dateRange = buildDateRange(inputData);
-  context.reportDate = firstNonEmpty(inputData.reportDate) || new Date().toISOString().slice(0, 10);
-  context.inspectors = inspectors;
-  context.mainInspector = firstNonEmpty(inputData.mainInspector, inspectors.length > 0 ? inspectors[0].name : null) || "";
-  context.findings = findings;
-
-  return context;
+  return {
+    inspectionCode: inspectionCode,
+    providerId: providerId,
+    providerName: providerName,
+    locationId: locationId,
+    locationName: locationName,
+    startDate: startDate,
+    endDate: endDate,
+    dateRange: formatSpanishDateRange(startDate, endDate),
+    findings: findings,
+    checklistSummary: checklistSummary
+  };
 }
 
 var VSO_PATHS = resolveVsoPaths();
@@ -374,12 +457,25 @@ importTemplateGenerationLibrary();
 
 try {
   var inputData = TemplateGeneration.parseJsonPayload(requestbody.content);
-  var reportData = buildReportContext(inputData);
-  var inspectionCode = TemplateGeneration.trimToNull(reportData.inspectionCode);
 
+  var inspectionCode = TemplateGeneration.trimToNull(inputData.inspectionCode);
   if (inspectionCode === null) {
-    TemplateGeneration.fail(400, "Missing required field: inspectionCode (or inspectionNo/checklist.inspectionCode)");
+    TemplateGeneration.fail(400, "Missing required field: inspectionCode");
   }
+
+  var providerId = TemplateGeneration.trimToNull(inputData.providerId);
+  if (providerId === null) {
+    TemplateGeneration.fail(400, "Missing required field: providerId");
+  }
+
+  var inspectors = Array.isArray(inputData.inspectors) ? inputData.inspectors : [];
+  var mainInspector = TemplateGeneration.trimToNull(inputData.mainInspector) ||
+    (inspectors.length > 0 ? (inspectors[0].name || "") : "");
+
+  var reportData = lookupInspectionData(inspectionCode, providerId);
+  reportData.inspectors = inspectors;
+  reportData.mainInspector = mainInspector;
+  reportData.reportDate = TemplateGeneration.trimToNull(inputData.reportDate) || new Date().toISOString().slice(0, 10);
 
   var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
   var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || DESTINATION_PATH;
@@ -413,12 +509,12 @@ try {
     aspects: ["cm:versionable", "vso:inspectionContext"],
     versionComment: "Update inspection report via script",
     properties: {
-      "cm:title": inputData.title || "Generated Inspection Report",
+      "cm:title": inputData.title || ("Informe de Inspección " + inspectionCode + " - " + (reportData.providerName || providerId)),
       "cm:description": "Auto-generated on " + new Date().toISOString(),
       "vso:inspectionId": inspectionCode,
-      "vso:startDate": firstNonEmpty(inputData.startDate, inputData.checklist ? inputData.checklist.startDate : null),
-      "vso:endDate": firstNonEmpty(inputData.endDate, inputData.checklist ? inputData.checklist.endDate : null),
-      "vso:locationId": firstNonEmpty(inputData.locationId, inputData.checklist ? inputData.checklist.locationId : null),
+      "vso:startDate": reportData.startDate,
+      "vso:endDate": reportData.endDate,
+      "vso:locationId": reportData.locationId,
       "vso:locationName": reportData.locationName,
       "vso:inspectionStatus": "Reported"
     }
@@ -438,7 +534,7 @@ try {
     isNewVersion: result.isNewVersion
   };
 
-  logger.error((result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") + outputFile.name);
+  logger.info((result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") + outputFile.name);
 } catch (error) {
   logger.error("Unexpected error in inspection report generation: " + error.message);
   if (!model || !model.error) {
