@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>Generate Inspection Report From JSON</shortname>
+   <description>Generate formatted inspection report from JSON payload with checklist and inspection context data</description>
+   <url>/api/inspection/report/generate</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>

@@ -12,6 +12,36 @@ Update only this file when store paths change. Current keys are:
 - `inspectionInProcessPath` → destination inspection folder
 - `canonicalSourceBasePath` → canonical models source folder
 - `inspectionPlanTemplateDataPath` → generated inspection-plan destination folder
+- `inspectionPlanTemplatePath` → inspection-plan template file path
+- `inspectionReportTemplateDataPath` → generated inspection-report destination folder
+- `inspectionReportTemplatePath` → inspection-report template file path
+
+## Webscript test payloads
+
+Sample request bodies are available in:
+
+- `example/generate-inspection-plan.sample.json`
+- `example/generate-inspection-report.sample.json`
+- `example/generate-inspection-report-derived-findings.sample.json`
+
+Quick test commands (adjust host/user/password):
+
+```bash
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/generate-inspection-plan.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/generate"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/generate-inspection-report.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/generate-inspection-report-derived-findings.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
+```
 
 ## Smart folders (Vigilancia/Datos)
 
