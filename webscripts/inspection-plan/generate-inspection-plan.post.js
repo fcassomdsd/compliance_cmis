@@ -246,12 +246,64 @@ function importTemplateGenerationLibrary() {
 
 var VSO_PATHS = resolveVsoPaths();
 var TEMPLATE_PATH = VSO_PATHS.inspectionPlanTemplatePath || "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt";
-var DESTINATION_PATH = VSO_PATHS.inspectionPlanTemplateDataPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data";
+var TEMPLATE_DATA_PATH = VSO_PATHS.inspectionPlanTemplateDataPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data";
+var INSPECTIONS_PATH = VSO_PATHS.inspectionInProcessPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones";
 var FILE_PREFIX = "Plan de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
 var MIMETYPE = "application/vnd.oasis.opendocument.text";
 
 importTemplateGenerationLibrary();
+
+function setPropertyIfPresent(node, propertyName, value) {
+  var normalized = TemplateGeneration.trimToNull(value);
+  if (normalized !== null) {
+    node.properties[propertyName] = normalized;
+  }
+}
+
+function ensureAspect(node, aspectName) {
+  if (!node.hasAspect(aspectName)) {
+    node.addAspect(aspectName);
+  }
+}
+
+function ensureInspectionFolder(baseFolder, inspectionId) {
+  var folder = baseFolder.childByNamePath(inspectionId);
+  if (folder && folder.exists()) {
+    if (!folder.isContainer) {
+      TemplateGeneration.fail(409, "Destination inspection already exists and is not a folder: " + inspectionId);
+    }
+    if (!folder.isSubType("vso:inspection")) {
+      folder.specializeType("vso:inspection");
+    }
+    return folder;
+  }
+
+  return baseFolder.createFolder(inspectionId, "vso:inspection");
+}
+
+function populateInspectionFolderData(folder, inputData) {
+  if (!folder.isSubType("vso:inspection")) {
+    folder.specializeType("vso:inspection");
+  }
+
+  ensureAspect(folder, "vso:inspectionContext");
+  ensureAspect(folder, "vso:serviceContext");
+
+  var inspectionId = TemplateGeneration.trimToNull(inputData.inspectionNo) || TemplateGeneration.trimToNull(inputData.inspectionCode);
+  setPropertyIfPresent(folder, "cm:title", TemplateGeneration.trimToNull(inputData.title) || inspectionId || folder.name);
+  setPropertyIfPresent(folder, "vso:inspectionId", inspectionId);
+  setPropertyIfPresent(folder, "vso:inspectionType", inputData.inspectionType);
+  setPropertyIfPresent(folder, "vso:startDate", inputData.startDate);
+  setPropertyIfPresent(folder, "vso:endDate", inputData.endDate);
+  setPropertyIfPresent(folder, "vso:locationId", inputData.locationId);
+  setPropertyIfPresent(folder, "vso:locationName", inputData.locationName);
+  setPropertyIfPresent(folder, "vso:providerId", inputData.providerId);
+  setPropertyIfPresent(folder, "vso:providerName", inputData.providerName);
+  setPropertyIfPresent(folder, "vso:inspectionStatus", inputData.inspectionStatus || "Planned");
+
+  folder.save();
+}
 
 try {
   var inputData = TemplateGeneration.parseJsonPayload(requestbody.content);
@@ -262,7 +314,8 @@ try {
   }
 
   var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
-  var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || DESTINATION_PATH;
+  var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || TEMPLATE_DATA_PATH;
+  var inspectionsPath = TemplateGeneration.trimToNull(inputData.inspectionsPath) || INSPECTIONS_PATH;
 
   var templateNode = companyhome.childByNamePath(templatePath);
   if (!templateNode || !templateNode.exists()) {
@@ -270,17 +323,26 @@ try {
     TemplateGeneration.fail(500, "Template not found in repository");
   }
 
-  var destinationFolder = companyhome.childByNamePath(destinationPath);
-  if (!destinationFolder || !destinationFolder.exists()) {
+  var templateDataFolder = companyhome.childByNamePath(destinationPath);
+  if (!templateDataFolder || !templateDataFolder.exists()) {
     logger.error("Destination folder not found at path: " + destinationPath);
     TemplateGeneration.fail(500, "Destination folder not found");
   }
+
+  var inspectionsFolder = companyhome.childByNamePath(inspectionsPath);
+  if (!inspectionsFolder || !inspectionsFolder.exists()) {
+    logger.error("Inspections folder not found at path: " + inspectionsPath);
+    TemplateGeneration.fail(500, "Inspections folder not found");
+  }
+
+  var inspectionFolder = ensureInspectionFolder(inspectionsFolder, inspectionNo);
+  populateInspectionFolderData(inspectionFolder, inputData);
 
   var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, inputData);
   var outputName = FILE_PREFIX + inspectionNo + FILE_EXTENSION;
 
   var result = TemplateGeneration.upsertDocument({
-    destinationFolder: destinationFolder,
+    destinationFolder: templateDataFolder,
     fileName: outputName,
     nodeType: "vso:vsoContent",
     content: generatedContent,
@@ -307,7 +369,7 @@ try {
     name: outputFile.name,
     url: outputFile.url,
     downloadUrl: outputFile.downloadUrl,
-    path: destinationFolder.displayPath + "/" + outputFile.name,
+    path: templateDataFolder.displayPath + "/" + outputFile.name,
     createdDate: outputFile.properties["cm:created"],
     version: outputFile.properties["cm:versionLabel"],
     isNewVersion: result.isNewVersion

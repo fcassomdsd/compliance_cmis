@@ -24,7 +24,19 @@ Sample request bodies are available in:
 - `example/generate-inspection-report.sample.json`
 - `example/generate-inspection-report-derived-findings.sample.json`
 
+Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
+
+- `inspectionsPath` (optional): where the inspection folder (`vso:inspection`) is created/updated. Defaults to `inspectionInProcessPath`.
+- `destinationPath` (optional): where the generated `.fodt` plan file is written. Defaults to `inspectionPlanTemplateDataPath`.
+- `templatePath` (optional): source template file path. Defaults to `inspectionPlanTemplatePath`.
+
 Quick test commands (adjust host/user/password):
+
+Inspection plan quick fields (in `example/generate-inspection-plan.sample.json`):
+
+- `inspectionsPath`: inspection folder root (creates/updates `<inspectionsPath>/<inspectionNo>` as `vso:inspection`)
+- `destinationPath`: generated `.fodt` output folder
+- `templatePath`: source `.fodt` template
 
 ```bash
 curl -u admin:admin -X POST \
