@@ -66,6 +66,7 @@ prop.vso_findingClosed.title=Finding Closed
 prop.vso_percentComplete.title=Percent Complete
 
 assoc.vso_supportedByEvidence.title=Supported by Evidence
+assoc.vso_findingSupportedByEvidence.title=Finding Supported by Evidence
 assoc.vso_hasFinding.title=Has Finding
 assoc.vso_verifiedBy.title=Verified By (Follow-up Report)
 assoc.vso_hasChecklist.title=Has Checklist

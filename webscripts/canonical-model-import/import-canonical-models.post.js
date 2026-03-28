@@ -34,7 +34,8 @@ function resolveVsoPaths() {
 var VSO_PATHS = resolveVsoPaths();
 var DEFAULT_SOURCE_BASE_PATH = VSO_PATHS.canonicalSourceBasePath;
 var DEFAULT_DESTINATION_BASE_PATH = VSO_PATHS.inspectionInProcessPath;
-var JSON_MIMETYPE = "application/json";
+// Use text/plain so Share can preview JSON content inline.
+var JSON_MIMETYPE = "text/plain";
 
 function setError(code, message) {
   status.code = code;
@@ -364,121 +365,311 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   return checklistNode;
 }
 
-function upsertEvidence(inspectionFolder, checklistData, itemPayload, sourceDomainFolder, summary) {
-  if (!itemPayload.evidence || !itemPayload.evidence.evidenceId) {
+function upsertEvidenceFolder(domainFolder, checklistPayload, summary) {
+  var evidenceFolderResult = ensureFolder(domainFolder, "Evidence", null);
+  var evidenceFolder = evidenceFolderResult.node;
+
+  ensureAspect(evidenceFolder, "vso:inspectionContext");
+  ensureAspect(evidenceFolder, "vso:serviceContext");
+
+  setPropertyIfPresent(evidenceFolder, "cm:title", "Evidence");
+  setPropertyIfPresent(evidenceFolder, "vso:inspectionId", checklistPayload.inspectionCode);
+  setPropertyIfPresent(evidenceFolder, "vso:locationId", checklistPayload.locationId);
+  setPropertyIfPresent(evidenceFolder, "vso:locationName", checklistPayload.locationName);
+  setPropertyIfPresent(evidenceFolder, "vso:domain", checklistPayload.domain);
+  setPropertyIfPresent(evidenceFolder, "vso:providerId", checklistPayload.providerId);
+  setPropertyIfPresent(evidenceFolder, "vso:providerName", checklistPayload.providerName);
+  evidenceFolder.save();
+
+  summary[evidenceFolderResult.created ? "created" : "updated"]++;
+
+  return evidenceFolder;
+}
+
+function resolveItemLabel(itemPayload) {
+  return trimToNull(itemPayload.itemCode) || trimToNull(itemPayload.itemId) || "unknown-item";
+}
+
+function getCollectionLength(value) {
+  if (value === null || value === undefined) {
+    return 0;
+  }
+
+  if (typeof value.length === "number") {
+    return value.length;
+  }
+
+  if (typeof value.size === "function") {
+    return value.size();
+  }
+
+  return 0;
+}
+
+function getCollectionItem(value, index) {
+  if (value === null || value === undefined) {
     return null;
   }
 
-  // Extract item code for prefixing evidence filenames
-  var itemCode = itemPayload.itemCode || itemPayload.itemId;
-  
-  // Try to find the source evidence file
-  var sourceFile = null;
-  var evidenceName = itemPayload.evidence.evidenceId;
-  var evidenceMode = "json-fallback";
-  
-  if (itemPayload.evidence.evidenceSource) {
-    sourceFile = sourceDomainFolder.childByNamePath(itemPayload.evidence.evidenceSource);
-    if (sourceFile && sourceFile.exists()) {
-      evidenceName = sourceFile.name;
-    } else {
-      sourceFile = null;
+  if (typeof value.get === "function") {
+    return value.get(index);
+  }
+
+  return value[index];
+}
+
+function toJsArray(value) {
+  if (value === null || value === undefined) {
+    return [];
+  }
+
+  var isListLike = typeof value.length === "number" || typeof value.size === "function";
+  if (!isListLike) {
+    return null;
+  }
+
+  var normalized = [];
+  var total = getCollectionLength(value);
+  for (var index = 0; index < total; index++) {
+    normalized.push(getCollectionItem(value, index));
+  }
+
+  return normalized;
+}
+
+function normalizeEvidencePayloads(evidencePayload, itemPayload) {
+  if (evidencePayload === null || evidencePayload === undefined) {
+    return [];
+  }
+
+  var payloads = null;
+  var normalizedCollection = toJsArray(evidencePayload);
+  if (normalizedCollection !== null) {
+    payloads = normalizedCollection;
+  } else if (typeof evidencePayload === "object") {
+    payloads = [evidencePayload];
+  } else {
+    fail(400, "Invalid evidence format for item " + resolveItemLabel(itemPayload) + ": expected an object or array");
+  }
+
+  for (var evidenceIndex = 0; evidenceIndex < payloads.length; evidenceIndex++) {
+    var evidenceItem = payloads[evidenceIndex];
+    if (!evidenceItem || typeof evidenceItem !== "object") {
+      fail(400, "Invalid evidence entry at index " + evidenceIndex + " for item " + resolveItemLabel(itemPayload) + ": expected an object");
+    }
+
+    if (trimToNull(evidenceItem.evidenceId) === null) {
+      fail(400, "Missing required field evidenceId for evidence at index " + evidenceIndex + " in item " + resolveItemLabel(itemPayload));
     }
   }
 
-  // If source file not found by evidenceSource, try to find by evidenceId
-  if (!sourceFile) {
-    var childFiles = sourceDomainFolder.childFileFolders(false, false);
-    for (var idx = 0; idx < childFiles.length; idx++) {
-      var candidate = childFiles[idx];
-      if (candidate.isDocument && candidate.name.indexOf(itemPayload.evidence.evidenceId) === 0) {
-        sourceFile = candidate;
-        evidenceName = sourceFile.name;
-        break;
+  return payloads;
+}
+
+function padLeftNumber(number, size) {
+  var result = String(number);
+  while (result.length < size) {
+    result = "0" + result;
+  }
+  return result;
+}
+
+function buildSequentialEvidenceName(sequenceNumber, rawName) {
+  var suffix = "";
+  if (rawName) {
+    var lastDot = rawName.lastIndexOf('.');
+    if (lastDot > 0) {
+      suffix = rawName.substring(lastDot);
+    }
+  }
+
+  return "EV-" + padLeftNumber(sequenceNumber, 3) + suffix;
+}
+
+function allocateSequentialEvidenceName(inspectionFolder, rawName, evidenceImportContext) {
+  if (!evidenceImportContext) {
+    evidenceImportContext = {};
+  }
+
+  if (typeof evidenceImportContext.nextEvidenceNumber !== "number") {
+    evidenceImportContext.nextEvidenceNumber = 1;
+  }
+
+  var proposedName;
+  do {
+    proposedName = buildSequentialEvidenceName(evidenceImportContext.nextEvidenceNumber, rawName);
+    evidenceImportContext.nextEvidenceNumber++;
+  } while (findDocumentByName(inspectionFolder, proposedName) !== null);
+
+  return proposedName;
+}
+
+function createEvidenceImportContext(inspectionFolder) {
+  var context = {
+    importedBySource: {},
+    nextEvidenceNumber: 1
+  };
+
+  if (!inspectionFolder) {
+    return context;
+  }
+
+  var children = inspectionFolder.childFileFolders(false, false);
+  var maxSequence = 0;
+
+  for (var index = 0; index < children.length; index++) {
+    var child = children[index];
+    if (!child || !child.isDocument) {
+      continue;
+    }
+
+    var sourceValue = trimToNull(child.properties["vso:source"]);
+    if (sourceValue !== null && !context.importedBySource[sourceValue]) {
+      context.importedBySource[sourceValue] = child;
+    }
+
+    var match = String(child.name).match(/^EV-(\d+)(\..+)?$/);
+    if (match) {
+      var parsed = parseInt(match[1], 10);
+      if (!isNaN(parsed) && parsed > maxSequence) {
+        maxSequence = parsed;
       }
     }
   }
 
-  // Prepend item code to evidence filename for easier identification
-  if (sourceFile) {
-    var lastDot = evidenceName.lastIndexOf('.');
-    if (lastDot > 0) {
-      var ext = evidenceName.substring(lastDot);
-      var baseName = evidenceName.substring(0, lastDot);
-      evidenceName = itemCode + "_" + baseName + ext;
+  context.nextEvidenceNumber = maxSequence + 1;
+  return context;
+}
+
+function findEvidenceFileByName(folderNode, fileName, recursive) {
+  if (!folderNode || !fileName) {
+    return null;
+  }
+
+  var directNode = folderNode.childByNamePath(fileName);
+  if (directNode && directNode.exists() && directNode.isDocument) {
+    return directNode;
+  }
+
+  var childFiles = folderNode.childFileFolders(!!recursive, false);
+  var targetName = String(fileName).toLowerCase();
+  for (var fileIndex = 0; fileIndex < childFiles.length; fileIndex++) {
+    var candidate = childFiles[fileIndex];
+    if (candidate && candidate.isDocument && String(candidate.name).toLowerCase() === targetName) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
+
+function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext) {
+  var evidencePayloads = normalizeEvidencePayloads(itemPayload.evidence, itemPayload);
+  var evidenceNodes = [];
+
+  for (var evidenceIndex = 0; evidenceIndex < evidencePayloads.length; evidenceIndex++) {
+    var evidencePayload = evidencePayloads[evidenceIndex];
+    var itemCode = itemPayload.itemCode || itemPayload.itemId;
+    var sourceKey = trimToNull(evidencePayload.evidenceSource);
+    var importedBySource = evidenceImportContext && evidenceImportContext.importedBySource ? evidenceImportContext.importedBySource : null;
+    var previouslyImportedNode = sourceKey && importedBySource ? importedBySource[sourceKey] : null;
+
+    // Same source file referenced by multiple items: reuse the first moved node.
+    if (previouslyImportedNode && previouslyImportedNode.exists()) {
+      logger.log("[import-canonical-models] evidence mode=binary-reference itemCode=" + itemCode + " evidenceId=" + evidencePayload.evidenceId + " source=" + sourceKey + " file=" + previouslyImportedNode.name + " op=associated-only");
+      evidenceNodes.push(previouslyImportedNode);
+      continue;
+    }
+
+    var sourceFile = null;
+    var evidenceName = evidencePayload.evidenceId;
+    var evidenceMode = "binary-move";
+
+    if (sourceKey !== null) {
+      sourceFile = findEvidenceFileByName(sourceEvidenceFolder, sourceKey, false);
+      if (!sourceFile && sourceDomainFolder) {
+        sourceFile = findEvidenceFileByName(sourceDomainFolder, sourceKey, true);
+      }
+    }
+
+    if (!sourceFile && sourceEvidenceFolder) {
+      var childFiles = sourceEvidenceFolder.childFileFolders(false, false);
+      for (var idx = 0; idx < childFiles.length; idx++) {
+        var candidate = childFiles[idx];
+        if (candidate.isDocument && candidate.name.indexOf(evidencePayload.evidenceId) === 0) {
+          sourceFile = candidate;
+          break;
+        }
+      }
+    }
+
+    if (!sourceFile && sourceDomainFolder && sourceDomainFolder !== sourceEvidenceFolder) {
+      var domainFiles = sourceDomainFolder.childFileFolders(true, false);
+      for (var domainIdx = 0; domainIdx < domainFiles.length; domainIdx++) {
+        var domainCandidate = domainFiles[domainIdx];
+        if (domainCandidate.isDocument && domainCandidate.name.indexOf(evidencePayload.evidenceId) === 0) {
+          sourceFile = domainCandidate;
+          break;
+        }
+      }
+    }
+
+    var evidenceNode = null;
+    var evidenceCreated = false;
+
+    if (sourceFile) {
+      evidenceName = allocateSequentialEvidenceName(evidenceFolder, sourceFile.name, evidenceImportContext);
+      sourceFile.move(evidenceFolder);
+      evidenceNode = findDocumentByName(evidenceFolder, sourceFile.name);
+      if (evidenceNode === null) {
+        fail(500, "Failed to move evidence file into destination folder: " + sourceFile.name);
+      }
+
+      if (evidenceNode.name !== evidenceName) {
+        evidenceNode.name = evidenceName;
+      }
+
+      evidenceCreated = true;
+      evidenceMode = "binary-move";
+
+      if (!evidenceNode.isSubType("vso:evidenceItem")) {
+        evidenceNode.specializeType("vso:evidenceItem");
+      }
     } else {
-      evidenceName = itemCode + "_" + evidenceName;
+      logger.warn("[import-canonical-models] evidence mode=skipped itemCode=" + itemCode + " evidenceId=" + evidencePayload.evidenceId + " source=" + (sourceKey || "-") + " reason=source-file-not-found");
+      continue;
     }
+
+    ensureVersionable(evidenceNode);
+    ensureAspect(evidenceNode, "vso:evidenceIntegrity");
+    ensureAspect(evidenceNode, "vso:inspectionContext");
+    ensureAspect(evidenceNode, "vso:serviceContext");
+
+    setPropertyIfPresent(evidenceNode, "cm:title", evidencePayload.evidenceId);
+    setPropertyIfPresent(evidenceNode, "vso:contentType", "evidenceItem");
+    setPropertyIfPresent(evidenceNode, "vso:evidenceId", evidencePayload.evidenceId);
+    setPropertyIfPresent(evidenceNode, "vso:evidenceType", evidencePayload.evidenceType);
+    setPropertyIfPresent(evidenceNode, "vso:source", evidencePayload.evidenceSource);
+    setPropertyIfPresent(evidenceNode, "vso:inspectionId", checklistData.inspectionCode);
+    setPropertyIfPresent(evidenceNode, "vso:locationId", checklistData.locationId);
+    setPropertyIfPresent(evidenceNode, "vso:locationName", checklistData.locationName);
+    setPropertyIfPresent(evidenceNode, "vso:domain", checklistData.domain);
+    setPropertyIfPresent(evidenceNode, "vso:providerId", checklistData.providerId);
+    setPropertyIfPresent(evidenceNode, "vso:providerName", checklistData.providerName);
+    evidenceNode.properties["vso:immutable"] = false;
+    evidenceNode.save();
+
+    if (sourceKey && importedBySource && sourceFile) {
+      importedBySource[sourceKey] = evidenceNode;
+    }
+
+    logger.log("[import-canonical-models] evidence mode=" + evidenceMode + " itemCode=" + itemCode + " evidenceId=" + evidencePayload.evidenceId + " file=" + evidenceName + " op=" + (evidenceCreated ? "created" : "updated"));
+
+    summary[evidenceCreated ? "created" : "updated"]++;
+    evidenceNodes.push(evidenceNode);
   }
 
-  var evidenceNode = null;
-  var evidenceCreated = false;
-  var existingEvidenceNode = findDocumentByName(inspectionFolder, evidenceName);
-
-  if (sourceFile) {
-    if (existingEvidenceNode && existingEvidenceNode.exists()) {
-      existingEvidenceNode.remove();
-    }
-
-    sourceFile.move(inspectionFolder);
-    evidenceNode = findDocumentByName(inspectionFolder, sourceFile.name);
-    if (evidenceNode === null) {
-      fail(500, "Failed to move evidence file into destination folder: " + sourceFile.name);
-    }
-
-    if (evidenceNode.name !== evidenceName) {
-      evidenceNode.name = evidenceName;
-    }
-
-    evidenceCreated = existingEvidenceNode === null;
-    evidenceMode = "binary-move";
-
-    if (!evidenceNode.isSubType("vso:evidenceItem")) {
-      evidenceNode.specializeType("vso:evidenceItem");
-    }
-  } else if (existingEvidenceNode && existingEvidenceNode.exists()) {
-    evidenceNode = existingEvidenceNode;
-    evidenceCreated = false;
-    evidenceMode = "binary-existing";
-  } else {
-    var evidenceResult = ensureChildNode(inspectionFolder, evidenceName, "vso:evidenceItem", "cm:contains");
-    evidenceNode = evidenceResult.node;
-    evidenceCreated = evidenceResult.created;
-  }
-
-  ensureVersionable(evidenceNode);
-  ensureAspect(evidenceNode, "vso:evidenceIntegrity");
-  ensureAspect(evidenceNode, "vso:inspectionContext");
-  ensureAspect(evidenceNode, "vso:serviceContext");
-
-  if (!sourceFile) {
-    evidenceNode.content = buildJsonContent(itemPayload.evidence);
-    evidenceNode.mimetype = JSON_MIMETYPE;
-  }
-
-  setPropertyIfPresent(evidenceNode, "cm:title", itemPayload.evidence.evidenceId);
-  setPropertyIfPresent(evidenceNode, "vso:contentType", "evidenceItem");
-  setPropertyIfPresent(evidenceNode, "vso:evidenceId", itemPayload.evidence.evidenceId);
-  setPropertyIfPresent(evidenceNode, "vso:evidenceType", itemPayload.evidence.evidenceType);
-  setPropertyIfPresent(evidenceNode, "vso:source", itemPayload.evidence.evidenceSource);
-  setPropertyIfPresent(evidenceNode, "vso:inspectionId", checklistData.inspectionCode);
-  setPropertyIfPresent(evidenceNode, "vso:locationId", checklistData.locationId);
-  setPropertyIfPresent(evidenceNode, "vso:locationName", checklistData.locationName);
-  setPropertyIfPresent(evidenceNode, "vso:domain", checklistData.domain);
-  setPropertyIfPresent(evidenceNode, "vso:providerId", checklistData.providerId);
-  setPropertyIfPresent(evidenceNode, "vso:providerName", checklistData.providerName);
-  evidenceNode.properties["vso:immutable"] = false;
-  evidenceNode.save();
-
-  if (evidenceMode === "json-fallback") {
-    logger.warn("[import-canonical-models] evidence mode=json-fallback itemCode=" + itemCode + " evidenceId=" + itemPayload.evidence.evidenceId + " file=" + evidenceName + " reason=source-file-not-found op=" + (evidenceCreated ? "created" : "updated"));
-  } else {
-    logger.log("[import-canonical-models] evidence mode=" + evidenceMode + " itemCode=" + itemCode + " evidenceId=" + itemPayload.evidence.evidenceId + " file=" + evidenceName + " op=" + (evidenceCreated ? "created" : "updated"));
-  }
-
-  summary[evidenceCreated ? "created" : "updated"]++;
-
-  return evidenceNode;
+  return evidenceNodes;
 }
 
 function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary) {
@@ -597,8 +788,12 @@ try {
   }
 
   var canonicalDocuments = loadCanonicalDocuments(sourceDomainFolder, importRequest.inspectionCode);
+  var sourceEvidenceFolder = canonicalDocuments.checklistDocument.node.parent || sourceDomainFolder;
   var checklistPayload = canonicalDocuments.checklistDocument.payload.checklist;
-  var checklistItems = canonicalDocuments.checklistDocument.payload.items || [];
+  var checklistItems = toJsArray(canonicalDocuments.checklistDocument.payload.items);
+  if (checklistItems === null) {
+    fail(400, "Checklist canonical model field items must be an array");
+  }
 
   if (checklistItems.length === 0) {
     fail(400, "Checklist canonical model does not include items for inspectionCode: " + importRequest.inspectionCode);
@@ -630,17 +825,20 @@ try {
   var inspectionFolder = upsertInspectionFolder(destinationBaseFolder, importRequest, checklistPayload, summary);
   var destinationDomainFolder = upsertDomainFolder(inspectionFolder, checklistPayload, summary);
   var checklistNode = upsertChecklist(destinationDomainFolder, checklistPayload, summary);
+  var destinationEvidenceFolder = upsertEvidenceFolder(destinationDomainFolder, checklistPayload, summary);
   var itemNodesById = {};
+  var evidenceImportContext = createEvidenceImportContext(destinationEvidenceFolder);
 
+  logger.log("[import-canonical-models] Starting import for inspectionCode=" + importRequest.inspectionCode + " itemCount=" + checklistItems.length);
   for (itemIndex = 0; itemIndex < checklistItems.length; itemIndex++) {
     var checklistItemPayload = checklistItems[itemIndex];
     var itemNode = upsertChecklistItem(checklistNode, checklistPayload, checklistItemPayload, summary);
     itemNodesById[checklistItemPayload.itemId] = itemNode;
 
-    var evidenceNode = upsertEvidence(destinationDomainFolder, checklistPayload, checklistItemPayload, sourceDomainFolder, summary);
-    if (evidenceNode !== null) {
+    var evidenceNodes = upsertEvidence(destinationEvidenceFolder, checklistPayload, checklistItemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext);
+    for (var evidenceNodeIndex = 0; evidenceNodeIndex < evidenceNodes.length; evidenceNodeIndex++) {
       itemNode.save();
-      ensureAssociation(itemNode, evidenceNode, "vso:supportedByEvidence");
+      ensureAssociation(itemNode, evidenceNodes[evidenceNodeIndex], "vso:supportedByEvidence");
     }
   }
 
@@ -653,6 +851,13 @@ try {
     if (relatedItemNode) {
       relatedItemNode.save();
       ensureAssociation(relatedItemNode, findingNode, "vso:hasFinding");
+
+      var relatedEvidenceNodes = relatedItemNode.assocs["vso:supportedByEvidence"];
+      if (relatedEvidenceNodes) {
+        for (var relatedEvidenceIndex = 0; relatedEvidenceIndex < relatedEvidenceNodes.length; relatedEvidenceIndex++) {
+          ensureAssociation(findingNode, relatedEvidenceNodes[relatedEvidenceIndex], "vso:findingSupportedByEvidence");
+        }
+      }
     }
   }
 
