@@ -1038,6 +1038,7 @@
                <show id="vso:regulationBreached" />
                <show id="vso:description" />
                <show id="vso:findingStatus" />
+               <show id="vso:findingSupportedByEvidence" />
                <show id="vso:hasCorrectiveAction" />
             </field-visibility>
             <appearance>
@@ -1055,6 +1056,12 @@
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
                <field id="vso:findingStatus" set="vso-finding-info" />
+               <field id="vso:findingSupportedByEvidence" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
                <field id="vso:hasCorrectiveAction" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>
