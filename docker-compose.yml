@@ -65,6 +65,7 @@ services:
     extends:
       file: commons/base.yaml
       service: alfresco
+
   transform-core-aio:
     image: alfresco/alfresco-transform-core-aio:5.2.0
     mem_limit: 1536m
@@ -83,6 +84,8 @@ services:
     depends_on:
       activemq:
         condition: service_healthy
+    restart: unless-stopped
+
   share:
     image: alfresco/alfresco-governance-share-community:25.2.0
     mem_limit: 1g
