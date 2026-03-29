@@ -1,16 +1,40 @@
 {
   "inspectionCode": "MDPP-2026-01",
-  "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
-  "reportDate": "2026-03-28",
-  "mainInspector": "Ing. Laura Gómez",
+  "providerId": "a01k5zfkyjee80tvsgr2kxv9vg8",
+  "reportDate": "2026-04-01",
+  "mainInspector": "Fernando A. Cassó Rodríguez",
   "inspectors": [
     {
-      "name": "Ing. Laura Gómez",
-      "specialty": "COM"
+      "name": "Wilma C. Paulino Ferreira",
+      "specialty": [
+        "Control de Fauna Silvestre",
+        "Gestión de Plataformas"
+      ]
     },
     {
-      "name": "Téc. Rafael Pérez",
-      "specialty": "VIG"
+      "name": "Felito Tellería Ozoria",
+      "specialty": [
+        "Ayudas Visuales"
+      ]
+    },
+    {
+      "name": "Danilo Morban Aquino",
+      "specialty": [
+        "Ayudas Visuales"
+      ]
+    },
+    {
+      "name": "Carmen Guzmán",
+      "specialty": [
+        "Gestión de Pavimento y Caracteristicas Físicas",
+        "Gestión de Plataformas"
+      ]
+    },
+    {
+      "name": "Francisco Peña",
+      "specialty": [
+        "Servicios de Salvamento y Extinción de Incendios"
+      ]
     }
   ]
 }
