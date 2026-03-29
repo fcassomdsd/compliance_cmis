@@ -65,6 +65,9 @@ services:
     extends:
       file: commons/base.yaml
       service: alfresco
+    networks:
+      - alfresco_net
+      - backend_net
 
   transform-core-aio:
     image: alfresco/alfresco-transform-core-aio:5.2.0
@@ -85,6 +88,8 @@ services:
       activemq:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - alfresco_net
 
   share:
     image: alfresco/alfresco-governance-share-community:25.2.0
@@ -115,6 +120,9 @@ services:
       service: share
     volumes:
       - ./configs/share:/usr/local/tomcat/shared/classes/alfresco/web-extension
+    networks:
+      - alfresco_net
+
   postgres:
     image: postgres:16.5
     mem_limit: 512m
@@ -133,6 +141,9 @@ services:
       start_period: 5s
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
+    networks:
+      - alfresco_net
+
   solr6:
     image: alfresco/alfresco-search-services:2.0.16
     mem_limit: 2g
@@ -152,6 +163,9 @@ services:
         -Dalfresco.secureComms.secret=secret
     ports:
       - "8083:8983" # Browser port
+    networks:
+      - alfresco_net
+
   activemq:
     image: alfresco/alfresco-activemq:5.18-jre17-rockylinux8
     mem_limit: 1g
@@ -166,6 +180,9 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+    networks:
+      - alfresco_net
+
   #content-app:
     #image: alfresco/alfresco-content-app:7.0.0
     #mem_limit: 128m
@@ -200,3 +217,13 @@ services:
     extends:
       file: commons/base.yaml
       service: proxy
+    networks:
+      - alfresco_net
+      - backend_net
+
+networks:
+  alfresco_net:
+    driver: bridge
+  backend_net:
+    name: alfresco_backend
+

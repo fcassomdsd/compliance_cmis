@@ -6,11 +6,15 @@
   "inspectors": [
     {
       "name": "Ing. Laura Gómez",
-      "specialty": "COM"
+      "specialty": [
+        "Servicios de Comunicaciones (COM)"
+      ]
     },
     {
       "name": "Téc. Rafael Pérez",
-      "specialty": "VIG"
+      "specialty": [
+        "Vigilancia (VIG)"
+      ]
     }
   ]
 }

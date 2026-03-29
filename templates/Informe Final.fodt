@@ -537,8 +537,11 @@
   <style:style style:name="Table2.A" style:family="table-column">
    <style:table-column-properties style:column-width="3.5in" style:rel-column-width="65535*"/>
   </style:style>
+  <style:style style:name="Table2.1" style:family="table-row">
+   <style:table-row-properties fo:keep-together="always"/>
+  </style:style>
   <style:style style:name="Table2.A1" style:family="table-cell">
-   <style:table-cell-properties fo:padding="0.0382in" fo:border-left="none" fo:border-right="none" fo:border-top="0.5pt solid #000000" fo:border-bottom="none"/>
+   <style:table-cell-properties fo:padding-left="0.0382in" fo:padding-right="0.0382in" fo:padding-top="0.0382in" fo:padding-bottom="0.7in" fo:border-left="none" fo:border-right="none" fo:border-top="0.5pt solid #000000" fo:border-bottom="none"/>
   </style:style>
   <style:style style:name="Table3" style:family="table">
    <style:table-properties style:width="6.2347in" fo:margin-top="0.2in" fo:margin-bottom="0in" table:align="center" style:writing-mode="lr-tb"/>
@@ -797,7 +800,7 @@
    <style:text-properties officeooo:paragraph-rsid="000cbeae"/>
   </style:style>
   <style:style style:name="P64" style:family="paragraph" style:parent-style-name="Standard">
-   <style:text-properties fo:language="es" fo:country="ES" fo:font-weight="normal" officeooo:paragraph-rsid="000cbeae" style:font-weight-asian="normal" style:font-weight-complex="normal"/>
+   <style:text-properties fo:margin-top="0in" fo:margin-bottom="0.3in" fo:language="es" fo:country="ES" fo:font-weight="normal" officeooo:paragraph-rsid="000cbeae" style:font-weight-asian="normal" style:font-weight-complex="normal"/>
   </style:style>
   <style:style style:name="P65" style:family="paragraph" style:parent-style-name="Table_20_Contents">
    <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
@@ -39883,26 +39886,18 @@
     <text:span text:style-name="Standard">[#list inspectors as inspector]</text:span>
     <table:table table:name="Table2" table:style-name="Table2">
      <table:table-column table:style-name="Table2.A"/>
-     <table:table-row>
+     <table:table-row table:style-name="Table2.1">
       <table:table-cell table:style-name="Table2.A1" office:value-type="string">
        <text:p text:style-name="P65">${inspector.name}</text:p>
-       <text:p text:style-name="P66">Inspector de Seguridad Operacional <text:span text:style-name="T41">${inspector.specialty}</text:span></text:p>
+       <text:p text:style-name="P66">Inspector de Seguridad Operacional</text:p>
       </table:table-cell>
      </table:table-row>
     </table:table>
     <text:span text:style-name="P65">[/#list]</text:span>
    </text:section>
-   <text:p text:style-name="P64" loext:marker-style-name="T35"/>
-   <text:p text:style-name="P64" loext:marker-style-name="T35"/>
-   <text:p text:style-name="P64" loext:marker-style-name="T35"/>
-   <text:p text:style-name="P67" loext:marker-style-name="T46"><text:span text:style-name="T46"/></text:p>
    <text:p text:style-name="P68" loext:marker-style-name="T46"><text:span text:style-name="T46"/></text:p>
    <text:p text:style-name="P68" loext:marker-style-name="T46"><text:span text:style-name="T46"/></text:p>
    <text:p text:style-name="P68" loext:marker-style-name="T46"><text:span text:style-name="T46">Fecha de </text:span><text:span text:style-name="T47">elaboración </text:span><text:span text:style-name="T46">del informe: <text:s/></text:span><text:span text:style-name="T48">${reportDate}</text:span></text:p>
-   <text:p text:style-name="P69" loext:marker-style-name="T46"><text:span text:style-name="T49"/></text:p>
-   <text:p text:style-name="P69" loext:marker-style-name="T46"><text:span text:style-name="T49"/></text:p>
-   <text:p text:style-name="P69" loext:marker-style-name="T46"><text:span text:style-name="T49"/></text:p>
-   <text:p text:style-name="P69" loext:marker-style-name="T46"><text:span text:style-name="T49"/></text:p>
    <text:p text:style-name="P69" loext:marker-style-name="T46"><text:span text:style-name="T49"/></text:p>
    <table:table table:name="Table3" table:style-name="Table3">
     <table:table-column table:style-name="Table3.A"/>
