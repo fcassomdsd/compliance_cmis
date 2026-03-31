@@ -1,6 +1,108 @@
 # compliance-CMIS
 
 
+## Path configuration (Alfresco)
+
+Alfresco folder paths used by scripts/webscripts are centralized in:
+
+- `webscripts/common/vso-paths.lib.js`
+
+Update only this file when store paths change. Current keys are:
+
+- `inspectionInProcessPath` → destination inspection folder
+- `canonicalSourceBasePath` → canonical models source folder
+- `inspectionPlanTemplateDataPath` → generated inspection-plan destination folder
+- `inspectionPlanTemplatePath` → inspection-plan template file path
+- `inspectionReportTemplateDataPath` → generated inspection-report destination folder
+- `inspectionReportTemplatePath` → inspection-report template file path
+
+## Webscript test payloads
+
+Sample request bodies are available in:
+
+- `example/generate-inspection-plan.sample.json`
+- `example/generate-inspection-report.sample.json`
+- `example/generate-inspection-report-derived-findings.sample.json`
+
+Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
+
+- `inspectionsPath` (optional): where the inspection folder (`vso:inspection`) is created/updated. Defaults to `inspectionInProcessPath`.
+- `destinationPath` (optional): where the generated `.fodt` plan file is written. Defaults to `inspectionPlanTemplateDataPath`.
+- `templatePath` (optional): source template file path. Defaults to `inspectionPlanTemplatePath`.
+
+Quick test commands (adjust host/user/password):
+
+Inspection plan quick fields (in `example/generate-inspection-plan.sample.json`):
+
+- `inspectionsPath`: inspection folder root (creates/updates `<inspectionsPath>/<inspectionNo>` as `vso:inspection`)
+- `destinationPath`: generated `.fodt` output folder
+- `templatePath`: source `.fodt` template
+
+```bash
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/generate-inspection-plan.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/generate"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/generate-inspection-report.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/generate-inspection-report-derived-findings.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
+```
+
+## Smart folders (Vigilancia/Datos)
+
+Template file:
+
+- `templates/vigilancia-datos-smart-folders.json`
+- `templates/vigilancia-datos-smart-folders-bucketed.json` (explicit value buckets)
+
+This template defines these Smart Folder groups under `Datos`:
+
+- `Planes de inspeccion`
+	- `year`
+	- `location`
+- `Listas de verificacion`
+	- `year`
+	- `specialty`
+	- `location`
+- `Hallazgos`
+	- `year`
+	- `specialty`
+	- `location`
+
+To apply in Alfresco Share:
+
+1. Ensure Smart Folders are enabled (`smart.folders.enabled=true`).
+2. Upload `templates/vigilancia-datos-smart-folders.json` to `Repository/Data Dictionary/Smart Folder Templates`.
+3. Change type of the uploaded file to `smf:smartFolderTemplate` (Smart Folder Template).
+4. Go to `Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos`.
+5. Manage Aspects and add `smf:systemConfigSmartFolder`.
+6. Edit Properties and select `vigilancia-datos-smart-folders.json` as template.
+
+For explicit buckets (fixed values):
+
+- Use `vigilancia-datos-smart-folders-bucketed.json` instead.
+- Current hierarchy in this template:
+	- `Inspecciones`
+		- `Por año`: `2026`, `2025`, `2024`
+		- `Por localidad`: `MDSD`, `MDJB`
+	- `Hallazgos`
+		- `Abiertos` (`vso:findingStatus <> Closed`)
+			- `Por localidad`: `MDSD`, `MDJB`
+			- `Por proveedor`: `AERODOM`, `DINA`, `INDOMET`
+			- `Por especialidad`: `VIG`, `COM`, `FAU`
+		- `Cerrados` (`vso:findingStatus = Closed`)
+			- `Por localidad`: `MDSD`, `MDJB`
+			- `Por proveedor`: `AERODOM`, `DINA`, `INDOMET`
+			- `Por especialidad`: `VIG`, `COM`, `FAU`
+
+
 
 ## Getting started
 

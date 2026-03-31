@@ -1,276 +1,384 @@
-// Constants for better maintainability
-var TEMPLATE_PATH = "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt";
-var DESTINATION_PATH = "Sites/vigilancia-de-la-so/documentLibrary/Inspecciones/Inspecciones/Planes de Inspeccion";
+// Path configuration is centralized.
+// Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
+function resolveVsoPaths() {
+  var defaults = {
+    inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
+    canonicalSourceBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo",
+    inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
+    inspectionPlanTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt"
+  };
+
+  if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+    return __VSO_PATHS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-paths.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-paths.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+          return __VSO_PATHS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return defaults;
+}
+
+function importTemplateGenerationLibrary() {
+  if (typeof TemplateGeneration !== "undefined" && TemplateGeneration) {
+    logger.info("[inspection-plan] TemplateGeneration source: preloaded");
+    return;
+  }
+
+  var candidates = [
+    "../common/vso-paths.lib.js",
+    "classpath:alfresco/extension/templates/webscripts/common/vso-paths.lib.js",
+    "classpath*:alfresco/extension/templates/webscripts/common/vso-paths.lib.js"
+  ];
+  var loadErrors = [];
+
+  if (typeof importScript !== "function") {
+    loadErrors.push("importScript is not available in this script runtime");
+  }
+
+  if (typeof importScript === "function") {
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof TemplateGeneration !== "undefined" && TemplateGeneration) {
+          logger.info("[inspection-plan] TemplateGeneration source: imported from " + candidates[index]);
+          return;
+        }
+      } catch (error) {
+        loadErrors.push(candidates[index] + " -> " + error.message);
+      }
+    }
+  }
+
+  logger.warn("[inspection-plan] Falling back to inline TemplateGeneration. Reasons: " + loadErrors.join(" | "));
+
+  TemplateGeneration = {
+    trimToNull: function(value) {
+      if (value === null || value === undefined) {
+        return null;
+      }
+      var normalized = String(value).replace(/^\s+|\s+$/g, "");
+      return normalized.length === 0 ? null : normalized;
+    },
+    setError: function(code, message) {
+      status.code = code;
+      status.message = message;
+      status.redirect = true;
+      model = { error: message };
+    },
+    fail: function(code, message) {
+      TemplateGeneration.setError(code, message);
+      throw new Error(message);
+    },
+    parseJsonPayload: function(rawContent) {
+      var payload = TemplateGeneration.trimToNull(rawContent);
+      if (payload === null) {
+        TemplateGeneration.fail(400, "Request body is empty");
+      }
+      try {
+        var parsed = JSON.parse(payload);
+        if (!parsed || typeof parsed !== "object") {
+          TemplateGeneration.fail(400, "Invalid JSON payload structure");
+        }
+        return parsed;
+      } catch (error) {
+        TemplateGeneration.fail(400, "Invalid JSON: " + error.message);
+      }
+    },
+    renderTemplateContent: function(templateNode, data) {
+      function resolvePath(context, path) {
+        var parts = String(path).split(".");
+        var current = context;
+        for (var index = 0; index < parts.length; index++) {
+          if (!current || typeof current !== "object" || !(parts[index] in current)) {
+            return "";
+          }
+          current = current[parts[index]];
+        }
+        return current === null || current === undefined ? "" : current;
+      }
+
+      function replaceVariables(block, context) {
+        return block.replace(/\$\{\s*([^}]+?)\s*\}/g, function(_, expr) {
+          return String(resolvePath(context, expr));
+        });
+      }
+
+      function findMatchingListClose(block, searchStart) {
+        var depth = 1;
+        var cursor = searchStart;
+
+        while (cursor < block.length) {
+          var nextOpen = block.indexOf("[#list", cursor);
+          var nextClose = block.indexOf("[/#list]", cursor);
+
+          if (nextClose === -1) {
+            return -1;
+          }
+
+          if (nextOpen !== -1 && nextOpen < nextClose) {
+            var nestedOpenEnd = block.indexOf("]", nextOpen);
+            if (nestedOpenEnd === -1) {
+              return -1;
+            }
+            depth += 1;
+            cursor = nestedOpenEnd + 1;
+            continue;
+          }
+
+          depth -= 1;
+          if (depth === 0) {
+            return nextClose;
+          }
+          cursor = nextClose + 8;
+        }
+
+        return -1;
+      }
+
+      function renderBlock(block, context) {
+        var openStart = block.indexOf("[#list");
+        if (openStart === -1) {
+          return replaceVariables(block, context);
+        }
+
+        var openEnd = block.indexOf("]", openStart);
+        if (openEnd === -1) {
+          return replaceVariables(block, context);
+        }
+
+        var openTag = block.slice(openStart, openEnd + 1);
+        var openMatch = /^\[#list\s+([^\s\]]+)\s+as\s+([^\s\]]+)\s*\]$/.exec(openTag);
+        if (!openMatch) {
+          return replaceVariables(block, context);
+        }
+
+        var closeStart = findMatchingListClose(block, openEnd + 1);
+        if (closeStart === -1) {
+          return replaceVariables(block, context);
+        }
+
+        var before = block.slice(0, openStart);
+        var inner = block.slice(openEnd + 1, closeStart);
+        var after = block.slice(closeStart + 8);
+        var collection = resolvePath(context, openMatch[1]);
+        var renderedList = "";
+
+        if (Array.isArray(collection)) {
+          for (var itemIndex = 0; itemIndex < collection.length; itemIndex++) {
+            var scoped = Object.create(context || {});
+            scoped[openMatch[2]] = collection[itemIndex];
+            renderedList += renderBlock(inner, scoped);
+          }
+        }
+
+        return renderBlock(before, context) + renderedList + renderBlock(after, context);
+      }
+
+      return renderBlock(String(templateNode.content), data);
+    },
+    upsertDocument: function(options) {
+      var existingNode = options.destinationFolder.childByNamePath(options.fileName);
+      var outputNode;
+      var isNewVersion = false;
+
+      function ensureAspect(node, aspectName) {
+        if (!node.hasAspect(aspectName)) {
+          node.addAspect(aspectName);
+        }
+      }
+
+      if (existingNode) {
+        ensureAspect(existingNode, "cm:versionable");
+        var workingCopy = existingNode.checkout();
+        workingCopy.content = options.content;
+        if (options.mimetype) {
+          workingCopy.mimetype = options.mimetype;
+        }
+        outputNode = workingCopy.checkin(options.versionComment || "Update content via script", false);
+        isNewVersion = true;
+      } else {
+        outputNode = options.destinationFolder.createNode(options.fileName, options.nodeType || "vso:vsoContent");
+        if (!outputNode) {
+          TemplateGeneration.fail(500, "Failed to create output file");
+        }
+        outputNode.content = options.content;
+        if (options.mimetype) {
+          outputNode.mimetype = options.mimetype;
+        }
+      }
+
+      if (options.aspects) {
+        for (var aspectIndex = 0; aspectIndex < options.aspects.length; aspectIndex++) {
+          ensureAspect(outputNode, options.aspects[aspectIndex]);
+        }
+      }
+
+      if (options.properties) {
+        for (var propertyName in options.properties) {
+          if (options.properties.hasOwnProperty(propertyName)) {
+            var propertyValue = options.properties[propertyName];
+            if (propertyValue !== null && propertyValue !== undefined) {
+              outputNode.properties[propertyName] = propertyValue;
+            }
+          }
+        }
+      }
+
+      outputNode.save();
+      return { node: outputNode, isNewVersion: isNewVersion };
+    }
+  };
+}
+
+var VSO_PATHS = resolveVsoPaths();
+var TEMPLATE_PATH = VSO_PATHS.inspectionPlanTemplatePath || "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt";
+var TEMPLATE_DATA_PATH = VSO_PATHS.inspectionPlanTemplateDataPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data";
+var INSPECTIONS_PATH = VSO_PATHS.inspectionInProcessPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones";
 var FILE_PREFIX = "Plan de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
 var MIMETYPE = "application/vnd.oasis.opendocument.text";
 
-function MiniFreemarker() {
+importTemplateGenerationLibrary();
 
-  // -------------------------
-  // Public API
-  // -------------------------
-  this.render = function(template, data) {
-    const tokens = tokenize(template);
-    const ast = parse(tokens);
-    return evaluate(ast.data, data);
-  };
-
-  // -------------------------
-  // Tokenizer
-  // -------------------------
-  function tokenize(input) {        
-    const tokens = [];
-    var i = 0;
-
-    while (i < input.length) {
-      if (input.startsWith('${', i)) {
-        var end = input.indexOf('}', i);
-        if (end === -1) throw new Error('Unclosed ${ expression');
-        tokens.push({
-          type: 'variable',
-          value: input.slice(i + 2, end).trim()
-        });
-        i = end + 1;
-        continue;
-      }
-
-      if (input.startsWith('[#list', i)) {
-        var end2 = input.indexOf(']', i);
-        if (end2 === -1) throw new Error('Unclosed [#list]');
-        tokens.push({
-          type: 'list_open',
-          value: input.slice(i + 6, end2).trim()
-        });
-        i = end2 + 1;
-        continue;
-      }
-
-      if (input.startsWith('[/#list]', i)) {
-        tokens.push({ type: 'list_close' });
-        i += 8;
-        continue;
-      }
-
-      // Text
-      var next = findNextSpecial(input, i);
-      if (next > i) {
-         tokens.push({
-          type: 'text',
-          value: input.slice(i, next)
-        });
-      }
-      i = next;
-    }
-    return tokens;
+function setPropertyIfPresent(node, propertyName, value) {
+  var normalized = TemplateGeneration.trimToNull(value);
+  if (normalized !== null) {
+    node.properties[propertyName] = normalized;
   }
-
-  function findNextSpecial(input, start) {
-    const markers = ['${', '[#list', '[/#list]'];
-    const positions = markers
-      .map(m => input.indexOf(m, start))
-      .filter(i => i !== -1);
-
-   if (positions.length) {
-      return positions.reduce( (minimo, x) => (minimo < x ? minimo : x) );
-    } else {
-      return input.length;
-    }
-
-  }
-
-  // -------------------------
-  // Parser (AST builder)
-  // -------------------------
-  function parse(tokens) {
-    
-    function parseToken(token, tokenList) {
-      switch (token.type) {
-        case 'text' :
-          return { count : 1, data : token };
-          break;
-        case 'variable' :
-          const node = { count : 1, data : { type: 'variable', path: token.value } };
-          return node;
-          break;
-        case 'list_open' :
-          const parts = token.value.split(/\s+/);
-          if (parts.length !== 3 || parts[1] !== 'as') {
-            throw new Error('Invalid [#list] syntax');
-          }
-          
-          const body = parse(tokenList);
-          logger.error("body = " + JSON.stringify(body.data));
-          return { count : body.count + 2,
-                   data : {
-                     type: 'list',
-                     collection : parts[0],
-                     item: parts[2],
-                     body : body.data
-                   }
-                 };
-        default :
-          return {count : 1, data : null};
-      }
-    }
-      
-    const nodes = [];
-    var index = 0;
-    while (index < tokens.length && tokens[index].type != 'list_close') {
- 
-      var nodeData = parseToken(tokens[index], tokens.slice(index+1))
-      nodes.push(nodeData.data);
-      index += nodeData.count;
-    }
-    return { count : index, data : nodes };
-  }
-  
-
-  // -------------------------
-  // Evaluator
-  // -------------------------
-  function evaluate(nodes, context) {
-
-    function evaluateNode(node, context) {
-
-      switch (node.type) {
-        case 'text' : 
-          return node.value;
-        
-        case 'variable' : 
-          var result = resolvePath(context, node.path);
-          return result;
-        
-        case 'list' :
-          const objectTree = resolvePath(context, node.collection);
-          var listResult = Array.isArray(objectTree) 
-            ? objectTree.reduce( (output, item) => {
-                const newObj = Object.create(context);
-                newObj[node.item] = item;
-                return output + evaluate(node.body, newObj);
-              }, '') 
-            : '';
-          return listResult;
-          
-        default:
-          return '';
-      }
-    }
-
-    return nodes.reduce( (output, subnode) => (output + evaluateNode(subnode, context)), '');
-  }    
-
-  // -------------------------
-  // Safe property resolver
-  // -------------------------
-  function resolvePath(obj, path) {
-
-    function resolvePart(subobj, part) {
-      if (!subobj || typeof subobj !== 'object') {
-        return '';
-      }
-      return (part in subobj) ? subobj[part] : '';
-    }
-      
-    const parts = path.split('.');
-    return parts.reduce( 
-      (result, part) => resolvePart(result, part), 
-      obj
-    );
-  }   
-  
 }
 
-/**
- * Helper function to set error response
- */
-function setError(code, message) {
-    status.code = code;
-    status.message = message;
-    status.redirect = true;
-    model = { error: message };
+function ensureAspect(node, aspectName) {
+  if (!node.hasAspect(aspectName)) {
+    node.addAspect(aspectName);
+  }
+}
+
+function ensureInspectionFolder(baseFolder, inspectionId) {
+  var folder = baseFolder.childByNamePath(inspectionId);
+  if (folder && folder.exists()) {
+    if (!folder.isContainer) {
+      TemplateGeneration.fail(409, "Destination inspection already exists and is not a folder: " + inspectionId);
+    }
+    if (!folder.isSubType("vso:inspection")) {
+      folder.specializeType("vso:inspection");
+    }
+    return folder;
+  }
+
+  return baseFolder.createFolder(inspectionId, "vso:inspection");
+}
+
+function populateInspectionFolderData(folder, inputData) {
+  if (!folder.isSubType("vso:inspection")) {
+    folder.specializeType("vso:inspection");
+  }
+
+  ensureAspect(folder, "vso:inspectionContext");
+  ensureAspect(folder, "vso:serviceContext");
+
+  var inspectionId = TemplateGeneration.trimToNull(inputData.inspectionNo) || TemplateGeneration.trimToNull(inputData.inspectionCode);
+  setPropertyIfPresent(folder, "cm:title", TemplateGeneration.trimToNull(inputData.title) || inspectionId || folder.name);
+  setPropertyIfPresent(folder, "vso:inspectionId", inspectionId);
+  setPropertyIfPresent(folder, "vso:inspectionType", inputData.inspectionType);
+  setPropertyIfPresent(folder, "vso:startDate", inputData.startDate);
+  setPropertyIfPresent(folder, "vso:endDate", inputData.endDate);
+  setPropertyIfPresent(folder, "vso:locationId", inputData.locationId);
+  setPropertyIfPresent(folder, "vso:locationName", inputData.locationName);
+  setPropertyIfPresent(folder, "vso:providerId", inputData.providerId);
+  setPropertyIfPresent(folder, "vso:providerName", inputData.providerName);
+  setPropertyIfPresent(folder, "vso:inspectionStatus", inputData.inspectionStatus || "Planned");
+
+  folder.save();
 }
 
 try {
-    // 1. Validate request body
-    var jsonString = requestbody.content;
-    if (!jsonString || jsonString.trim().length === 0) {
-        setError(400, "Request body is empty");
-        throw new Error(model.error);
-    }
-    
-    // 2. Parse JSON
-    var inputData;
-    try {
-        inputData = JSON.parse(jsonString);
-    } catch (e) {
-        setError(400, "Invalid JSON: " + e.message);
-        throw new Error(model.error);
-    }
-    
-    // 3. Validate structure
-    if (!inputData || typeof inputData !== 'object') {
-        setError(400, "Invalid JSON payload structure");
-        throw new Error(model.error);
-    }
-    
-    // 4. Locate template
-    var templateNode = companyhome.childByNamePath(TEMPLATE_PATH);
-    if (!templateNode || !templateNode.exists()) {
-        setError(500, "Template not found in repository");
-        logger.error("Template not found at path: " + TEMPLATE_PATH);
-        throw new Error(model.error);
-    }
-    
-    // 6. Locate destination folder
-    var destFolder = companyhome.childByNamePath(DESTINATION_PATH);
-    if (!destFolder || !destFolder.exists()) {
-        setError(500, "Destination folder not found");
-        logger.error("Destination folder not found at path: " + DESTINATION_PATH);
-        throw new Error(model.error);
-    }
-    
-    // 7. Generate unique filename
-    var timestamp = new Date().getTime();
-    var outputName = FILE_PREFIX + timestamp + FILE_EXTENSION;
-    
-    // 8. Create document
-    var outputFile = destFolder.createFile(outputName);
-    if (!outputFile) {
-        setError(500, "Failed to create output file");
-        throw new Error(model.error);
-    }
-    
-    // 9. Set content and properties
-    var engine = new MiniFreemarker();
-    var templateStr = String(templateNode.content);
-    var generatedContent = engine.render(templateStr, inputData);
+  var inputData = TemplateGeneration.parseJsonPayload(requestbody.content);
+  var inspectionNo = TemplateGeneration.trimToNull(inputData.inspectionNo);
 
-    outputFile.content = generatedContent;
-    outputFile.mimetype = MIMETYPE;
-    
-    // Use proper property setting
-    outputFile.properties["cm:title"] = inputData.title || "Generated Inspection Plan";
-    outputFile.properties["cm:description"] = "Auto-generated on " + new Date().toISOString();
-    outputFile.save();
-    
-    // 10. Success response
-    status.code = 201; // Created
-    model.success = true;
-    model.result = {
-//        nodeRef: outputFile.nodeRef.toString(),
-        name: outputFile.name,
-        url: outputFile.url,
-        downloadUrl: outputFile.downloadUrl,
-        path: destFolder.displayPath + "/" + outputFile.name,
-        createdDate: outputFile.properties["cm:created"]
-    };
-    
-    // Optional: Log success
-    logger.info("Successfully created document: " + outputFile.name);
-    
-} catch (e) {
-    // Catch any unexpected errors
-    logger.error("Unexpected error in document generation: " + e.message);
-    setError(500, "Internal server error: " + e.message);
+  if (inspectionNo === null) {
+    TemplateGeneration.fail(400, "Missing required field: inspectionNo");
+  }
+
+  var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
+  var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || TEMPLATE_DATA_PATH;
+  var inspectionsPath = TemplateGeneration.trimToNull(inputData.inspectionsPath) || INSPECTIONS_PATH;
+
+  var templateNode = companyhome.childByNamePath(templatePath);
+  if (!templateNode || !templateNode.exists()) {
+    logger.error("Template not found at path: " + templatePath);
+    TemplateGeneration.fail(500, "Template not found in repository");
+  }
+
+  var templateDataFolder = companyhome.childByNamePath(destinationPath);
+  if (!templateDataFolder || !templateDataFolder.exists()) {
+    logger.error("Destination folder not found at path: " + destinationPath);
+    TemplateGeneration.fail(500, "Destination folder not found");
+  }
+
+  var inspectionsFolder = companyhome.childByNamePath(inspectionsPath);
+  if (!inspectionsFolder || !inspectionsFolder.exists()) {
+    logger.error("Inspections folder not found at path: " + inspectionsPath);
+    TemplateGeneration.fail(500, "Inspections folder not found");
+  }
+
+  var inspectionFolder = ensureInspectionFolder(inspectionsFolder, inspectionNo);
+  populateInspectionFolderData(inspectionFolder, inputData);
+
+  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, inputData);
+  var outputName = FILE_PREFIX + inspectionNo + FILE_EXTENSION;
+
+  var result = TemplateGeneration.upsertDocument({
+    destinationFolder: templateDataFolder,
+    fileName: outputName,
+    nodeType: "vso:vsoContent",
+    content: generatedContent,
+    mimetype: MIMETYPE,
+    aspects: ["cm:versionable", "vso:inspectionContext"],
+    versionComment: "Update content via script",
+    properties: {
+      "cm:title": inputData.title || "Generated Inspection Plan",
+      "cm:description": "Auto-generated on " + new Date().toISOString(),
+      "vso:inspectionId": inspectionNo,
+      "vso:startDate": inputData.startDate,
+      "vso:endDate": inputData.endDate,
+      "vso:locationId": inputData.locationId,
+      "vso:locationName": inputData.locationName,
+      "vso:inspectionStatus": "Planned"
+    }
+  });
+
+  var outputFile = result.node;
+  status.code = result.isNewVersion ? 200 : 201;
+  model.success = true;
+  model.result = {
+    nodeRef: outputFile.nodeRef.toString(),
+    name: outputFile.name,
+    url: outputFile.url,
+    downloadUrl: outputFile.downloadUrl,
+    path: templateDataFolder.displayPath + "/" + outputFile.name,
+    createdDate: outputFile.properties["cm:created"],
+    version: outputFile.properties["cm:versionLabel"],
+    isNewVersion: result.isNewVersion
+  };
+
+  logger.info((result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") + outputFile.name);
+} catch (error) {
+  logger.error("Unexpected error in document generation: " + error.message);
+  if (!model || !model.error) {
+    TemplateGeneration.setError(500, "Internal server error: " + error.message);
+  }
 }

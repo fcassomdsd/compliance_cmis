@@ -1,0 +1,38 @@
+{
+  "inspectionsPath": "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
+  "destinationPath": "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
+  "inspectionNo": "INSP-2026-0225",
+  "title": "Plan de inspección MDSD - DNA",
+  "startDate": "2026-03-26",
+  "endDate": "2026-03-27",
+  "locationId": "MDSD",
+  "locationName": "Aeropuerto Internacional Las Américas",
+  "providerName": "Dirección de Navegación Aérea",
+  "inspectionCode": "0225",
+  "dateRange": "26 al 27 de marzo del 2026",
+  "mainInspector": "Ing. Laura Gómez",
+  "inspectors": [
+    {
+      "name": "Ing. Laura Gómez",
+      "specialty": "COM"
+    },
+    {
+      "name": "Téc. Rafael Pérez",
+      "specialty": "VIG"
+    }
+  ],
+  "checklistItems": [
+    {
+      "itemCode": "COM-1.1",
+      "question": "¿Se mantiene vigente la documentación operativa?",
+      "complianceStatus": "Compliant",
+      "comment": "Evidencia actualizada y disponible"
+    },
+    {
+      "itemCode": "VIG-2.3",
+      "question": "¿Se ejecutan rutinas de inspección programadas?",
+      "complianceStatus": "Non-Compliant",
+      "comment": "Se detectaron registros incompletos"
+    }
+  ]
+}

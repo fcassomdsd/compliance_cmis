@@ -1,0 +1,40 @@
+{
+  "inspectionCode": "MDPP-2026-01",
+  "providerId": "a01k5zfkyjee80tvsgr2kxv9vg8",
+  "reportDate": "2026-04-01",
+  "mainInspector": "Fernando A. Cassó Rodríguez",
+  "inspectors": [
+    {
+      "name": "Wilma C. Paulino Ferreira",
+      "specialty": [
+        "Control de Fauna Silvestre",
+        "Gestión de Plataformas"
+      ]
+    },
+    {
+      "name": "Felito Tellería Ozoria",
+      "specialty": [
+        "Ayudas Visuales"
+      ]
+    },
+    {
+      "name": "Danilo Morban Aquino",
+      "specialty": [
+        "Ayudas Visuales"
+      ]
+    },
+    {
+      "name": "Carmen Guzmán",
+      "specialty": [
+        "Gestión de Pavimento y Caracteristicas Físicas",
+        "Gestión de Plataformas"
+      ]
+    },
+    {
+      "name": "Francisco Peña",
+      "specialty": [
+        "Servicios de Salvamento y Extinción de Incendios"
+      ]
+    }
+  ]
+}
