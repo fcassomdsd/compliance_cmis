@@ -118,7 +118,7 @@ curl -sS -u "$USERNAME:$PASSWORD" \
   -d '{
     "properties": {
       "vso:submissionDeadline": "2026-04-15",
-      "vso:closureDate": "2026-05-01",
+      "vso:findingClosureDate": "2026-05-01",
       "vso:openedDate": "2026-03-31",
       "vso:lastStatusChange": "2026-03-31"
     }

@@ -71,6 +71,20 @@
         </list>
       </parameter>
     </constraint>
+
+    <constraint name="vso:findingStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Open</value>
+          <value>CAP Submitted</value>
+          <value>CAP Accepted</value>
+          <value>In Progess</value>
+          <value>Pending Closure Review</value>
+          <value>Closed</value>
+          <value>Overdue</value>
+        </list>
+      </parameter>
+    </constraint>
   </constraints>
 
   <!-- ========================================================= -->
@@ -209,6 +223,20 @@
         </property>
       </properties>
 
+      <associations>
+        <association name="vso:relatedPriorFinding">
+          <source>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </source>
+          <target>
+            <class>vso:finding</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </association>
+      </associations>
+
       <mandatory-aspects>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
@@ -284,6 +312,30 @@
           <title>Estatus hallazgo</title>
           <description>Finding lifecycle status</description>
           <type>d:text</type>
+          <default>Open</default>
+          <constraints>
+            <constraint ref="vso:findingStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:submissionDeadline">
+          <title>Fecha limite de envio</title>
+          <description>Deadline by which the regulated entity must submit a corrective action plan</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:findingClosureDate">
+          <title>Fecha de cierre</title>
+          <description>Date on which the finding was formally closed by the oversight authority</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:openedDate">
+          <title>Fecha de apertura</title>
+          <description>Date the finding was formally raised, set on creation from the checklist upload</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:lastStatusChange">
+          <title>Fecha ultimo cambio de estatus</title>
+          <description>Date the findingStatus was last updated, maintained by the Node backend on each transition</description>
+          <type>d:date</type>
         </property>
       </properties>
 
@@ -343,18 +395,19 @@
       <associations>
         <child-association name="vso:verifiedBy">
           <source>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>false</many>
           </source>
           <target>
             <class>vso:closureReport</class>
-            <mandatory>true</mandatory>
-            <many>false</many>
+            <mandatory>false</mandatory>
+            <many>true</many>
           </target>
         </child-association>
       </associations>
 
       <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
         <aspect>vso:inspectionContext</aspect>
       </mandatory-aspects>
     </type>
@@ -365,7 +418,12 @@
       <parent>cm:content</parent>
 
       <properties>
-        <property name="vso:closureDate">
+        <property name="vso:followUpDate">
+          <title>Fecha de seguimiento</title>
+          <description>Date (and time) the follow-up was conducted in the field, as recorded by the checklist app</description>
+          <type>d:datetime</type>
+        </property>
+        <property name="vso:followUpClosureDate">
           <title>Fecha de cierre</title>
           <description>Date corrective action was closed</description>
           <type>d:date</type>

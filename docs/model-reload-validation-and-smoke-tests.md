@@ -6,7 +6,7 @@ This checklist validates the updates made to the VSO model:
 - vso:findingStatus constrained with default Open
 - New properties in vso:finding:
   - vso:submissionDeadline
-  - vso:closureDate
+   - vso:findingClosureDate
   - vso:openedDate
   - vso:lastStatusChange
 - New association in vso:checklistItem: vso:relatedPriorFinding (many-to-many to vso:finding)
@@ -26,8 +26,9 @@ This checklist validates the updates made to the VSO model:
 1. Restart Alfresco repository service.
 2. Verify there are no model dictionary parse errors in startup logs.
 3. Confirm model registration in logs for namespace/prefix vso.
-4. Confirm no QName collisions were reported for:
-   - vso:closureDate (exists in both vso:finding and vso:followUpReport; this is valid because properties are scoped by type)
+4. Confirm no QName collisions were reported for similarly named closure fields:
+   - vso:findingClosureDate
+   - vso:followUpClosureDate
 5. Open Node Browser/Repository Admin and inspect type definitions:
    - vso:finding
    - vso:checklistItem
@@ -48,7 +49,7 @@ This checklist validates the updates made to the VSO model:
 | ST-01 | Constraint | Allowed finding status values | Create/update a vso:finding with each allowed status: Open, CAP Submitted, CAP Accepted, In Progess, Pending Closure Review, Closed, Overdue | Save succeeds for each allowed value |
 | ST-02 | Constraint | Rejected finding status value | Try setting vso:findingStatus to a value not in list (for example: Draft) | Save fails with constraint violation |
 | ST-03 | Default | Default status on create | Create a new vso:finding without setting vso:findingStatus | Property auto-populates to Open |
-| ST-04 | New props | vso:finding date fields present | Set/read vso:submissionDeadline, vso:closureDate, vso:openedDate, vso:lastStatusChange | All fields persist and are queryable |
+| ST-04 | New props | vso:finding date fields present | Set/read vso:submissionDeadline, vso:findingClosureDate, vso:openedDate, vso:lastStatusChange | All fields persist and are queryable |
 | ST-05 | Assoc | relatedPriorFinding many-to-many | Link one checklist item to multiple findings, and multiple checklist items to one finding | Links persist both directions without cardinality errors |
 | ST-06 | Assoc | verifiedBy optional | Create vso:correctiveAction without any follow-up report | Create succeeds (no mandatory association error) |
 | ST-07 | Assoc | verifiedBy target many | Link one vso:correctiveAction to multiple vso:followUpReport nodes | Multiple links succeed |

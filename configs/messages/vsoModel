@@ -52,7 +52,8 @@ prop.vso_responsibleEntity.title=Responsible Party
 prop.vso_dueDate.title=Due Date
 prop.vso_acceptanceStatus.title=Acceptance Status
 
-prop.vso_closureDate.title=Closure Date
+prop.vso_findingClosureDate.title=Closure Date
+prop.vso_followUpClosureDate.title=Closure Date
 prop.vso_effectivenessConfirmed.title=Effectiveness Verified?
 
 prop.vso_icaoReference.title=ICAO SARPs Reference
