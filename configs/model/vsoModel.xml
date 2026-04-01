@@ -399,7 +399,7 @@
             <many>false</many>
           </source>
           <target>
-            <class>vso:closureReport</class>
+            <class>vso:followUpReport</class>
             <mandatory>false</mandatory>
             <many>true</many>
           </target>
@@ -412,9 +412,9 @@
       </mandatory-aspects>
     </type>
 
-    <!-- ================= Closure Report ================= -->
-    <type name="vso:closureReport">
-      <title>Closure Report</title>
+    <!-- ================= Follow-up Report ================= -->
+    <type name="vso:followUpReport">
+      <title>Follow-up Report</title>
       <parent>cm:content</parent>
 
       <properties>

@@ -9,7 +9,7 @@ type.vso_checklistItem.title=Checklist Item
 type.vso_evidenceItem.title=Evidence Item
 type.vso_finding.title=Finding
 type.vso_correctiveAction.title=Corrective Action
-type.vso_closureReport.title=Closure Report
+type.vso_followUpReport.title=Follow-up Report
 
 # Aspects
 aspect.vso_inspectionContext.title=Inspection Context
