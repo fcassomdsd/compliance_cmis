@@ -78,20 +78,6 @@
   <!-- ========================================================= -->
   <types>
 
-    <!-- ===================== Base VSO Content ====================== -->
-    <type name="vso:vsoContent">
-      <title>VSO Content</title>
-      <parent>cm:content</parent>
-
-      <properties>
-        <property name="vso:contentType">
-          <title>Tipo de contenido VSO</title>
-          <description>VSO business content classification</description>
-          <type>d:text</type>
-        </property>
-      </properties>
-    </type>
-
     <!-- ===================== Inspection ====================== -->
     <type name="vso:inspection">
       <title>Inspección</title>
@@ -123,12 +109,12 @@
       <associations>
         <child-association name="vso:hasChecklist">
           <source>
-            <mandatory>false</mandatory>
+            <mandatory>true</mandatory>
             <many>false</many>
           </source>
           <target>
             <class>vso:inspectionChecklist</class>
-            <mandatory>false</mandatory>
+            <mandatory>true</mandatory>
             <many>true</many>
           </target>
         </child-association>
@@ -137,13 +123,12 @@
       <mandatory-aspects>
         <aspect>vso:inspectionContext</aspect>
       </mandatory-aspects>
-
     </type>
 
     <!-- ================= Inspection Checklist ================= -->
     <type name="vso:inspectionChecklist">
       <title>Lista de Verificación</title>
-      <parent>vso:vsoContent</parent>
+      <parent>cm:content</parent>
 
       <properties>
         <property name="vso:checklistId">
@@ -177,13 +162,12 @@
           </target>
         </child-association>
       </associations>
-
     </type>
 
     <!-- ================= Checklist Item ================= -->
     <type name="vso:checklistItem">
       <title>Checklist Item</title>
-      <parent>vso:vsoContent</parent>
+      <parent>cm:content</parent>
 
       <properties>
         <property name="vso:itemId">
@@ -225,42 +209,16 @@
         </property>
       </properties>
 
-      <associations>
-        <association name="vso:supportedByEvidence">
-          <source>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </source>
-          <target>
-            <class>vso:evidenceItem</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </association>
-        <association name="vso:hasFinding">
-          <source>
-            <mandatory>false</mandatory>
-            <many>false</many>
-          </source>
-          <target>
-            <class>vso:finding</class>
-            <mandatory>false</mandatory>
-            <many>false</many>
-          </target>
-        </association>
-      </associations>
-
       <mandatory-aspects>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
-        <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
     </type>
 
     <!-- ================= Evidence Item ================= -->
     <type name="vso:evidenceItem">
       <title>Evidence Item</title>
-      <parent>vso:vsoContent</parent>
+      <parent>cm:content</parent>
 
       <properties>
         <property name="vso:evidenceId">
@@ -289,14 +247,13 @@
       <mandatory-aspects>
         <aspect>vso:evidenceIntegrity</aspect>
         <aspect>vso:inspectionContext</aspect>
-        <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
     </type>
 
     <!-- ================= Finding ================= -->
     <type name="vso:finding">
       <title>Finding</title>
-      <parent>vso:vsoContent</parent>
+      <parent>cm:content</parent>
 
       <properties>
         <property name="vso:findingId">
@@ -331,17 +288,6 @@
       </properties>
 
       <associations>
-        <association name="vso:findingSupportedByEvidence">
-          <source>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </source>
-          <target>
-            <class>vso:evidenceItem</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </association>
         <child-association name="vso:hasCorrectiveAction">
           <source>
             <mandatory>true</mandatory>
@@ -349,7 +295,7 @@
           </source>
           <target>
             <class>vso:correctiveAction</class>
-            <mandatory>false</mandatory>
+            <mandatory>true</mandatory>
             <many>true</many>
           </target>
         </child-association>
@@ -358,14 +304,13 @@
       <mandatory-aspects>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
-        <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
     </type>
 
     <!-- ================= Corrective Action ================= -->
     <type name="vso:correctiveAction">
       <title>Corrective Action</title>
-      <parent>vso:vsoContent</parent>
+      <parent>cm:content</parent>
 
       <properties>
         <property name="vso:capId">
@@ -402,8 +347,8 @@
             <many>false</many>
           </source>
           <target>
-            <class>vso:followUpReport</class>
-            <mandatory>false</mandatory>
+            <class>vso:closureReport</class>
+            <mandatory>true</mandatory>
             <many>false</many>
           </target>
         </child-association>
@@ -411,14 +356,13 @@
 
       <mandatory-aspects>
         <aspect>vso:inspectionContext</aspect>
-        <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
     </type>
 
-    <!-- ================= Follow-up Report ================= -->
-    <type name="vso:followUpReport">
-      <title>Follow-up Report</title>
-      <parent>vso:vsoContent</parent>
+    <!-- ================= Closure Report ================= -->
+    <type name="vso:closureReport">
+      <title>Closure Report</title>
+      <parent>cm:content</parent>
 
       <properties>
         <property name="vso:closureDate">
@@ -436,21 +380,10 @@
           <description>Effectiveness verification result</description>
           <type>d:boolean</type>
         </property>
-        <property name="vso:findingClosed">
-          <title>Hallazgo cerrado</title>
-          <description>Indicates whether the associated finding is closed</description>
-          <type>d:boolean</type>
-        </property>
-        <property name="vso:percentComplete">
-          <title>Porcentaje completado</title>
-          <description>Percentage of corrective action completion</description>
-          <type>d:int</type>
-        </property>
       </properties>
 
       <mandatory-aspects>
         <aspect>vso:inspectionContext</aspect>
-        <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -469,35 +402,14 @@
           <description>Associated inspection identifier</description>
           <type>d:text</type>
         </property>
-        <property name="vso:locationId">
-          <title>ID ubicacion inspeccion</title>
-          <description>Inspection location identifier</description>
-          <type>d:text</type>
-        </property>
-        <property name="vso:locationName">
-          <title>Nombre ubicacion inspeccion</title>
-          <description>Inspection location name</description>
-          <type>d:text</type>
-        </property>
-      </properties>
-    </aspect>
-
-    <aspect name="vso:serviceContext">
-      <title>Service Context</title>
-      <properties>
         <property name="vso:domain">
           <title>Especialidad</title>
           <description>Oversight domain (CNS, AGA, OPS)</description>
           <type>d:text</type>
         </property>
-        <property name="vso:providerId">
-          <title>ID proveedor u operador</title>
-          <description>Service provider identifier under oversight</description>
-          <type>d:text</type>
-        </property>
-        <property name="vso:providerName">
-          <title>Nombre proveedor u operador</title>
-          <description>Service provider name under oversight</description>
+        <property name="vso:provider">
+          <title>Proveedor u Operador</title>
+          <description>Service provider under oversight</description>
           <type>d:text</type>
         </property>
       </properties>
