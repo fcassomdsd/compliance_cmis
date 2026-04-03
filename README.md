@@ -11,6 +11,7 @@ Update only this file when store paths change. Current keys are:
 
 - `inspectionInProcessPath` → destination inspection folder
 - `canonicalSourceBasePath` → canonical models source folder
+- `findingBasePath` → centralized findings base folder (year subfolders are created during canonical import)
 - `inspectionPlanTemplateDataPath` → generated inspection-plan destination folder
 - `inspectionPlanTemplatePath` → inspection-plan template file path
 - `inspectionReportTemplateDataPath` → generated inspection-report destination folder
