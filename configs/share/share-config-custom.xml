@@ -629,7 +629,7 @@
          <!-- minimum length for username and password -->
          <username-min-length>2</username-min-length>
          <password-min-length>8</password-min-length>
-         <show-authorization-status>true</show-authorization-status>
+         <show-authorization-status>false</show-authorization-status>
       </users>
       <!-- This enables/disables the Add External Users Panel on the Add Users page. -->
       <enable-external-users-panel>false</enable-external-users-panel>
@@ -1003,24 +1003,27 @@
                <show id="cm:name" />
                <show id="cm:content" />
                <show id="vso:contentType" />
-               <show id="vso:closureDate" />
-               <show id="vso:closureVerificationMethod" />
-               <show id="vso:effectivenessConfirmed" />
+               <show id="vso:followUpDate" />
                <show id="vso:findingClosed" />
                <show id="vso:percentComplete" />
+               <show id="vso:closureVerificationMethod" />
+               <show id="vso:followUpClosureDate" />
+               <show id="vso:effectivenessConfirmed" />
             </field-visibility>
             <appearance>
                <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-followup-info" appearance="caption" label="Follow-up Info" />
+               <set id="vso-followup-dates" appearance="caption" label="Dates &amp; Results" />
 
                <field id="cm:name" set="cm-info" />
                <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-followup-info" />
-               <field id="vso:closureDate" set="vso-followup-info" />
-               <field id="vso:closureVerificationMethod" set="vso-followup-info" />
-               <field id="vso:effectivenessConfirmed" set="vso-followup-info" />
+               <field id="vso:followUpDate" set="vso-followup-dates" />
                <field id="vso:findingClosed" set="vso-followup-info" />
                <field id="vso:percentComplete" set="vso-followup-info" />
+               <field id="vso:closureVerificationMethod" set="vso-followup-dates" />
+               <field id="vso:followUpClosureDate" set="vso-followup-dates" />
+               <field id="vso:effectivenessConfirmed" set="vso-followup-dates" />
             </appearance>
          </form>
       </forms>
@@ -1038,12 +1041,17 @@
                <show id="vso:regulationBreached" />
                <show id="vso:description" />
                <show id="vso:findingStatus" />
+               <show id="vso:submissionDeadline" />
+               <show id="vso:openedDate" />
+               <show id="vso:findingClosureDate" />
+               <show id="vso:lastStatusChange" />
                <show id="vso:findingSupportedByEvidence" />
                <show id="vso:hasCorrectiveAction" />
             </field-visibility>
             <appearance>
                <set id="cm-info" appearance="caption" label="Content" />
                <set id="vso-finding-info" appearance="caption" label="Finding Info" />
+               <set id="vso-finding-dates" appearance="caption" label="Dates &amp; Status" />
                <set id="vso-associations" appearance="caption" label="Related Records" />
 
                <field id="cm:name" set="cm-info" />
@@ -1055,7 +1063,11 @@
                <field id="vso:description" set="vso-finding-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
-               <field id="vso:findingStatus" set="vso-finding-info" />
+               <field id="vso:findingStatus" set="vso-finding-dates" />
+               <field id="vso:openedDate" set="vso-finding-dates" />
+               <field id="vso:submissionDeadline" set="vso-finding-dates" />
+               <field id="vso:findingClosureDate" set="vso-finding-dates" />
+               <field id="vso:lastStatusChange" set="vso-finding-dates" />
                <field id="vso:findingSupportedByEvidence" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>

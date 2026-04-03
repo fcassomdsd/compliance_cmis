@@ -4,6 +4,7 @@ function resolveVsoPaths() {
   var defaults = {
     inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
     canonicalSourceBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo",
+    findingBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Hallazgos",
     inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data"
   };
 
@@ -34,6 +35,7 @@ function resolveVsoPaths() {
 var VSO_PATHS = resolveVsoPaths();
 var DEFAULT_SOURCE_BASE_PATH = VSO_PATHS.canonicalSourceBasePath;
 var DEFAULT_DESTINATION_BASE_PATH = VSO_PATHS.inspectionInProcessPath;
+var DEFAULT_FINDINGS_BASE_PATH = VSO_PATHS.findingBasePath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Hallazgos";
 // Use text/plain so Share can preview JSON content inline.
 var JSON_MIMETYPE = "text/plain";
 
@@ -224,11 +226,49 @@ function validateImportRequest(requestBody) {
     inspectionCode: inspectionCode,
     sourceBasePath: trimToNull(requestBody.sourceBasePath) || DEFAULT_SOURCE_BASE_PATH,
     destinationBasePath: trimToNull(requestBody.destinationBasePath) || DEFAULT_DESTINATION_BASE_PATH,
+    findingsBasePath: trimToNull(requestBody.findingsBasePath) || DEFAULT_FINDINGS_BASE_PATH,
     inspectionType: trimToNull(requestBody.inspectionType),
     inspectionStatus: trimToNull(requestBody.inspectionStatus) || "En proceso",
     startDate: trimToNull(requestBody.startDate),
     endDate: trimToNull(requestBody.endDate)
   };
+}
+
+function extractYear(value) {
+  var normalized = trimToNull(value);
+  if (normalized === null) {
+    return null;
+  }
+
+  var match = String(normalized).match(/(19|20)\d{2}/);
+  if (match) {
+    return match[0];
+  }
+
+  return null;
+}
+
+function resolveFindingYear(importRequest, checklistPayload) {
+  var candidates = [
+    importRequest.startDate,
+    importRequest.endDate,
+    checklistPayload.startDate,
+    checklistPayload.endDate,
+    checklistPayload.inspectionDate,
+    checklistPayload.reportDate,
+    checklistPayload.date,
+    checklistPayload.inspectionCode,
+    importRequest.inspectionCode
+  ];
+
+  for (var index = 0; index < candidates.length; index++) {
+    var year = extractYear(candidates[index]);
+    if (year !== null) {
+      return year;
+    }
+  }
+
+  return null;
 }
 
 function loadCanonicalDocuments(domainFolder, inspectionCode) {
@@ -751,6 +791,26 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, relatedI
   return findingNode;
 }
 
+function upsertFindingsYearFolder(findingsBaseFolder, year, checklistPayload, summary) {
+  var yearFolderResult = ensureFolder(findingsBaseFolder, year, null);
+  var yearFolder = yearFolderResult.node;
+
+  ensureAspect(yearFolder, "vso:inspectionContext");
+  ensureAspect(yearFolder, "vso:serviceContext");
+
+  setPropertyIfPresent(yearFolder, "cm:title", year);
+  setPropertyIfPresent(yearFolder, "vso:inspectionId", checklistPayload.inspectionCode);
+  setPropertyIfPresent(yearFolder, "vso:locationId", checklistPayload.locationId);
+  setPropertyIfPresent(yearFolder, "vso:locationName", checklistPayload.locationName);
+  setPropertyIfPresent(yearFolder, "vso:providerId", checklistPayload.providerId);
+  setPropertyIfPresent(yearFolder, "vso:providerName", checklistPayload.providerName);
+  yearFolder.save();
+
+  summary[yearFolderResult.created ? "created" : "updated"]++;
+
+  return yearFolder;
+}
+
 try {
   model.success = false;
   model.error = null;
@@ -785,6 +845,11 @@ try {
   var destinationBaseFolder = companyhome.childByNamePath(importRequest.destinationBasePath);
   if (!destinationBaseFolder || !destinationBaseFolder.exists()) {
     fail(404, "Destination base folder not found: " + importRequest.destinationBasePath);
+  }
+
+  var findingsBaseFolder = companyhome.childByNamePath(importRequest.findingsBasePath);
+  if (!findingsBaseFolder || !findingsBaseFolder.exists()) {
+    fail(404, "Findings base folder not found: " + importRequest.findingsBasePath);
   }
 
   var canonicalDocuments = loadCanonicalDocuments(sourceDomainFolder, importRequest.inspectionCode);
@@ -822,8 +887,14 @@ try {
     findingsImported: matchedFindings.length
   };
 
+  var findingsYear = resolveFindingYear(importRequest, checklistPayload);
+  if (findingsYear === null) {
+    fail(400, "Unable to determine findings year from inspection data for inspectionCode: " + importRequest.inspectionCode);
+  }
+
   var inspectionFolder = upsertInspectionFolder(destinationBaseFolder, importRequest, checklistPayload, summary);
   var destinationDomainFolder = upsertDomainFolder(inspectionFolder, checklistPayload, summary);
+  var destinationFindingsYearFolder = upsertFindingsYearFolder(findingsBaseFolder, findingsYear, checklistPayload, summary);
   var checklistNode = upsertChecklist(destinationDomainFolder, checklistPayload, summary);
   var destinationEvidenceFolder = upsertEvidenceFolder(destinationDomainFolder, checklistPayload, summary);
   var itemNodesById = {};
@@ -845,7 +916,7 @@ try {
   for (findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
     var findingPayload = matchedFindings[findingIndex].payload.finding;
     var relatedItemPayload = itemPayloadById[findingPayload.itemId];
-    var findingNode = upsertFinding(destinationDomainFolder, checklistPayload, findingPayload, relatedItemPayload, summary);
+    var findingNode = upsertFinding(destinationFindingsYearFolder, checklistPayload, findingPayload, relatedItemPayload, summary);
     var relatedItemNode = itemNodesById[findingPayload.itemId];
 
     if (relatedItemNode) {
@@ -871,6 +942,10 @@ try {
   model.domain = {
     name: destinationDomainFolder.name,
     path: destinationDomainFolder.displayPath + "/" + destinationDomainFolder.name
+  };
+  model.findings = {
+    year: findingsYear,
+    path: destinationFindingsYearFolder.displayPath + "/" + destinationFindingsYearFolder.name
   };
   model.summary = summary;
   model.importedSources = canonicalDocuments.importedSources;
