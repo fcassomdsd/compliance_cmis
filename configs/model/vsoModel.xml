@@ -78,7 +78,7 @@
           <value>Open</value>
           <value>CAP Submitted</value>
           <value>CAP Accepted</value>
-          <value>In Progess</value>
+          <value>In Progress</value>
           <value>Pending Closure Review</value>
           <value>Closed</value>
           <value>Overdue</value>
@@ -451,7 +451,7 @@
           <target>
             <class>vso:followUpReport</class>
             <mandatory>false</mandatory>
-            <many>false</many>
+            <many>true</many>
           </target>
         </child-association>
       </associations>
@@ -478,6 +478,7 @@
           <title>Hallazgo cerrado</title>
           <description>Indicates whether the associated finding is closed</description>
           <type>d:boolean</type>
+          <default>false</default>
         </property>
         <property name="vso:percentComplete">
           <title>Porcentaje completado</title>
