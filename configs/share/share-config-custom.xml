@@ -763,8 +763,12 @@
                <show id="vso:contentType" />
                <show id="vso:inspectionId" />
                <show id="vso:locationId" />
+               <show id="vso:locationCode" />
                <show id="vso:locationName" />
                <show id="vso:domain" />
+               <show id="vso:specialtyId" />
+               <show id="vso:specialtyCode" />
+               <show id="vso:specialtyName" />
                <show id="vso:providerId" />
                <show id="vso:providerName" />
                <show id="vso:icaoReference" />
@@ -787,9 +791,13 @@
                <field id="vso:contentType" set="vso-base" />
                <field id="vso:inspectionId" set="vso-context" />
                <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationCode" set="vso-context" />
                <field id="vso:locationName" set="vso-context" />
 
                <field id="vso:domain" set="vso-service" />
+               <field id="vso:specialtyId" set="vso-service" />
+               <field id="vso:specialtyCode" set="vso-service" />
+               <field id="vso:specialtyName" set="vso-service" />
                <field id="vso:providerId" set="vso-service" />
                <field id="vso:providerName" set="vso-service" />
 
@@ -811,9 +819,13 @@
             <field-visibility>
                <show id="vso:inspectionId" />
                <show id="vso:domain" />
+               <show id="vso:specialtyId" />
+               <show id="vso:specialtyCode" />
+               <show id="vso:specialtyName" />
                <show id="vso:providerId" />
                <show id="vso:providerName" />
                <show id="vso:locationId" />
+               <show id="vso:locationCode" />
                <show id="vso:locationName" />
                <show id="vso:inspectionType" />
                <show id="vso:startDate" />
@@ -826,9 +838,13 @@
                
                <field id="vso:inspectionId" set="vso-context" />
                <field id="vso:domain" set="vso-context" />
+               <field id="vso:specialtyId" set="vso-context" />
+               <field id="vso:specialtyCode" set="vso-context" />
+               <field id="vso:specialtyName" set="vso-context" />
                <field id="vso:providerId" set="vso-context" />
                <field id="vso:providerName" set="vso-context" />
                <field id="vso:locationId" set="vso-context" />
+               <field id="vso:locationCode" set="vso-context" />
                <field id="vso:locationName" set="vso-context" />
                
                <field id="vso:inspectionType" set="vso-details" />
@@ -883,13 +899,16 @@
                <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:itemId" />
+               <show id="vso:itemCode" />
                <show id="vso:requirementText" />
                <show id="vso:itemVerificationMethod" />
                <show id="vso:complianceStatus" />
                <show id="vso:inspectorComment" />
                <show id="vso:riskClassification" />
+               <show id="vso:hasOpenPriorFinding" />
                <show id="vso:supportedByEvidence" />
                <show id="vso:hasFinding" />
+               <show id="vso:relatedPriorFinding" />
             </field-visibility>
             <appearance>
                <set id="cm-info" appearance="caption" label="Content" />
@@ -900,6 +919,7 @@
                <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-item-info" />
                <field id="vso:itemId" set="vso-item-info" />
+               <field id="vso:itemCode" set="vso-item-info" />
                <field id="vso:requirementText" set="vso-item-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
@@ -909,6 +929,7 @@
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
                <field id="vso:riskClassification" set="vso-item-info" />
+               <field id="vso:hasOpenPriorFinding" set="vso-item-info" />
 
                <field id="vso:supportedByEvidence" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
@@ -917,6 +938,12 @@
                   </control>
                </field>
                <field id="vso:hasFinding" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
+               <field id="vso:relatedPriorFinding" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>
                      <control-param name="displayMode">items</control-param>
@@ -1038,6 +1065,7 @@
                <show id="vso:contentType" />
                <show id="vso:findingId" />
                <show id="vso:findingLevel" />
+               <show id="vso:checklistItemCode" />
                <show id="vso:regulationBreached" />
                <show id="vso:description" />
                <show id="vso:findingStatus" />
@@ -1059,6 +1087,7 @@
                <field id="vso:contentType" set="vso-finding-info" />
                <field id="vso:findingId" set="vso-finding-info" />
                <field id="vso:findingLevel" set="vso-finding-info" />
+               <field id="vso:checklistItemCode" set="vso-finding-info" />
                <field id="vso:regulationBreached" set="vso-finding-info" />
                <field id="vso:description" set="vso-finding-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
@@ -1091,12 +1120,14 @@
             <field-visibility>
                <show id="vso:inspectionId" />
                <show id="vso:locationId" />
+               <show id="vso:locationCode" />
                <show id="vso:locationName" />
             </field-visibility>
             <appearance>
                <set id="vso-inspection-context" appearance="bordered-panel" label-id="aspect.vso_inspectionContext" />
                <field set="vso-inspection-context" id="vso:inspectionId" />
                <field set="vso-inspection-context" id="vso:locationId" />
+               <field set="vso-inspection-context" id="vso:locationCode" />
                <field set="vso-inspection-context" id="vso:locationName" />
             </appearance>
          </form>
@@ -1108,12 +1139,18 @@
          <form>
             <field-visibility>
                <show id="vso:domain" />
+               <show id="vso:specialtyId" />
+               <show id="vso:specialtyCode" />
+               <show id="vso:specialtyName" />
                <show id="vso:providerId" />
                <show id="vso:providerName" />
             </field-visibility>
             <appearance>
                <set id="vso-service-context" appearance="bordered-panel" label-id="aspect.vso_serviceContext" />
                <field set="vso-service-context" id="vso:domain" />
+               <field set="vso-service-context" id="vso:specialtyId" />
+               <field set="vso-service-context" id="vso:specialtyCode" />
+               <field set="vso-service-context" id="vso:specialtyName" />
                <field set="vso-service-context" id="vso:providerId" />
                <field set="vso-service-context" id="vso:providerName" />
             </appearance>

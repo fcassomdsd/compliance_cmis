@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>Find Open Findings By Location And Specialty</shortname>
+   <description>Returns findings filtered by location and specialty where findingStatus is not Closed</description>
+   <url>/api/findings/open/query</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>
