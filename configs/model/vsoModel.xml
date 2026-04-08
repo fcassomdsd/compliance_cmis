@@ -417,7 +417,7 @@
           <target>
             <class>vso:evidenceItem</class>
             <mandatory>false</mandatory>
-            <many>false</many>
+            <many>true</many>
           </target>
         </association>
         <child-association name="vso:hasCorrectiveAction">
