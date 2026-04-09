@@ -4,7 +4,7 @@
 
   <description>Operational Safety Oversight Model for Alfresco 25.2</description>
   <author>VSO Team</author>
-  <version>1.1</version>
+  <version>1.5</version>
 
   <!-- ========================================================= -->
   <!-- Imports -->
@@ -78,7 +78,7 @@
           <value>Open</value>
           <value>CAP Submitted</value>
           <value>CAP Accepted</value>
-          <value>In Progess</value>
+          <value>In Progress</value>
           <value>Pending Closure Review</value>
           <value>Closed</value>
           <value>Overdue</value>
@@ -200,9 +200,19 @@
       <properties>
         <property name="vso:itemId">
           <title>ID pregunta inspección</title>
-          <description>Checklist item identifier</description>
+          <description>Checklist item instance identifier</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
+        </property>
+        <property name="vso:itemCode">
+          <title>Código pregunta inspección</title>
+          <description>Reusable question code shared across checklists</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
         </property>
         <property name="vso:requirementText">
           <title>Texto requisito</title>
@@ -234,6 +244,17 @@
           <constraints>
             <constraint ref="vso:riskLevelList"/>
           </constraints>
+        </property>
+        <property name="vso:hasOpenPriorFinding">
+          <title>Tiene hallazgos previos abiertos?</title>
+          <description>Precomputed flag to speed up checklist searches for related prior findings that are not closed</description>
+          <type>d:boolean</type>
+          <default>false</default>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
         </property>
       </properties>
 
@@ -341,6 +362,16 @@
           <description>Regulatory reference breached</description>
           <type>d:text</type>
         </property>
+        <property name="vso:checklistItemCode">
+          <title>Código pregunta relacionada</title>
+          <description>Question code associated with this finding</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
         <property name="vso:description">
           <title>Descripción hallazgo</title>
           <description>Detailed finding description</description>
@@ -386,7 +417,7 @@
           <target>
             <class>vso:evidenceItem</class>
             <mandatory>false</mandatory>
-            <many>false</many>
+            <many>true</many>
           </target>
         </association>
         <child-association name="vso:hasCorrectiveAction">
@@ -451,7 +482,7 @@
           <target>
             <class>vso:followUpReport</class>
             <mandatory>false</mandatory>
-            <many>false</many>
+            <many>true</many>
           </target>
         </child-association>
       </associations>
@@ -478,6 +509,7 @@
           <title>Hallazgo cerrado</title>
           <description>Indicates whether the associated finding is closed</description>
           <type>d:boolean</type>
+          <default>false</default>
         </property>
         <property name="vso:percentComplete">
           <title>Porcentaje completado</title>
@@ -527,6 +559,16 @@
           <description>Inspection location identifier</description>
           <type>d:text</type>
         </property>
+        <property name="vso:locationCode">
+          <title>Código ubicacion inspeccion</title>
+          <description>Stable location business code (for example ICAO code)</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
         <property name="vso:locationName">
           <title>Nombre ubicacion inspeccion</title>
           <description>Inspection location name</description>
@@ -541,6 +583,31 @@
         <property name="vso:domain">
           <title>Especialidad</title>
           <description>Oversight domain (CNS, AGA, OPS)</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:specialtyId">
+          <title>ID especialidad</title>
+          <description>Canonical specialty identifier</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:specialtyCode">
+          <title>Código especialidad</title>
+          <description>Human-friendly specialty code used in search and integrations</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:specialtyName">
+          <title>Nombre especialidad</title>
+          <description>Display name snapshot for specialty</description>
           <type>d:text</type>
         </property>
         <property name="vso:providerId">

@@ -20,6 +20,9 @@ aspect.vso_serviceContext.title=Service Context
 # Properties
 prop.vso_inspectionId.title=Inspection ID
 prop.vso_domain.title=Domain/Functional Area
+prop.vso_specialtyId.title=Specialty ID
+prop.vso_specialtyCode.title=Specialty Code
+prop.vso_specialtyName.title=Specialty Name
 prop.vso_providerId.title=Provider ID
 prop.vso_providerName.title=Provider Name
 prop.vso_inspectionType.title=Inspection Type
@@ -27,6 +30,7 @@ prop.vso_startDate.title=Start Date
 prop.vso_endDate.title=End Date
 prop.vso_inspectionStatus.title=Inspection Status
 prop.vso_locationId.title=Location ID
+prop.vso_locationCode.title=Location Code
 prop.vso_locationName.title=Location Name
 
 prop.vso_checklistId.title=Checklist ID
@@ -34,11 +38,13 @@ prop.vso_scope.title=Audit Scope
 prop.vso_completionDate.title=Completion Date
 
 prop.vso_itemId.title=Item ID
+prop.vso_itemCode.title=Question Code
 prop.vso_requirementText.title=Requirement / Standard
 prop.vso_itemVerificationMethod.title=Verification Method
 prop.vso_complianceStatus.title=Compliance Status
 prop.vso_inspectorComment.title=Inspector Notes
 prop.vso_riskClassification.title=Risk Level
+prop.vso_hasOpenPriorFinding.title=Has Open Prior Finding?
 
 prop.vso_evidenceId.title=Evidence ID
 prop.vso_evidenceType.title=Evidence Type
@@ -48,6 +54,7 @@ prop.vso_collectionDate.title=Date Collected
 prop.vso_findingId.title=Finding ID
 prop.vso_findingLevel.title=Severity Level
 prop.vso_regulationBreached.title=Regulatory Reference
+prop.vso_checklistItemCode.title=Related Question Code
 prop.vso_description.title=Finding Description
 prop.vso_findingStatus.title=Finding Status
 prop.vso_submissionDeadline.title=Submission Deadline

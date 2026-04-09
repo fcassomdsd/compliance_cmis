@@ -17,6 +17,27 @@ Update only this file when store paths change. Current keys are:
 - `inspectionReportTemplateDataPath` → generated inspection-report destination folder
 - `inspectionReportTemplatePath` → inspection-report template file path
 
+## Field governance (ID, Code, Name)
+
+To keep the model consistent and avoid field sprawl, use this convention for business entities:
+
+- `*Id` = canonical internal identifier (required for writes)
+- `*Code` = stable human/search/integration key (index this when queried)
+- `*Name` = display snapshot (optional, usually not indexed)
+
+Current usage in this model:
+
+- Checklist items: `vso:itemId` (instance), `vso:itemCode` (reusable question key)
+- Findings: `vso:checklistItemCode` (question key reference)
+- Inspection context: `vso:locationId`, `vso:locationCode`, `vso:locationName`
+- Service context: `vso:domain` (legacy alias), `vso:specialtyId`, `vso:specialtyCode`, `vso:specialtyName`
+
+Practical rules:
+
+- Accept API aliases (`id` or `code`) on input, resolve internally to canonical fields.
+- Reject payloads where `Id` and `Code` are both provided but do not map to the same catalog record.
+- Store `Name` only when snapshot/audit/export use cases require it.
+
 ## Webscript test payloads
 
 Sample request bodies are available in:
@@ -24,6 +45,40 @@ Sample request bodies are available in:
 - `example/generate-inspection-plan.sample.json`
 - `example/generate-inspection-report.sample.json`
 - `example/generate-inspection-report-derived-findings.sample.json`
+- `example/get-open-findings.sample.json`
+- `example/get-prior-finding-flags.sample.json`
+- `example/refresh-prior-finding-flags.sample.json`
+
+Additional query webscripts:
+
+- Open findings by location and specialty: `/alfresco/s/api/findings/open/query`
+- Checklist items with open prior findings: `/alfresco/s/api/checklist/prior-findings/open`
+- Refresh checklist open-prior-finding flags: `/alfresco/s/api/checklist/prior-findings/refresh-flags`
+
+Open findings query request (`/alfresco/s/api/findings/open/query`):
+
+- Required: `locationId` or `locationCode` or `icaoCode`
+- Required: `specialtyId` or `specialtyCode` or `domain`
+- Optional: `skipCount` (default `0`), `maxItems` (default `100`)
+
+Checklist prior-finding flags request (`/alfresco/s/api/checklist/prior-findings/open`):
+
+- Required: `inspectionId` or `inspectionCode`
+- Required: `specialtyId` or `specialtyCode` or `domain`
+- Optional: `refreshBeforeQuery` (default `false`) to recompute persisted flags in the same request
+- Optional: `refreshDryRun` (default `false`) when `refreshBeforeQuery=true` to preview changes without saving
+- Optional: `priorOnly` (default `true`) to include only findings from inspections different from the requested inspection
+- Returns `items[]` entries with `itemCode` and `findingId` for open prior findings, correlated by reusable question code across checklists.
+- Response also includes a `context` object (`location*`, `domain`, `specialty*`) derived from matched checklist items.
+
+Refresh checklist flags request (`/alfresco/s/api/checklist/prior-findings/refresh-flags`):
+
+- Required: `inspectionId` or `inspectionCode`
+- Required: `specialtyId` or `specialtyCode` or `domain`
+- Optional: `dryRun` (default `false`)
+- Optional: `priorOnly` (default `true`)
+- Recomputes `vso:hasOpenPriorFinding` so subsequent queries can use indexed filtering.
+- Response includes a `context` object (`location*`, `domain`, `specialty*`) derived from matched checklist items.
 
 Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
 
@@ -54,6 +109,33 @@ curl -u admin:admin -X POST \
 	-H "Content-Type: application/json" \
 	--data @example/generate-inspection-report-derived-findings.sample.json \
 	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	-d '{
+	  "locationId": "MDSD",
+	  "specialtyCode": "COM",
+	  "maxItems": 50
+	}' \
+	"http://localhost:8080/alfresco/s/api/findings/open/query"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	-d '{
+	  "inspectionCode": "INSP-2026-0225",
+	  "specialtyCode": "COM",
+	  "refreshBeforeQuery": true
+	}' \
+	"http://localhost:8080/alfresco/s/api/checklist/prior-findings/open"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	-d '{
+	  "inspectionCode": "INSP-2026-0225",
+	  "specialtyCode": "COM",
+	  "dryRun": false
+	}' \
+	"http://localhost:8080/alfresco/s/api/checklist/prior-findings/refresh-flags"
 ```
 
 ## Smart folders (Vigilancia/Datos)
