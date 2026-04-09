@@ -133,7 +133,7 @@ function resolveSpecialtyFilter(input) {
 function buildChecklistQuery(inspectionId, specialtyFilter, onlyFlagged) {
   var query =
     '+TYPE:"vso:checklistItem" ' +
-    '+@vso\\:inspectionId:"' + escapeLuceneValue(inspectionId) + '" ' +
+    '@vso\\:inspectionId:"NOT ' + escapeLuceneValue(inspectionId) + '" ' +
     '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '"';
 
   if (onlyFlagged) {
