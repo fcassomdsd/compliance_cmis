@@ -142,15 +142,55 @@ function resolveSpecialtyFromNode(node) {
   };
 }
 
+function resolveSpecialtyFilter(input) {
+  var specialtyId = trimToNull(input.specialtyId);
+  if (specialtyId !== null) {
+    return { field: "specialtyId", queryField: "@vso\\:specialtyId", value: specialtyId };
+  }
+
+  var specialtyCode = trimToNull(input.specialtyCode);
+  if (specialtyCode !== null) {
+    return { field: "specialtyCode", queryField: "@vso\\:specialtyCode", value: specialtyCode };
+  }
+
+  var legacyDomain = trimToNull(input.domain);
+  if (legacyDomain !== null) {
+    // Legacy compatibility: domain now maps to specialtyId semantics.
+    return { field: "domain", queryField: "@vso\\:specialtyId", value: legacyDomain };
+  }
+
+  return null;
+}
+
+function resolveLocationFilter(input) {
+  var locationId = trimToNull(input.locationId);
+  if (locationId !== null) {
+    return { field: "locationId", queryField: "@vso\\:locationId", value: locationId };
+  }
+
+  var locationCode = trimToNull(input.locationCode);
+  if (locationCode !== null) {
+    return { field: "locationCode", queryField: "@vso\\:locationCode", value: locationCode };
+  }
+
+  var legacyIcaoCode = trimToNull(input.icaoCode);
+  if (legacyIcaoCode !== null) {
+    // Legacy compatibility: ICAO code now maps to locationCode semantics.
+    return { field: "icaoCode", queryField: "@vso\\:locationCode", value: legacyIcaoCode };
+  }
+
+  return null;
+}
+
 try {
   var input = parsePayload(requestbody.content);
 
-  var locationFilter = trimToNull(input.locationId) || trimToNull(input.locationCode) || trimToNull(input.icaoCode);
+  var locationFilter = resolveLocationFilter(input);
   if (locationFilter === null) {
     fail(400, "Missing required field: locationId, locationCode, or icaoCode");
   }
 
-  var specialtyFilter = trimToNull(input.specialtyId) || trimToNull(input.specialtyCode) || trimToNull(input.domain);
+  var specialtyFilter = resolveSpecialtyFilter(input);
   if (specialtyFilter === null) {
     fail(400, "Missing required field: specialtyId, specialtyCode, or domain");
   }
@@ -166,8 +206,8 @@ try {
 
   var query =
     '+TYPE:"vso:finding" ' +
-    '+(@vso\\:locationId:"' + escapeLuceneValue(locationFilter) + '" OR @vso\\:locationCode:"' + escapeLuceneValue(locationFilter) + '") ' +
-    '+(@vso\\:domain:"' + escapeLuceneValue(specialtyFilter) + '" OR @vso\\:specialtyId:"' + escapeLuceneValue(specialtyFilter) + '" OR @vso\\:specialtyCode:"' + escapeLuceneValue(specialtyFilter) + '") ' +
+    '+' + locationFilter.queryField + ':"' + escapeLuceneValue(locationFilter.value) + '" ' +
+    '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '" ' +
     '-@vso\\:findingStatus:"Closed"';
 
   var matched = search.luceneSearch(query) || [];
@@ -234,8 +274,10 @@ try {
     totalMatched: matched.length,
     returned: findings.length,
     filters: {
-      location: locationFilter,
-      specialty: specialtyFilter,
+      location: locationFilter.value,
+      locationField: locationFilter.field,
+      specialty: specialtyFilter.value,
+      specialtyField: specialtyFilter.field,
       excludesStatus: "Closed",
       skipCount: skipCount,
       maxItems: maxItems

@@ -110,16 +110,36 @@ function collectAssocNodesByShortName(node, shortName) {
   return collected;
 }
 
-function buildChecklistQuery(inspectionId, specialty) {
-  return '+TYPE:"vso:checklistItem" ' +
-    '+@vso\\:inspectionId:"' + escapeLuceneValue(inspectionId) + '" ' +
-    '+@vso\\:domain:"' + escapeLuceneValue(specialty) + '"';
+function resolveSpecialtyFilter(input) {
+  var specialtyId = trimToNull(input.specialtyId);
+  if (specialtyId !== null) {
+    return { field: "specialtyId", queryField: "@vso\\:specialtyId", value: specialtyId };
+  }
+
+  var specialtyCode = trimToNull(input.specialtyCode);
+  if (specialtyCode !== null) {
+    return { field: "specialtyCode", queryField: "@vso\\:specialtyCode", value: specialtyCode };
+  }
+
+  var legacyDomain = trimToNull(input.domain);
+  if (legacyDomain !== null) {
+    // Legacy compatibility: domain now maps to specialtyId semantics.
+    return { field: "domain", queryField: "@vso\\:specialtyId", value: legacyDomain };
+  }
+
+  return null;
 }
 
-function buildOpenFindingsByItemCodeQuery(itemCode, specialty, inspectionId, priorOnly) {
+function buildChecklistQuery(inspectionId, specialtyFilter) {
+  return '+TYPE:"vso:checklistItem" ' +
+    '+@vso\\:inspectionId:"' + escapeLuceneValue(inspectionId) + '" ' +
+    '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '"';
+}
+
+function buildOpenFindingsByItemCodeQuery(itemCode, specialtyFilter, inspectionId, priorOnly) {
   var query =
     '+TYPE:"vso:finding" ' +
-    '+@vso\\:domain:"' + escapeLuceneValue(specialty) + '" ' +
+    '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '" ' +
     '+@vso\\:checklistItemCode:"' + escapeLuceneValue(itemCode) + '" ' +
     '-@vso\\:findingStatus:"Closed"';
 
@@ -148,12 +168,12 @@ function extractContext(itemNode) {
   };
 }
 
-function hasOpenPriorFindingByItemCode(itemCode, specialty, inspectionId, priorOnly) {
-  if (!itemCode || !specialty) {
+function hasOpenPriorFindingByItemCode(itemCode, specialtyFilter, inspectionId, priorOnly) {
+  if (!itemCode || !specialtyFilter) {
     return false;
   }
 
-  var findingNodes = search.luceneSearch(buildOpenFindingsByItemCodeQuery(itemCode, specialty, inspectionId, priorOnly)) || [];
+  var findingNodes = search.luceneSearch(buildOpenFindingsByItemCodeQuery(itemCode, specialtyFilter, inspectionId, priorOnly)) || [];
   return findingNodes.length > 0;
 }
 
@@ -165,14 +185,14 @@ try {
     fail(400, "Missing required field: inspectionId or inspectionCode");
   }
 
-  var specialty = trimToNull(input.specialtyId) || trimToNull(input.specialtyCode) || trimToNull(input.domain);
-  if (specialty === null) {
+  var specialtyFilter = resolveSpecialtyFilter(input);
+  if (specialtyFilter === null) {
     fail(400, "Missing required field: specialtyId, specialtyCode, or domain");
   }
 
   var dryRun = parseBoolean(input.dryRun, false);
   var priorOnly = parseBoolean(input.priorOnly, true);
-  var query = buildChecklistQuery(inspectionId, specialty);
+  var query = buildChecklistQuery(inspectionId, specialtyFilter);
   var checklistItems = search.luceneSearch(query) || [];
 
   var inspected = 0;
@@ -195,7 +215,7 @@ try {
       context = extractContext(itemNode);
     }
 
-    var hasOpenPriorFinding = hasOpenPriorFindingByItemCode(itemCode, specialty, inspectionId, priorOnly);
+    var hasOpenPriorFinding = hasOpenPriorFindingByItemCode(itemCode, specialtyFilter, inspectionId, priorOnly);
 
     if (!hasOpenPriorFinding) {
       var relatedFindings = collectAssocNodesByShortName(itemNode, "relatedPriorFinding");
@@ -240,7 +260,8 @@ try {
   status.code = 200;
   model.json = jsonUtils.toJSONString({
     inspectionId: inspectionId,
-    specialty: specialty,
+    specialty: specialtyFilter.value,
+    specialtyField: specialtyFilter.field,
     priorOnly: priorOnly,
     correlationKey: "itemCode",
     context: context,
