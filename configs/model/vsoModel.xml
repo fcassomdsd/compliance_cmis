@@ -237,9 +237,9 @@
           <description>Inspector observations or remarks</description>
           <type>d:text</type>
         </property>
-        <property name="vso:riskClassification">
-          <title>Clasificación de riesgo</title>
-          <description>Risk level associated with non-compliance</description>
+        <property name="vso:nominalRisk">
+          <title>Riesgo nominal</title>
+          <description>Nominal risk level associated with the requirement</description>
           <type>d:text</type>
           <constraints>
             <constraint ref="vso:riskLevelList"/>
@@ -355,6 +355,14 @@
           <type>d:text</type>
           <constraints>
             <constraint ref="vso:findingLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:riskClassification">
+          <title>Clasificación de riesgo</title>
+          <description>Risk classification associated with the detected discrepancy</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
           </constraints>
         </property>
         <property name="vso:regulationBreached">

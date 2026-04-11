@@ -801,7 +801,7 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
   setPropertyIfPresent(itemNode, "vso:itemVerificationMethod", itemPayload.verificationMethod);
   setPropertyIfPresent(itemNode, "vso:complianceStatus", normalizeComplianceStatus(itemPayload.compliance));
   setPropertyIfPresent(itemNode, "vso:inspectorComment", itemPayload.comment);
-  setPropertyIfPresent(itemNode, "vso:riskClassification", itemPayload.riskLevel);
+  setPropertyIfPresent(itemNode, "vso:nominalRisk", itemPayload.nominalRisk || itemPayload.riskLevel);
   setPropertyIfPresent(itemNode, "vso:inspectionId", checklistData.inspectionCode);
   setPropertyIfPresent(itemNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(itemNode, "vso:locationCode", contextValues.locationCode);
@@ -844,6 +844,7 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:contentType", "finding");
   setPropertyIfPresent(findingNode, "vso:findingId", findingPayload.findingId);
   setPropertyIfPresent(findingNode, "vso:findingLevel", normalizeFindingLevel(findingPayload.findingLevel));
+  setPropertyIfPresent(findingNode, "vso:riskClassification", findingPayload.riskClassification || findingPayload.riskLevel);
   setPropertyIfPresent(findingNode, "vso:regulationBreached", findingPayload.requirementBreached);
   setPropertyIfPresent(findingNode, "vso:checklistItemCode", findingItemCode);
   setPropertyIfPresent(findingNode, "vso:description", findingPayload.description);
