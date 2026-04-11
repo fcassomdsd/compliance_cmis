@@ -134,6 +134,87 @@ function selectFirstNodeBySubtype(nodes, subtype) {
   return null;
 }
 
+function normalizeCapIdentifier(value) {
+  var normalized = trimToNull(value);
+  if (normalized === null) {
+    return null;
+  }
+
+  if (normalized.indexOf("CAP-") === 0) {
+    return normalized.substring(4);
+  }
+
+  return normalized;
+}
+
+function toNodeArray(value) {
+  if (value === null || value === undefined) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
+function findCorrectiveActionByProperty(findingNode) {
+  if (!findingNode || !findingNode.properties) {
+    return null;
+  }
+
+  var rawAssocValue = findingNode.properties["vso:hasCorrectiveAction"];
+  var assocValues = toNodeArray(rawAssocValue);
+
+  for (var index = 0; index < assocValues.length; index++) {
+    var assocValue = assocValues[index];
+    var assocText = trimToNull(assocValue);
+    if (assocText === null) {
+      continue;
+    }
+
+    var normalizedCapId = normalizeCapIdentifier(assocText);
+    var capQuery =
+      '+TYPE:"vso:correctiveAction" ' +
+      '+(@cm\\:name:"' + escapeLuceneValue(assocText) + '" ' +
+      'OR @vso\\:capId:"' + escapeLuceneValue(assocText) + '" ' +
+      'OR @vso\\:capId:"' + escapeLuceneValue(normalizedCapId) + '")';
+
+    var capMatches = search.luceneSearch(capQuery) || [];
+    var capNode = selectFirstNodeBySubtype(capMatches, "vso:correctiveAction");
+    if (capNode) {
+      return capNode;
+    }
+  }
+
+  return null;
+}
+
+function toScriptNodeArray(nodes) {
+  if (!nodes) {
+    return [];
+  }
+  return Array.isArray(nodes) ? nodes : [nodes];
+}
+
+function findCorrectiveActionByReloadedNode(findingNode) {
+  if (!findingNode || !findingNode.nodeRef) {
+    return null;
+  }
+
+  var reloadedNode = search.findNode(String(findingNode.nodeRef));
+  if (!reloadedNode) {
+    return null;
+  }
+
+  var byAssoc = selectFirstNodeBySubtype(
+    collectAssocNodesByShortName(reloadedNode, "hasCorrectiveAction"),
+    "vso:correctiveAction"
+  );
+  if (byAssoc) {
+    return byAssoc;
+  }
+
+  return selectFirstNodeBySubtype(toScriptNodeArray(reloadedNode.children), "vso:correctiveAction");
+}
+
 function resolveSpecialtyFromNode(node) {
   return {
     specialtyId: trimProp(node, "vso:specialtyId"),
@@ -218,7 +299,6 @@ try {
     if (!findingNode || !findingNode.isSubType || !findingNode.isSubType("vso:finding")) {
       continue;
     }
-
     var findingStatus = trimProp(findingNode, "vso:findingStatus");
     if (isClosedStatus(findingStatus)) {
       continue;
@@ -232,6 +312,15 @@ try {
 
     var correctiveActions = collectAssocNodesByShortName(findingNode, "hasCorrectiveAction");
     var correctiveActionNode = selectFirstNodeBySubtype(correctiveActions, "vso:correctiveAction");
+
+    if (!correctiveActionNode) {
+      correctiveActionNode = findCorrectiveActionByReloadedNode(findingNode);
+    }
+
+    if (!correctiveActionNode) {
+      correctiveActionNode = findCorrectiveActionByProperty(findingNode);
+    }
+    
     var specialtyContext = resolveSpecialtyFromNode(findingNode);
 
     var result = {
