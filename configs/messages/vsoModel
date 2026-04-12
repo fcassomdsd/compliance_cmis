@@ -43,7 +43,8 @@ prop.vso_requirementText.title=Requirement / Standard
 prop.vso_itemVerificationMethod.title=Verification Method
 prop.vso_complianceStatus.title=Compliance Status
 prop.vso_inspectorComment.title=Inspector Notes
-prop.vso_riskClassification.title=Risk Level
+prop.vso_nominalRisk.title=Nominal Risk
+prop.vso_riskClassification.title=Risk Classification
 prop.vso_hasOpenPriorFinding.title=Has Open Prior Finding?
 
 prop.vso_evidenceId.title=Evidence ID

@@ -341,7 +341,9 @@ try {
         dateIssued: toDateString(findingNode.properties["vso:openedDate"]),
         findingLevel: trimProp(findingNode, "vso:findingLevel"),
         description: trimProp(findingNode, "vso:description"),
-        riskLevel: relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:riskClassification") : "",
+        nominalRisk: relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:nominalRisk") : "",
+        riskClassification: trimProp(findingNode, "vso:riskClassification") || trimToNull(findingPayload.riskClassification) || "",
+        riskLevel: relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:nominalRisk") : "",
         findingStatus: findingStatus,
         correctiveAction: {
           capId: correctiveActionNode ? trimProp(correctiveActionNode, "vso:capId") : "",
