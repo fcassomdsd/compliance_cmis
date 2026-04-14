@@ -59,7 +59,7 @@ prop.vso_checklistItemCode.title=Related Question Code
 prop.vso_description.title=Finding Description
 prop.vso_findingStatus.title=Finding Status
 prop.vso_submissionDeadline.title=Submission Deadline
-prop.vso_openedDate.title=Opening Date
+prop.vso_dateIssued.title=Opening Date
 prop.vso_lastStatusChange.title=Last Status Change
 
 prop.vso_capId.title=CAP ID
