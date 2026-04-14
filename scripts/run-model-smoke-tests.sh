@@ -291,7 +291,7 @@ cat > "$payload" <<EOF
   "properties": {
     "vso:submissionDeadline": "2026-04-15",
     "vso:findingClosureDate": "2026-05-01",
-    "vso:openedDate": "2026-03-31",
+    "vso:dateIssued": "2026-03-31",
     "vso:lastStatusChange": "2026-03-31"
   }
 }
@@ -302,7 +302,7 @@ if assert_status_2xx "$status"; then
   if assert_status_2xx "$status"; then
     d1=$(json_get "$last_response_file" "entry.properties.vso:submissionDeadline" 2>/dev/null || true)
     d2=$(json_get "$last_response_file" "entry.properties.vso:findingClosureDate" 2>/dev/null || true)
-    d3=$(json_get "$last_response_file" "entry.properties.vso:openedDate" 2>/dev/null || true)
+    d3=$(json_get "$last_response_file" "entry.properties.vso:dateIssued" 2>/dev/null || true)
     d4=$(json_get "$last_response_file" "entry.properties.vso:lastStatusChange" 2>/dev/null || true)
     if [[ -n "$d1" && -n "$d2" && -n "$d3" && -n "$d4" ]]; then
       report_pass "ST-04" "New finding date fields persisted"

@@ -404,7 +404,7 @@
           <description>Date on which the finding was formally closed by the oversight authority</description>
           <type>d:date</type>
         </property>
-        <property name="vso:openedDate">
+        <property name="vso:dateIssued">
           <title>Fecha de apertura</title>
           <description>Date the finding was formally raised, set on creation from the checklist upload</description>
           <type>d:date</type>

@@ -1071,7 +1071,7 @@
                <show id="vso:description" />
                <show id="vso:findingStatus" />
                <show id="vso:submissionDeadline" />
-               <show id="vso:openedDate" />
+               <show id="vso:dateIssued" />
                <show id="vso:findingClosureDate" />
                <show id="vso:lastStatusChange" />
                <show id="vso:findingSupportedByEvidence" />
@@ -1095,7 +1095,7 @@
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
                <field id="vso:findingStatus" set="vso-finding-dates" />
-               <field id="vso:openedDate" set="vso-finding-dates" />
+               <field id="vso:dateIssued" set="vso-finding-dates" />
                <field id="vso:submissionDeadline" set="vso-finding-dates" />
                <field id="vso:findingClosureDate" set="vso-finding-dates" />
                <field id="vso:lastStatusChange" set="vso-finding-dates" />

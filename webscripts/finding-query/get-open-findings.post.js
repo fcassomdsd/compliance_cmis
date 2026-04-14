@@ -338,7 +338,7 @@ try {
           (relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:itemCode") : "") ||
           (trimToNull(findingPayload.itemCode) || trimToNull(findingPayload.itemId) || ""),
         requirementBreached: trimProp(findingNode, "vso:regulationBreached") || trimToNull(findingPayload.requirementBreached) || "",
-        dateIssued: toDateString(findingNode.properties["vso:openedDate"]),
+        dateIssued: toDateString(findingNode.properties["vso:dateIssued"] || findingNode.properties["vso:openedDate"]),
         findingLevel: trimProp(findingNode, "vso:findingLevel"),
         description: trimProp(findingNode, "vso:description"),
         nominalRisk: relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:nominalRisk") : "",

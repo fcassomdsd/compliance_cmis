@@ -861,6 +861,11 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:checklistItemCode", findingItemCode);
   setPropertyIfPresent(findingNode, "vso:description", findingPayload.description);
   setPropertyIfPresent(findingNode, "vso:findingStatus", "Open");
+  setDatePropertyIfPresent(
+    findingNode,
+    "vso:dateIssued",
+    firstNonEmpty(findingPayload.dateIssued, findingPayload.openedDate, findingPayload.dateOpened)
+  );
   setPropertyIfPresent(findingNode, "vso:inspectionId", checklistData.inspectionCode);
   setPropertyIfPresent(findingNode, "vso:locationId", findingContextValues.locationId || checklistContextValues.locationId);
   setPropertyIfPresent(findingNode, "vso:locationCode", findingContextValues.locationCode || checklistContextValues.locationCode);
