@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>Import Follow-up Report</shortname>
+   <description>Import a follow-up report independently from checklist imports and link it to finding/corrective action nodes</description>
+   <url>/api/follow-up/import</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>

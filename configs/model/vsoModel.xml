@@ -259,17 +259,6 @@
       </properties>
 
       <associations>
-        <association name="vso:supportedByEvidence">
-          <source>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </source>
-          <target>
-            <class>vso:evidenceItem</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </association>
         <association name="vso:hasFinding">
           <source>
             <mandatory>false</mandatory>
@@ -295,6 +284,7 @@
       </associations>
 
       <mandatory-aspects>
+        <aspect>vso:evidenceReferences</aspect>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
@@ -417,17 +407,6 @@
       </properties>
 
       <associations>
-        <association name="vso:findingSupportedByEvidence">
-          <source>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </source>
-          <target>
-            <class>vso:evidenceItem</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </association>
         <child-association name="vso:hasCorrectiveAction">
           <source>
             <mandatory>false</mandatory>
@@ -442,6 +421,7 @@
       </associations>
 
       <mandatory-aspects>
+        <aspect>vso:evidenceReferences</aspect>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
@@ -542,6 +522,7 @@
       </properties>
 
       <mandatory-aspects>
+        <aspect>vso:evidenceReferences</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
@@ -553,6 +534,23 @@
   <!-- Aspects -->
   <!-- ========================================================= -->
   <aspects>
+
+    <aspect name="vso:evidenceReferences">
+      <title>Evidence References</title>
+      <associations>
+        <association name="vso:relatedEvidence">
+          <source>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </source>
+          <target>
+            <class>vso:evidenceItem</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </association>
+      </associations>
+    </aspect>
 
     <aspect name="vso:inspectionContext">
       <title>Inspection Context</title>
