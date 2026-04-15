@@ -48,12 +48,14 @@ Sample request bodies are available in:
 - `example/get-open-findings.sample.json`
 - `example/get-prior-finding-flags.sample.json`
 - `example/refresh-prior-finding-flags.sample.json`
+- `example/FollowUp MDPP-VIG-2025-02 CAP-10.json`
 
 Additional query webscripts:
 
 - Open findings by location and specialty: `/alfresco/s/api/findings/open/query`
 - Checklist items with open prior findings: `/alfresco/s/api/checklist/prior-findings/open`
 - Refresh checklist open-prior-finding flags: `/alfresco/s/api/checklist/prior-findings/refresh-flags`
+- Follow-up report import (independent from checklist import): `/alfresco/s/api/follow-up/import`
 
 Open findings query request (`/alfresco/s/api/findings/open/query`):
 
@@ -79,6 +81,14 @@ Refresh checklist flags request (`/alfresco/s/api/checklist/prior-findings/refre
 - Optional: `priorOnly` (default `true`)
 - Recomputes `vso:hasOpenPriorFinding` so subsequent queries can use indexed filtering.
 - Response includes a `context` object (`location*`, `domain`, `specialty*`) derived from matched checklist items.
+
+Follow-up report import request (`/alfresco/s/api/follow-up/import`):
+
+- Required root object: `followUpReport`
+- Required fields: `followUpReport.findingId`, `followUpReport.capId`, `followUpReport.followUpDate`
+- Optional disambiguation fields when finding IDs are not globally unique: `providerId`, `locationId`, `specialtyId`
+- `followUpReport.percentComplete` must be an integer between `0` and `100`
+- If `followUpReport.findingClosed=true`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata
 
 Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
 
@@ -136,6 +146,11 @@ curl -u admin:admin -X POST \
 	  "dryRun": false
 	}' \
 	"http://localhost:8080/alfresco/s/api/checklist/prior-findings/refresh-flags"
+
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @"example/FollowUp MDPP-VIG-2025-02 CAP-10.json" \
+	"http://localhost:8080/alfresco/s/api/follow-up/import"
 ```
 
 ## Smart folders (Vigilancia/Datos)

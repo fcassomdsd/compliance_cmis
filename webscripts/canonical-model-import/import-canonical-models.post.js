@@ -1042,7 +1042,7 @@ try {
     var evidenceNodes = upsertEvidence(destinationEvidenceFolder, checklistPayload, checklistItemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext);
     for (var evidenceNodeIndex = 0; evidenceNodeIndex < evidenceNodes.length; evidenceNodeIndex++) {
       itemNode.save();
-      ensureAssociation(itemNode, evidenceNodes[evidenceNodeIndex], "vso:supportedByEvidence");
+        ensureAssociation(itemNode, evidenceNodes[evidenceNodeIndex], "vso:relatedEvidence");
     }
   }
 
@@ -1057,10 +1057,10 @@ try {
       relatedItemNode.save();
       ensureAssociation(relatedItemNode, findingNode, "vso:hasFinding");
 
-      var relatedEvidenceNodes = relatedItemNode.assocs["vso:supportedByEvidence"];
+        var relatedEvidenceNodes = relatedItemNode.assocs["vso:relatedEvidence"];
       if (relatedEvidenceNodes) {
         for (var relatedEvidenceIndex = 0; relatedEvidenceIndex < relatedEvidenceNodes.length; relatedEvidenceIndex++) {
-          ensureAssociation(findingNode, relatedEvidenceNodes[relatedEvidenceIndex], "vso:findingSupportedByEvidence");
+            ensureAssociation(findingNode, relatedEvidenceNodes[relatedEvidenceIndex], "vso:relatedEvidence");
         }
       }
     }

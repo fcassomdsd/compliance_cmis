@@ -15,6 +15,7 @@ type.vso_followUpReport.title=Follow-up Report
 aspect.vso_inspectionContext.title=Inspection Context
 aspect.vso_regulatoryTraceability.title=Regulatory Traceability
 aspect.vso_evidenceIntegrity.title=Evidence Integrity
+aspect.vso_evidenceReferences.title=Evidence References
 aspect.vso_serviceContext.title=Service Context
 
 # Properties
@@ -83,3 +84,6 @@ prop.vso_ceMapping.title=Critical Element (CE)
 prop.vso_hashValue.title=File Hash (SHA-256)
 prop.vso_immutable.title=Is Immutable?
 prop.vso_sealedDate.title=Sealing Date
+
+# Associations
+assoc.vso_relatedEvidence.title=Related Evidence
