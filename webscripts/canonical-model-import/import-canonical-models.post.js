@@ -219,6 +219,7 @@ function validateImportRequest(requestBody) {
 
   return {
     inspectionCode: inspectionCode,
+    inspectionId: trimToNull(requestBody.inspectionId),
     sourceBasePath: trimToNull(requestBody.sourceBasePath) || DEFAULT_SOURCE_BASE_PATH,
     destinationBasePath: trimToNull(requestBody.destinationBasePath) || DEFAULT_DESTINATION_BASE_PATH,
     findingsBasePath: trimToNull(requestBody.findingsBasePath) || DEFAULT_FINDINGS_BASE_PATH,
@@ -229,7 +230,7 @@ function validateImportRequest(requestBody) {
     specialtyCode: trimToNull(requestBody.specialtyCode),
     specialtyName: trimToNull(requestBody.specialtyName),
     inspectionType: trimToNull(requestBody.inspectionType),
-    inspectionStatus: trimToNull(requestBody.inspectionStatus) || "En proceso",
+    inspectionStatus: trimToNull(requestBody.inspectionStatus) || "Reported",
     startDate: trimToNull(requestBody.startDate),
     endDate: trimToNull(requestBody.endDate)
   };
@@ -265,6 +266,26 @@ function resolveContextValues(source, importRequest) {
     specialtyCode: specialtyCode,
     specialtyName: specialtyName
   };
+}
+
+function resolveInspectionIdentifier(source, importRequest) {
+  var src = source || {};
+  var req = importRequest || {};
+
+  return firstNonEmpty(
+    src.inspectionId,
+    req.inspectionId,
+    src.inspectionCode,
+    req.inspectionCode
+  );
+}
+
+function resolveEvidenceSource(evidencePayload) {
+  if (!evidencePayload) {
+    return null;
+  }
+
+  return firstNonEmpty(evidencePayload.source, evidencePayload.evidenceSource);
 }
 
 function extractYear(value) {
@@ -372,9 +393,10 @@ function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistD
   ensureAspect(inspectionFolder, "vso:serviceContext");
 
   var contextValues = resolveContextValues(checklistData, importRequest);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistData, importRequest);
 
   setPropertyIfPresent(inspectionFolder, "cm:title", importRequest.inspectionCode);
-  setPropertyIfPresent(inspectionFolder, "vso:inspectionId", checklistData.inspectionCode || importRequest.inspectionCode);
+  setPropertyIfPresent(inspectionFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionType", importRequest.inspectionType);
   setDatePropertyIfPresent(inspectionFolder, "vso:startDate", importRequest.startDate);
   setDatePropertyIfPresent(inspectionFolder, "vso:endDate", importRequest.endDate);
@@ -396,6 +418,7 @@ function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistD
 
 function upsertDomainFolder(inspectionFolder, checklistPayload, summary) {
   var contextValues = resolveContextValues(checklistPayload, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistPayload, null);
   var folderName = trimToNull(contextValues.specialtyName) || trimToNull(contextValues.specialtyCode) || trimToNull(contextValues.specialtyId) || "GENERAL";
   var domainFolderResult = ensureFolder(inspectionFolder, folderName, null);
   var domainFolder = domainFolderResult.node;
@@ -404,7 +427,7 @@ function upsertDomainFolder(inspectionFolder, checklistPayload, summary) {
   ensureAspect(domainFolder, "vso:serviceContext");
 
   setPropertyIfPresent(domainFolder, "cm:title", folderName);
-  setPropertyIfPresent(domainFolder, "vso:inspectionId", checklistPayload.inspectionCode);
+  setPropertyIfPresent(domainFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(domainFolder, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(domainFolder, "vso:locationCode", contextValues.locationCode);
   setPropertyIfPresent(domainFolder, "vso:locationName", contextValues.locationName);
@@ -433,11 +456,12 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   checklistNode.mimetype = JSON_MIMETYPE;
 
   var contextValues = resolveContextValues(checklistPayload, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistPayload, null);
 
   setPropertyIfPresent(checklistNode, "cm:title", checklistPayload.checklistId);
   setPropertyIfPresent(checklistNode, "vso:contentType", "inspectionChecklist");
   setPropertyIfPresent(checklistNode, "vso:checklistId", checklistPayload.checklistId);
-  setPropertyIfPresent(checklistNode, "vso:inspectionId", checklistPayload.inspectionCode);
+  setPropertyIfPresent(checklistNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(checklistNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(checklistNode, "vso:locationCode", contextValues.locationCode);
   setPropertyIfPresent(checklistNode, "vso:locationName", contextValues.locationName);
@@ -461,9 +485,10 @@ function upsertEvidenceFolder(domainFolder, checklistPayload, summary) {
   ensureAspect(evidenceFolder, "vso:serviceContext");
 
   var contextValues = resolveContextValues(checklistPayload, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistPayload, null);
 
   setPropertyIfPresent(evidenceFolder, "cm:title", "Evidence");
-  setPropertyIfPresent(evidenceFolder, "vso:inspectionId", checklistPayload.inspectionCode);
+  setPropertyIfPresent(evidenceFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(evidenceFolder, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(evidenceFolder, "vso:locationCode", contextValues.locationCode);
   setPropertyIfPresent(evidenceFolder, "vso:locationName", contextValues.locationName);
@@ -678,13 +703,14 @@ function findEvidenceFileByName(folderNode, fileName, recursive) {
 
 function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext) {
   var contextValues = resolveContextValues(checklistData, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistData, null);
   var evidencePayloads = normalizeEvidencePayloads(itemPayload.evidence, itemPayload);
   var evidenceNodes = [];
 
   for (var evidenceIndex = 0; evidenceIndex < evidencePayloads.length; evidenceIndex++) {
     var evidencePayload = evidencePayloads[evidenceIndex];
     var itemCode = itemPayload.itemCode || itemPayload.itemId;
-    var sourceKey = trimToNull(evidencePayload.evidenceSource);
+    var sourceKey = resolveEvidenceSource(evidencePayload);
     var importedBySource = evidenceImportContext && evidenceImportContext.importedBySource ? evidenceImportContext.importedBySource : null;
     var previouslyImportedNode = sourceKey && importedBySource ? importedBySource[sourceKey] : null;
 
@@ -763,8 +789,8 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     setPropertyIfPresent(evidenceNode, "vso:contentType", "evidenceItem");
     setPropertyIfPresent(evidenceNode, "vso:evidenceId", evidencePayload.evidenceId);
     setPropertyIfPresent(evidenceNode, "vso:evidenceType", evidencePayload.evidenceType);
-    setPropertyIfPresent(evidenceNode, "vso:source", evidencePayload.evidenceSource);
-    setPropertyIfPresent(evidenceNode, "vso:inspectionId", checklistData.inspectionCode);
+    setPropertyIfPresent(evidenceNode, "vso:source", sourceKey);
+    setPropertyIfPresent(evidenceNode, "vso:inspectionId", inspectionIdentifier);
     setPropertyIfPresent(evidenceNode, "vso:locationId", contextValues.locationId);
     setPropertyIfPresent(evidenceNode, "vso:locationCode", contextValues.locationCode);
     setPropertyIfPresent(evidenceNode, "vso:locationName", contextValues.locationName);
@@ -773,7 +799,13 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     setPropertyIfPresent(evidenceNode, "vso:specialtyName", contextValues.specialtyName);
     setPropertyIfPresent(evidenceNode, "vso:providerId", checklistData.providerId);
     setPropertyIfPresent(evidenceNode, "vso:providerName", checklistData.providerName);
-    evidenceNode.properties["vso:immutable"] = false;
+    setPropertyIfPresent(evidenceNode, "vso:hashValue", evidencePayload.hashValue);
+    setDatePropertyIfPresent(evidenceNode, "vso:sealedDate", evidencePayload.sealedDate);
+    if (evidencePayload.immutable !== null && evidencePayload.immutable !== undefined) {
+      evidenceNode.properties["vso:immutable"] = !!evidencePayload.immutable;
+    } else {
+      evidenceNode.properties["vso:immutable"] = false;
+    }
     evidenceNode.save();
 
     if (sourceKey && importedBySource && sourceFile) {
@@ -791,6 +823,7 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
 
 function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary) {
   var contextValues = resolveContextValues(checklistData, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistData, null);
   var itemCode = resolveItemCode(itemPayload);
   var checklistItemInstanceId = resolveChecklistItemInstanceId(itemPayload);
   var itemName = (itemCode || checklistItemInstanceId || "unknown-item") + ".json";
@@ -809,12 +842,12 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
   setPropertyIfPresent(itemNode, "vso:contentType", "checklistItem");
   setPropertyIfPresent(itemNode, "vso:itemId", checklistItemInstanceId);
   setPropertyIfPresent(itemNode, "vso:itemCode", itemCode);
-  setPropertyIfPresent(itemNode, "vso:requirementText", itemPayload.requirement);
-  setPropertyIfPresent(itemNode, "vso:itemVerificationMethod", itemPayload.verificationMethod);
-  setPropertyIfPresent(itemNode, "vso:complianceStatus", normalizeComplianceStatus(itemPayload.compliance));
-  setPropertyIfPresent(itemNode, "vso:inspectorComment", itemPayload.comment);
+  setPropertyIfPresent(itemNode, "vso:requirementText", firstNonEmpty(itemPayload.requirementText, itemPayload.requirement));
+  setPropertyIfPresent(itemNode, "vso:itemVerificationMethod", firstNonEmpty(itemPayload.itemVerificationMethod, itemPayload.verificationMethod));
+  setPropertyIfPresent(itemNode, "vso:complianceStatus", normalizeComplianceStatus(firstNonEmpty(itemPayload.complianceStatus, itemPayload.compliance)));
+  setPropertyIfPresent(itemNode, "vso:inspectorComment", firstNonEmpty(itemPayload.inspectorComment, itemPayload.comment));
   setPropertyIfPresent(itemNode, "vso:nominalRisk", resolveNominalRisk(itemPayload));
-  setPropertyIfPresent(itemNode, "vso:inspectionId", checklistData.inspectionCode);
+  setPropertyIfPresent(itemNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(itemNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(itemNode, "vso:locationCode", contextValues.locationCode);
   setPropertyIfPresent(itemNode, "vso:locationName", contextValues.locationName);
@@ -851,13 +884,14 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
 
   var findingContextValues = resolveContextValues(findingPayload, null);
   var checklistContextValues = resolveContextValues(checklistData, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistData, null);
 
   setPropertyIfPresent(findingNode, "cm:title", findingPayload.findingId);
   setPropertyIfPresent(findingNode, "vso:contentType", "finding");
   setPropertyIfPresent(findingNode, "vso:findingId", findingPayload.findingId);
   setPropertyIfPresent(findingNode, "vso:findingLevel", normalizeFindingLevel(findingPayload.findingLevel));
   setPropertyIfPresent(findingNode, "vso:riskClassification", findingPayload.riskClassification || findingPayload.riskLevel);
-  setPropertyIfPresent(findingNode, "vso:regulationBreached", findingPayload.requirementBreached);
+  setPropertyIfPresent(findingNode, "vso:regulationBreached", firstNonEmpty(findingPayload.regulationBreached, findingPayload.requirementBreached));
   setPropertyIfPresent(findingNode, "vso:checklistItemCode", findingItemCode);
   setPropertyIfPresent(findingNode, "vso:description", findingPayload.description);
   setPropertyIfPresent(findingNode, "vso:findingStatus", "Open");
@@ -866,7 +900,7 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
     "vso:dateIssued",
     firstNonEmpty(findingPayload.dateIssued, findingPayload.openedDate, findingPayload.dateOpened)
   );
-  setPropertyIfPresent(findingNode, "vso:inspectionId", checklistData.inspectionCode);
+  setPropertyIfPresent(findingNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(findingNode, "vso:locationId", findingContextValues.locationId || checklistContextValues.locationId);
   setPropertyIfPresent(findingNode, "vso:locationCode", findingContextValues.locationCode || checklistContextValues.locationCode);
   setPropertyIfPresent(findingNode, "vso:locationName", findingContextValues.locationName || checklistContextValues.locationName);
@@ -896,9 +930,10 @@ function upsertFindingsYearFolder(findingsBaseFolder, year, checklistPayload, su
   ensureAspect(yearFolder, "vso:serviceContext");
 
   var contextValues = resolveContextValues(checklistPayload, null);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistPayload, null);
 
   setPropertyIfPresent(yearFolder, "cm:title", year);
-  setPropertyIfPresent(yearFolder, "vso:inspectionId", checklistPayload.inspectionCode);
+  setPropertyIfPresent(yearFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(yearFolder, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(yearFolder, "vso:locationCode", contextValues.locationCode);
   setPropertyIfPresent(yearFolder, "vso:locationName", contextValues.locationName);
@@ -995,9 +1030,14 @@ try {
   for (var itemIndex = 0; itemIndex < checklistItems.length; itemIndex++) {
     var checklistItem = checklistItems[itemIndex];
     var checklistItemCode = resolveItemCode(checklistItem);
+    var checklistItemId = trimToNull(checklistItem.itemId);
     if (checklistItemCode) {
       itemIdIndex[checklistItemCode] = true;
       itemPayloadById[checklistItemCode] = checklistItem;
+    }
+    if (checklistItemId) {
+      itemIdIndex[checklistItemId] = true;
+      itemPayloadById[checklistItemId] = checklistItem;
     }
   }
 

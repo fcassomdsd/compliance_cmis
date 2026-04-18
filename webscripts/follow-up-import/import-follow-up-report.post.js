@@ -526,6 +526,8 @@ function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPaylo
   setTextPropertyIfPresent(followUpNode, "vso:closureVerificationMethod", payload.closureVerificationMethod || payload.verificationMethod);
   setBooleanPropertyIfPresent(followUpNode, "vso:effectivenessConfirmed", payload.effectivenessConfirmed);
 
+  setTextPropertyIfPresent(followUpNode, "vso:followUpId", payload.followUpId);
+  setTextPropertyIfPresent(followUpNode, "vso:followUpComment", payload.followUpComment);
   setTextPropertyIfPresent(followUpNode, "vso:inspectionId", findingContext.inspectionId);
   setTextPropertyIfPresent(followUpNode, "vso:locationId", payload.locationId || findingContext.locationId);
   setTextPropertyIfPresent(followUpNode, "vso:locationName", payload.locationName || findingContext.locationName);
@@ -585,6 +587,8 @@ function normalizeRequest(payloadRoot) {
     responsibleEntity: trimToNull(report.responsibleEntity),
     dueDate: trimToNull(report.dueDate),
     acceptanceStatus: trimToNull(report.acceptanceStatus),
+    followUpId: trimToNull(report.followUpId),
+    followUpComment: trimToNull(report.followUpComment),
     evidence: normalizeEvidence(report.evidence)
   };
 

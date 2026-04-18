@@ -20,7 +20,6 @@ aspect.vso_serviceContext.title=Service Context
 
 # Properties
 prop.vso_inspectionId.title=Inspection ID
-prop.vso_domain.title=Domain/Functional Area
 prop.vso_specialtyId.title=Specialty ID
 prop.vso_specialtyCode.title=Specialty Code
 prop.vso_specialtyName.title=Specialty Name
@@ -54,7 +53,7 @@ prop.vso_source.title=Origin/Source
 prop.vso_collectionDate.title=Date Collected
 
 prop.vso_findingId.title=Finding ID
-prop.vso_findingLevel.title=Severity Level
+prop.vso_findingLevel.title=Finding Classification
 prop.vso_regulationBreached.title=Regulatory Reference
 prop.vso_checklistItemCode.title=Related Question Code
 prop.vso_description.title=Finding Description
@@ -70,10 +69,12 @@ prop.vso_dueDate.title=Due Date
 prop.vso_acceptanceStatus.title=Acceptance Status
 
 prop.vso_findingClosureDate.title=Finding Closure Date
+prop.vso_followUpId.title=Follow-up ID
 prop.vso_followUpDate.title=Follow-up Date
 prop.vso_followUpClosureDate.title=Follow-up Closure Date
 prop.vso_findingClosed.title=Finding Closed
 prop.vso_percentComplete.title=Completion Percentage
+prop.vso_followUpComment.title=Follow-up Comment
 prop.vso_closureVerificationMethod.title=Closure Verification Method
 prop.vso_effectivenessConfirmed.title=Effectiveness Verified?
 
