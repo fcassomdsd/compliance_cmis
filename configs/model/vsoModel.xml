@@ -85,6 +85,30 @@
         </list>
       </parameter>
     </constraint>
+
+    <constraint name="vso:inspectionStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Created</value>
+          <value>Planned</value>
+          <value>Assigned</value>
+          <value>Confirmed</value>
+          <value>Reported</value>
+          <value>Closed</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:acceptanceStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Pending review</value>
+          <value>Accepted</value>
+          <value>Rejected</value>
+          <value>Returned</value>
+        </list>
+      </parameter>
+    </constraint>
   </constraints>
 
   <!-- ========================================================= -->
@@ -131,22 +155,12 @@
           <title>Estatus inspección</title>
           <description>Current inspection lifecycle status</description>
           <type>d:text</type>
+          <default>Created</default>
+          <constraints>
+            <constraint ref="vso:inspectionStatusList"/>
+          </constraints>
         </property>
       </properties>
-
-      <associations>
-        <child-association name="vso:hasChecklist">
-          <source>
-            <mandatory>false</mandatory>
-            <many>false</many>
-          </source>
-          <target>
-            <class>vso:inspectionChecklist</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </child-association>
-      </associations>
 
       <mandatory-aspects>
         <aspect>vso:inspectionContext</aspect>
@@ -343,6 +357,7 @@
           <title>Clasificación hallazgo</title>
           <description>Finding classification</description>
           <type>d:text</type>
+          <default>Non-Compliance</default>
           <constraints>
             <constraint ref="vso:findingLevelList"/>
           </constraints>
@@ -458,6 +473,9 @@
           <title>Estado de aceptación</title>
           <description>Acceptance status by authority</description>
           <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:acceptanceStatusList"/>
+          </constraints>
         </property>
       </properties>
 
@@ -488,6 +506,11 @@
       <parent>vso:vsoContent</parent>
 
       <properties>
+        <property name="vso:followUpId">
+          <title>ID seguimiento</title>
+          <description>Follow-up report identifier</description>
+          <type>d:text</type>
+        </property>
         <property name="vso:followUpDate">
           <title>Fecha de seguimiento</title>
           <description>Date (and time) the follow-up was conducted in the field, as recorded by the checklist app</description>
@@ -518,6 +541,11 @@
           <title>Efectividad confirmada?</title>
           <description>Effectiveness verification result</description>
           <type>d:boolean</type>
+        </property>
+        <property name="vso:followUpComment">
+          <title>Comentario de seguimiento</title>
+          <description>Free-text comment recorded during the follow-up</description>
+          <type>d:text</type>
         </property>
       </properties>
 
@@ -586,11 +614,6 @@
     <aspect name="vso:serviceContext">
       <title>Service Context</title>
       <properties>
-        <property name="vso:domain">
-          <title>Especialidad</title>
-          <description>Oversight domain (CNS, AGA, OPS)</description>
-          <type>d:text</type>
-        </property>
         <property name="vso:specialtyId">
           <title>ID especialidad</title>
           <description>Canonical specialty identifier</description>
@@ -677,4 +700,3 @@
   </aspects>
 
 </model>
-

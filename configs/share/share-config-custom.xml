@@ -765,7 +765,6 @@
                <show id="vso:locationId" />
                <show id="vso:locationCode" />
                <show id="vso:locationName" />
-               <show id="vso:domain" />
                <show id="vso:specialtyId" />
                <show id="vso:specialtyCode" />
                <show id="vso:specialtyName" />
@@ -794,7 +793,6 @@
                <field id="vso:locationCode" set="vso-context" />
                <field id="vso:locationName" set="vso-context" />
 
-               <field id="vso:domain" set="vso-service" />
                <field id="vso:specialtyId" set="vso-service" />
                <field id="vso:specialtyCode" set="vso-service" />
                <field id="vso:specialtyName" set="vso-service" />
@@ -818,7 +816,6 @@
          <form>
             <field-visibility>
                <show id="vso:inspectionId" />
-               <show id="vso:domain" />
                <show id="vso:specialtyId" />
                <show id="vso:specialtyCode" />
                <show id="vso:specialtyName" />
@@ -837,7 +834,6 @@
                <set id="vso-details" appearance="caption" label="Inspection Details" />
                
                <field id="vso:inspectionId" set="vso-context" />
-               <field id="vso:domain" set="vso-context" />
                <field id="vso:specialtyId" set="vso-context" />
                <field id="vso:specialtyCode" set="vso-context" />
                <field id="vso:specialtyName" set="vso-context" />
@@ -1030,9 +1026,11 @@
                <show id="cm:name" />
                <show id="cm:content" />
                <show id="vso:contentType" />
+               <show id="vso:followUpId" />
                <show id="vso:followUpDate" />
                <show id="vso:findingClosed" />
                <show id="vso:percentComplete" />
+               <show id="vso:followUpComment" />
                <show id="vso:closureVerificationMethod" />
                <show id="vso:followUpClosureDate" />
                <show id="vso:effectivenessConfirmed" />
@@ -1047,9 +1045,13 @@
                <field id="cm:name" set="cm-info" />
                <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-followup-info" />
+               <field id="vso:followUpId" set="vso-followup-info" />
                <field id="vso:followUpDate" set="vso-followup-dates" />
                <field id="vso:findingClosed" set="vso-followup-info" />
                <field id="vso:percentComplete" set="vso-followup-info" />
+               <field id="vso:followUpComment" set="vso-followup-info">
+                  <control template="/org/alfresco/components/form/controls/textarea.ftl" />
+               </field>
                <field id="vso:closureVerificationMethod" set="vso-followup-dates" />
                <field id="vso:followUpClosureDate" set="vso-followup-dates" />
                <field id="vso:effectivenessConfirmed" set="vso-followup-dates" />
@@ -1148,7 +1150,6 @@
       <forms>
          <form>
             <field-visibility>
-               <show id="vso:domain" />
                <show id="vso:specialtyId" />
                <show id="vso:specialtyCode" />
                <show id="vso:specialtyName" />
@@ -1157,7 +1158,6 @@
             </field-visibility>
             <appearance>
                <set id="vso-service-context" appearance="bordered-panel" label-id="aspect.vso_serviceContext" />
-               <field set="vso-service-context" id="vso:domain" />
                <field set="vso-service-context" id="vso:specialtyId" />
                <field set="vso-service-context" id="vso:specialtyCode" />
                <field set="vso-service-context" id="vso:specialtyName" />
