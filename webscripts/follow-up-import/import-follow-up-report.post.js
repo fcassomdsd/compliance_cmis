@@ -89,6 +89,10 @@ function normalizeCapIdentifier(value) {
     return null;
   }
 
+  if (normalized.indexOf("CA-") === 0) {
+    return normalized;
+  }
+
   if (normalized.indexOf("CAP-") === 0) {
     return normalized.substring(4);
   }
@@ -104,6 +108,80 @@ function normalizeCapCandidate(value) {
 
   normalized = normalized.replace(/\.json$/i, "");
   return normalizeCapIdentifier(normalized);
+}
+
+function padNumber(value, size) {
+  var parsed = parseInt(value, 10);
+  if (isNaN(parsed) || parsed < 0) {
+    return null;
+  }
+
+  var text = String(parsed);
+  while (text.length < size) {
+    text = "0" + text;
+  }
+  return text;
+}
+
+function extractTrailingDigits(value) {
+  var normalized = trimToNull(value);
+  if (normalized === null) {
+    return null;
+  }
+
+  var match = String(normalized).match(/(\d+)$/);
+  return match ? match[1] : null;
+}
+
+function parseFindingParts(findingId) {
+  var normalized = trimToNull(findingId);
+  if (normalized === null) {
+    return null;
+  }
+
+  var match = String(normalized).toUpperCase().match(/^([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,})$/);
+  if (!match) {
+    return null;
+  }
+
+  var findingSequence = padNumber(match[3], 2);
+  if (findingSequence === null) {
+    return null;
+  }
+
+  return {
+    findingId: match[1] + "-" + match[2] + "-" + findingSequence,
+    reducedFindingId: match[1] + match[2] + "-" + findingSequence,
+    findingSequence: findingSequence
+  };
+}
+
+function buildCorrectiveActionId(findingId, capValue) {
+  var findingParts = parseFindingParts(findingId);
+  var capSequence = padNumber(extractTrailingDigits(capValue), 2);
+  if (!findingParts || capSequence === null) {
+    return null;
+  }
+
+  return "CA-" + findingParts.reducedFindingId + "-" + capSequence;
+}
+
+function buildFollowUpId(findingId, followUpDate) {
+  var findingParts = parseFindingParts(findingId);
+  if (!findingParts) {
+    return null;
+  }
+
+  var dateValue = normalizeDate(followUpDate, "followUpReport.followUpDate");
+  var yy = String(dateValue.getUTCFullYear()).substring(2);
+  var mm = padNumber(dateValue.getUTCMonth() + 1, 2);
+  var dd = padNumber(dateValue.getUTCDate(), 2);
+
+  if (!mm || !dd) {
+    return null;
+  }
+
+  return "FU-" + findingParts.reducedFindingId + "-" + yy + mm + dd;
 }
 
 function normalizeDate(value, fieldName) {
@@ -421,6 +499,7 @@ function findFindingNode(request) {
 
 function findCorrectiveActionNode(findingNode, capId) {
   var normalizedCapId = normalizeCapIdentifier(capId);
+  var normalizedCapSequence = padNumber(extractTrailingDigits(normalizedCapId), 2);
   var candidates = collectAssocNodesByShortName(findingNode, "hasCorrectiveAction");
 
   if ((!candidates || candidates.length === 0) && findingNode.children) {
@@ -434,7 +513,13 @@ function findCorrectiveActionNode(findingNode, capId) {
     }
 
     var candidateCapId = normalizeCapCandidate(trimProp(candidate, "vso:capId") || trimToNull(candidate.name));
+    var candidateCapSequence = padNumber(extractTrailingDigits(candidateCapId), 2);
+
     if (candidateCapId === normalizedCapId) {
+      return candidate;
+    }
+
+    if (normalizedCapSequence !== null && candidateCapSequence === normalizedCapSequence) {
       return candidate;
     }
   }
@@ -452,7 +537,7 @@ function ensureCorrectiveActionNode(findingNode, payload, findingContext, summar
   var created = false;
 
   if (!correctiveActionNode) {
-    correctiveActionNode = findingNode.createNode("CAP-" + capId + ".json", "vso:correctiveAction", "vso:hasCorrectiveAction");
+    correctiveActionNode = findingNode.createNode(capId + ".json", "vso:correctiveAction", "vso:hasCorrectiveAction");
     created = true;
   }
 
@@ -460,7 +545,7 @@ function ensureCorrectiveActionNode(findingNode, payload, findingContext, summar
   ensureAspect(correctiveActionNode, "vso:inspectionContext");
   ensureAspect(correctiveActionNode, "vso:serviceContext");
 
-  setTextPropertyIfPresent(correctiveActionNode, "cm:title", "CAP-" + capId);
+  setTextPropertyIfPresent(correctiveActionNode, "cm:title", capId);
   setTextPropertyIfPresent(correctiveActionNode, "vso:contentType", "correctiveAction");
   setTextPropertyIfPresent(correctiveActionNode, "vso:capId", capId);
   setTextPropertyIfPresent(correctiveActionNode, "vso:proposedAction", payload.proposedAction);
@@ -492,10 +577,7 @@ function sanitizeToken(value) {
 }
 
 function buildFollowUpNodeName(payload) {
-  var findingToken = sanitizeToken(payload.findingId);
-  var capToken = sanitizeToken("CAP-" + normalizeCapIdentifier(payload.capId));
-  var dateToken = new Date(payload.followUpDate).toISOString().replace(/[^0-9]/g, "");
-  return "FollowUp-" + findingToken + "-" + capToken + "-" + dateToken + ".json";
+  return sanitizeToken(payload.followUpId) + ".json";
 }
 
 function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPayload, summary) {
@@ -517,7 +599,7 @@ function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPaylo
 
   var findingContext = toContext(findingNode);
 
-  setTextPropertyIfPresent(followUpNode, "cm:title", "Follow-up " + payload.findingId + " CAP-" + normalizeCapIdentifier(payload.capId));
+  setTextPropertyIfPresent(followUpNode, "cm:title", "Follow-up " + payload.followUpId);
   setTextPropertyIfPresent(followUpNode, "vso:contentType", "followUpReport");
   setDatePropertyIfPresent(followUpNode, "vso:followUpDate", new Date(payload.followUpDate));
   setBooleanPropertyIfPresent(followUpNode, "vso:findingClosed", payload.findingClosed);
@@ -593,6 +675,24 @@ function normalizeRequest(payloadRoot) {
   };
 
   normalizeDate(normalized.followUpDate, "followUpReport.followUpDate");
+
+  var normalizedFinding = parseFindingParts(normalized.findingId);
+  if (!normalizedFinding) {
+    fail(400, "followUpReport.findingId must match XXXXNNN-YYY-MM");
+  }
+  normalized.findingId = normalizedFinding.findingId;
+
+  normalized.capId = buildCorrectiveActionId(normalized.findingId, normalized.capId) || normalizeCapIdentifier(normalized.capId);
+  if (normalized.capId === null || normalized.capId.indexOf("CA-") !== 0) {
+    fail(400, "followUpReport.capId must contain a corrective action sequence to build CA-XXXXNNNYYY-MM-SS");
+  }
+
+  if (normalized.followUpId === null) {
+    normalized.followUpId = buildFollowUpId(normalized.findingId, normalized.followUpDate);
+  }
+  if (normalized.followUpId === null) {
+    fail(400, "Unable to build followUpReport.followUpId from findingId and followUpDate");
+  }
 
   if (normalized.percentComplete !== null && (normalized.percentComplete < 0 || normalized.percentComplete > 100)) {
     fail(400, "followUpReport.percentComplete must be between 0 and 100");

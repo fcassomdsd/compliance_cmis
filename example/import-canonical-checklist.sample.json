@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "checklist": {
-    "inspectionId": "a01knqepsbfe01aw71a94ya5s0s",
-    "inspectionCode": "MDPP-2025-01",
+    "inspectionId": "MDPP-001",
+    "inspectionCode": "MDPP-001",
     "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
     "specialtyCode": "VIG",
     "specialtyName": "Sistemas de Vigilancia",
@@ -10,7 +10,7 @@
     "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
     "locationName": "Aeropuerto Internacional Gregorio Luperon",
     "icaoCode": "MDPP",
-    "checklistId": "CHK-MDPP-2025-01-VIG",
+    "checklistId": "CHK-MDPP001-VIG",
     "providerName": "DTIC Instituto Dominicano de Aviación Civil"
   },
   "items": [
