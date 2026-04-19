@@ -86,6 +86,10 @@ Follow-up report import request (`/alfresco/s/api/follow-up/import`):
 
 - Required root object: `followUpReport`
 - Required fields: `followUpReport.findingId`, `followUpReport.capId`, `followUpReport.followUpDate`
+- ID formats expected/generated:
+	- `findingId`: `XXXXNNN-YYY-MM` (example: `MDPP001-AYVIS-01`)
+	- `capId`: sequence or full CA id; endpoint normalizes to `CA-XXXXNNNYYY-MM-SS`
+	- `followUpId`: optional in payload; if omitted, endpoint generates `FU-XXXXNNNYYY-MM-YYMMDD`
 - Optional disambiguation fields when finding IDs are not globally unique: `providerId`, `locationId`, `specialtyId`
 - `followUpReport.percentComplete` must be an integer between `0` and `100`
 - If `followUpReport.findingClosed=true`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata

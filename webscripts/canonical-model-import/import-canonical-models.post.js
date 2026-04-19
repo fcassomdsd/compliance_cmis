@@ -64,6 +64,176 @@ function trimToNull(value) {
   return normalized.length === 0 ? null : normalized;
 }
 
+function sanitizeUpperToken(value) {
+  var normalized = trimToNull(value);
+  if (normalized === null) {
+    return null;
+  }
+
+  var cleaned = String(normalized).toUpperCase().replace(/[^A-Z0-9]/g, "");
+  return cleaned.length === 0 ? null : cleaned;
+}
+
+function padNumber(value, size) {
+  var parsed = parseInt(value, 10);
+  if (isNaN(parsed) || parsed < 0) {
+    return null;
+  }
+
+  var asText = String(parsed);
+  while (asText.length < size) {
+    asText = "0" + asText;
+  }
+  return asText;
+}
+
+function extractTrailingDigits(value) {
+  var normalized = trimToNull(value);
+  if (normalized === null) {
+    return null;
+  }
+
+  var match = String(normalized).match(/(\d+)$/);
+  return match ? match[1] : null;
+}
+
+function resolveInspectionKey(source, importRequest) {
+  var inspectionSeed = firstNonEmpty(
+    source ? source.inspectionId : null,
+    source ? source.inspectionCode : null,
+    importRequest ? importRequest.inspectionId : null,
+    importRequest ? importRequest.inspectionCode : null
+  );
+
+  var preferredLocationCode = sanitizeUpperToken(firstNonEmpty(
+    source ? source.locationCode : null,
+    source ? source.icaoCode : null,
+    importRequest ? importRequest.locationCode : null,
+    importRequest ? importRequest.icaoCode : null
+  ));
+
+  var seedText = trimToNull(inspectionSeed);
+  if (seedText !== null) {
+    var hyphenMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})-(\d{1,})$/);
+    if (hyphenMatch) {
+      var directSeq = padNumber(hyphenMatch[2], 3);
+      if (directSeq !== null) {
+        return {
+          locationCode: hyphenMatch[1],
+          sequence: directSeq
+        };
+      }
+    }
+
+    var compactMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})(\d{3})$/);
+    if (compactMatch) {
+      return {
+        locationCode: compactMatch[1],
+        sequence: compactMatch[2]
+      };
+    }
+  }
+
+  var sequenceFromSeed = padNumber(extractTrailingDigits(seedText), 3);
+  if (preferredLocationCode && sequenceFromSeed) {
+    return {
+      locationCode: preferredLocationCode.substring(0, 4),
+      sequence: sequenceFromSeed
+    };
+  }
+
+  return null;
+}
+
+function buildInspectionId(key) {
+  if (!key) {
+    return null;
+  }
+  return key.locationCode + "-" + key.sequence;
+}
+
+function buildInspectionCompactId(key) {
+  if (!key) {
+    return null;
+  }
+  return key.locationCode + key.sequence;
+}
+
+function resolveSpecialtyToken(source, importRequest) {
+  return sanitizeUpperToken(firstNonEmpty(
+    source ? source.specialtyCode : null,
+    source ? source.specialtyId : null,
+    importRequest ? importRequest.specialtyCode : null,
+    importRequest ? importRequest.specialtyId : null
+  ));
+}
+
+function buildChecklistId(inspectionCompactId, specialtyToken) {
+  if (!inspectionCompactId || !specialtyToken) {
+    return null;
+  }
+  return "CHK-" + inspectionCompactId + "-" + specialtyToken;
+}
+
+function resolveFindingSequence(findingPayload, fallbackSequence) {
+  var fromFindingId = padNumber(extractTrailingDigits(findingPayload ? findingPayload.findingId : null), 2);
+  if (fromFindingId !== null) {
+    return fromFindingId;
+  }
+
+  return padNumber(fallbackSequence, 2);
+}
+
+function buildFindingId(inspectionCompactId, specialtyToken, findingSequence) {
+  if (!inspectionCompactId || !specialtyToken || !findingSequence) {
+    return null;
+  }
+  return inspectionCompactId + "-" + specialtyToken + "-" + findingSequence;
+}
+
+function normalizeChecklistIdentity(checklistPayload, importRequest) {
+  var inspectionKey = resolveInspectionKey(checklistPayload, importRequest);
+  if (!inspectionKey) {
+    return null;
+  }
+
+  var specialtyToken = resolveSpecialtyToken(checklistPayload, importRequest);
+  if (!specialtyToken) {
+    return null;
+  }
+
+  var inspectionId = buildInspectionId(inspectionKey);
+  var inspectionCompactId = buildInspectionCompactId(inspectionKey);
+  var checklistId = buildChecklistId(inspectionCompactId, specialtyToken);
+
+  checklistPayload.inspectionId = inspectionId;
+  checklistPayload.inspectionCode = inspectionId;
+  checklistPayload.checklistId = checklistId;
+
+  return {
+    inspectionId: inspectionId,
+    inspectionCompactId: inspectionCompactId,
+    specialtyToken: specialtyToken,
+    checklistId: checklistId
+  };
+}
+
+function normalizeFindingIdentity(findingPayload, identityContext, fallbackSequence) {
+  if (!findingPayload || !identityContext) {
+    return;
+  }
+
+  var findingSequence = resolveFindingSequence(findingPayload, fallbackSequence);
+  if (findingSequence === null) {
+    return;
+  }
+
+  var findingId = buildFindingId(identityContext.inspectionCompactId, identityContext.specialtyToken, findingSequence);
+  if (findingId !== null) {
+    findingPayload.findingId = findingId;
+  }
+}
+
 function setPropertyIfPresent(node, propertyName, value) {
   var normalized = trimToNull(value);
   if (normalized !== null) {
@@ -308,11 +478,10 @@ function resolveFindingYear(importRequest, checklistPayload) {
     importRequest.endDate,
     checklistPayload.startDate,
     checklistPayload.endDate,
+    checklistPayload.completionDate,
     checklistPayload.inspectionDate,
     checklistPayload.reportDate,
-    checklistPayload.date,
-    checklistPayload.inspectionCode,
-    importRequest.inspectionCode
+    checklistPayload.date
   ];
 
   for (var index = 0; index < candidates.length; index++) {
@@ -386,16 +555,16 @@ function filterFindingsByChecklistItems(findingDocuments, itemIdIndex) {
 }
 
 function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistData, summary) {
-  var inspectionFolderResult = ensureFolder(destinationBaseFolder, importRequest.inspectionCode, "vso:inspection");
+  var contextValues = resolveContextValues(checklistData, importRequest);
+  var inspectionIdentifier = resolveInspectionIdentifier(checklistData, importRequest);
+  var inspectionFolderName = importRequest.inspectionCode || inspectionIdentifier;
+  var inspectionFolderResult = ensureFolder(destinationBaseFolder, inspectionFolderName, "vso:inspection");
   var inspectionFolder = inspectionFolderResult.node;
 
   ensureAspect(inspectionFolder, "vso:inspectionContext");
   ensureAspect(inspectionFolder, "vso:serviceContext");
 
-  var contextValues = resolveContextValues(checklistData, importRequest);
-  var inspectionIdentifier = resolveInspectionIdentifier(checklistData, importRequest);
-
-  setPropertyIfPresent(inspectionFolder, "cm:title", importRequest.inspectionCode);
+  setPropertyIfPresent(inspectionFolder, "cm:title", inspectionFolderName);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionType", importRequest.inspectionType);
   setDatePropertyIfPresent(inspectionFolder, "vso:startDate", importRequest.startDate);
@@ -1016,6 +1185,7 @@ try {
   if (normalizedChecklistContext.specialtyName !== null) {
     checklistPayload.specialtyName = normalizedChecklistContext.specialtyName;
   }
+  var normalizedIdentityContext = normalizeChecklistIdentity(checklistPayload, importRequest);
   var checklistItems = toJsArray(canonicalDocuments.checklistDocument.payload.items);
   if (checklistItems === null) {
     fail(400, "Checklist canonical model field items must be an array");
@@ -1088,6 +1258,7 @@ try {
 
   for (findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
     var findingPayload = matchedFindings[findingIndex].payload.finding;
+    normalizeFindingIdentity(findingPayload, normalizedIdentityContext, findingIndex + 1);
     var findingItemCode = resolveItemCode(findingPayload || {});
     var relatedItemPayload = itemPayloadById[findingItemCode];
     var findingNode = upsertFinding(destinationFindingsYearFolder, checklistPayload, findingPayload, findingItemCode, relatedItemPayload, summary);
