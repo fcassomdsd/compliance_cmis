@@ -64,6 +64,31 @@ function trimToNull(value) {
   return normalized.length === 0 ? null : normalized;
 }
 
+function escapeLuceneValue(value) {
+  return String(value).replace(/([+\-!(){}\[\]^"~*?:\\\/]|&&|\|\|)/g, "\\$1");
+}
+
+function normalizeBooleanFlag(value) {
+  if (value === true || value === false) {
+    return value;
+  }
+
+  var normalized = trimToNull(value);
+  if (normalized === null) {
+    return null;
+  }
+
+  normalized = normalized.toLowerCase();
+  if (normalized === "true" || normalized === "1") {
+    return true;
+  }
+  if (normalized === "false" || normalized === "0") {
+    return false;
+  }
+
+  return null;
+}
+
 function sanitizeUpperToken(value) {
   var normalized = trimToNull(value);
   if (normalized === null) {
@@ -406,6 +431,148 @@ function validateImportRequest(requestBody) {
   };
 }
 
+function extractFollowUpIdsRequest(requestBody) {
+  var payload = requestBody;
+
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (payload && typeof payload === "object" && Array.isArray(payload.followUpIds)) {
+    return payload.followUpIds;
+  }
+
+  return null;
+}
+
+function findFollowUpNodesById(followUpId) {
+  var query =
+    '+TYPE:"vso:followUpReport" ' +
+    '+@vso\\:followUpId:"' + escapeLuceneValue(followUpId) + '"';
+
+  return search.luceneSearch(query) || [];
+}
+
+function closeFindingFromFollowUp(findingNode, followUpNode) {
+  var followUpType = trimToNull(followUpNode.properties["vso:followUpType"]);
+  var effectivenessConfirmed = normalizeBooleanFlag(followUpNode.properties["vso:effectivenessConfirmed"]);
+
+  if (effectivenessConfirmed !== true) {
+    return { closed: false, reason: "effectiveness-not-confirmed" };
+  }
+
+  if (followUpType !== "Closure Verification") {
+    return { closed: false, reason: "invalid-followup-type-for-closure" };
+  }
+
+  var closureDate = followUpNode.properties["vso:followUpClosureDate"] ||
+    followUpNode.properties["vso:followUpDate"] ||
+    new Date();
+
+  findingNode.properties["vso:findingStatus"] = "Closed";
+  findingNode.properties["vso:findingClosureDate"] = closureDate;
+  findingNode.properties["vso:lastStatusChange"] = new Date();
+  findingNode.save();
+
+  return { closed: true, reason: "closed-by-followup" };
+}
+
+function processFollowUpsByIds(followUpIds) {
+  if (!Array.isArray(followUpIds) || followUpIds.length === 0) {
+    fail(400, "Request must include a non-empty followUpIds array");
+  }
+
+  var summary = {
+    requested: followUpIds.length,
+    processed: 0,
+    findingClosures: 0,
+    notFound: 0,
+    ambiguous: 0,
+    invalid: 0
+  };
+
+  var details = [];
+
+  for (var index = 0; index < followUpIds.length; index++) {
+    var followUpId = trimToNull(followUpIds[index]);
+    if (followUpId === null) {
+      summary.invalid++;
+      details.push({
+        followUpId: null,
+        status: "invalid",
+        message: "followUpIds entries must be non-empty strings"
+      });
+      continue;
+    }
+
+    var matches = findFollowUpNodesById(followUpId);
+    if (matches.length === 0) {
+      summary.notFound++;
+      details.push({
+        followUpId: followUpId,
+        status: "not-found"
+      });
+      continue;
+    }
+
+    if (matches.length > 1) {
+      summary.ambiguous++;
+      details.push({
+        followUpId: followUpId,
+        status: "ambiguous",
+        matches: matches.length
+      });
+      continue;
+    }
+
+    var followUpNode = matches[0];
+    if (!followUpNode || !followUpNode.isSubType || !followUpNode.isSubType("vso:followUpReport")) {
+      summary.invalid++;
+      details.push({
+        followUpId: followUpId,
+        status: "invalid-node"
+      });
+      continue;
+    }
+
+    var findingNode = followUpNode.parent;
+    if (!findingNode || !findingNode.isSubType || !findingNode.isSubType("vso:finding")) {
+      summary.invalid++;
+      details.push({
+        followUpId: followUpId,
+        status: "orphan-followup",
+        message: "Follow-up is not stored under a vso:finding parent"
+      });
+      continue;
+    }
+
+    var closureResult = closeFindingFromFollowUp(findingNode, followUpNode);
+    summary.processed++;
+    if (closureResult.closed) {
+      summary.findingClosures++;
+    }
+
+    details.push({
+      followUpId: followUpId,
+      status: closureResult.closed ? "closed-finding" : "processed",
+      outcome: closureResult.reason,
+      findingId: trimToNull(findingNode.properties["vso:findingId"]),
+      findingStatus: trimToNull(findingNode.properties["vso:findingStatus"]),
+      followUpNodeRef: String(followUpNode.nodeRef)
+    });
+  }
+
+  status.code = 200;
+  model.success = true;
+  model.error = null;
+  model.inspection = null;
+  model.summary = summary;
+  model.importedSources = [];
+  model.followUpProcessing = {
+    details: details
+  };
+}
+
 function firstNonEmpty() {
   for (var index = 0; index < arguments.length; index++) {
     var normalized = trimToNull(arguments[index]);
@@ -630,6 +797,8 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   setPropertyIfPresent(checklistNode, "cm:title", checklistPayload.checklistId);
   setPropertyIfPresent(checklistNode, "vso:contentType", "inspectionChecklist");
   setPropertyIfPresent(checklistNode, "vso:checklistId", checklistPayload.checklistId);
+  setPropertyIfPresent(checklistNode, "vso:scope", checklistPayload.scope);
+  setDatePropertyIfPresent(checklistNode, "vso:completionDate", checklistPayload.completionDate);
   setPropertyIfPresent(checklistNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(checklistNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(checklistNode, "vso:locationCode", contextValues.locationCode);
@@ -873,7 +1042,10 @@ function findEvidenceFileByName(folderNode, fileName, recursive) {
 function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext) {
   var contextValues = resolveContextValues(checklistData, null);
   var inspectionIdentifier = resolveInspectionIdentifier(checklistData, null);
-  var evidencePayloads = normalizeEvidencePayloads(itemPayload.evidence, itemPayload);
+  var evidencePayloads = normalizeEvidencePayloads(
+    itemPayload.evidenceItems !== undefined ? itemPayload.evidenceItems : itemPayload.evidence,
+    itemPayload
+  );
   var evidenceNodes = [];
 
   for (var evidenceIndex = 0; evidenceIndex < evidencePayloads.length; evidenceIndex++) {
@@ -968,6 +1140,8 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     setPropertyIfPresent(evidenceNode, "vso:specialtyName", contextValues.specialtyName);
     setPropertyIfPresent(evidenceNode, "vso:providerId", checklistData.providerId);
     setPropertyIfPresent(evidenceNode, "vso:providerName", checklistData.providerName);
+    setDatePropertyIfPresent(evidenceNode, "vso:collectionDate", evidencePayload.collectionDate);
+    setPropertyIfPresent(evidenceNode, "vso:evidenceRole", evidencePayload.evidenceRole);
     setPropertyIfPresent(evidenceNode, "vso:hashValue", evidencePayload.hashValue);
     setDatePropertyIfPresent(evidenceNode, "vso:sealedDate", evidencePayload.sealedDate);
     if (evidencePayload.immutable !== null && evidencePayload.immutable !== undefined) {
@@ -1016,6 +1190,9 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
   setPropertyIfPresent(itemNode, "vso:complianceStatus", normalizeComplianceStatus(firstNonEmpty(itemPayload.complianceStatus, itemPayload.compliance)));
   setPropertyIfPresent(itemNode, "vso:inspectorComment", firstNonEmpty(itemPayload.inspectorComment, itemPayload.comment));
   setPropertyIfPresent(itemNode, "vso:nominalRisk", resolveNominalRisk(itemPayload));
+  if (itemPayload.hasOpenPriorFinding !== null && itemPayload.hasOpenPriorFinding !== undefined) {
+    itemNode.properties["vso:hasOpenPriorFinding"] = !!itemPayload.hasOpenPriorFinding;
+  }
   setPropertyIfPresent(itemNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(itemNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(itemNode, "vso:locationCode", contextValues.locationCode);
@@ -1060,15 +1237,19 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:findingId", findingPayload.findingId);
   setPropertyIfPresent(findingNode, "vso:findingLevel", normalizeFindingLevel(findingPayload.findingLevel));
   setPropertyIfPresent(findingNode, "vso:riskClassification", findingPayload.riskClassification || findingPayload.riskLevel);
-  setPropertyIfPresent(findingNode, "vso:regulationBreached", firstNonEmpty(findingPayload.regulationBreached, findingPayload.requirementBreached));
+  setPropertyIfPresent(findingNode, "vso:requirementBreached", findingPayload.requirementBreached);
   setPropertyIfPresent(findingNode, "vso:checklistItemCode", findingItemCode);
   setPropertyIfPresent(findingNode, "vso:description", findingPayload.description);
-  setPropertyIfPresent(findingNode, "vso:findingStatus", "Open");
+  setPropertyIfPresent(findingNode, "vso:findingStatus", findingPayload.findingStatus);
   setDatePropertyIfPresent(
     findingNode,
     "vso:dateIssued",
     firstNonEmpty(findingPayload.dateIssued, findingPayload.openedDate, findingPayload.dateOpened)
   );
+  setDatePropertyIfPresent(findingNode, "vso:submissionDeadline", findingPayload.submissionDeadline);
+  setDatePropertyIfPresent(findingNode, "vso:findingClosureDate", findingPayload.findingClosureDate);
+  setDatePropertyIfPresent(findingNode, "vso:lastStatusChange", findingPayload.lastStatusChange);
+  setDatePropertyIfPresent(findingNode, "vso:resolutionDeadline", findingPayload.resolutionDeadline);
   setPropertyIfPresent(findingNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(findingNode, "vso:locationId", findingContextValues.locationId || checklistContextValues.locationId);
   setPropertyIfPresent(findingNode, "vso:locationCode", findingContextValues.locationCode || checklistContextValues.locationCode);
@@ -1079,10 +1260,16 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:providerId", findingPayload.providerId || checklistData.providerId);
   setPropertyIfPresent(findingNode, "vso:providerName", checklistData.providerName);
 
-  if (relatedItemPayload && relatedItemPayload.reference) {
-    setPropertyIfPresent(findingNode, "vso:icaoReference", relatedItemPayload.reference.icaoReference);
-    setPropertyIfPresent(findingNode, "vso:nationalRegulation", relatedItemPayload.reference.nationalRegulation);
-  }
+  setPropertyIfPresent(
+    findingNode,
+    "vso:icaoReference",
+    firstNonEmpty(findingPayload.icaoReference, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.icaoReference : null)
+  );
+  setPropertyIfPresent(
+    findingNode,
+    "vso:nationalRegulation",
+    firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null)
+  );
 
   findingNode.save();
 
@@ -1137,7 +1324,11 @@ try {
     fail(400, "Invalid JSON request body: " + error.message);
   }
 
-  var importRequest = validateImportRequest(parsedBody);
+  var followUpIdsRequest = extractFollowUpIdsRequest(parsedBody);
+  if (followUpIdsRequest !== null) {
+    processFollowUpsByIds(followUpIdsRequest);
+  } else {
+    var importRequest = validateImportRequest(parsedBody);
 
   var sourceBaseFolder = companyhome.childByNamePath(importRequest.sourceBasePath);
   if (!sourceBaseFolder || !sourceBaseFolder.exists()) {
@@ -1277,23 +1468,24 @@ try {
     }
   }
 
-  status.code = 200;
-  model.success = true;
-  model.error = null;
-  model.inspection = {
-    name: inspectionFolder.name,
-    path: inspectionFolder.displayPath + "/" + inspectionFolder.name
-  };
-  model.domain = {
-    name: destinationDomainFolder.name,
-    path: destinationDomainFolder.displayPath + "/" + destinationDomainFolder.name
-  };
-  model.findings = {
-    year: findingsYear,
-    path: destinationFindingsYearFolder.displayPath + "/" + destinationFindingsYearFolder.name
-  };
-  model.summary = summary;
-  model.importedSources = canonicalDocuments.importedSources;
+    status.code = 200;
+    model.success = true;
+    model.error = null;
+    model.inspection = {
+      name: inspectionFolder.name,
+      path: inspectionFolder.displayPath + "/" + inspectionFolder.name
+    };
+    model.domain = {
+      name: destinationDomainFolder.name,
+      path: destinationDomainFolder.displayPath + "/" + destinationDomainFolder.name
+    };
+    model.findings = {
+      year: findingsYear,
+      path: destinationFindingsYearFolder.displayPath + "/" + destinationFindingsYearFolder.name
+    };
+    model.summary = summary;
+    model.importedSources = canonicalDocuments.importedSources;
+  }
 } catch (runtimeError) {
   if (!model || model.success !== false) {
     setError(500, runtimeError.message);

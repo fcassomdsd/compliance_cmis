@@ -1,6 +1,6 @@
 <webscript>
    <shortname>Import Canonical Inspection Models</shortname>
-   <description>Import checklist and finding canonical JSON into the VSO repository model</description>
+   <description>Import checklist/finding canonical JSON or process existing follow-ups by followUpIds in the VSO repository model</description>
    <url>/api/inspection/import-canonical</url>
    <format default="json"/>
    <authentication>user</authentication>
