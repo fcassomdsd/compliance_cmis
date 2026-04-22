@@ -80,6 +80,7 @@
           <value>CAP Accepted</value>
           <value>In Progress</value>
           <value>Pending Closure Review</value>
+          <value>Verifying Effective Closure</value>
           <value>Closed</value>
           <value>Overdue</value>
         </list>
@@ -106,6 +107,28 @@
           <value>Accepted</value>
           <value>Rejected</value>
           <value>Returned</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:followUpTypeList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Progress Review</value>
+          <value>CAP Verification</value>
+          <value>Closure Verification</value>
+          <value>Ad-hoc Inquiry</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:evidenceRoleList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Compliance Evidence</value>
+          <value>Finding Support</value>
+          <value>Progress Evidence</value>
+          <value>Closure Evidence</value>
         </list>
       </parameter>
     </constraint>
@@ -332,6 +355,14 @@
           <description>Date evidence was collected</description>
           <type>d:date</type>
         </property>
+        <property name="vso:evidenceRole">
+          <title>Rol de evidencia</title>
+          <description>Role of evidence in proving compliance or finding resolution</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:evidenceRoleList"/>
+          </constraints>
+        </property>
       </properties>
 
       <mandatory-aspects>
@@ -370,7 +401,7 @@
             <constraint ref="vso:riskLevelList"/>
           </constraints>
         </property>
-        <property name="vso:regulationBreached">
+        <property name="vso:requirementBreached">
           <title>Regulación incumplida</title>
           <description>Regulatory reference breached</description>
           <type>d:text</type>
@@ -419,9 +450,25 @@
           <description>Date the findingStatus was last updated, maintained by the Node backend on each transition</description>
           <type>d:date</type>
         </property>
+        <property name="vso:resolutionDeadline">
+          <title>Fecha limite de resolución</title>
+          <description>Deadline by which the finding must be resolved</description>
+          <type>d:date</type>
+        </property>
       </properties>
 
       <associations>
+        <child-association name="vso:hasFollowUp">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:followUpReport</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
         <child-association name="vso:hasCorrectiveAction">
           <source>
             <mandatory>false</mandatory>
@@ -511,16 +558,19 @@
           <description>Follow-up report identifier</description>
           <type>d:text</type>
         </property>
+        <property name="vso:followUpType">
+          <title>Tipo de seguimiento</title>
+          <description>Type of follow-up activity</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+          <constraints>
+            <constraint ref="vso:followUpTypeList"/>
+          </constraints>
+        </property>
         <property name="vso:followUpDate">
           <title>Fecha de seguimiento</title>
           <description>Date (and time) the follow-up was conducted in the field, as recorded by the checklist app</description>
           <type>d:datetime</type>
-        </property>
-        <property name="vso:findingClosed">
-          <title>Hallazgo cerrado</title>
-          <description>Indicates whether the associated finding is closed</description>
-          <type>d:boolean</type>
-          <default>false</default>
         </property>
         <property name="vso:percentComplete">
           <title>Porcentaje completado</title>
@@ -548,6 +598,20 @@
           <type>d:text</type>
         </property>
       </properties>
+
+      <associations>
+        <association name="vso:relatedCorrectiveAction">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:correctiveAction</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </association>
+      </associations>
 
       <mandatory-aspects>
         <aspect>vso:evidenceReferences</aspect>
