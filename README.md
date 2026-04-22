@@ -85,14 +85,30 @@ Refresh checklist flags request (`/alfresco/s/api/checklist/prior-findings/refre
 Follow-up report import request (`/alfresco/s/api/follow-up/import`):
 
 - Required root object: `followUpReport`
-- Required fields: `followUpReport.findingId`, `followUpReport.capId`, `followUpReport.followUpDate`
+- Required fields: `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType`
 - ID formats expected/generated:
 	- `findingId`: `XXXXNNN-YYY-MM` (example: `MDPP001-AYVIS-01`)
-	- `capId`: sequence or full CA id; endpoint normalizes to `CA-XXXXNNNYYY-MM-SS`
-	- `followUpId`: optional in payload; if omitted, endpoint generates `FU-XXXXNNNYYY-MM-YYMMDD`
+	- `capId`: optional sequence or full CA id; when provided endpoint normalizes to `CA-XXXXNNNYYY-MM-SS`
+	- `followUpId`: optional in payload; if omitted, endpoint generates `FU-XXXXNNNYYY-MM-VV` where `VV` is the next sequential number for the finding
 - Optional disambiguation fields when finding IDs are not globally unique: `providerId`, `locationId`, `specialtyId`
 - `followUpReport.percentComplete` must be an integer between `0` and `100`
-- If `followUpReport.findingClosed=true`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata
+- If `followUpReport.effectivenessConfirmed=true` and `followUpReport.followUpType="Closure Verification"`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata
+
+Canonical import processing by follow-up IDs (`/alfresco/s/api/inspection/import-canonical`):
+
+- Request body can be an array of follow-up IDs, or an object with `followUpIds` array
+- The endpoint processes already-existing `vso:followUpReport` nodes in Alfresco and applies closure updates to related findings when eligible
+- Example payloads:
+	- `["FU-MDPP001AYVIS-01-01", "FU-MDPP001AYVIS-01-02"]`
+	- `{ "followUpIds": ["FU-MDPP001AYVIS-01-01"] }`
+- Sample file: `example/process-followups-by-ids.sample.json`
+
+```bash
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/process-followups-by-ids.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/import-canonical"
+```
 
 Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
 
