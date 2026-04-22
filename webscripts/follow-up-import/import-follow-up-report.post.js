@@ -166,22 +166,50 @@ function buildCorrectiveActionId(findingId, capValue) {
   return "CA-" + findingParts.reducedFindingId + "-" + capSequence;
 }
 
-function buildFollowUpId(findingId, followUpDate) {
+function buildFollowUpId(findingId, followUpSequence) {
   var findingParts = parseFindingParts(findingId);
   if (!findingParts) {
     return null;
   }
 
-  var dateValue = normalizeDate(followUpDate, "followUpReport.followUpDate");
-  var yy = String(dateValue.getUTCFullYear()).substring(2);
-  var mm = padNumber(dateValue.getUTCMonth() + 1, 2);
-  var dd = padNumber(dateValue.getUTCDate(), 2);
-
-  if (!mm || !dd) {
+  var sequenceNumber = parseInt(followUpSequence, 10);
+  if (isNaN(sequenceNumber) || sequenceNumber < 1 || sequenceNumber > 99) {
     return null;
   }
 
-  return "FU-" + findingParts.reducedFindingId + "-" + yy + mm + dd;
+  var sequence = padNumber(sequenceNumber, 2);
+  if (!sequence) {
+    return null;
+  }
+
+  return "FU-" + findingParts.reducedFindingId + "-" + sequence;
+}
+
+function parseFollowUpSequenceFromId(followUpId, findingId) {
+  var normalizedId = trimToNull(followUpId);
+  var findingParts = parseFindingParts(findingId);
+  if (!normalizedId || !findingParts) {
+    return null;
+  }
+
+  var prefix = "FU-" + findingParts.reducedFindingId + "-";
+  if (normalizedId.indexOf(prefix) !== 0) {
+    return null;
+  }
+
+  var suffix = normalizedId.substring(prefix.length);
+  if (!/^\d{2}$/.test(suffix)) {
+    return null;
+  }
+
+  var parsed = parseInt(suffix, 10);
+  return isNaN(parsed) || parsed < 1 ? null : parsed;
+}
+
+function validateFollowUpIdFormat(followUpId, findingId) {
+  if (parseFollowUpSequenceFromId(followUpId, findingId) === null) {
+    fail(400, "followUpReport.followUpId must match FU-XXXXNNNYYY-MM-VV for the provided findingId");
+  }
 }
 
 function normalizeDate(value, fieldName) {
@@ -216,7 +244,7 @@ function normalizeEvidence(evidencePayload) {
   }
 
   if (!Array.isArray(evidencePayload)) {
-    fail(400, "followUpReport.evidence must be an array");
+    fail(400, "followUpReport.evidenceItems must be an array");
   }
 
   for (var index = 0; index < evidencePayload.length; index++) {
@@ -225,7 +253,7 @@ function normalizeEvidence(evidencePayload) {
       fail(400, "Invalid evidence entry at index " + index);
     }
     if (trimToNull(evidenceItem.evidenceId) === null) {
-      fail(400, "Missing required evidenceId at followUpReport.evidence[" + index + "]");
+      fail(400, "Missing required evidenceId at followUpReport.evidenceItems[" + index + "]");
     }
   }
 
@@ -531,7 +559,33 @@ function toNodePath(node) {
   return node.displayPath + "/" + node.name;
 }
 
+function generateFollowUpSequence(findingNode, findingId) {
+  var existingFollowUps = collectAssocNodesByShortName(findingNode, "hasFollowUp");
+  if (!existingFollowUps || existingFollowUps.length === 0) {
+    return 1;
+  }
+
+  var maxSequence = 0;
+  for (var index = 0; index < existingFollowUps.length; index++) {
+    var followUpNode = existingFollowUps[index];
+    if (!followUpNode || !followUpNode.properties) {
+      continue;
+    }
+
+    var seq = parseFollowUpSequenceFromId(followUpNode.properties["vso:followUpId"], findingId);
+    if (seq !== null && seq > maxSequence) {
+      maxSequence = seq;
+    }
+  }
+
+  return maxSequence + 1;
+}
+
 function ensureCorrectiveActionNode(findingNode, payload, findingContext, summary) {
+  if (!payload.capId) {
+    return { node: null, created: false };
+  }
+
   var capId = normalizeCapIdentifier(payload.capId);
   var correctiveActionNode = findCorrectiveActionNode(findingNode, capId);
   var created = false;
@@ -548,10 +602,6 @@ function ensureCorrectiveActionNode(findingNode, payload, findingContext, summar
   setTextPropertyIfPresent(correctiveActionNode, "cm:title", capId);
   setTextPropertyIfPresent(correctiveActionNode, "vso:contentType", "correctiveAction");
   setTextPropertyIfPresent(correctiveActionNode, "vso:capId", capId);
-  setTextPropertyIfPresent(correctiveActionNode, "vso:proposedAction", payload.proposedAction);
-  setTextPropertyIfPresent(correctiveActionNode, "vso:responsibleEntity", payload.responsibleEntity);
-  setDatePropertyIfPresent(correctiveActionNode, "vso:dueDate", normalizeDate(payload.dueDate, "followUpReport.dueDate"));
-  setTextPropertyIfPresent(correctiveActionNode, "vso:acceptanceStatus", payload.acceptanceStatus);
 
   setTextPropertyIfPresent(correctiveActionNode, "vso:inspectionId", findingContext.inspectionId);
   setTextPropertyIfPresent(correctiveActionNode, "vso:locationId", payload.locationId || findingContext.locationId);
@@ -580,13 +630,13 @@ function buildFollowUpNodeName(payload) {
   return sanitizeToken(payload.followUpId) + ".json";
 }
 
-function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPayload, summary) {
+function ensureFollowUpNode(findingNode, payload, rawPayload, correctiveActionNode, summary) {
   var nodeName = buildFollowUpNodeName(payload);
-  var followUpNode = correctiveActionNode.childByNamePath(nodeName);
+  var followUpNode = findingNode.childByNamePath(nodeName);
   var created = false;
 
   if (!followUpNode || !followUpNode.exists()) {
-    followUpNode = correctiveActionNode.createNode(nodeName, "vso:followUpReport", "vso:verifiedBy");
+    followUpNode = findingNode.createNode(nodeName, "vso:followUpReport", "vso:hasFollowUp");
     created = true;
   }
 
@@ -598,14 +648,13 @@ function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPaylo
   followUpNode.mimetype = "text/plain";
 
   var findingContext = toContext(findingNode);
-
   setTextPropertyIfPresent(followUpNode, "cm:title", "Follow-up " + payload.followUpId);
   setTextPropertyIfPresent(followUpNode, "vso:contentType", "followUpReport");
+  setTextPropertyIfPresent(followUpNode, "vso:followUpType", payload.followUpType);
   setDatePropertyIfPresent(followUpNode, "vso:followUpDate", new Date(payload.followUpDate));
-  setBooleanPropertyIfPresent(followUpNode, "vso:findingClosed", payload.findingClosed);
   setIntPropertyIfPresent(followUpNode, "vso:percentComplete", payload.percentComplete);
-  setDatePropertyIfPresent(followUpNode, "vso:followUpClosureDate", normalizeDate(payload.followUpClosureDate || payload.closureDate, "followUpReport.followUpClosureDate"));
-  setTextPropertyIfPresent(followUpNode, "vso:closureVerificationMethod", payload.closureVerificationMethod || payload.verificationMethod);
+  setDatePropertyIfPresent(followUpNode, "vso:followUpClosureDate", normalizeDate(payload.followUpClosureDate, "followUpReport.followUpClosureDate"));
+  setTextPropertyIfPresent(followUpNode, "vso:closureVerificationMethod", payload.closureVerificationMethod);
   setBooleanPropertyIfPresent(followUpNode, "vso:effectivenessConfirmed", payload.effectivenessConfirmed);
 
   setTextPropertyIfPresent(followUpNode, "vso:followUpId", payload.followUpId);
@@ -615,6 +664,10 @@ function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPaylo
   setTextPropertyIfPresent(followUpNode, "vso:locationName", payload.locationName || findingContext.locationName);
   setTextPropertyIfPresent(followUpNode, "vso:specialtyId", payload.specialtyId || findingContext.specialtyId);
   setTextPropertyIfPresent(followUpNode, "vso:providerId", payload.providerId || findingContext.providerId);
+
+  if (correctiveActionNode) {
+    ensureAssociation(followUpNode, correctiveActionNode, "vso:relatedCorrectiveAction");
+  }
 
   followUpNode.save();
 
@@ -628,15 +681,19 @@ function ensureFollowUpNode(correctiveActionNode, findingNode, payload, rawPaylo
 }
 
 function updateFindingStatusFromFollowUp(findingNode, payload) {
-  if (payload.findingClosed !== true) {
+  if (payload.effectivenessConfirmed !== true) {
     return false;
+  }
+
+  if (payload.followUpType !== "Closure Verification") {
+    fail(400, "Only Closure Verification type follow-ups can set effectivenessConfirmed to true for closure");
   }
 
   ensureAspect(findingNode, "vso:inspectionContext");
   ensureAspect(findingNode, "vso:serviceContext");
 
   findingNode.properties["vso:findingStatus"] = "Closed";
-  findingNode.properties["vso:findingClosureDate"] = normalizeDate(payload.followUpClosureDate || payload.closureDate || payload.followUpDate, "followUpReport.followUpDate");
+  findingNode.properties["vso:findingClosureDate"] = normalizeDate(payload.followUpClosureDate || payload.followUpDate, "followUpReport.followUpDate");
   findingNode.properties["vso:lastStatusChange"] = new Date();
   findingNode.save();
   return true;
@@ -656,22 +713,16 @@ function normalizeRequest(payloadRoot) {
     locationId: trimToNull(report.locationId),
     locationName: trimToNull(report.locationName),
     specialtyId: trimToNull(report.specialtyId),
-    capId: normalizeField(report.capId, "followUpReport.capId"),
+    capId: trimToNull(report.capId),
+    followUpType: normalizeField(report.followUpType, "followUpReport.followUpType"),
     followUpDate: normalizeField(report.followUpDate, "followUpReport.followUpDate"),
-    findingClosed: normalizeBoolean(report.findingClosed, "followUpReport.findingClosed"),
     percentComplete: normalizeInteger(report.percentComplete, "followUpReport.percentComplete"),
     effectivenessConfirmed: normalizeBoolean(report.effectivenessConfirmed, "followUpReport.effectivenessConfirmed"),
     followUpClosureDate: trimToNull(report.followUpClosureDate),
-    closureDate: trimToNull(report.closureDate),
     closureVerificationMethod: trimToNull(report.closureVerificationMethod),
-    verificationMethod: trimToNull(report.verificationMethod),
-    proposedAction: trimToNull(report.proposedAction),
-    responsibleEntity: trimToNull(report.responsibleEntity),
-    dueDate: trimToNull(report.dueDate),
-    acceptanceStatus: trimToNull(report.acceptanceStatus),
     followUpId: trimToNull(report.followUpId),
     followUpComment: trimToNull(report.followUpComment),
-    evidence: normalizeEvidence(report.evidence)
+    evidenceItems: normalizeEvidence(report.evidenceItems)
   };
 
   normalizeDate(normalized.followUpDate, "followUpReport.followUpDate");
@@ -682,16 +733,15 @@ function normalizeRequest(payloadRoot) {
   }
   normalized.findingId = normalizedFinding.findingId;
 
-  normalized.capId = buildCorrectiveActionId(normalized.findingId, normalized.capId) || normalizeCapIdentifier(normalized.capId);
-  if (normalized.capId === null || normalized.capId.indexOf("CA-") !== 0) {
-    fail(400, "followUpReport.capId must contain a corrective action sequence to build CA-XXXXNNNYYY-MM-SS");
+  if (normalized.capId !== null) {
+    normalized.capId = buildCorrectiveActionId(normalized.findingId, normalized.capId) || normalizeCapIdentifier(normalized.capId);
+    if (normalized.capId === null || normalized.capId.indexOf("CA-") !== 0) {
+      fail(400, "followUpReport.capId must contain a corrective action sequence to build CA-XXXXNNNYYY-MM-SS");
+    }
   }
 
-  if (normalized.followUpId === null) {
-    normalized.followUpId = buildFollowUpId(normalized.findingId, normalized.followUpDate);
-  }
-  if (normalized.followUpId === null) {
-    fail(400, "Unable to build followUpReport.followUpId from findingId and followUpDate");
+  if (normalized.followUpId !== null) {
+    validateFollowUpIdFormat(normalized.followUpId, normalized.findingId);
   }
 
   if (normalized.percentComplete !== null && (normalized.percentComplete < 0 || normalized.percentComplete > 100)) {
@@ -707,7 +757,7 @@ try {
   var summary = {
     created: 0,
     updated: 0,
-    evidenceItemsInPayload: normalizedRequest.evidence.length,
+    evidenceItemsInPayload: normalizedRequest.evidenceItems.length,
     evidenceLinked: 0,
     evidenceUnresolved: 0
   };
@@ -715,15 +765,26 @@ try {
   var findingNode = findFindingNode(normalizedRequest);
   var findingContext = toContext(findingNode);
 
+  if (normalizedRequest.followUpId === null) {
+    normalizedRequest.followUpId = buildFollowUpId(
+      normalizedRequest.findingId,
+      generateFollowUpSequence(findingNode, normalizedRequest.findingId)
+    );
+    if (normalizedRequest.followUpId === null) {
+      fail(400, "Unable to build followUpReport.followUpId from findingId and follow-up sequence");
+    }
+    parsed.followUpReport.followUpId = normalizedRequest.followUpId;
+  }
+
   var correctiveActionResult = ensureCorrectiveActionNode(findingNode, normalizedRequest, findingContext, summary);
   var followUpResult = ensureFollowUpNode(
-    correctiveActionResult.node,
     findingNode,
     normalizedRequest,
     parsed.followUpReport,
+    correctiveActionResult.node,
     summary
   );
-  var unresolvedEvidence = linkFollowUpEvidence(followUpResult.node, normalizedRequest.evidence, {
+  var unresolvedEvidence = linkFollowUpEvidence(followUpResult.node, normalizedRequest.evidenceItems, {
     providerId: normalizedRequest.providerId || findingContext.providerId,
     locationId: normalizedRequest.locationId || findingContext.locationId,
     specialtyId: normalizedRequest.specialtyId || findingContext.specialtyId
@@ -741,12 +802,12 @@ try {
       path: toNodePath(findingNode),
       status: trimProp(findingNode, "vso:findingStatus")
     },
-    correctiveAction: {
+    correctiveAction: correctiveActionResult.node ? {
       capId: normalizeCapIdentifier(normalizedRequest.capId),
       nodeRef: String(correctiveActionResult.node.nodeRef),
       path: toNodePath(correctiveActionResult.node),
       created: correctiveActionResult.created
-    },
+    } : null,
     followUpReport: {
       nodeName: followUpResult.node.name,
       nodeRef: String(followUpResult.node.nodeRef),
