@@ -24,6 +24,145 @@ function fail(code, message) {
   throw new Error(message);
 }
 
+function resolveFollowUpHelpers() {
+  if (typeof __VSO_FOLLOW_UP_HELPERS !== "undefined" && __VSO_FOLLOW_UP_HELPERS) {
+    return __VSO_FOLLOW_UP_HELPERS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-follow-up.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-follow-up.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_FOLLOW_UP_HELPERS !== "undefined" && __VSO_FOLLOW_UP_HELPERS) {
+          return __VSO_FOLLOW_UP_HELPERS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return {
+    normalizeCapIdentifier: function(value) {
+      var normalized = trimToNull(value);
+      if (normalized === null) {
+        return null;
+      }
+      if (normalized.indexOf("CA-") === 0) {
+        return normalized;
+      }
+      if (normalized.indexOf("CAP-") === 0) {
+        return normalized.substring(4);
+      }
+      return normalized;
+    },
+    normalizeCapCandidate: function(value) {
+      var normalized = trimToNull(value);
+      if (normalized === null) {
+        return null;
+      }
+      normalized = normalized.replace(/\.json$/i, "");
+      return this.normalizeCapIdentifier(normalized);
+    },
+    padNumber: function(value, size) {
+      var parsed = parseInt(value, 10);
+      if (isNaN(parsed) || parsed < 0) {
+        return null;
+      }
+      var text = String(parsed);
+      while (text.length < size) {
+        text = "0" + text;
+      }
+      return text;
+    },
+    extractTrailingDigits: function(value) {
+      var normalized = trimToNull(value);
+      if (normalized === null) {
+        return null;
+      }
+      var match = String(normalized).match(/(\d+)$/);
+      return match ? match[1] : null;
+    },
+    parseFindingParts: function(findingId) {
+      var normalized = trimToNull(findingId);
+      if (normalized === null) {
+        return null;
+      }
+      var match = String(normalized).toUpperCase().match(/^([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,})$/);
+      if (!match) {
+        return null;
+      }
+      var findingSequence = this.padNumber(match[3], 2);
+      if (findingSequence === null) {
+        return null;
+      }
+      return {
+        findingId: match[1] + "-" + match[2] + "-" + findingSequence,
+        reducedFindingId: match[1] + match[2] + "-" + findingSequence,
+        findingSequence: findingSequence
+      };
+    },
+    buildCorrectiveActionId: function(findingId, capValue) {
+      var findingParts = this.parseFindingParts(findingId);
+      var capSequence = this.padNumber(this.extractTrailingDigits(capValue), 2);
+      if (!findingParts || capSequence === null) {
+        return null;
+      }
+      return "CA-" + findingParts.reducedFindingId + "-" + capSequence;
+    },
+    buildFollowUpId: function(findingId, followUpSequence) {
+      var findingParts = this.parseFindingParts(findingId);
+      if (!findingParts) {
+        return null;
+      }
+      var sequenceNumber = parseInt(followUpSequence, 10);
+      if (isNaN(sequenceNumber) || sequenceNumber < 1 || sequenceNumber > 99) {
+        return null;
+      }
+      var sequence = this.padNumber(sequenceNumber, 2);
+      if (!sequence) {
+        return null;
+      }
+      return "FU-" + findingParts.reducedFindingId + "-" + sequence;
+    },
+    parseFollowUpSequenceFromId: function(followUpId, findingId) {
+      var normalizedId = trimToNull(followUpId);
+      var findingParts = this.parseFindingParts(findingId);
+      if (!normalizedId || !findingParts) {
+        return null;
+      }
+      var prefix = "FU-" + findingParts.reducedFindingId + "-";
+      if (normalizedId.indexOf(prefix) !== 0) {
+        return null;
+      }
+      var suffix = normalizedId.substring(prefix.length);
+      if (!/^\d{2}$/.test(suffix)) {
+        return null;
+      }
+      var parsed = parseInt(suffix, 10);
+      return isNaN(parsed) || parsed < 1 ? null : parsed;
+    },
+    validateClosurePolicy: function(followUpType, effectivenessConfirmed) {
+      if (effectivenessConfirmed !== true) {
+        return { shouldClose: false, error: null };
+      }
+      if (trimToNull(followUpType) !== "Closure Verification") {
+        return {
+          shouldClose: false,
+          error: "Only Closure Verification type follow-ups can set effectivenessConfirmed to true for closure"
+        };
+      }
+      return { shouldClose: true, error: null };
+    }
+  };
+}
+
+var FOLLOW_UP_HELPERS = resolveFollowUpHelpers();
+
 function parsePayload(rawContent) {
   var payload = trimToNull(rawContent);
   if (payload === null) {
@@ -84,126 +223,35 @@ function normalizeInteger(value, fieldName) {
 }
 
 function normalizeCapIdentifier(value) {
-  var normalized = trimToNull(value);
-  if (normalized === null) {
-    return null;
-  }
-
-  if (normalized.indexOf("CA-") === 0) {
-    return normalized;
-  }
-
-  if (normalized.indexOf("CAP-") === 0) {
-    return normalized.substring(4);
-  }
-
-  return normalized;
+  return FOLLOW_UP_HELPERS.normalizeCapIdentifier(value);
 }
 
 function normalizeCapCandidate(value) {
-  var normalized = trimToNull(value);
-  if (normalized === null) {
-    return null;
-  }
-
-  normalized = normalized.replace(/\.json$/i, "");
-  return normalizeCapIdentifier(normalized);
+  return FOLLOW_UP_HELPERS.normalizeCapCandidate(value);
 }
 
 function padNumber(value, size) {
-  var parsed = parseInt(value, 10);
-  if (isNaN(parsed) || parsed < 0) {
-    return null;
-  }
-
-  var text = String(parsed);
-  while (text.length < size) {
-    text = "0" + text;
-  }
-  return text;
+  return FOLLOW_UP_HELPERS.padNumber(value, size);
 }
 
 function extractTrailingDigits(value) {
-  var normalized = trimToNull(value);
-  if (normalized === null) {
-    return null;
-  }
-
-  var match = String(normalized).match(/(\d+)$/);
-  return match ? match[1] : null;
+  return FOLLOW_UP_HELPERS.extractTrailingDigits(value);
 }
 
 function parseFindingParts(findingId) {
-  var normalized = trimToNull(findingId);
-  if (normalized === null) {
-    return null;
-  }
-
-  var match = String(normalized).toUpperCase().match(/^([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,})$/);
-  if (!match) {
-    return null;
-  }
-
-  var findingSequence = padNumber(match[3], 2);
-  if (findingSequence === null) {
-    return null;
-  }
-
-  return {
-    findingId: match[1] + "-" + match[2] + "-" + findingSequence,
-    reducedFindingId: match[1] + match[2] + "-" + findingSequence,
-    findingSequence: findingSequence
-  };
+  return FOLLOW_UP_HELPERS.parseFindingParts(findingId);
 }
 
 function buildCorrectiveActionId(findingId, capValue) {
-  var findingParts = parseFindingParts(findingId);
-  var capSequence = padNumber(extractTrailingDigits(capValue), 2);
-  if (!findingParts || capSequence === null) {
-    return null;
-  }
-
-  return "CA-" + findingParts.reducedFindingId + "-" + capSequence;
+  return FOLLOW_UP_HELPERS.buildCorrectiveActionId(findingId, capValue);
 }
 
 function buildFollowUpId(findingId, followUpSequence) {
-  var findingParts = parseFindingParts(findingId);
-  if (!findingParts) {
-    return null;
-  }
-
-  var sequenceNumber = parseInt(followUpSequence, 10);
-  if (isNaN(sequenceNumber) || sequenceNumber < 1 || sequenceNumber > 99) {
-    return null;
-  }
-
-  var sequence = padNumber(sequenceNumber, 2);
-  if (!sequence) {
-    return null;
-  }
-
-  return "FU-" + findingParts.reducedFindingId + "-" + sequence;
+  return FOLLOW_UP_HELPERS.buildFollowUpId(findingId, followUpSequence);
 }
 
 function parseFollowUpSequenceFromId(followUpId, findingId) {
-  var normalizedId = trimToNull(followUpId);
-  var findingParts = parseFindingParts(findingId);
-  if (!normalizedId || !findingParts) {
-    return null;
-  }
-
-  var prefix = "FU-" + findingParts.reducedFindingId + "-";
-  if (normalizedId.indexOf(prefix) !== 0) {
-    return null;
-  }
-
-  var suffix = normalizedId.substring(prefix.length);
-  if (!/^\d{2}$/.test(suffix)) {
-    return null;
-  }
-
-  var parsed = parseInt(suffix, 10);
-  return isNaN(parsed) || parsed < 1 ? null : parsed;
+  return FOLLOW_UP_HELPERS.parseFollowUpSequenceFromId(followUpId, findingId);
 }
 
 function validateFollowUpIdFormat(followUpId, findingId) {
@@ -681,12 +729,13 @@ function ensureFollowUpNode(findingNode, payload, rawPayload, correctiveActionNo
 }
 
 function updateFindingStatusFromFollowUp(findingNode, payload) {
-  if (payload.effectivenessConfirmed !== true) {
-    return false;
+  var closurePolicy = FOLLOW_UP_HELPERS.validateClosurePolicy(payload.followUpType, payload.effectivenessConfirmed);
+  if (closurePolicy.error) {
+    fail(400, closurePolicy.error);
   }
 
-  if (payload.followUpType !== "Closure Verification") {
-    fail(400, "Only Closure Verification type follow-ups can set effectivenessConfirmed to true for closure");
+  if (!closurePolicy.shouldClose) {
+    return false;
   }
 
   ensureAspect(findingNode, "vso:inspectionContext");

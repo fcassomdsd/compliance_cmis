@@ -94,19 +94,26 @@ Follow-up report import request (`/alfresco/s/api/follow-up/import`):
 - `followUpReport.percentComplete` must be an integer between `0` and `100`
 - If `followUpReport.effectivenessConfirmed=true` and `followUpReport.followUpType="Closure Verification"`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata
 
-Canonical import processing by follow-up IDs (`/alfresco/s/api/inspection/import-canonical`):
+Canonical import processing by follow-up file names (`/alfresco/s/api/inspection/import-canonical`):
 
-- Request body can be an array of follow-up IDs, or an object with `followUpIds` array
-- The endpoint processes already-existing `vso:followUpReport` nodes in Alfresco and applies closure updates to related findings when eligible
+- Request body can be an array of canonical follow-up file names, or an object with `followUpFiles` array
+- For each file name, the endpoint reads the JSON content, upserts a `vso:followUpReport` node as child of the `vso:finding` identified by `followUpReport.findingId`, and links evidence/corrective action when provided
+- Follow-up evidence files are moved (not copied) into a destination subfolder named `Evidence <followUpId>` under the finding destination folder; this subfolder is created automatically when missing
+- If `followUpReport.effectivenessConfirmed=true`, the related finding is set to `Closed` and both `vso:findingClosureDate` and `vso:lastStatusChange` are set to current date/time
+- Optional source path fields:
+	- `sourceBasePath`: canonical base folder (default `Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo`)
+	- `sourceSpecialtyFolderName` (or `specialtyFolderName`): specialty subfolder name under `sourceBasePath` used to resolve follow-up files
+	- If not provided, the search remains directly under `sourceBasePath`
 - Example payloads:
-	- `["FU-MDPP001AYVIS-01-01", "FU-MDPP001AYVIS-01-02"]`
-	- `{ "followUpIds": ["FU-MDPP001AYVIS-01-01"] }`
-- Sample file: `example/process-followups-by-ids.sample.json`
+	- `["FollowUp MDPP001-VIG-01 01.json", "FollowUp MDPP001-VIG-01 02.json"]`
+	- `{ "followUpFiles": ["FollowUp MDPP001-VIG-01 01.json"] }`
+	- `{ "sourceSpecialtyFolderName": "VIG", "followUpFiles": ["FollowUp MDPP001-VIG-01 01.json"] }`
+- Sample file: `example/process-followups-by-files.sample.json`
 
 ```bash
 curl -u admin:admin -X POST \
 	-H "Content-Type: application/json" \
-	--data @example/process-followups-by-ids.sample.json \
+	--data @example/process-followups-by-files.sample.json \
 	"http://localhost:8080/alfresco/s/api/inspection/import-canonical"
 ```
 
