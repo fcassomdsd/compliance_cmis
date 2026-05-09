@@ -961,6 +961,7 @@
                <show id="vso:evidenceType" />
                <show id="vso:source" />
                <show id="vso:collectionDate" />
+               <show id="vso:evidenceRole" />
             </field-visibility>
             <appearance>
                <set id="cm-info" appearance="caption" label="Content" />
@@ -973,6 +974,7 @@
                <field id="vso:evidenceType" set="vso-evidence-info" />
                <field id="vso:source" set="vso-evidence-info" />
                <field id="vso:collectionDate" set="vso-evidence-info" />
+               <field id="vso:evidenceRole" set="vso-evidence-info" />
             </appearance>
          </form>
       </forms>
@@ -990,7 +992,7 @@
                <show id="vso:responsibleEntity" />
                <show id="vso:dueDate" />
                <show id="vso:acceptanceStatus" />
-               <show id="vso:verifiedBy" />
+               <show id="vso:relatedEvidence" />
             </field-visibility>
             <appearance>
                <set id="cm-info" appearance="caption" label="Content" />
@@ -1008,7 +1010,7 @@
                <field id="vso:dueDate" set="vso-cap-info" />
                <field id="vso:acceptanceStatus" set="vso-cap-info" />
 
-               <field id="vso:verifiedBy" set="vso-associations">
+               <field id="vso:relatedEvidence" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>
                      <control-param name="displayMode">items</control-param>
@@ -1027,14 +1029,15 @@
                <show id="cm:content" />
                <show id="vso:contentType" />
                <show id="vso:followUpId" />
+               <show id="vso:followUpType" />
                <show id="vso:followUpDate" />
-               <show id="vso:findingClosed" />
                <show id="vso:percentComplete" />
                <show id="vso:followUpComment" />
                <show id="vso:closureVerificationMethod" />
                <show id="vso:followUpClosureDate" />
                <show id="vso:effectivenessConfirmed" />
                <show id="vso:relatedEvidence" />
+               <show id="vso:relatedCorrectiveAction" />
             </field-visibility>
             <appearance>
                <set id="cm-info" appearance="caption" label="Content" />
@@ -1046,8 +1049,8 @@
                <field id="cm:content" set="cm-info" />
                <field id="vso:contentType" set="vso-followup-info" />
                <field id="vso:followUpId" set="vso-followup-info" />
+               <field id="vso:followUpType" set="vso-followup-info" />
                <field id="vso:followUpDate" set="vso-followup-dates" />
-               <field id="vso:findingClosed" set="vso-followup-info" />
                <field id="vso:percentComplete" set="vso-followup-info" />
                <field id="vso:followUpComment" set="vso-followup-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
@@ -1056,6 +1059,12 @@
                <field id="vso:followUpClosureDate" set="vso-followup-dates" />
                <field id="vso:effectivenessConfirmed" set="vso-followup-dates" />
                <field id="vso:relatedEvidence" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
+               <field id="vso:relatedCorrectiveAction" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>
                      <control-param name="displayMode">items</control-param>
@@ -1077,14 +1086,16 @@
                <show id="vso:findingLevel" />
                <show id="vso:riskClassification" />
                <show id="vso:checklistItemCode" />
-               <show id="vso:regulationBreached" />
+               <show id="vso:requirementBreached" />
                <show id="vso:description" />
                <show id="vso:findingStatus" />
-               <show id="vso:submissionDeadline" />
                <show id="vso:dateIssued" />
+               <show id="vso:submissionDeadline" />
+               <show id="vso:resolutionDeadline" />
                <show id="vso:findingClosureDate" />
                <show id="vso:lastStatusChange" />
                <show id="vso:relatedEvidence" />
+               <show id="vso:hasFollowUp" />
                <show id="vso:hasCorrectiveAction" />
             </field-visibility>
             <appearance>
@@ -1100,16 +1111,23 @@
                <field id="vso:findingLevel" set="vso-finding-info" />
                <field id="vso:riskClassification" set="vso-finding-info" />
                <field id="vso:checklistItemCode" set="vso-finding-info" />
-               <field id="vso:regulationBreached" set="vso-finding-info" />
+               <field id="vso:requirementBreached" set="vso-finding-info" />
                <field id="vso:description" set="vso-finding-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
                <field id="vso:findingStatus" set="vso-finding-dates" />
                <field id="vso:dateIssued" set="vso-finding-dates" />
                <field id="vso:submissionDeadline" set="vso-finding-dates" />
+               <field id="vso:resolutionDeadline" set="vso-finding-dates" />
                <field id="vso:findingClosureDate" set="vso-finding-dates" />
                <field id="vso:lastStatusChange" set="vso-finding-dates" />
                <field id="vso:relatedEvidence" set="vso-associations">
+                  <control template="/org/alfresco/components/form/controls/association.ftl">
+                     <control-param name="showTargetLink">true</control-param>
+                     <control-param name="displayMode">items</control-param>
+                  </control>
+               </field>
+               <field id="vso:hasFollowUp" set="vso-associations">
                   <control template="/org/alfresco/components/form/controls/association.ftl">
                      <control-param name="showTargetLink">true</control-param>
                      <control-param name="displayMode">items</control-param>

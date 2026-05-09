@@ -85,14 +85,37 @@ Refresh checklist flags request (`/alfresco/s/api/checklist/prior-findings/refre
 Follow-up report import request (`/alfresco/s/api/follow-up/import`):
 
 - Required root object: `followUpReport`
-- Required fields: `followUpReport.findingId`, `followUpReport.capId`, `followUpReport.followUpDate`
+- Required fields: `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType`
 - ID formats expected/generated:
 	- `findingId`: `XXXXNNN-YYY-MM` (example: `MDPP001-AYVIS-01`)
-	- `capId`: sequence or full CA id; endpoint normalizes to `CA-XXXXNNNYYY-MM-SS`
-	- `followUpId`: optional in payload; if omitted, endpoint generates `FU-XXXXNNNYYY-MM-YYMMDD`
+	- `capId`: optional sequence or full CA id; when provided endpoint normalizes to `CA-XXXXNNNYYY-MM-SS`
+	- `followUpId`: optional in payload; if omitted, endpoint generates `FU-XXXXNNNYYY-MM-VV` where `VV` is the next sequential number for the finding
 - Optional disambiguation fields when finding IDs are not globally unique: `providerId`, `locationId`, `specialtyId`
 - `followUpReport.percentComplete` must be an integer between `0` and `100`
-- If `followUpReport.findingClosed=true`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata
+- If `followUpReport.effectivenessConfirmed=true` and `followUpReport.followUpType="Closure Verification"`, the endpoint updates `vso:findingStatus` to `Closed` and sets closure date metadata
+
+Canonical import processing by follow-up file names (`/alfresco/s/api/inspection/import-canonical`):
+
+- Request body can be an array of canonical follow-up file names, or an object with `followUpFiles` array
+- For each file name, the endpoint reads the JSON content, upserts a `vso:followUpReport` node as child of the `vso:finding` identified by `followUpReport.findingId`, and links evidence/corrective action when provided
+- Follow-up evidence files are moved (not copied) into a destination subfolder named `Evidence <followUpId>` under the finding destination folder; this subfolder is created automatically when missing
+- If `followUpReport.effectivenessConfirmed=true`, the related finding is set to `Closed` and both `vso:findingClosureDate` and `vso:lastStatusChange` are set to current date/time
+- Optional source path fields:
+	- `sourceBasePath`: canonical base folder (default `Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo`)
+	- `sourceSpecialtyFolderName` (or `specialtyFolderName`): specialty subfolder name under `sourceBasePath` used to resolve follow-up files
+	- If not provided, the search remains directly under `sourceBasePath`
+- Example payloads:
+	- `["FollowUp MDPP001-VIG-01 01.json", "FollowUp MDPP001-VIG-01 02.json"]`
+	- `{ "followUpFiles": ["FollowUp MDPP001-VIG-01 01.json"] }`
+	- `{ "sourceSpecialtyFolderName": "VIG", "followUpFiles": ["FollowUp MDPP001-VIG-01 01.json"] }`
+- Sample file: `example/process-followups-by-files.sample.json`
+
+```bash
+curl -u admin:admin -X POST \
+	-H "Content-Type: application/json" \
+	--data @example/process-followups-by-files.sample.json \
+	"http://localhost:8080/alfresco/s/api/inspection/import-canonical"
+```
 
 Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
 

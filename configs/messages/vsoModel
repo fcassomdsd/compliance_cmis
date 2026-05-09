@@ -51,10 +51,11 @@ prop.vso_evidenceId.title=Evidence ID
 prop.vso_evidenceType.title=Evidence Type
 prop.vso_source.title=Origin/Source
 prop.vso_collectionDate.title=Date Collected
+prop.vso_evidenceRole.title=Evidence Role
 
 prop.vso_findingId.title=Finding ID
 prop.vso_findingLevel.title=Finding Classification
-prop.vso_regulationBreached.title=Regulatory Reference
+prop.vso_requirementBreached.title=Regulatory Reference
 prop.vso_checklistItemCode.title=Related Question Code
 prop.vso_description.title=Finding Description
 prop.vso_findingStatus.title=Finding Status
@@ -69,10 +70,11 @@ prop.vso_dueDate.title=Due Date
 prop.vso_acceptanceStatus.title=Acceptance Status
 
 prop.vso_findingClosureDate.title=Finding Closure Date
+prop.vso_resolutionDeadline.title=Resolution Deadline
 prop.vso_followUpId.title=Follow-up ID
+prop.vso_followUpType.title=Follow-up Type
 prop.vso_followUpDate.title=Follow-up Date
 prop.vso_followUpClosureDate.title=Follow-up Closure Date
-prop.vso_findingClosed.title=Finding Closed
 prop.vso_percentComplete.title=Completion Percentage
 prop.vso_followUpComment.title=Follow-up Comment
 prop.vso_closureVerificationMethod.title=Closure Verification Method
@@ -88,3 +90,5 @@ prop.vso_sealedDate.title=Sealing Date
 
 # Associations
 assoc.vso_relatedEvidence.title=Related Evidence
+assoc.vso_hasFollowUp.title=Follow-up Reports
+assoc.vso_relatedCorrectiveAction.title=Related Corrective Action
