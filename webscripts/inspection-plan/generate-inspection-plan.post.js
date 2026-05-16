@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Fernando A. Casso Rodriguez
+
 // Path configuration is centralized.
 // Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
 function resolveVsoPaths() {
