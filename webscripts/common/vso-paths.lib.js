@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Fernando A. Casso Rodriguez
+
 if (typeof __VSO_PATHS === "undefined" || !__VSO_PATHS) {
   __VSO_PATHS = {
     inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
