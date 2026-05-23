@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Fernando A. Casso Rodriguez
+
 // Path configuration is centralized.
 // Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
 function resolveVsoPaths() {
@@ -267,6 +270,26 @@ function ensureAspect(node, aspectName) {
   }
 }
 
+function describeError(error) {
+  if (!error) {
+    return "Unknown error";
+  }
+
+  var parts = [];
+
+  if (error.message) {
+    parts.push(String(error.message));
+  } else {
+    parts.push(String(error));
+  }
+
+  if (error.javaException) {
+    parts.push(String(error.javaException));
+  }
+
+  return parts.join(" | ");
+}
+
 function ensureInspectionFolder(baseFolder, inspectionId) {
   var folder = baseFolder.childByNamePath(inspectionId);
   if (folder && folder.exists()) {
@@ -274,21 +297,53 @@ function ensureInspectionFolder(baseFolder, inspectionId) {
       TemplateGeneration.fail(409, "Destination inspection already exists and is not a folder: " + inspectionId);
     }
     if (!folder.isSubType("vso:inspection")) {
-      folder.specializeType("vso:inspection");
+      try {
+        folder.specializeType("vso:inspection");
+      } catch (specializeExistingError) {
+        TemplateGeneration.fail(500, "Existing inspection folder could not be specialized to vso:inspection for " + inspectionId + ": " + describeError(specializeExistingError));
+      }
     }
     return folder;
   }
 
-  return baseFolder.createFolder(inspectionId, "vso:inspection");
+  try {
+    return baseFolder.createFolder(inspectionId, "vso:inspection");
+  } catch (typedCreateError) {
+    logger.warn("[inspection-plan] Typed folder creation failed for " + inspectionId + ". Retrying with cm:folder and specializeType. Cause: " + describeError(typedCreateError));
+  }
+
+  try {
+    folder = baseFolder.createFolder(inspectionId);
+  } catch (plainCreateError) {
+    TemplateGeneration.fail(500, "Failed to create inspection folder " + inspectionId + ": " + describeError(plainCreateError));
+  }
+
+  try {
+    if (!folder.isSubType("vso:inspection")) {
+      folder.specializeType("vso:inspection");
+    }
+  } catch (specializeNewError) {
+    TemplateGeneration.fail(500, "Inspection folder was created but could not be specialized to vso:inspection for " + inspectionId + ": " + describeError(specializeNewError));
+  }
+
+  return folder;
 }
 
 function populateInspectionFolderData(folder, inputData) {
   if (!folder.isSubType("vso:inspection")) {
-    folder.specializeType("vso:inspection");
+    try {
+      folder.specializeType("vso:inspection");
+    } catch (specializeError) {
+      TemplateGeneration.fail(500, "Failed to specialize inspection folder " + folder.name + " to vso:inspection: " + describeError(specializeError));
+    }
   }
 
-  ensureAspect(folder, "vso:inspectionContext");
-  ensureAspect(folder, "vso:serviceContext");
+  try {
+    ensureAspect(folder, "vso:inspectionContext");
+    ensureAspect(folder, "vso:serviceContext");
+  } catch (aspectError) {
+    TemplateGeneration.fail(500, "Failed to apply inspection aspects to folder " + folder.name + ": " + describeError(aspectError));
+  }
 
   var inspectionId = TemplateGeneration.trimToNull(inputData.inspectionNo) || TemplateGeneration.trimToNull(inputData.inspectionCode);
   setPropertyIfPresent(folder, "cm:title", TemplateGeneration.trimToNull(inputData.title) || inspectionId || folder.name);
@@ -302,7 +357,11 @@ function populateInspectionFolderData(folder, inputData) {
   setPropertyIfPresent(folder, "vso:providerName", inputData.providerName);
   setPropertyIfPresent(folder, "vso:inspectionStatus", inputData.inspectionStatus || "Planned");
 
-  folder.save();
+  try {
+    folder.save();
+  } catch (saveError) {
+    TemplateGeneration.fail(500, "Failed to save inspection folder metadata for " + folder.name + ": " + describeError(saveError));
+  }
 }
 
 try {

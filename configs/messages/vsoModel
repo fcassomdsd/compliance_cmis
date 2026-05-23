@@ -3,7 +3,6 @@ model.vso_vsoModel.title=Operational Safety Oversight Model
 model.vso_vsoModel.description=Model for managing inspections, findings, and corrective actions.
 
 # Types
-type.vso_vsoContent.title=VSO Content
 type.vso_inspection.title=Inspection
 type.vso_inspectionChecklist.title=Inspection Checklist
 type.vso_checklistItem.title=Checklist Item
@@ -14,44 +13,55 @@ type.vso_followUpReport.title=Follow-up Report
 
 # Aspects
 aspect.vso_inspectionContext.title=Inspection Context
-aspect.vso_serviceContext.title=Service Context
 aspect.vso_regulatoryTraceability.title=Regulatory Traceability
 aspect.vso_evidenceIntegrity.title=Evidence Integrity
+aspect.vso_evidenceReferences.title=Evidence References
+aspect.vso_serviceContext.title=Service Context
 
 # Properties
-prop.vso_contentType.title=VSO Content Type
 prop.vso_inspectionId.title=Inspection ID
-prop.vso_domain.title=Domain/Functional Area
-prop.vso_providerId.title=Service Provider ID
-prop.vso_providerName.title=Service Provider Name
-prop.vso_locationId.title=Inspection Location ID
-prop.vso_locationName.title=Inspection Location Name
+prop.vso_specialtyId.title=Specialty ID
+prop.vso_specialtyCode.title=Specialty Code
+prop.vso_specialtyName.title=Specialty Name
+prop.vso_providerId.title=Provider ID
+prop.vso_providerName.title=Provider Name
 prop.vso_inspectionType.title=Inspection Type
 prop.vso_startDate.title=Start Date
 prop.vso_endDate.title=End Date
-prop.vso_inspectionStatus.title=Current Status
+prop.vso_inspectionStatus.title=Inspection Status
+prop.vso_locationId.title=Location ID
+prop.vso_locationCode.title=Location Code
+prop.vso_locationName.title=Location Name
 
 prop.vso_checklistId.title=Checklist ID
 prop.vso_scope.title=Audit Scope
 prop.vso_completionDate.title=Completion Date
 
 prop.vso_itemId.title=Item ID
+prop.vso_itemCode.title=Question Code
 prop.vso_requirementText.title=Requirement / Standard
 prop.vso_itemVerificationMethod.title=Verification Method
 prop.vso_complianceStatus.title=Compliance Status
 prop.vso_inspectorComment.title=Inspector Notes
-prop.vso_riskClassification.title=Risk Level
+prop.vso_nominalRisk.title=Nominal Risk
+prop.vso_riskClassification.title=Risk Classification
+prop.vso_hasOpenPriorFinding.title=Has Open Prior Finding?
 
 prop.vso_evidenceId.title=Evidence ID
 prop.vso_evidenceType.title=Evidence Type
 prop.vso_source.title=Origin/Source
 prop.vso_collectionDate.title=Date Collected
+prop.vso_evidenceRole.title=Evidence Role
 
 prop.vso_findingId.title=Finding ID
-prop.vso_findingLevel.title=Severity Level
-prop.vso_regulationBreached.title=Regulatory Reference
+prop.vso_findingLevel.title=Finding Classification
+prop.vso_requirementBreached.title=Regulatory Reference
+prop.vso_checklistItemCode.title=Related Question Code
 prop.vso_description.title=Finding Description
 prop.vso_findingStatus.title=Finding Status
+prop.vso_submissionDeadline.title=Submission Deadline
+prop.vso_dateIssued.title=Opening Date
+prop.vso_lastStatusChange.title=Last Status Change
 
 prop.vso_capId.title=CAP ID
 prop.vso_proposedAction.title=Proposed Corrective Action
@@ -59,18 +69,16 @@ prop.vso_responsibleEntity.title=Responsible Party
 prop.vso_dueDate.title=Due Date
 prop.vso_acceptanceStatus.title=Acceptance Status
 
-prop.vso_closureDate.title=Closure Date
+prop.vso_findingClosureDate.title=Finding Closure Date
+prop.vso_resolutionDeadline.title=Resolution Deadline
+prop.vso_followUpId.title=Follow-up ID
+prop.vso_followUpType.title=Follow-up Type
+prop.vso_followUpDate.title=Follow-up Date
+prop.vso_followUpClosureDate.title=Follow-up Closure Date
+prop.vso_percentComplete.title=Completion Percentage
+prop.vso_followUpComment.title=Follow-up Comment
 prop.vso_closureVerificationMethod.title=Closure Verification Method
 prop.vso_effectivenessConfirmed.title=Effectiveness Verified?
-prop.vso_findingClosed.title=Finding Closed
-prop.vso_percentComplete.title=Percent Complete
-
-assoc.vso_supportedByEvidence.title=Supported by Evidence
-assoc.vso_findingSupportedByEvidence.title=Finding Supported by Evidence
-assoc.vso_hasFinding.title=Has Finding
-assoc.vso_verifiedBy.title=Verified By (Follow-up Report)
-assoc.vso_hasChecklist.title=Has Checklist
-assoc.vso_hasChecklistItem.title=Has Checklist Item
 
 prop.vso_icaoReference.title=ICAO SARPs Reference
 prop.vso_nationalRegulation.title=National Reg Reference
@@ -79,3 +87,8 @@ prop.vso_ceMapping.title=Critical Element (CE)
 prop.vso_hashValue.title=File Hash (SHA-256)
 prop.vso_immutable.title=Is Immutable?
 prop.vso_sealedDate.title=Sealing Date
+
+# Associations
+assoc.vso_relatedEvidence.title=Related Evidence
+assoc.vso_hasFollowUp.title=Follow-up Reports
+assoc.vso_relatedCorrectiveAction.title=Related Corrective Action

@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright (c) 2026 Fernando A. Casso Rodriguez
+
 // Path configuration is centralized.
 // Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
 function resolveVsoPaths() {
@@ -257,13 +260,13 @@ function buildChecklistSummaryTable(checklistData) {
 
   for (var index = 0; index < checklistData.length; index++) {
     var item = checklistData[index];
-    var domain = item.domain || "Unknown";
+    var specialtyName = item.specialtyName || "Unknown";
     var complianceStatus = item.complianceStatus || "Unknown";
-    var key = domain + "||" + complianceStatus;
+    var key = specialtyName + "||" + complianceStatus;
 
     if (!summaryMap[key]) {
       summaryMap[key] = {
-        domain: domain,
+        specialtyName: specialtyName,
         complianceStatus: complianceStatus,
         count: 0
       };
@@ -440,7 +443,7 @@ function lookupInspectionData(inspectionCode, providerId) {
       findingNodeRef: child.nodeRef.toString(),
       itemId: findingItemId,
       itemCode: findingItemCode || findingItemId,
-      domain: trimProp(child, "vso:domain"),
+      specialtyName: trimProp(child, "vso:specialtyName") || trimProp(child, "vso:specialtyCode") || trimProp(child, "vso:specialtyId"),
       level: trimProp(child, "vso:findingLevel"),
       description: trimProp(child, "vso:description"),
       nationalRegulation: trimProp(child, "vso:nationalRegulation"),
@@ -483,7 +486,7 @@ function lookupInspectionData(inspectionCode, providerId) {
         findingNodeRef: domainFinding.nodeRef.toString(),
         itemId: domainFindingItemId,
         itemCode: domainFindingItemCode || domainFindingItemId,
-        domain: trimProp(domainFinding, "vso:domain"),
+        specialtyName: trimProp(domainFinding, "vso:specialtyName") || trimProp(domainFinding, "vso:specialtyCode") || trimProp(domainFinding, "vso:specialtyId"),
         level: trimProp(domainFinding, "vso:findingLevel"),
         description: trimProp(domainFinding, "vso:description"),
         nationalRegulation: trimProp(domainFinding, "vso:nationalRegulation"),
@@ -534,7 +537,7 @@ function lookupInspectionData(inspectionCode, providerId) {
         if (checklistMatchesProvider) {
           checklistSummary.push({
             itemCode: checklistItemCode,
-            domain: trimProp(itemNode, "vso:domain"),
+            specialtyName: trimProp(itemNode, "vso:specialtyName") || trimProp(itemNode, "vso:specialtyCode") || trimProp(itemNode, "vso:specialtyId"),
             requirementText: trimProp(itemNode, "vso:requirementText"),
             complianceStatus: trimProp(itemNode, "vso:complianceStatus")
           });

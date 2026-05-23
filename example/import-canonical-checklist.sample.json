@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "1.0",
+  "checklist": {
+    "inspectionId": "MDPP-001",
+    "inspectionCode": "MDPP-001",
+    "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
+    "specialtyCode": "VIG",
+    "specialtyName": "Sistemas de Vigilancia",
+    "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
+    "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
+    "locationName": "Aeropuerto Internacional Gregorio Luperon",
+    "icaoCode": "MDPP",
+    "checklistId": "CHK-MDPP001-VIG",
+    "providerName": "DTIC Instituto Dominicano de Aviación Civil"
+  },
+  "items": [
+    {
+      "itemId": "a01k65hkdvdeertcaaehayk7nhn",
+      "itemCode": "VIG-0048",
+      "complianceStatus": "Compliant",
+      "requirementText": "¿Cuenta el proveedor del servicio de vigilancia, con los sistemas y equipos de trabajo necesarios para dar un servicio eficiente y seguro a la navegación aérea?",
+      "itemVerificationMethod": "Verificar estado:\ncomputadoras,\nTeléfonos,\nRack de equipos,\nFax y otros,\nInternet,\n Intranet.\nMaletín herramienta\nOsciloscopio",
+      "nominalRisk": "Medium"
+    },
+    {
+      "itemId": "a01k65hkdvpe8v8c5gtfbcf659z",
+      "itemCode": "VIG-0050",
+      "complianceStatus": "Compliant",
+      "requirementText": "¿Ha establecido el proveedor del servicio de vigilancia, los cursos y entrenamientos mínimos que debe tener su personal técnico para brindar un servicio óptimo, eficiente y seguro a la navegación aérea?",
+      "itemVerificationMethod": "Examinar la programación de los cursos para cada cargo.",
+      "evidence": [
+        {
+          "evidenceId": "EV-0003-01",
+          "evidenceType": "image",
+          "source": "conectividad 1.jpg",
+          "hashValue": "18e26a6fc16cc22afc597fca15168806cd4afc12d9b4fe03ea7c258911996405",
+          "immutable": true,
+          "sealedDate": "2026-04-16T14:52:35.331Z"
+        },
+        {
+          "evidenceId": "EV-0003-02",
+          "evidenceType": "image",
+          "source": "conectividad 2.jpg",
+          "hashValue": "04340bf5989f6ece6e686456919d5d640af7f0b1dc27c1321afd940564cbe0a1",
+          "immutable": true,
+          "sealedDate": "2026-04-16T14:52:35.331Z"
+        }
+      ],
+      "nominalRisk": "Medium"
+    },
+    {
+      "itemId": "a01k65hkdwceag9j2p68tjjxcmf",
+      "itemCode": "VIG-0054",
+      "complianceStatus": "Non-Compliant",
+      "requirementText": "¿Se asegura el proveedor del servicio de vigilancia, de que los servicios de vigilancia estén protegidos contra ataques y malware?",
+      "itemVerificationMethod": "Verificar software y procedimientos, para fines de ataque o virus a la red\nVerificar método",
+      "inspectorComment": "SFADFADF",
+      "reference": {
+        "icaoReference": "A10 V3 PI 3.8.4",
+        "nationalRegulation": "RAD 10 Volumen III 10.11 d)"
+      },
+      "evidence": [
+        {
+          "evidenceId": "EV-0007-01",
+          "evidenceType": "image",
+          "source": "P47 clamp meter 1.jpg",
+          "hashValue": "f4f59247696b6717b123f6340d58ccd8a96c6ed5c1a40d5d65ef32c4333860dc",
+          "immutable": true,
+          "sealedDate": "2026-04-16T14:22:24.398Z"
+        }
+      ],
+      "nominalRisk": "Medium"
+    }
+  ]
+}

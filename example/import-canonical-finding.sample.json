@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "finding": {
+    "findingId": "MDPP001-VIG-02",
+    "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
+    "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
+    "locationName": "Aeropuerto Internacional Gregorio Luperon",
+    "locationCode": "MDPP",
+    "itemCode": "VIG-0054",
+    "itemId": "a01k65hkdwceag9j2p68tjjxcmf",
+    "description": "DDASFAF",
+    "regulationBreached": "RAD 10 Volumen III 10.11 d)",
+    "requirementBreached": "¿Se asegura el proveedor del servicio de vigilancia, de que los servicios de vigilancia estén protegidos contra ataques y malware?",
+    "dateIssued": "2026-04-16",
+    "riskClassification": "Medium",
+    "findingLevel": "Non-Compliance",
+    "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
+    "specialtyCode": "VIG",
+    "specialtyName": "Sistemas de Vigilancia"
+  }
+}

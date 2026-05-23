@@ -1,195 +1,275 @@
 # compliance-CMIS
 
+compliance-CMIS is an Alfresco Content Services (ACS) customization for compliance and oversight workflows.
+It defines a custom VSO content model, Share form configuration, and Web Script endpoints for:
 
-## Path configuration (Alfresco)
+- inspection plan and report generation
+- canonical checklist/finding/follow-up imports
+- follow-up report upsert and finding closure validation
+- open-finding and prior-finding queries
 
-Alfresco folder paths used by scripts/webscripts are centralized in:
+## Who this repository is for
 
-- `webscripts/common/vso-paths.lib.js`
+- Developers extending model, Web Scripts, or Share forms.
+- Analysts/operators validating imports and workflow behavior through API calls.
+- QA engineers executing smoke tests after model or endpoint changes.
 
-Update only this file when store paths change. Current keys are:
+## Repository map
 
-- `inspectionInProcessPath` → destination inspection folder
-- `canonicalSourceBasePath` → canonical models source folder
-- `inspectionPlanTemplateDataPath` → generated inspection-plan destination folder
-- `inspectionPlanTemplatePath` → inspection-plan template file path
-- `inspectionReportTemplateDataPath` → generated inspection-report destination folder
-- `inspectionReportTemplatePath` → inspection-report template file path
+- `configs/model/`: model (`vsoModel.xml`) and bootstrap context.
+- `configs/share/`: Share form and UI configuration.
+- `configs/messages/`: labels for model fields and associations.
+- `webscripts/`: API endpoints and shared helpers.
+- `example/`: ready-to-run sample request payloads.
+- `templates/`: FODT templates and smart folder templates.
+- `docs/`: model validation and test documentation.
+- `scripts/run-model-smoke-tests.sh`: REST-based smoke test runner.
+- `docker-compose.yml`: local ACS stack for development and testing.
 
-## Webscript test payloads
+## Prerequisites
 
-Sample request bodies are available in:
+- Docker and Docker Compose.
+- At least 6 GB of RAM available for containers.
+- `curl` for API testing.
+- `python3` for the smoke-test script.
 
-- `example/generate-inspection-plan.sample.json`
-- `example/generate-inspection-report.sample.json`
-- `example/generate-inspection-report-derived-findings.sample.json`
+## Quick start (local)
 
-Inspection plan payload notes (`/alfresco/s/api/inspection/generate`):
+1. Start the stack:
 
-- `inspectionsPath` (optional): where the inspection folder (`vso:inspection`) is created/updated. Defaults to `inspectionInProcessPath`.
-- `destinationPath` (optional): where the generated `.fodt` plan file is written. Defaults to `inspectionPlanTemplateDataPath`.
-- `templatePath` (optional): source template file path. Defaults to `inspectionPlanTemplatePath`.
+```bash
+docker compose up -d
+```
 
-Quick test commands (adjust host/user/password):
+2. Wait until services are healthy:
 
-Inspection plan quick fields (in `example/generate-inspection-plan.sample.json`):
+```bash
+docker compose ps
+```
 
-- `inspectionsPath`: inspection folder root (creates/updates `<inspectionsPath>/<inspectionNo>` as `vso:inspection`)
-- `destinationPath`: generated `.fodt` output folder
-- `templatePath`: source `.fodt` template
+3. Validate repository readiness:
+
+```bash
+curl -f http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-
+```
+
+4. Open applications:
+
+- Share: `http://localhost:8080/share`
+- Repository API root: `http://localhost:8080/alfresco`
+
+Default local credentials used by examples: `admin:admin`.
+
+## Quick start (first-time developer)
+
+Use this checklist the first time you run the project.
+
+1. Clone and enter the repository.
+
+```bash
+git clone <your-repo-url>
+cd compliance_cmis
+```
+
+2. Start services and confirm all are healthy.
+
+```bash
+docker compose up -d
+docker compose ps
+```
+
+3. Check repository readiness.
+
+```bash
+curl -f http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1/probes/-ready-
+```
+
+4. Run one endpoint smoke call with a sample payload.
 
 ```bash
 curl -u admin:admin -X POST \
-	-H "Content-Type: application/json" \
-	--data @example/generate-inspection-plan.sample.json \
-	"http://localhost:8080/alfresco/s/api/inspection/generate"
-
-curl -u admin:admin -X POST \
-	-H "Content-Type: application/json" \
-	--data @example/generate-inspection-report.sample.json \
-	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
-
-curl -u admin:admin -X POST \
-	-H "Content-Type: application/json" \
-	--data @example/generate-inspection-report-derived-findings.sample.json \
-	"http://localhost:8080/alfresco/s/api/inspection/report/generate"
+  -H "Content-Type: application/json" \
+  --data @example/generate-inspection-plan.sample.json \
+  "http://localhost:8080/alfresco/s/api/inspection/generate"
 ```
 
-## Smart folders (Vigilancia/Datos)
+5. Run model smoke tests (optional but recommended before changes).
 
-Template file:
+```bash
+export BASE_URL="http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1"
+export USERNAME="admin"
+export PASSWORD="admin"
+export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
+./scripts/run-model-smoke-tests.sh
+```
+
+If you change `configs/model/vsoModel.xml`, restart the repository container before validating behavior.
+
+## Path configuration (single source of truth)
+
+Alfresco folder paths used by Web Scripts are centralized in:
+
+- `webscripts/common/vso-paths.lib.js`
+
+Update this file when destination/source folders change. Important keys include:
+
+- `inspectionInProcessPath`
+- `canonicalSourceBasePath`
+- `findingBasePath`
+- `inspectionPlanTemplateDataPath`
+- `inspectionPlanTemplatePath`
+- `inspectionReportTemplateDataPath`
+- `inspectionReportTemplatePath`
+
+## Data governance conventions
+
+Use these field conventions across payloads and stored metadata:
+
+- `*Id`: canonical internal identifier (required for writes).
+- `*Code`: stable human/search/integration key.
+- `*Name`: display snapshot (optional).
+
+Guidelines:
+
+- Accept input aliases (`id` or `code`) and normalize to canonical fields.
+- Reject inconsistent payloads where both `Id` and `Code` are provided but disagree.
+- Persist `Name` only when needed for display/audit/export.
+
+## API endpoints at a glance
+
+All endpoints below are repository Web Scripts mounted under `http://localhost:8080/alfresco/s/api`.
+
+- `POST /inspection/generate`: generate inspection plan documents.
+- `POST /inspection/report/generate`: generate inspection report documents.
+- `POST /inspection/import-canonical`: import canonical data and process follow-ups by file names or ids.
+- `POST /follow-up/import`: import/upsert one follow-up report payload directly.
+- `POST /findings/open/query`: query open findings by location and specialty context.
+- `POST /checklist/prior-findings/open`: query checklist items with open prior findings.
+- `POST /checklist/prior-findings/refresh-flags`: recompute persisted prior-finding flags.
+
+Sample payload files are in `example/`.
+
+## Mini API reference
+
+Base URL used below: `http://localhost:8080/alfresco/s/api`
+
+| Endpoint | Purpose | Required fields (minimum) | Common optional fields | Example payload file |
+|---|---|---|---|---|
+| `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `inspectionsPath`, `destinationPath`, `templatePath` | `example/generate-inspection-plan.sample.json` |
+| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload | `example/generate-inspection-report.sample.json` |
+| `POST /inspection/import-canonical` | Import canonical follow-up data by file names or ids | Either `followUpFiles` or `followUpIds`, or array of follow-up file names | `sourceBasePath`, `sourceSpecialtyFolderName`, `specialtyFolderName` | `example/process-followups-by-files.sample.json` |
+| `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp MDPP-VIG-2025-02 CAP-10.json` |
+| `POST /findings/open/query` | Query open findings by location and specialty context | one of `locationId/locationCode/icaoCode` and one of `specialtyId/specialtyCode/domain` | `skipCount`, `maxItems` | `example/get-open-findings.sample.json` |
+| `POST /checklist/prior-findings/open` | Get checklist items with open prior findings | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `refreshBeforeQuery`, `refreshDryRun`, `priorOnly` | `example/get-prior-finding-flags.sample.json` |
+| `POST /checklist/prior-findings/refresh-flags` | Recompute and persist prior-finding flags | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `dryRun`, `priorOnly` | `example/refresh-prior-finding-flags.sample.json` |
+
+Notes:
+
+- For `POST /follow-up/import`, finding closure is allowed only with `followUpType="Closure Verification"` and `effectivenessConfirmed=true`.
+- For `POST /inspection/import-canonical`, evidence files linked to processed follow-ups are moved into finding-scoped evidence folders.
+
+## Quick test commands
+
+```bash
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/generate-inspection-plan.sample.json \
+  "http://localhost:8080/alfresco/s/api/inspection/generate"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/generate-inspection-report.sample.json \
+  "http://localhost:8080/alfresco/s/api/inspection/report/generate"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/get-open-findings.sample.json \
+  "http://localhost:8080/alfresco/s/api/findings/open/query"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/get-prior-finding-flags.sample.json \
+  "http://localhost:8080/alfresco/s/api/checklist/prior-findings/open"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/refresh-prior-finding-flags.sample.json \
+  "http://localhost:8080/alfresco/s/api/checklist/prior-findings/refresh-flags"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/process-followups-by-files.sample.json \
+  "http://localhost:8080/alfresco/s/api/inspection/import-canonical"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @"example/FollowUp MDPP-VIG-2025-02 CAP-10.json" \
+  "http://localhost:8080/alfresco/s/api/follow-up/import"
+```
+
+## Smart folders (Share)
+
+Templates:
 
 - `templates/vigilancia-datos-smart-folders.json`
-- `templates/vigilancia-datos-smart-folders-bucketed.json` (explicit value buckets)
+- `templates/vigilancia-datos-smart-folders-bucketed.json`
 
-This template defines these Smart Folder groups under `Datos`:
+Apply template:
 
-- `Planes de inspeccion`
-	- `year`
-	- `location`
-- `Listas de verificacion`
-	- `year`
-	- `specialty`
-	- `location`
-- `Hallazgos`
-	- `year`
-	- `specialty`
-	- `location`
+1. Ensure `smart.folders.enabled=true` in repository runtime config.
+2. Upload template to `Repository/Data Dictionary/Smart Folder Templates`.
+3. Set node type to `smf:smartFolderTemplate`.
+4. Open `Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos`.
+5. Add aspect `smf:systemConfigSmartFolder`.
+6. Set selected template file in properties.
 
-To apply in Alfresco Share:
+## Validation and smoke tests
 
-1. Ensure Smart Folders are enabled (`smart.folders.enabled=true`).
-2. Upload `templates/vigilancia-datos-smart-folders.json` to `Repository/Data Dictionary/Smart Folder Templates`.
-3. Change type of the uploaded file to `smf:smartFolderTemplate` (Smart Folder Template).
-4. Go to `Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos`.
-5. Manage Aspects and add `smf:systemConfigSmartFolder`.
-6. Edit Properties and select `vigilancia-datos-smart-folders.json` as template.
+- Model and behavioral validation guide: `docs/model-reload-validation-and-smoke-tests.md`
+- REST curl examples: `docs/model-smoke-tests-rest-curl.md`
+- Automated smoke script: `scripts/run-model-smoke-tests.sh`
 
-For explicit buckets (fixed values):
+Run script:
 
-- Use `vigilancia-datos-smart-folders-bucketed.json` instead.
-- Current hierarchy in this template:
-	- `Inspecciones`
-		- `Por año`: `2026`, `2025`, `2024`
-		- `Por localidad`: `MDSD`, `MDJB`
-	- `Hallazgos`
-		- `Abiertos` (`vso:findingStatus <> Closed`)
-			- `Por localidad`: `MDSD`, `MDJB`
-			- `Por proveedor`: `AERODOM`, `DINA`, `INDOMET`
-			- `Por especialidad`: `VIG`, `COM`, `FAU`
-		- `Cerrados` (`vso:findingStatus = Closed`)
-			- `Por localidad`: `MDSD`, `MDJB`
-			- `Por proveedor`: `AERODOM`, `DINA`, `INDOMET`
-			- `Por especialidad`: `VIG`, `COM`, `FAU`
+```bash
+export BASE_URL="http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1"
+export USERNAME="admin"
+export PASSWORD="admin"
+export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 
-
-
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/fksomdsd/compliance-cmis.git
-git branch -M main
-git push -uf origin main
+./scripts/run-model-smoke-tests.sh
+# or
+./scripts/run-model-smoke-tests.sh --cleanup
 ```
 
-## Integrate with your tools
+## Troubleshooting (common)
 
-* [Set up project integrations](https://gitlab.com/fksomdsd/compliance-cmis/-/settings/integrations)
+- Model changes not visible: restart repository container to reload model dictionary.
+- Import script helper not picked up: ensure Web Script resources are reloaded or restart repository.
+- Content store write errors in Docker bind mounts: verify mounted `data/alf_data/contentstore*` permissions match container runtime user/group.
 
-## Collaborate with your team
+## Licensing
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+This repository is licensed under Apache License 2.0.
 
-## Test and Deploy
+- License text: `LICENSE`
+- Required notice file: `NOTICE`
+- Third-party/runtime dependency license manifest: `THIRD_PARTY_LICENSES.md`
 
-Use the built-in continuous integration in GitLab.
+Scope clarification:
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- The Apache-2.0 license applies to original code and documentation in this repository.
+- Third-party software used by this project (including container images pulled by `docker-compose.yml`) remains under each upstream project's own license terms.
+- When redistributing this project, include this repository's `LICENSE` and `NOTICE`, and preserve required third-party notices.
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Please review these documents before opening a Merge Request:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+- `CONTRIBUTING.md`
+- `CODE_OF_CONDUCT.md`
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+1. Keep model (`configs/model`) and Web Script behavior (`webscripts`) aligned.
+2. Update sample payloads in `example/` when contracts change.
+3. Run smoke tests before merging changes.
+4. Document behavior changes in `docs/`.

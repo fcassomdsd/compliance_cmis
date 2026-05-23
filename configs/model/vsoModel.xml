@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright (c) 2026 Fernando A. Casso Rodriguez -->
+
 <model name="vso:vsoModel"
        xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
   <description>Operational Safety Oversight Model for Alfresco 25.2</description>
   <author>VSO Team</author>
-  <version>1.1</version>
+  <version>1.5</version>
 
   <!-- ========================================================= -->
   <!-- Imports -->
@@ -71,6 +75,67 @@
         </list>
       </parameter>
     </constraint>
+
+    <constraint name="vso:findingStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Open</value>
+          <value>CAP Submitted</value>
+          <value>CAP Accepted</value>
+          <value>In Progress</value>
+          <value>Pending Closure Review</value>
+          <value>Verifying Effective Closure</value>
+          <value>Closed</value>
+          <value>Overdue</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:inspectionStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Created</value>
+          <value>Planned</value>
+          <value>Assigned</value>
+          <value>Confirmed</value>
+          <value>Reported</value>
+          <value>Closed</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:acceptanceStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Pending review</value>
+          <value>Accepted</value>
+          <value>Rejected</value>
+          <value>Returned</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:followUpTypeList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Progress Review</value>
+          <value>CAP Verification</value>
+          <value>Closure Verification</value>
+          <value>Ad-hoc Inquiry</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:evidenceRoleList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Compliance Evidence</value>
+          <value>Finding Support</value>
+          <value>Progress Evidence</value>
+          <value>Closure Evidence</value>
+        </list>
+      </parameter>
+    </constraint>
   </constraints>
 
   <!-- ========================================================= -->
@@ -117,27 +182,16 @@
           <title>Estatus inspección</title>
           <description>Current inspection lifecycle status</description>
           <type>d:text</type>
+          <default>Created</default>
+          <constraints>
+            <constraint ref="vso:inspectionStatusList"/>
+          </constraints>
         </property>
       </properties>
-
-      <associations>
-        <child-association name="vso:hasChecklist">
-          <source>
-            <mandatory>false</mandatory>
-            <many>false</many>
-          </source>
-          <target>
-            <class>vso:inspectionChecklist</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </child-association>
-      </associations>
 
       <mandatory-aspects>
         <aspect>vso:inspectionContext</aspect>
       </mandatory-aspects>
-
     </type>
 
     <!-- ================= Inspection Checklist ================= -->
@@ -177,7 +231,6 @@
           </target>
         </child-association>
       </associations>
-
     </type>
 
     <!-- ================= Checklist Item ================= -->
@@ -188,9 +241,19 @@
       <properties>
         <property name="vso:itemId">
           <title>ID pregunta inspección</title>
-          <description>Checklist item identifier</description>
+          <description>Checklist item instance identifier</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
+        </property>
+        <property name="vso:itemCode">
+          <title>Código pregunta inspección</title>
+          <description>Reusable question code shared across checklists</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
         </property>
         <property name="vso:requirementText">
           <title>Texto requisito</title>
@@ -215,28 +278,28 @@
           <description>Inspector observations or remarks</description>
           <type>d:text</type>
         </property>
-        <property name="vso:riskClassification">
-          <title>Clasificación de riesgo</title>
-          <description>Risk level associated with non-compliance</description>
+        <property name="vso:nominalRisk">
+          <title>Riesgo nominal</title>
+          <description>Nominal risk level associated with the requirement</description>
           <type>d:text</type>
           <constraints>
             <constraint ref="vso:riskLevelList"/>
           </constraints>
         </property>
+        <property name="vso:hasOpenPriorFinding">
+          <title>Tiene hallazgos previos abiertos?</title>
+          <description>Precomputed flag to speed up checklist searches for related prior findings that are not closed</description>
+          <type>d:boolean</type>
+          <default>false</default>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
       </properties>
 
       <associations>
-        <association name="vso:supportedByEvidence">
-          <source>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </source>
-          <target>
-            <class>vso:evidenceItem</class>
-            <mandatory>false</mandatory>
-            <many>true</many>
-          </target>
-        </association>
         <association name="vso:hasFinding">
           <source>
             <mandatory>false</mandatory>
@@ -248,9 +311,21 @@
             <many>false</many>
           </target>
         </association>
+        <association name="vso:relatedPriorFinding">
+          <source>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </source>
+          <target>
+            <class>vso:finding</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </association>
       </associations>
 
       <mandatory-aspects>
+        <aspect>vso:evidenceReferences</aspect>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
@@ -284,6 +359,14 @@
           <description>Date evidence was collected</description>
           <type>d:date</type>
         </property>
+        <property name="vso:evidenceRole">
+          <title>Rol de evidencia</title>
+          <description>Role of evidence in proving compliance or finding resolution</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:evidenceRoleList"/>
+          </constraints>
+        </property>
       </properties>
 
       <mandatory-aspects>
@@ -309,14 +392,33 @@
           <title>Clasificación hallazgo</title>
           <description>Finding classification</description>
           <type>d:text</type>
+          <default>Non-Compliance</default>
           <constraints>
             <constraint ref="vso:findingLevelList"/>
           </constraints>
         </property>
-        <property name="vso:regulationBreached">
+        <property name="vso:riskClassification">
+          <title>Clasificación de riesgo</title>
+          <description>Risk classification associated with the detected discrepancy</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:requirementBreached">
           <title>Regulación incumplida</title>
           <description>Regulatory reference breached</description>
           <type>d:text</type>
+        </property>
+        <property name="vso:checklistItemCode">
+          <title>Código pregunta relacionada</title>
+          <description>Question code associated with this finding</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
         </property>
         <property name="vso:description">
           <title>Descripción hallazgo</title>
@@ -327,24 +429,53 @@
           <title>Estatus hallazgo</title>
           <description>Finding lifecycle status</description>
           <type>d:text</type>
+          <default>Open</default>
+          <constraints>
+            <constraint ref="vso:findingStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:submissionDeadline">
+          <title>Fecha limite de envio</title>
+          <description>Deadline by which the regulated entity must submit a corrective action plan</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:findingClosureDate">
+          <title>Fecha de cierre</title>
+          <description>Date on which the finding was formally closed by the oversight authority</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:dateIssued">
+          <title>Fecha de apertura</title>
+          <description>Date the finding was formally raised, set on creation from the checklist upload</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:lastStatusChange">
+          <title>Fecha ultimo cambio de estatus</title>
+          <description>Date the findingStatus was last updated, maintained by the Node backend on each transition</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:resolutionDeadline">
+          <title>Fecha limite de resolución</title>
+          <description>Deadline by which the finding must be resolved</description>
+          <type>d:date</type>
         </property>
       </properties>
 
       <associations>
-        <association name="vso:findingSupportedByEvidence">
+        <child-association name="vso:hasFollowUp">
           <source>
             <mandatory>false</mandatory>
-            <many>true</many>
+            <many>false</many>
           </source>
           <target>
-            <class>vso:evidenceItem</class>
+            <class>vso:followUpReport</class>
             <mandatory>false</mandatory>
             <many>true</many>
           </target>
-        </association>
+        </child-association>
         <child-association name="vso:hasCorrectiveAction">
           <source>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>false</many>
           </source>
           <target>
@@ -356,6 +487,7 @@
       </associations>
 
       <mandatory-aspects>
+        <aspect>vso:evidenceReferences</aspect>
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
@@ -392,24 +524,28 @@
           <title>Estado de aceptación</title>
           <description>Acceptance status by authority</description>
           <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:acceptanceStatusList"/>
+          </constraints>
         </property>
       </properties>
 
       <associations>
         <child-association name="vso:verifiedBy">
           <source>
-            <mandatory>true</mandatory>
+            <mandatory>false</mandatory>
             <many>false</many>
           </source>
           <target>
             <class>vso:followUpReport</class>
             <mandatory>false</mandatory>
-            <many>false</many>
+            <many>true</many>
           </target>
         </child-association>
       </associations>
 
       <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
@@ -421,7 +557,31 @@
       <parent>vso:vsoContent</parent>
 
       <properties>
-        <property name="vso:closureDate">
+        <property name="vso:followUpId">
+          <title>ID seguimiento</title>
+          <description>Follow-up report identifier</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:followUpType">
+          <title>Tipo de seguimiento</title>
+          <description>Type of follow-up activity</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+          <constraints>
+            <constraint ref="vso:followUpTypeList"/>
+          </constraints>
+        </property>
+        <property name="vso:followUpDate">
+          <title>Fecha de seguimiento</title>
+          <description>Date (and time) the follow-up was conducted in the field, as recorded by the checklist app</description>
+          <type>d:datetime</type>
+        </property>
+        <property name="vso:percentComplete">
+          <title>Porcentaje completado</title>
+          <description>Percentage of corrective action completion</description>
+          <type>d:int</type>
+        </property>
+        <property name="vso:followUpClosureDate">
           <title>Fecha de cierre</title>
           <description>Date corrective action was closed</description>
           <type>d:date</type>
@@ -436,19 +596,29 @@
           <description>Effectiveness verification result</description>
           <type>d:boolean</type>
         </property>
-        <property name="vso:findingClosed">
-          <title>Hallazgo cerrado</title>
-          <description>Indicates whether the associated finding is closed</description>
-          <type>d:boolean</type>
-        </property>
-        <property name="vso:percentComplete">
-          <title>Porcentaje completado</title>
-          <description>Percentage of corrective action completion</description>
-          <type>d:int</type>
+        <property name="vso:followUpComment">
+          <title>Comentario de seguimiento</title>
+          <description>Free-text comment recorded during the follow-up</description>
+          <type>d:text</type>
         </property>
       </properties>
 
+      <associations>
+        <association name="vso:relatedCorrectiveAction">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:correctiveAction</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </association>
+      </associations>
+
       <mandatory-aspects>
+        <aspect>vso:evidenceReferences</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
@@ -460,6 +630,23 @@
   <!-- Aspects -->
   <!-- ========================================================= -->
   <aspects>
+
+    <aspect name="vso:evidenceReferences">
+      <title>Evidence References</title>
+      <associations>
+        <association name="vso:relatedEvidence">
+          <source>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </source>
+          <target>
+            <class>vso:evidenceItem</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </association>
+      </associations>
+    </aspect>
 
     <aspect name="vso:inspectionContext">
       <title>Inspection Context</title>
@@ -474,6 +661,16 @@
           <description>Inspection location identifier</description>
           <type>d:text</type>
         </property>
+        <property name="vso:locationCode">
+          <title>Código ubicacion inspeccion</title>
+          <description>Stable location business code (for example ICAO code)</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
         <property name="vso:locationName">
           <title>Nombre ubicacion inspeccion</title>
           <description>Inspection location name</description>
@@ -485,9 +682,29 @@
     <aspect name="vso:serviceContext">
       <title>Service Context</title>
       <properties>
-        <property name="vso:domain">
-          <title>Especialidad</title>
-          <description>Oversight domain (CNS, AGA, OPS)</description>
+        <property name="vso:specialtyId">
+          <title>ID especialidad</title>
+          <description>Canonical specialty identifier</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:specialtyCode">
+          <title>Código especialidad</title>
+          <description>Human-friendly specialty code used in search and integrations</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:specialtyName">
+          <title>Nombre especialidad</title>
+          <description>Display name snapshot for specialty</description>
           <type>d:text</type>
         </property>
         <property name="vso:providerId">
@@ -551,4 +768,3 @@
   </aspects>
 
 </model>
-

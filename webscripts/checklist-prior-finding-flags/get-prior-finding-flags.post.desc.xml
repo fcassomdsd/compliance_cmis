@@ -1,0 +1,8 @@
+<webscript>
+   <shortname>Get Checklist Items With Open Prior Findings</shortname>
+   <description>Returns checklist item to finding pairs where related prior finding status is not Closed</description>
+   <url>/api/checklist/prior-findings/open</url>
+   <format default="json"/>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>
