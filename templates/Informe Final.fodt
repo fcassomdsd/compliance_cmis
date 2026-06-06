@@ -39825,7 +39825,7 @@
       [#list checklistSummaryTable as item]
     <table:table-row table:style-name="Table10.3">
      <table:table-cell table:style-name="Table10.A1" office:value-type="string">
-         <text:p text:style-name="Table_20_Contents">${item.domain}</text:p>
+      <text:p text:style-name="Table_20_Contents">${inspectors.0.specialty}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table10.B1" office:value-type="string">
          <text:p text:style-name="Table_20_Contents">${item.complianceStatus}</text:p>
