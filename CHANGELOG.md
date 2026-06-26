@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-06-21] — Security Hardening & Code Quality
+
+### Security
+- Moved all hardcoded secrets (keystore passwords, DB password, Solr secret) from `docker-compose.yml` to `.env` variables with dev-only defaults.
+- Created `.env.example` as a template for new deployments.
+- Added `.env` and `docker/secrets/*.txt` to `.gitignore` to prevent credential leaks.
+- Enabled Alfresco CSRF filter (`csrf.filter.enabled=true`) for repository Web Script protection.
+
+### Added
+- `package.json` with ESLint dev dependency and `lint`/`lint:fix` npm scripts.
+- `scripts/verify-resolve-paths.sh` — automated check that `resolveVsoPaths()` stays consistent across Web Scripts.
+- `<content-type>application/json</content-type>` restriction on all POST Web Script descriptor files.
+
+### Changed
+- `docker-compose.yml`: `postgres` image tag now uses `${POSTGRES_TAG:-16.5}` variable.
+- `docker-compose.yml`: added version-pinning warning comment for Alfresco Community Edition.
+- `.env`: resolved unexpanded template variables (`<%=serverName%>`, `BIND_IP_*`), corrected `POSTGRES_TAG` to `16.5`, removed unused `MARIADB_TAG`.
+- 198 ESLint warnings auto-fixed (quote style, indentation) across all Web Scripts.
+- Documented `fail()` error response patterns in canonical import and follow-up import scripts.
+
+### Removed
+- Stale commented-out `content-app` and `control-center` services from `docker-compose.yml`.
+- Obsolete `reference/app JSON schemas.json` (dev documentation snapshot, no longer needed).
+- Empty `webscripts/test-assocs/` directory.
+- `.env` untracked from git (`git rm --cached`).
+
 ## [2026-05-22] - Develop to Main Release
 
 This release merges `develop` into `main` with 39 commits.
