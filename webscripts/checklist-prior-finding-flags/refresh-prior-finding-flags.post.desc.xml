@@ -3,6 +3,7 @@
    <description>Recomputes and persists vso:hasOpenPriorFinding for checklist items filtered by inspection and specialty</description>
    <url>/api/checklist/prior-findings/refresh-flags</url>
    <format default="json"/>
+   <content-type>application/json</content-type>
    <authentication>user</authentication>
    <transaction>required</transaction>
 </webscript>

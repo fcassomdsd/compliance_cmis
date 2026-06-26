@@ -135,12 +135,12 @@ function resolveSpecialtyFilter(input) {
 
 function buildChecklistQuery(inspectionId, specialtyFilter, onlyFlagged) {
   var query =
-    '+TYPE:"vso:checklistItem" ' +
-    '@vso\\:inspectionId:"NOT ' + escapeLuceneValue(inspectionId) + '" ' +
-    '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '"';
+    "+TYPE:\"vso:checklistItem\" " +
+    "@vso\\:inspectionId:\"NOT " + escapeLuceneValue(inspectionId) + "\" " +
+    "+" + specialtyFilter.queryField + ":\"" + escapeLuceneValue(specialtyFilter.value) + "\"";
 
   if (onlyFlagged) {
-    query += ' +@vso\\:hasOpenPriorFinding:true';
+    query += " +@vso\\:hasOpenPriorFinding:true";
   }
 
   return query;
@@ -148,13 +148,13 @@ function buildChecklistQuery(inspectionId, specialtyFilter, onlyFlagged) {
 
 function buildOpenFindingsByItemCodeQuery(itemCode, specialtyFilter, inspectionId, priorOnly) {
   var query =
-    '+TYPE:"vso:finding" ' +
-    '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '" ' +
-    '+@vso\\:checklistItemCode:"' + escapeLuceneValue(itemCode) + '" ' +
-    '-@vso\\:findingStatus:"Closed"';
+    "+TYPE:\"vso:finding\" " +
+    "+" + specialtyFilter.queryField + ":\"" + escapeLuceneValue(specialtyFilter.value) + "\" " +
+    "+@vso\\:checklistItemCode:\"" + escapeLuceneValue(itemCode) + "\" " +
+    "-@vso\\:findingStatus:\"Closed\"";
 
   if (priorOnly && inspectionId) {
-    query += ' -@vso\\:inspectionId:"' + escapeLuceneValue(inspectionId) + '"';
+    query += " -@vso\\:inspectionId:\"" + escapeLuceneValue(inspectionId) + "\"";
   }
 
   return query;

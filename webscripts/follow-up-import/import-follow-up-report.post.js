@@ -19,6 +19,7 @@ function trimProp(node, propName) {
   return value === null || value === undefined ? "" : String(value).replace(/^\s+|\s+$/g, "");
 }
 
+// Sets error via model.json string (consumed by FTL template as ${model.json})
 function fail(code, message) {
   status.code = code;
   status.message = message;
@@ -447,22 +448,22 @@ function toContext(node) {
 }
 
 function buildEvidenceSearchQuery(evidencePayload, context) {
-  var clauses = ['+TYPE:"vso:evidenceItem"'];
-  clauses.push('+@vso\\:evidenceId:"' + escapeLuceneValue(evidencePayload.evidenceId) + '"');
+  var clauses = ["+TYPE:\"vso:evidenceItem\""];
+  clauses.push("+@vso\\:evidenceId:\"" + escapeLuceneValue(evidencePayload.evidenceId) + "\"");
 
   var source = trimToNull(evidencePayload.evidenceSource);
   if (source) {
-    clauses.push('+@vso\\:source:"' + escapeLuceneValue(source) + '"');
+    clauses.push("+@vso\\:source:\"" + escapeLuceneValue(source) + "\"");
   }
 
   if (context.providerId) {
-    clauses.push('+@vso\\:providerId:"' + escapeLuceneValue(context.providerId) + '"');
+    clauses.push("+@vso\\:providerId:\"" + escapeLuceneValue(context.providerId) + "\"");
   }
   if (context.locationId) {
-    clauses.push('+@vso\\:locationId:"' + escapeLuceneValue(context.locationId) + '"');
+    clauses.push("+@vso\\:locationId:\"" + escapeLuceneValue(context.locationId) + "\"");
   }
   if (context.specialtyId) {
-    clauses.push('+@vso\\:specialtyId:"' + escapeLuceneValue(context.specialtyId) + '"');
+    clauses.push("+@vso\\:specialtyId:\"" + escapeLuceneValue(context.specialtyId) + "\"");
   }
 
   return clauses.join(" ");
@@ -508,7 +509,7 @@ function findEvidenceNode(evidencePayload, context) {
     return strictCandidate;
   }
 
-  var fallbackQuery = '+TYPE:"vso:evidenceItem" +@vso\\:evidenceId:"' + escapeLuceneValue(evidencePayload.evidenceId) + '"';
+  var fallbackQuery = "+TYPE:\"vso:evidenceItem\" +@vso\\:evidenceId:\"" + escapeLuceneValue(evidencePayload.evidenceId) + "\"";
   var fallbackMatches = search.luceneSearch(fallbackQuery) || [];
   return chooseEvidenceCandidate(fallbackMatches, evidencePayload);
 }
@@ -540,17 +541,17 @@ function linkFollowUpEvidence(followUpNode, evidencePayloads, context, summary) 
 }
 
 function buildFindingSearchQuery(request) {
-  var clauses = ['+TYPE:"vso:finding"'];
-  clauses.push('+@vso\\:findingId:"' + escapeLuceneValue(request.findingId) + '"');
+  var clauses = ["+TYPE:\"vso:finding\""];
+  clauses.push("+@vso\\:findingId:\"" + escapeLuceneValue(request.findingId) + "\"");
 
   if (request.providerId) {
-    clauses.push('+@vso\\:providerId:"' + escapeLuceneValue(request.providerId) + '"');
+    clauses.push("+@vso\\:providerId:\"" + escapeLuceneValue(request.providerId) + "\"");
   }
   if (request.locationId) {
-    clauses.push('+@vso\\:locationId:"' + escapeLuceneValue(request.locationId) + '"');
+    clauses.push("+@vso\\:locationId:\"" + escapeLuceneValue(request.locationId) + "\"");
   }
   if (request.specialtyId) {
-    clauses.push('+@vso\\:specialtyId:"' + escapeLuceneValue(request.specialtyId) + '"');
+    clauses.push("+@vso\\:specialtyId:\"" + escapeLuceneValue(request.specialtyId) + "\"");
   }
 
   return clauses.join(" ");

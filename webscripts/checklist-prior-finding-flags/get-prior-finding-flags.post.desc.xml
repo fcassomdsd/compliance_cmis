@@ -3,6 +3,7 @@
    <description>Returns checklist item to finding pairs where related prior finding status is not Closed</description>
    <url>/api/checklist/prior-findings/open</url>
    <format default="json"/>
+   <content-type>application/json</content-type>
    <authentication>user</authentication>
    <transaction>required</transaction>
 </webscript>
