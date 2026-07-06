@@ -1355,7 +1355,7 @@ function resolveItemLabel(itemPayload) {
 }
 
 function resolveItemCode(itemPayload) {
-  return trimToNull(itemPayload.itemCode) || trimToNull(itemPayload.itemId);
+  return trimToNull(itemPayload.checklistItemCode) || trimToNull(itemPayload.itemCode) || trimToNull(itemPayload.itemId);
 }
 
 function resolveChecklistItemInstanceId(itemPayload) {
