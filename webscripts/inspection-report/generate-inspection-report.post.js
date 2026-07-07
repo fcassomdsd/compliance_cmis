@@ -255,6 +255,79 @@ function trimProp(node, propName) {
   return String(val).replace(/^\s+|\s+$/g, "");
 }
 
+function firstNonEmptySpecialty() {
+  function isPlaceholderValue(value) {
+    var lowered = String(value).toLowerCase();
+    return lowered === "unknown" || lowered === "desconocido" || lowered === "n/a" || lowered === "na";
+  }
+
+  for (var index = 0; index < arguments.length; index++) {
+    var value = arguments[index];
+    if (value !== null && value !== undefined) {
+      var normalized = String(value); //.replace(/^\s+|\s+$/g, "");
+      if (normalized.length > 0 && !isPlaceholderValue(normalized)) {
+        return normalized;
+      }
+    }
+  }
+  return "";
+}
+
+function extractSpecialtyToken(value) {
+  var normalized = firstNonEmptySpecialty(value);
+  if (!normalized) {
+    return "";
+  }
+
+  var hyphenMatch = normalized.match(/(?:^|[-_])([A-Za-z]{2,8})(?:[-_.]|$)/);
+  if (hyphenMatch) {
+    return hyphenMatch[1];
+  }
+
+  var parenMatch = normalized.match(/\(([A-Za-z]{2,8})\)/);
+  if (parenMatch) {
+    return parenMatch[1];
+  }
+
+  return "";
+}
+
+function resolveSpecialtyNameFromNodes(itemNode, checklistNode, domainFolder, inspectionFolder) {
+  var specialty = firstNonEmptySpecialty(
+    checklistNode ? trimProp(checklistNode, "vso:specialtyName") : "",
+    checklistNode ? trimProp(checklistNode, "vso:specialtyCode") : "",
+    checklistNode ? trimProp(checklistNode, "vso:specialtyId") : "",
+    trimProp(itemNode, "vso:specialtyName"),
+    trimProp(itemNode, "vso:specialtyCode"),
+    trimProp(itemNode, "vso:specialtyId"),
+    domainFolder ? trimProp(domainFolder, "vso:specialtyName") : "",
+    domainFolder ? trimProp(domainFolder, "vso:specialtyCode") : "",
+    domainFolder ? trimProp(domainFolder, "vso:specialtyId") : "",
+    domainFolder ? domainFolder.name : "",
+    checklistNode ? trimProp(checklistNode, "vso:checklistId") : "",
+    checklistNode ? checklistNode.name : "",
+    inspectionFolder ? trimProp(inspectionFolder, "vso:specialtyName") : "",
+    inspectionFolder ? trimProp(inspectionFolder, "vso:specialtyCode") : "",
+    inspectionFolder ? trimProp(inspectionFolder, "vso:specialtyId") : ""
+  );
+
+  if (specialty) {
+    return specialty;
+  }
+
+  var itemCode = trimProp(itemNode, "vso:itemCode") || trimProp(itemNode, "vso:itemId");
+  var prefixMatch = itemCode.match(/^([A-Za-z]{2,8})[-_]/);
+  if (prefixMatch) {
+    return prefixMatch[1];
+  }
+
+  return firstNonEmptySpecialty(
+    extractSpecialtyToken(checklistNode ? trimProp(checklistNode, "vso:checklistId") : ""),
+    extractSpecialtyToken(checklistNode ? checklistNode.name : ""),
+    extractSpecialtyToken(domainFolder ? domainFolder.name : "")
+  );
+}
+
 function buildChecklistSummaryTable(checklistData) {
   var summaryMap = {};
 
@@ -266,6 +339,7 @@ function buildChecklistSummaryTable(checklistData) {
 
     if (!summaryMap[key]) {
       summaryMap[key] = {
+        domain: specialtyName,
         specialtyName: specialtyName,
         complianceStatus: complianceStatus,
         count: 0
@@ -283,6 +357,90 @@ function buildChecklistSummaryTable(checklistData) {
   }
 
   return rows;
+}
+
+function buildFindingSpecs(findings) {
+  function sortKey(value) {
+    if (value === null || value === undefined) {
+      return "";
+    }
+    return String(value).toLowerCase();
+  }
+
+  var groupsByName = {};
+  var grouped = [];
+
+  for (var index = 0; index < findings.length; index++) {
+    var finding = findings[index];
+    var specialtyName = firstNonEmptySpecialty(finding.specialtyName, finding.domain, "Unknown");
+
+    var group = groupsByName[specialtyName];
+    if (!group) {
+      group = {
+        name: specialtyName,
+        findings: []
+      };
+      groupsByName[specialtyName] = group;
+      grouped.push(group);
+    }
+
+    group.findings.push({
+      itemCode: finding.itemCode || "",
+      level: finding.level || "",
+      description: finding.description || "",
+      nationalRegulation: finding.nationalRegulation || "",
+      requirementText: finding.requirementText || ""
+    });
+  }
+
+  for (var gi = 0; gi < grouped.length; gi++) {
+    grouped[gi].findings.sort(function(a, b) {
+      var aKey = sortKey(a.itemCode);
+      var bKey = sortKey(b.itemCode);
+      if (aKey < bKey) {
+        return -1;
+      }
+      if (aKey > bKey) {
+        return 1;
+      }
+      return 0;
+    });
+  }
+
+  grouped.sort(function(a, b) {
+    var aKey = sortKey(a.name);
+    var bKey = sortKey(b.name);
+    if (aKey < bKey) {
+      return -1;
+    }
+    if (aKey > bKey) {
+      return 1;
+    }
+    return 0;
+  });
+
+  return grouped;
+}
+
+function resolveRequirementTextForFinding(finding, itemRequirementTextByCode, itemCodeByFindingNodeRef, itemCodeByFindingNodeRefReverse) {
+  var itemCode = finding.itemCode || "";
+  if (itemCode && itemRequirementTextByCode[itemCode]) {
+    return itemRequirementTextByCode[itemCode];
+  }
+
+  var findingNodeRef = finding.findingNodeRef || "";
+  var mappedItemCode = null;
+  if (findingNodeRef && itemCodeByFindingNodeRef[findingNodeRef]) {
+    mappedItemCode = itemCodeByFindingNodeRef[findingNodeRef];
+  } else if (findingNodeRef && itemCodeByFindingNodeRefReverse[findingNodeRef]) {
+    mappedItemCode = itemCodeByFindingNodeRefReverse[findingNodeRef];
+  }
+
+  if (mappedItemCode && itemRequirementTextByCode[mappedItemCode]) {
+    return itemRequirementTextByCode[mappedItemCode];
+  }
+
+  return "";
 }
 
 function formatSpanishDateRange(startDate, endDate) {
@@ -346,6 +504,21 @@ function sanitizeFileNameToken(value) {
   return String(value).replace(/[\\/:*?"<>|]+/g, "-").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
 }
 
+function resolveChecklistItemCode(itemNode) {
+  var explicitCode = firstNonEmptySpecialty(trimProp(itemNode, "vso:itemCode"), trimProp(itemNode, "vso:checklistItemCode"));
+  if (explicitCode) {
+    return explicitCode;
+  }
+
+  var nodeName = itemNode && itemNode.name ? String(itemNode.name) : "";
+  var nameCode = nodeName.replace(/\.json$/i, "").replace(/^\s+|\s+$/g, "");
+  if (nameCode) {
+    return nameCode;
+  }
+
+  return trimProp(itemNode, "vso:itemId");
+}
+
 function keyMatchesAssocName(key, shortName) {
   if (!key) {
     return false;
@@ -394,6 +567,22 @@ function collectAssocNodesByShortName(node, shortName) {
   return collected;
 }
 
+function resolveAssocNodesByShortName(node, shortName) {
+  var directMatches = collectAssocNodesByShortName(node, shortName);
+  if (directMatches && directMatches.length > 0) {
+    return directMatches;
+  }
+  if (!node || !node.nodeRef) {
+    return [];
+  }
+
+  var reloadedNode = search.findNode(String(node.nodeRef));
+  if (!reloadedNode) {
+    return [];
+  }
+  return collectAssocNodesByShortName(reloadedNode, shortName);
+}
+
 function lookupInspectionData(inspectionCode, providerId) {
   var inspectionFolderPath = VSO_PATHS.inspectionInProcessPath + "/" + inspectionCode;
   var inspectionFolder = companyhome.childByNamePath(inspectionFolderPath);
@@ -412,44 +601,38 @@ function lookupInspectionData(inspectionCode, providerId) {
   var providerName = "";
 
   var findings = [];
+  var findingNodeRefSeen = {};
   var checklistItemCodeById = {};
   var checklistItemCodeByFindingNodeRef = {};
   var checklistItemCodeByFindingNodeRefReverse = {};
-  var allChildren = inspectionFolder.children;
+  var checklistItemRequirementTextByCode = {};
+  var observedSpecialtyFromChecklist = "";
+  var firstDomainFolderName = "";
 
-  // Collect findings from direct children
-  for (var ci = 0; ci < allChildren.length; ci++) {
-    var child = allChildren[ci];
-    if (!child.isSubType("vso:finding")) {
-      continue;
+  function pushFindingFromNode(findingNode, findingNodeRef, specialtyName) {
+    if (!findingNode || !findingNodeRef || findingNodeRefSeen[findingNodeRef]) {
+      return;
     }
-    if (trimProp(child, "vso:providerId") !== providerId) {
-      continue;
-    }
-    if (!providerName) {
-      providerName = trimProp(child, "vso:providerName");
-    }
-
-    var findingJson = {};
-    try {
-      findingJson = JSON.parse(String(child.content));
-    } catch (parseErr) {}
-    var findingPayload = findingJson.finding || findingJson;
-    var findingItemId = trimProp(child, "vso:itemId") || findingPayload.itemId || "";
-    var findingItemCode = findingItemId;
-
+    var findingItemId = trimProp(findingNode, "vso:itemId");
+    var findingItemCode = firstNonEmptySpecialty(
+      trimProp(findingNode, "vso:checklistItemCode"),
+      trimProp(findingNode, "vso:itemCode"),
+      findingItemId
+    );
+    findingNodeRefSeen[findingNodeRef] = true;
     findings.push({
-      findingNode: child,
-      findingNodeRef: child.nodeRef.toString(),
+      findingNode: findingNode,
+      findingNodeRef: findingNodeRef,
       itemId: findingItemId,
-      itemCode: findingItemCode || findingItemId,
-      specialtyName: trimProp(child, "vso:specialtyName") || trimProp(child, "vso:specialtyCode") || trimProp(child, "vso:specialtyId"),
-      level: trimProp(child, "vso:findingLevel"),
-      description: trimProp(child, "vso:description"),
-      nationalRegulation: trimProp(child, "vso:nationalRegulation"),
-      icaoReference: trimProp(child, "vso:icaoReference"),
-      ceMapping: trimProp(child, "vso:ceMapping"),
-      requirementText: findingPayload.requirementText || ""
+      itemCode: findingItemCode,
+      domain: specialtyName,
+      specialtyName: specialtyName,
+      level: trimProp(findingNode, "vso:findingLevel"),
+      description: trimProp(findingNode, "vso:description"),
+      nationalRegulation: trimProp(findingNode, "vso:nationalRegulation"),
+      icaoReference: trimProp(findingNode, "vso:icaoReference"),
+      ceMapping: trimProp(findingNode, "vso:ceMapping"),
+      requirementText: ""
     });
   }
 
@@ -458,51 +641,28 @@ function lookupInspectionData(inspectionCode, providerId) {
 
   for (var di = 0; di < domainFolders.length; di++) {
     var domainFolder = domainFolders[di];
+    firstDomainFolderName = firstNonEmptySpecialty(firstDomainFolderName, domainFolder ? domainFolder.name : "");
     var domainChildren = domainFolder.children;
 
-    // Collect findings from domain folder
-    for (var dfi = 0; dfi < domainChildren.length; dfi++) {
-      var domainFinding = domainChildren[dfi];
-      if (!domainFinding.isSubType("vso:finding")) {
-        continue;
-      }
-      if (trimProp(domainFinding, "vso:providerId") !== providerId) {
-        continue;
-      }
-      if (!providerName) {
-        providerName = trimProp(domainFinding, "vso:providerName");
-      }
-
-      var domainFindingJson = {};
-      try {
-        domainFindingJson = JSON.parse(String(domainFinding.content));
-      } catch (parseErr) {}
-      var domainFindingPayload = domainFindingJson.finding || domainFindingJson;
-      var domainFindingItemId = trimProp(domainFinding, "vso:itemId") || domainFindingPayload.itemId || "";
-      var domainFindingItemCode = domainFindingItemId;
-
-      findings.push({
-        findingNode: domainFinding,
-        findingNodeRef: domainFinding.nodeRef.toString(),
-        itemId: domainFindingItemId,
-        itemCode: domainFindingItemCode || domainFindingItemId,
-        specialtyName: trimProp(domainFinding, "vso:specialtyName") || trimProp(domainFinding, "vso:specialtyCode") || trimProp(domainFinding, "vso:specialtyId"),
-        level: trimProp(domainFinding, "vso:findingLevel"),
-        description: trimProp(domainFinding, "vso:description"),
-        nationalRegulation: trimProp(domainFinding, "vso:nationalRegulation"),
-        icaoReference: trimProp(domainFinding, "vso:icaoReference"),
-        ceMapping: trimProp(domainFinding, "vso:ceMapping"),
-        requirementText: domainFindingPayload.requirementText || ""
-      });
-    }
-
-    
     // Collect checklists from domain folder
     for (var dci = 0; dci < domainChildren.length; dci++) {
       var checklistNode = domainChildren[dci];
       if (!checklistNode.isSubType("vso:inspectionChecklist")) {
         continue;
       }
+
+      var checklistNodeContentSpecialty = firstNonEmptySpecialty(
+        trimProp(checklistNode, "vso:specialtyName"),
+        trimProp(checklistNode, "vso:specialtyCode"),
+        trimProp(checklistNode, "vso:specialtyId")
+      );
+      observedSpecialtyFromChecklist = firstNonEmptySpecialty(
+        observedSpecialtyFromChecklist,
+        checklistNodeContentSpecialty,
+        domainFolder ? domainFolder.name : "",
+        extractSpecialtyToken(checklistNode ? checklistNode.name : "")
+      );
+
       var checklistMatchesProvider = trimProp(checklistNode, "vso:providerId") === providerId;
       if (!providerName && checklistMatchesProvider) {
         providerName = trimProp(checklistNode, "vso:providerName");
@@ -516,12 +676,15 @@ function lookupInspectionData(inspectionCode, providerId) {
         }
 
         var checklistItemId = trimProp(itemNode, "vso:itemId");
-        var checklistItemCode = checklistItemId;
+        var checklistItemCode = resolveChecklistItemCode(itemNode);
         if (checklistItemId) {
           checklistItemCodeById[checklistItemId] = checklistItemCode;
         }
+        if (checklistItemCode) {
+          checklistItemRequirementTextByCode[checklistItemCode] = trimProp(itemNode, "vso:requirementText");
+        }
 
-        var linkedFindings = collectAssocNodesByShortName(itemNode, "hasFinding");
+        var linkedFindings = resolveAssocNodesByShortName(itemNode, "hasFinding");
         if (linkedFindings) {
           if (!Array.isArray(linkedFindings)) {
             linkedFindings = [linkedFindings];
@@ -530,14 +693,35 @@ function lookupInspectionData(inspectionCode, providerId) {
             var linkedFinding = linkedFindings[lfi];
             if (linkedFinding && linkedFinding.nodeRef) {
               checklistItemCodeByFindingNodeRef[linkedFinding.nodeRef.toString()] = checklistItemCode;
+              pushFindingFromNode(
+                linkedFinding,
+                linkedFinding.nodeRef.toString(),
+                firstNonEmptySpecialty(
+                  trimProp(linkedFinding, "vso:specialtyName"),
+                  trimProp(linkedFinding, "vso:specialtyCode"),
+                  trimProp(linkedFinding, "vso:specialtyId"),
+                  trimProp(checklistNode, "vso:specialtyName"),
+                  trimProp(checklistNode, "vso:specialtyCode"),
+                  trimProp(checklistNode, "vso:specialtyId"),
+                  domainFolder ? domainFolder.name : "",
+                  trimProp(inspectionFolder, "vso:specialtyName"),
+                  trimProp(inspectionFolder, "vso:specialtyCode"),
+                  trimProp(inspectionFolder, "vso:specialtyId")
+                )
+              );
             }
           }
         }
 
         if (checklistMatchesProvider) {
+          var checklistSpecialty = firstNonEmptySpecialty(
+            resolveSpecialtyNameFromNodes(itemNode, checklistNode, domainFolder, inspectionFolder),
+            checklistNodeContentSpecialty
+          );
           checklistSummary.push({
             itemCode: checklistItemCode,
-            specialtyName: trimProp(itemNode, "vso:specialtyName") || trimProp(itemNode, "vso:specialtyCode") || trimProp(itemNode, "vso:specialtyId"),
+            domain: checklistSpecialty,
+            specialtyName: checklistSpecialty,
             requirementText: trimProp(itemNode, "vso:requirementText"),
             complianceStatus: trimProp(itemNode, "vso:complianceStatus")
           });
@@ -558,7 +742,7 @@ function lookupInspectionData(inspectionCode, providerId) {
       if (!relatedChecklistItem || !relatedChecklistItem.isSubType || !relatedChecklistItem.isSubType("vso:checklistItem")) {
         continue;
       }
-      var reverseItemCode = trimProp(relatedChecklistItem, "vso:itemId");
+      var reverseItemCode = firstNonEmptySpecialty(trimProp(relatedChecklistItem, "vso:itemCode"), trimProp(relatedChecklistItem, "vso:itemId"));
       if (reverseItemCode) {
         checklistItemCodeByFindingNodeRefReverse[findingEntry.findingNodeRef] = reverseItemCode;
         break;
@@ -575,21 +759,49 @@ function lookupInspectionData(inspectionCode, providerId) {
     } else if (finding.findingNodeRef && checklistItemCodeByFindingNodeRefReverse[finding.findingNodeRef]) {
       finding.itemCode = checklistItemCodeByFindingNodeRefReverse[finding.findingNodeRef];
     }
+    finding.requirementText = resolveRequirementTextForFinding(
+      finding,
+      checklistItemRequirementTextByCode,
+      checklistItemCodeByFindingNodeRef,
+      checklistItemCodeByFindingNodeRefReverse
+    );
     delete finding.findingNode;
     delete finding.itemId;
     delete finding.findingNodeRef;
   }
 
+  var inspectionSpecialtyFallback = firstNonEmptySpecialty(
+    trimProp(inspectionFolder, "vso:specialtyName"),
+    trimProp(inspectionFolder, "vso:specialtyCode"),
+    trimProp(inspectionFolder, "vso:specialtyId"),
+    observedSpecialtyFromChecklist,
+    firstDomainFolderName
+  );
+
+  for (var csi = 0; csi < checklistSummary.length; csi++) {
+    var summaryItem = checklistSummary[csi];
+    var normalizedSpecialty = firstNonEmptySpecialty(
+      summaryItem.specialtyName,
+      summaryItem.domain,
+      inspectionSpecialtyFallback
+    );
+    summaryItem.specialtyName = normalizedSpecialty;
+    summaryItem.domain = normalizedSpecialty;
+  }
+
+  var findingSpecs = buildFindingSpecs(findings);
+
   return {
     inspectionCode: inspectionCode,
     providerId: providerId,
     providerName: providerName,
+    specialtyName: inspectionSpecialtyFallback,
     locationId: locationId,
     locationName: locationName,
     startDate: startDate,
     endDate: endDate,
     dateRange: formatSpanishDateRange(startDate, endDate),
-    findings: findings,
+    findingSpecs: findingSpecs,
     checklistSummary: checklistSummary,
     checklistSummaryTable: buildChecklistSummaryTable(checklistSummary)
   };
@@ -622,6 +834,24 @@ try {
     (inspectors.length > 0 ? (inspectors[0].name || "") : "");
 
   var reportData = lookupInspectionData(inspectionCode, providerId);
+  var reportSpecialtyFallback = firstNonEmptySpecialty(reportData.specialtyName);
+  if (reportSpecialtyFallback && Array.isArray(reportData.checklistSummaryTable)) {
+    for (var rsi = 0; rsi < reportData.checklistSummaryTable.length; rsi++) {
+      var summaryRow = reportData.checklistSummaryTable[rsi];
+      var normalizedRowSpecialty = firstNonEmptySpecialty(summaryRow.domain, summaryRow.specialtyName, reportSpecialtyFallback);
+      summaryRow.domain = normalizedRowSpecialty;
+      summaryRow.specialtyName = normalizedRowSpecialty;
+    }
+  }
+  var leadInspectorSpecialty = "";
+  if (inspectors.length > 0 && inspectors[0]) {
+    leadInspectorSpecialty = firstNonEmptySpecialty(
+      inspectors[0].specialty,
+      inspectors[0].specialtyName,
+      inspectors[0].role
+    );
+  }
+  reportData.specialtyName = firstNonEmptySpecialty(reportData.specialtyName, leadInspectorSpecialty);
   reportData.inspectors = inspectors;
   reportData.mainInspector = mainInspector;
   reportData.reportDate = TemplateGeneration.trimToNull(inputData.reportDate) || new Date().toISOString().slice(0, 10);

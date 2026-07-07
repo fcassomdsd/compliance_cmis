@@ -53,6 +53,7 @@ function setError(code, message) {
   model.importedSources = [];
 }
 
+// Sets error via model properties (consumed by FTL template as ${success}, ${error}, etc.)
 function fail(code, message) {
   setError(code, message);
   throw new Error(message);
@@ -703,8 +704,8 @@ function parseFollowUpCanonicalPayload(node) {
 
 function findFindingNodesById(findingId) {
   var query =
-    '+TYPE:"vso:finding" ' +
-    '+@vso\\:findingId:"' + escapeLuceneValue(findingId) + '"';
+    "+TYPE:\"vso:finding\" " +
+    "+@vso\\:findingId:\"" + escapeLuceneValue(findingId) + "\"";
   return search.luceneSearch(query) || [];
 }
 
@@ -715,10 +716,10 @@ function findCorrectiveActionByCapId(capId) {
   }
 
   var query =
-    '+TYPE:"vso:correctiveAction" ' +
-    '+(@vso\\:capId:"' + escapeLuceneValue(normalizedCapId) + '" ' +
-    'OR @cm\\:name:"' + escapeLuceneValue(normalizedCapId) + '.json" ' +
-    'OR @cm\\:name:"' + escapeLuceneValue(normalizedCapId) + '")';
+    "+TYPE:\"vso:correctiveAction\" " +
+    "+(@vso\\:capId:\"" + escapeLuceneValue(normalizedCapId) + "\" " +
+    "OR @cm\\:name:\"" + escapeLuceneValue(normalizedCapId) + ".json\" " +
+    "OR @cm\\:name:\"" + escapeLuceneValue(normalizedCapId) + "\")";
 
   return search.luceneSearch(query) || [];
 }
@@ -1354,7 +1355,7 @@ function resolveItemLabel(itemPayload) {
 }
 
 function resolveItemCode(itemPayload) {
-  return trimToNull(itemPayload.itemCode) || trimToNull(itemPayload.itemId);
+  return trimToNull(itemPayload.checklistItemCode) || trimToNull(itemPayload.itemCode) || trimToNull(itemPayload.itemId);
 }
 
 function resolveChecklistItemInstanceId(itemPayload) {
@@ -1460,7 +1461,7 @@ function padLeftNumber(number, size) {
 function buildSequentialEvidenceName(sequenceNumber, rawName) {
   var suffix = "";
   if (rawName) {
-    var lastDot = rawName.lastIndexOf('.');
+    var lastDot = rawName.lastIndexOf(".");
     if (lastDot > 0) {
       suffix = rawName.substring(lastDot);
     }
@@ -1837,143 +1838,143 @@ try {
   } else {
     var importRequest = validateImportRequest(parsedBody);
 
-  var sourceBaseFolder = companyhome.childByNamePath(importRequest.sourceBasePath);
-  if (!sourceBaseFolder || !sourceBaseFolder.exists()) {
-    fail(404, "Canonical models base folder not found: " + importRequest.sourceBasePath);
-  }
-
-  var sourceSpecialtyFolderName = firstNonEmpty(importRequest.specialtyName, importRequest.specialtyCode, importRequest.specialtyId);
-  if (sourceSpecialtyFolderName === null) {
-    fail(400, "Missing required field: one of specialtyId, specialtyCode, or specialtyName must be provided");
-  }
-  var sourceDomainFolder = sourceBaseFolder.childByNamePath(sourceSpecialtyFolderName);
-  if (!sourceDomainFolder || !sourceDomainFolder.exists()) {
-    fail(404, "Canonical models specialty folder not found: " + sourceSpecialtyFolderName);
-  }
-
-  var destinationBaseFolder = companyhome.childByNamePath(importRequest.destinationBasePath);
-  if (!destinationBaseFolder || !destinationBaseFolder.exists()) {
-    fail(404, "Destination base folder not found: " + importRequest.destinationBasePath);
-  }
-
-  var findingsBaseFolder = companyhome.childByNamePath(importRequest.findingsBasePath);
-  if (!findingsBaseFolder || !findingsBaseFolder.exists()) {
-    fail(404, "Findings base folder not found: " + importRequest.findingsBasePath);
-  }
-
-  var canonicalDocuments = loadCanonicalDocuments(sourceDomainFolder, importRequest.inspectionCode);
-  var sourceEvidenceFolder = canonicalDocuments.checklistDocument.node.parent || sourceDomainFolder;
-  var checklistPayload = canonicalDocuments.checklistDocument.payload.checklist;
-  var normalizedChecklistContext = resolveContextValues(checklistPayload, importRequest);
-  if (normalizedChecklistContext.locationId !== null) {
-    checklistPayload.locationId = normalizedChecklistContext.locationId;
-  }
-  if (normalizedChecklistContext.locationCode !== null) {
-    checklistPayload.locationCode = normalizedChecklistContext.locationCode;
-  }
-  if (normalizedChecklistContext.locationName !== null) {
-    checklistPayload.locationName = normalizedChecklistContext.locationName;
-  }
-  if (normalizedChecklistContext.specialtyId !== null) {
-    checklistPayload.specialtyId = normalizedChecklistContext.specialtyId;
-  }
-  if (normalizedChecklistContext.specialtyCode !== null) {
-    checklistPayload.specialtyCode = normalizedChecklistContext.specialtyCode;
-  }
-  if (normalizedChecklistContext.specialtyName !== null) {
-    checklistPayload.specialtyName = normalizedChecklistContext.specialtyName;
-  }
-  var normalizedIdentityContext = normalizeChecklistIdentity(checklistPayload, importRequest);
-  var checklistItems = toJsArray(canonicalDocuments.checklistDocument.payload.items);
-  if (checklistItems === null) {
-    fail(400, "Checklist canonical model field items must be an array");
-  }
-
-  if (checklistItems.length === 0) {
-    fail(400, "Checklist canonical model does not include items for inspectionCode: " + importRequest.inspectionCode);
-  }
-
-  var itemIdIndex = {};
-  var itemPayloadById = {};
-  for (var itemIndex = 0; itemIndex < checklistItems.length; itemIndex++) {
-    var checklistItem = checklistItems[itemIndex];
-    var checklistItemCode = resolveItemCode(checklistItem);
-    var checklistItemId = trimToNull(checklistItem.itemId);
-    if (checklistItemCode) {
-      itemIdIndex[checklistItemCode] = true;
-      itemPayloadById[checklistItemCode] = checklistItem;
-    }
-    if (checklistItemId) {
-      itemIdIndex[checklistItemId] = true;
-      itemPayloadById[checklistItemId] = checklistItem;
-    }
-  }
-
-  var matchedFindings = filterFindingsByChecklistItems(canonicalDocuments.findingDocuments, itemIdIndex);
-  for (var findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
-    canonicalDocuments.importedSources.push({
-      name: matchedFindings[findingIndex].node.name,
-      type: "finding",
-      path: matchedFindings[findingIndex].node.displayPath + "/" + matchedFindings[findingIndex].node.name
-    });
-  }
-
-  var summary = {
-    created: 0,
-    updated: 0,
-    sourceDocuments: canonicalDocuments.importedSources.length,
-    findingsImported: matchedFindings.length
-  };
-
-  var findingsYear = resolveFindingYear(importRequest, checklistPayload);
-  if (findingsYear === null) {
-    fail(400, "Unable to determine findings year from inspection data for inspectionCode: " + importRequest.inspectionCode);
-  }
-
-  var inspectionFolder = upsertInspectionFolder(destinationBaseFolder, importRequest, checklistPayload, summary);
-  var destinationDomainFolder = upsertDomainFolder(inspectionFolder, checklistPayload, summary);
-  var destinationFindingsYearFolder = upsertFindingsYearFolder(findingsBaseFolder, findingsYear, checklistPayload, summary);
-  var checklistNode = upsertChecklist(destinationDomainFolder, checklistPayload, summary);
-  var destinationEvidenceFolder = upsertEvidenceFolder(destinationDomainFolder, checklistPayload, summary);
-  var itemNodesById = {};
-  var evidenceImportContext = createEvidenceImportContext(destinationEvidenceFolder);
-
-  logger.log("[import-canonical-models] Starting import for inspectionCode=" + importRequest.inspectionCode + " itemCount=" + checklistItems.length);
-  for (itemIndex = 0; itemIndex < checklistItems.length; itemIndex++) {
-    var checklistItemPayload = checklistItems[itemIndex];
-    var itemNode = upsertChecklistItem(checklistNode, checklistPayload, checklistItemPayload, summary);
-    var itemCode = resolveItemCode(checklistItemPayload);
-    if (itemCode) {
-      itemNodesById[itemCode] = itemNode;
+    var sourceBaseFolder = companyhome.childByNamePath(importRequest.sourceBasePath);
+    if (!sourceBaseFolder || !sourceBaseFolder.exists()) {
+      fail(404, "Canonical models base folder not found: " + importRequest.sourceBasePath);
     }
 
-    var evidenceNodes = upsertEvidence(destinationEvidenceFolder, checklistPayload, checklistItemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext);
-    for (var evidenceNodeIndex = 0; evidenceNodeIndex < evidenceNodes.length; evidenceNodeIndex++) {
-      itemNode.save();
+    var sourceSpecialtyFolderName = firstNonEmpty(importRequest.specialtyName, importRequest.specialtyCode, importRequest.specialtyId);
+    if (sourceSpecialtyFolderName === null) {
+      fail(400, "Missing required field: one of specialtyId, specialtyCode, or specialtyName must be provided");
+    }
+    var sourceDomainFolder = sourceBaseFolder.childByNamePath(sourceSpecialtyFolderName);
+    if (!sourceDomainFolder || !sourceDomainFolder.exists()) {
+      fail(404, "Canonical models specialty folder not found: " + sourceSpecialtyFolderName);
+    }
+
+    var destinationBaseFolder = companyhome.childByNamePath(importRequest.destinationBasePath);
+    if (!destinationBaseFolder || !destinationBaseFolder.exists()) {
+      fail(404, "Destination base folder not found: " + importRequest.destinationBasePath);
+    }
+
+    var findingsBaseFolder = companyhome.childByNamePath(importRequest.findingsBasePath);
+    if (!findingsBaseFolder || !findingsBaseFolder.exists()) {
+      fail(404, "Findings base folder not found: " + importRequest.findingsBasePath);
+    }
+
+    var canonicalDocuments = loadCanonicalDocuments(sourceDomainFolder, importRequest.inspectionCode);
+    var sourceEvidenceFolder = canonicalDocuments.checklistDocument.node.parent || sourceDomainFolder;
+    var checklistPayload = canonicalDocuments.checklistDocument.payload.checklist;
+    var normalizedChecklistContext = resolveContextValues(checklistPayload, importRequest);
+    if (normalizedChecklistContext.locationId !== null) {
+      checklistPayload.locationId = normalizedChecklistContext.locationId;
+    }
+    if (normalizedChecklistContext.locationCode !== null) {
+      checklistPayload.locationCode = normalizedChecklistContext.locationCode;
+    }
+    if (normalizedChecklistContext.locationName !== null) {
+      checklistPayload.locationName = normalizedChecklistContext.locationName;
+    }
+    if (normalizedChecklistContext.specialtyId !== null) {
+      checklistPayload.specialtyId = normalizedChecklistContext.specialtyId;
+    }
+    if (normalizedChecklistContext.specialtyCode !== null) {
+      checklistPayload.specialtyCode = normalizedChecklistContext.specialtyCode;
+    }
+    if (normalizedChecklistContext.specialtyName !== null) {
+      checklistPayload.specialtyName = normalizedChecklistContext.specialtyName;
+    }
+    var normalizedIdentityContext = normalizeChecklistIdentity(checklistPayload, importRequest);
+    var checklistItems = toJsArray(canonicalDocuments.checklistDocument.payload.items);
+    if (checklistItems === null) {
+      fail(400, "Checklist canonical model field items must be an array");
+    }
+
+    if (checklistItems.length === 0) {
+      fail(400, "Checklist canonical model does not include items for inspectionCode: " + importRequest.inspectionCode);
+    }
+
+    var itemIdIndex = {};
+    var itemPayloadById = {};
+    for (var itemIndex = 0; itemIndex < checklistItems.length; itemIndex++) {
+      var checklistItem = checklistItems[itemIndex];
+      var checklistItemCode = resolveItemCode(checklistItem);
+      var checklistItemId = trimToNull(checklistItem.itemId);
+      if (checklistItemCode) {
+        itemIdIndex[checklistItemCode] = true;
+        itemPayloadById[checklistItemCode] = checklistItem;
+      }
+      if (checklistItemId) {
+        itemIdIndex[checklistItemId] = true;
+        itemPayloadById[checklistItemId] = checklistItem;
+      }
+    }
+
+    var matchedFindings = filterFindingsByChecklistItems(canonicalDocuments.findingDocuments, itemIdIndex);
+    for (var findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
+      canonicalDocuments.importedSources.push({
+        name: matchedFindings[findingIndex].node.name,
+        type: "finding",
+        path: matchedFindings[findingIndex].node.displayPath + "/" + matchedFindings[findingIndex].node.name
+      });
+    }
+
+    var summary = {
+      created: 0,
+      updated: 0,
+      sourceDocuments: canonicalDocuments.importedSources.length,
+      findingsImported: matchedFindings.length
+    };
+
+    var findingsYear = resolveFindingYear(importRequest, checklistPayload);
+    if (findingsYear === null) {
+      fail(400, "Unable to determine findings year from inspection data for inspectionCode: " + importRequest.inspectionCode);
+    }
+
+    var inspectionFolder = upsertInspectionFolder(destinationBaseFolder, importRequest, checklistPayload, summary);
+    var destinationDomainFolder = upsertDomainFolder(inspectionFolder, checklistPayload, summary);
+    var destinationFindingsYearFolder = upsertFindingsYearFolder(findingsBaseFolder, findingsYear, checklistPayload, summary);
+    var checklistNode = upsertChecklist(destinationDomainFolder, checklistPayload, summary);
+    var destinationEvidenceFolder = upsertEvidenceFolder(destinationDomainFolder, checklistPayload, summary);
+    var itemNodesById = {};
+    var evidenceImportContext = createEvidenceImportContext(destinationEvidenceFolder);
+
+    logger.log("[import-canonical-models] Starting import for inspectionCode=" + importRequest.inspectionCode + " itemCount=" + checklistItems.length);
+    for (itemIndex = 0; itemIndex < checklistItems.length; itemIndex++) {
+      var checklistItemPayload = checklistItems[itemIndex];
+      var itemNode = upsertChecklistItem(checklistNode, checklistPayload, checklistItemPayload, summary);
+      var itemCode = resolveItemCode(checklistItemPayload);
+      if (itemCode) {
+        itemNodesById[itemCode] = itemNode;
+      }
+
+      var evidenceNodes = upsertEvidence(destinationEvidenceFolder, checklistPayload, checklistItemPayload, sourceEvidenceFolder, sourceDomainFolder, summary, evidenceImportContext);
+      for (var evidenceNodeIndex = 0; evidenceNodeIndex < evidenceNodes.length; evidenceNodeIndex++) {
+        itemNode.save();
         ensureAssociation(itemNode, evidenceNodes[evidenceNodeIndex], "vso:relatedEvidence");
+      }
     }
-  }
 
-  for (findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
-    var findingPayload = matchedFindings[findingIndex].payload.finding;
-    normalizeFindingIdentity(findingPayload, normalizedIdentityContext, findingIndex + 1);
-    var findingItemCode = resolveItemCode(findingPayload || {});
-    var relatedItemPayload = itemPayloadById[findingItemCode];
-    var findingNode = upsertFinding(destinationFindingsYearFolder, checklistPayload, findingPayload, findingItemCode, relatedItemPayload, summary);
-    var relatedItemNode = itemNodesById[findingItemCode];
+    for (findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
+      var findingPayload = matchedFindings[findingIndex].payload.finding;
+      normalizeFindingIdentity(findingPayload, normalizedIdentityContext, findingIndex + 1);
+      var findingItemCode = resolveItemCode(findingPayload || {});
+      var relatedItemPayload = itemPayloadById[findingItemCode];
+      var findingNode = upsertFinding(destinationFindingsYearFolder, checklistPayload, findingPayload, findingItemCode, relatedItemPayload, summary);
+      var relatedItemNode = itemNodesById[findingItemCode];
 
-    if (relatedItemNode) {
-      relatedItemNode.save();
-      ensureAssociation(relatedItemNode, findingNode, "vso:hasFinding");
+      if (relatedItemNode) {
+        relatedItemNode.save();
+        ensureAssociation(relatedItemNode, findingNode, "vso:hasFinding");
 
         var relatedEvidenceNodes = relatedItemNode.assocs["vso:relatedEvidence"];
-      if (relatedEvidenceNodes) {
-        for (var relatedEvidenceIndex = 0; relatedEvidenceIndex < relatedEvidenceNodes.length; relatedEvidenceIndex++) {
+        if (relatedEvidenceNodes) {
+          for (var relatedEvidenceIndex = 0; relatedEvidenceIndex < relatedEvidenceNodes.length; relatedEvidenceIndex++) {
             ensureAssociation(findingNode, relatedEvidenceNodes[relatedEvidenceIndex], "vso:relatedEvidence");
+          }
         }
       }
     }
-  }
 
     status.code = 200;
     model.success = true;

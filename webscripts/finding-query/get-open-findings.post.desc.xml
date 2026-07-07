@@ -3,6 +3,7 @@
    <description>Returns findings filtered by location and specialty where findingStatus is not Closed</description>
    <url>/api/findings/open/query</url>
    <format default="json"/>
+   <content-type>application/json</content-type>
    <authentication>user</authentication>
    <transaction>required</transaction>
 </webscript>

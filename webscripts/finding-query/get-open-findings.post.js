@@ -184,10 +184,10 @@ function findCorrectiveActionByProperty(findingNode) {
 
     var normalizedCapId = normalizeCapIdentifier(assocText);
     var capQuery =
-      '+TYPE:"vso:correctiveAction" ' +
-      '+(@cm\\:name:"' + escapeLuceneValue(assocText) + '" ' +
-      'OR @vso\\:capId:"' + escapeLuceneValue(assocText) + '" ' +
-      'OR @vso\\:capId:"' + escapeLuceneValue(normalizedCapId) + '")';
+      "+TYPE:\"vso:correctiveAction\" " +
+      "+(@cm\\:name:\"" + escapeLuceneValue(assocText) + "\" " +
+      "OR @vso\\:capId:\"" + escapeLuceneValue(assocText) + "\" " +
+      "OR @vso\\:capId:\"" + escapeLuceneValue(normalizedCapId) + "\")";
 
     var capMatches = search.luceneSearch(capQuery) || [];
     var capNode = selectFirstNodeBySubtype(capMatches, "vso:correctiveAction");
@@ -298,10 +298,10 @@ try {
   }
 
   var query =
-    '+TYPE:"vso:finding" ' +
-    '+' + locationFilter.queryField + ':"' + escapeLuceneValue(locationFilter.value) + '" ' +
-    '+' + specialtyFilter.queryField + ':"' + escapeLuceneValue(specialtyFilter.value) + '" ' +
-    '-@vso\\:findingStatus:"Closed"';
+    "+TYPE:\"vso:finding\" " +
+    "+" + locationFilter.queryField + ":\"" + escapeLuceneValue(locationFilter.value) + "\" " +
+    "+" + specialtyFilter.queryField + ":\"" + escapeLuceneValue(specialtyFilter.value) + "\" " +
+    "-@vso\\:findingStatus:\"Closed\"";
 
   var matched = search.luceneSearch(query) || [];
   var findings = [];
