@@ -1,1 +1,4 @@
 data*/
+.env
+docker/secrets/*.txt
+node_modules/

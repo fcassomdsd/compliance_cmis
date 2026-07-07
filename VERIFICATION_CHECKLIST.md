@@ -45,7 +45,7 @@
 - [✓] Added assoc.vso_relatedCorrectiveAction.title
 
 ## Documentation ✓
-- [✓] Updated models-reload-validation-and-smoke-tests.md with new scope
+- [✓] Updated model-reload-validation-and-smoke-tests.md with new scope
 - [✓] Updated startup validation checklist (10 items)
 - [✓] Updated functional smoke test matrix (15 tests: ST-01 through ST-15)
 - [✓] Updated troubleshooting guide with 8 new scenarios

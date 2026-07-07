@@ -43,6 +43,32 @@ Consistency is key.
 - Keep model, webscripts, and docs aligned when changing behavior.
 - Use ESLint configuration present in the repository where applicable.
 
+### ESLint
+
+Run before committing changes to Web Scripts:
+
+```bash
+npm run lint
+```
+
+Auto-fix common warnings:
+
+```bash
+npm run lint:fix
+```
+
+### resolveVsoPaths() consistency
+
+Web Scripts that need Alfresco folder paths include a local `resolveVsoPaths()` function with an `importScript()` fallback to the shared library in `webscripts/common/vso-paths.lib.js`. This is by design — each Web Script is self-contained and degrades gracefully.
+
+When you change folder paths or routing, update ALL copies of `resolveVsoPaths()` (3 files). Then run the verification script:
+
+```bash
+bash scripts/verify-resolve-paths.sh
+```
+
+This checks that key path patterns are consistent across every Web Script that has a `resolveVsoPaths()` definition.
+
 ### Conventional Commits
 
 Use Conventional Commits for clear change history.

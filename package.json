@@ -1,0 +1,14 @@
+{
+  "name": "compliance-cmis",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Alfresco customization for aviation safety oversight compliance",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint webscripts/ scripts/ --ext .js",
+    "lint:fix": "eslint webscripts/ scripts/ --ext .js --fix"
+  },
+  "devDependencies": {
+    "eslint": "^9.36.0"
+  }
+}

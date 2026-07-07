@@ -3,6 +3,7 @@
    <description>Generate formatted inspection plan from raw JSON payload</description>
    <url>/api/inspection/generate</url>
    <format default="json"/>
+   <content-type>application/json</content-type>
    <authentication>user</authentication>
    <transaction>required</transaction>
 </webscript>

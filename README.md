@@ -24,6 +24,7 @@ It defines a custom VSO content model, Share form configuration, and Web Script 
 - `templates/`: FODT templates and smart folder templates.
 - `docs/`: model validation and test documentation.
 - `scripts/run-model-smoke-tests.sh`: REST-based smoke test runner.
+- `scripts/verify-resolve-paths.sh`: verify `resolveVsoPaths()` consistency across Web Scripts.
 - `docker-compose.yml`: local ACS stack for development and testing.
 
 ## Prerequisites
@@ -105,6 +106,23 @@ export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 
 If you change `configs/model/vsoModel.xml`, restart the repository container before validating behavior.
 
+## Security configuration
+
+### Secrets management
+
+All sensitive credentials (database passwords, keystore secrets, Solr shared secrets) are configured via environment variables in `.env` with development-only defaults. For any non-local deployment:
+
+1. Copy `.env.example` to `.env`: `cp .env.example .env`
+2. Change all values marked with "CHANGE THESE for any non-local deployment"
+3. For Docker Compose, these are referenced as `${VAR:-default}` in `docker-compose.yml`
+4. Never commit `.env` or `docker/secrets/*.txt` — both are excluded via `.gitignore`
+
+### CSRF protection
+
+The Alfresco CSRF filter is enabled (`csrf.filter.enabled=true`) to protect repository Web Scripts. It requires a valid referer matching `/share/.*` for non-GET requests. For API clients that cannot provide a Share referer:
+- Use the Alfresco Public REST API (`/alfresco/api/-default-/public/...`) which handles CSRF internally
+- Or configure additional CSRF origin/referer patterns in `docker-compose.yml`
+
 ## Path configuration (single source of truth)
 
 Alfresco folder paths used by Web Scripts are centralized in:
@@ -156,7 +174,7 @@ Base URL used below: `http://localhost:8080/alfresco/s/api`
 | Endpoint | Purpose | Required fields (minimum) | Common optional fields | Example payload file |
 |---|---|---|---|---|
 | `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `inspectionsPath`, `destinationPath`, `templatePath` | `example/generate-inspection-plan.sample.json` |
-| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload | `example/generate-inspection-report.sample.json` |
+| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload | `example/generate-inspection-report.sample.json`, `example/generate-inspection-report-mdpp001-vig.sample.json` |
 | `POST /inspection/import-canonical` | Import canonical follow-up data by file names or ids | Either `followUpFiles` or `followUpIds`, or array of follow-up file names | `sourceBasePath`, `sourceSpecialtyFolderName`, `specialtyFolderName` | `example/process-followups-by-files.sample.json` |
 | `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp MDPP-VIG-2025-02 CAP-10.json` |
 | `POST /findings/open/query` | Query open findings by location and specialty context | one of `locationId/locationCode/icaoCode` and one of `specialtyId/specialtyCode/domain` | `skipCount`, `maxItems` | `example/get-open-findings.sample.json` |
@@ -167,6 +185,7 @@ Notes:
 
 - For `POST /follow-up/import`, finding closure is allowed only with `followUpType="Closure Verification"` and `effectivenessConfirmed=true`.
 - For `POST /inspection/import-canonical`, evidence files linked to processed follow-ups are moved into finding-scoped evidence folders.
+- For `POST /inspection/report/generate`, checklist summary specialty now resolves from item, checklist, domain, and inspection context (in that order) before falling back to item-code prefix (for example `VIG-0048` -> `VIG`).
 
 ## Quick test commands
 
@@ -179,6 +198,11 @@ curl -u admin:admin -X POST \
 curl -u admin:admin -X POST \
   -H "Content-Type: application/json" \
   --data @example/generate-inspection-report.sample.json \
+  "http://localhost:8080/alfresco/s/api/inspection/report/generate"
+
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  --data @example/generate-inspection-report-mdpp001-vig.sample.json \
   "http://localhost:8080/alfresco/s/api/inspection/report/generate"
 
 curl -u admin:admin -X POST \

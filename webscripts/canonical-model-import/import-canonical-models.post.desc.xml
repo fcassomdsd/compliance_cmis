@@ -3,6 +3,7 @@
    <description>Import checklist/finding canonical JSON or process canonical follow-up files by filename in the VSO repository model</description>
    <url>/api/inspection/import-canonical</url>
    <format default="json"/>
+   <content-type>application/json</content-type>
    <authentication>user</authentication>
    <transaction>required</transaction>
 </webscript>

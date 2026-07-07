@@ -3,6 +3,7 @@
    <description>Generate formatted inspection report from JSON payload with checklist and inspection context data</description>
    <url>/api/inspection/report/generate</url>
    <format default="json"/>
+   <content-type>application/json</content-type>
    <authentication>user</authentication>
    <transaction>required</transaction>
 </webscript>
