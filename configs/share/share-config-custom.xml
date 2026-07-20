@@ -379,6 +379,8 @@
             <aspect name="vso:inspectionContext" />
             <aspect name="vso:serviceContext" />
             <aspect name="vso:regulatoryTraceability" />
+            <aspect name="vso:smartFolderScope" />
+            <aspect name="vso:usoapEvidenceContext" />
             <aspect name="vso:evidenceIntegrity" />
          </visible>
 
@@ -1217,6 +1219,46 @@
                <field set="vso-evidence-integrity" id="vso:hashValue" />
                <field set="vso-evidence-integrity" id="vso:immutable" />
                <field set="vso-evidence-integrity" id="vso:sealedDate" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:smartFolderScope">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:scopeProviderId" />
+               <show id="vso:scopeLocationCode" />
+               <show id="vso:scopeSpecialtyCode" />
+               <show id="vso:scopeProfileType" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-smart-folder-scope" appearance="bordered-panel" label-id="aspect.vso_smartFolderScope" />
+               <field set="vso-smart-folder-scope" id="vso:scopeProviderId" />
+               <field set="vso-smart-folder-scope" id="vso:scopeLocationCode" />
+               <field set="vso-smart-folder-scope" id="vso:scopeSpecialtyCode" />
+               <field set="vso-smart-folder-scope" id="vso:scopeProfileType" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:usoapEvidenceContext">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:usoapCriticalElement" />
+               <show id="vso:usoapAreaCode" />
+               <show id="vso:usoapPqReference" />
+               <show id="vso:usoapEvidenceBasis" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-usoap-evidence-context" appearance="bordered-panel" label-id="aspect.vso_usoapEvidenceContext" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapCriticalElement" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapAreaCode" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapPqReference" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapEvidenceBasis" />
             </appearance>
          </form>
       </forms>
