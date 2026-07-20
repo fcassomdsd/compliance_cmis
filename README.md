@@ -237,6 +237,15 @@ Templates:
 
 - `templates/vigilancia-datos-smart-folders.json`
 - `templates/vigilancia-datos-smart-folders-bucketed.json`
+- `templates/pilot/vigilancia-pilot-template-base-comun.json`
+- `templates/pilot/vigilancia-pilot-template-profile-sna.json`
+- `templates/pilot/vigilancia-pilot-template-profile-met.json`
+- `templates/pilot/vigilancia-pilot-template-profile-aga.json`
+
+Operational map:
+
+- `docs/smart-folders-operational-map.md`
+- `docs/usoap-evidence-structure.md`
 
 Apply template:
 

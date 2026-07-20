@@ -1,0 +1,788 @@
+{
+  "id": "vso-pilot-profile-met",
+  "name": "Piloto - Perfil MET-AD",
+  "nodes": [
+    {
+      "id": "profile-met-listas-verificacion",
+      "name": "Listas de Verificación",
+      "nodes": [
+        {
+          "id": "profile-met-listas-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-met-listas-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-met-listas-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-met-listas-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-met-listas-general-especialidad-met-ad",
+                  "name": "MET-AD - Meteorología Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-met-listas-verificacion-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-met-listas-verificacion-por-proveedor-indomet",
+              "name": "INDOMET",
+              "nodes": [
+                {
+                  "id": "profile-met-listas-general-this-year-indomet",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-met-listas-general-last-year-indomet",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-met-listas-general-especialidad-indomet",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-met-listas-general-especialidad-met-ad-indomet",
+                      "name": "MET-AD - Meteorología Aeronáutica",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-met-hallazgos",
+      "name": "Hallazgos",
+      "nodes": [
+        {
+          "id": "profile-met-hallazgos-estado",
+          "name": "Por estado",
+          "nodes": [
+            {
+              "id": "profile-met-hallazgos-estado-open",
+              "name": "Open",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Open\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-cap-submitted",
+              "name": "CAP Submitted",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"CAP Submitted\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-cap-accepted",
+              "name": "CAP Accepted",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"CAP Accepted\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-in-progress",
+              "name": "In Progress",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"In Progress\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-pending-closure-review",
+              "name": "Pending Closure Review",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-verifying-effective-closure",
+              "name": "Verifying Effective Closure",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-closed",
+              "name": "Closed",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Closed\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-estado-overdue",
+              "name": "Overdue",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Overdue\""
+              }
+            }
+          ]
+        },
+        {
+          "id": "profile-met-hallazgos-riesgo",
+          "name": "Por riesgo",
+          "nodes": [
+            {
+              "id": "profile-met-hallazgos-riesgo-low",
+              "name": "Low",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:riskClassification:\"Low\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-riesgo-medium",
+              "name": "Medium",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:riskClassification:\"Medium\""
+              }
+            },
+            {
+              "id": "profile-met-hallazgos-riesgo-high",
+              "name": "High",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:riskClassification:\"High\""
+              }
+            }
+          ]
+        },
+        {
+          "id": "profile-met-hallazgos-especialidad",
+          "name": "Por especialidad",
+          "nodes": [
+            {
+              "id": "profile-met-hallazgos-especialidad-lista",
+              "name": "Especialidades aplicables",
+              "nodes": [
+                {
+                  "id": "profile-met-hallazgos-especialidad-met-ad",
+                  "name": "MET-AD - Meteorología Aeronáutica",
+                  "nodes": [
+                    {
+                      "id": "profile-met-hallazgos-especialidad-met-ad-estado",
+                      "name": "Por estado",
+                      "nodes": [
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-open",
+                          "name": "Open",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Open\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-cap-submitted",
+                          "name": "CAP Submitted",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-cap-accepted",
+                          "name": "CAP Accepted",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-in-progress",
+                          "name": "In Progress",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"In Progress\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-pending-closure-review",
+                          "name": "Pending Closure Review",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-verifying-effective-closure",
+                          "name": "Verifying Effective Closure",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-closed",
+                          "name": "Closed",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Closed\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-estado-overdue",
+                          "name": "Overdue",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Overdue\""
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "profile-met-hallazgos-especialidad-met-ad-riesgo",
+                      "name": "Por riesgo",
+                      "nodes": [
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-low",
+                          "name": "Low",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:riskClassification:\"Low\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-medium",
+                          "name": "Medium",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:riskClassification:\"Medium\""
+                          }
+                        },
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-high",
+                          "name": "High",
+                          "search": {
+                            "language": "fts-alfresco",
+                            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:riskClassification:\"High\""
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-met-hallazgos-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-met-hallazgos-por-proveedor-indomet",
+              "name": "INDOMET",
+              "nodes": [
+                {
+                  "id": "profile-met-hallazgos-estado-indomet",
+                  "name": "Por estado",
+                  "nodes": [
+                    {
+                      "id": "profile-met-hallazgos-estado-open-indomet",
+                      "name": "Open",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Open\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-cap-submitted-indomet",
+                      "name": "CAP Submitted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-cap-accepted-indomet",
+                      "name": "CAP Accepted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-in-progress-indomet",
+                      "name": "In Progress",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"In Progress\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-pending-closure-review-indomet",
+                      "name": "Pending Closure Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-verifying-effective-closure-indomet",
+                      "name": "Verifying Effective Closure",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-closed-indomet",
+                      "name": "Closed",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Closed\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-estado-overdue-indomet",
+                      "name": "Overdue",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:findingStatus:\"Overdue\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-met-hallazgos-riesgo-indomet",
+                  "name": "Por riesgo",
+                  "nodes": [
+                    {
+                      "id": "profile-met-hallazgos-riesgo-low-indomet",
+                      "name": "Low",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:riskClassification:\"Low\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-riesgo-medium-indomet",
+                      "name": "Medium",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:riskClassification:\"Medium\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-hallazgos-riesgo-high-indomet",
+                      "name": "High",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:riskClassification:\"High\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-met-hallazgos-especialidad-indomet",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-met-hallazgos-especialidad-lista-indomet",
+                      "name": "Especialidades aplicables",
+                      "nodes": [
+                        {
+                          "id": "profile-met-hallazgos-especialidad-met-ad-indomet",
+                          "name": "MET-AD - Meteorología Aeronáutica",
+                          "nodes": [
+                            {
+                              "id": "profile-met-hallazgos-especialidad-met-ad-estado-indomet",
+                              "name": "Por estado",
+                              "nodes": [
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-open-indomet",
+                                  "name": "Open",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Open\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-cap-submitted-indomet",
+                                  "name": "CAP Submitted",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-cap-accepted-indomet",
+                                  "name": "CAP Accepted",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-in-progress-indomet",
+                                  "name": "In Progress",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"In Progress\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-pending-closure-review-indomet",
+                                  "name": "Pending Closure Review",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-verifying-effective-closure-indomet",
+                                  "name": "Verifying Effective Closure",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-closed-indomet",
+                                  "name": "Closed",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Closed\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-estado-overdue-indomet",
+                                  "name": "Overdue",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:findingStatus:\"Overdue\""
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-indomet",
+                              "name": "Por riesgo",
+                              "nodes": [
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-low-indomet",
+                                  "name": "Low",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:riskClassification:\"Low\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-medium-indomet",
+                                  "name": "Medium",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:riskClassification:\"Medium\""
+                                  }
+                                },
+                                {
+                                  "id": "profile-met-hallazgos-especialidad-met-ad-riesgo-high-indomet",
+                                  "name": "High",
+                                  "search": {
+                                    "language": "fts-alfresco",
+                                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\" AND @vso\\:riskClassification:\"High\""
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-met-acciones-correctivas",
+      "name": "Acciones correctivas",
+      "nodes": [
+        {
+          "id": "profile-met-acciones-correctivas-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-met-acciones-correctivas-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @cm\\:created:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-met-acciones-correctivas-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @cm\\:created:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-met-acciones-correctivas-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-met-acciones-correctivas-general-especialidad-met-ad",
+                  "name": "MET-AD - Meteorología Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-met-acciones-correctivas-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-met-acciones-correctivas-por-proveedor-indomet",
+              "name": "INDOMET",
+              "nodes": [
+                {
+                  "id": "profile-met-acciones-correctivas-general-this-year-indomet",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @cm\\:created:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-met-acciones-correctivas-general-last-year-indomet",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @cm\\:created:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-met-acciones-correctivas-general-especialidad-indomet",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-met-acciones-correctivas-general-especialidad-met-ad-indomet",
+                      "name": "MET-AD - Meteorología Aeronáutica",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-met-seguimientos",
+      "name": "Seguimientos",
+      "nodes": [
+        {
+          "id": "profile-met-seguimientos-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-met-seguimientos-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-met-seguimientos-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-met-seguimientos-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-met-seguimientos-general-especialidad-met-ad",
+                  "name": "MET-AD - Meteorología Aeronáutica",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-met-seguimientos-tipo",
+          "name": "Por tipo",
+          "nodes": [
+            {
+              "id": "profile-met-seguimientos-tipo-progress-review",
+              "name": "Progress Review",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"Progress Review\""
+              }
+            },
+            {
+              "id": "profile-met-seguimientos-tipo-cap-verification",
+              "name": "CAP Verification",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"CAP Verification\""
+              }
+            },
+            {
+              "id": "profile-met-seguimientos-tipo-closure-verification",
+              "name": "Closure Verification",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"Closure Verification\""
+              }
+            },
+            {
+              "id": "profile-met-seguimientos-tipo-ad-hoc-inquiry",
+              "name": "Ad-hoc Inquiry",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+              }
+            }
+          ]
+        },
+        {
+          "id": "profile-met-seguimientos-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-met-seguimientos-por-proveedor-indomet",
+              "name": "INDOMET",
+              "nodes": [
+                {
+                  "id": "profile-met-seguimientos-general-this-year-indomet",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-met-seguimientos-general-last-year-indomet",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-met-seguimientos-general-especialidad-indomet",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-met-seguimientos-general-especialidad-met-ad-indomet",
+                      "name": "MET-AD - Meteorología Aeronáutica",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:specialtyCode:\"MET-AD\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-met-seguimientos-tipo-indomet",
+                  "name": "Por tipo",
+                  "nodes": [
+                    {
+                      "id": "profile-met-seguimientos-tipo-progress-review-indomet",
+                      "name": "Progress Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"Progress Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-seguimientos-tipo-cap-verification-indomet",
+                      "name": "CAP Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"CAP Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-seguimientos-tipo-closure-verification-indomet",
+                      "name": "Closure Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"Closure Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-met-seguimientos-tipo-ad-hoc-inquiry-indomet",
+                      "name": "Ad-hoc Inquiry",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
