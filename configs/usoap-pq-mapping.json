@@ -1,0 +1,43 @@
+{
+  "id": "vso-usoap-pq-mapping",
+  "name": "ICAO Reference to USOAP PQ Mapping",
+  "description": "Maps ICAO Annex references to Critical Elements and Protocol Questions",
+  "annotations": {
+    "Annex 1": { "ce": ["CE-4"], "area": "PEL" },
+    "Annex 2": { "ce": ["CE-6"], "area": "OPS" },
+    "Annex 3": { "ce": ["CE-7"], "area": "MET" },
+    "Annex 4": { "ce": ["CE-7"], "area": "CHT" },
+    "Annex 5": { "ce": ["CE-6"], "area": "OPS" },
+    "Annex 6": { "ce": ["CE-6", "CE-7"], "area": "OPS" },
+    "Annex 7": { "ce": ["CE-5"], "area": "AIR" },
+    "Annex 8": { "ce": ["CE-5"], "area": "AIR" },
+    "Annex 9": { "ce": ["CE-7"], "area": "FAL" },
+    "Annex 10": { "ce": ["CE-7"], "area": "CNS" },
+    "Annex 11": { "ce": ["CE-6", "CE-7"], "area": "ATS" },
+    "Annex 12": { "ce": ["CE-7"], "area": "SAR" },
+    "Annex 13": { "ce": ["CE-8"], "area": "AIG" },
+    "Annex 14": { "ce": ["CE-5", "CE-7"], "area": "AGA" },
+    "Annex 15": { "ce": ["CE-6"], "area": "AIM" },
+    "Annex 16": { "ce": ["CE-7"], "area": "ENV" },
+    "Annex 17": { "ce": ["CE-7"], "area": "AVSEC" },
+    "Annex 18": { "ce": ["CE-7"], "area": "DG" },
+    "Annex 19": { "ce": ["CE-3"], "area": "SMS" },
+    "Doc 4444": { "ce": ["CE-6", "CE-7"], "area": "ATS" },
+    "Doc 8168": { "ce": ["CE-6"], "area": "OPS" },
+    "Doc 9734": { "ce": ["CE-3"], "area": "SMS" },
+    "Doc 10056": { "ce": ["CE-6"], "area": "ATS" }
+  },
+  "pqByArea": {
+    "LEG": ["PQ 1.001", "PQ 1.003", "PQ 1.005", "PQ 1.007", "PQ 1.011", "PQ 1.013", "PQ 1.015", "PQ 1.017", "PQ 1.019", "PQ 1.021", "PQ 1.023"],
+    "ORG": ["PQ 2.001", "PQ 2.003", "PQ 2.005", "PQ 2.007", "PQ 2.009", "PQ 2.011", "PQ 2.013", "PQ 2.015", "PQ 2.017"],
+    "SMS": ["PQ 3.001", "PQ 3.003", "PQ 3.005", "PQ 3.007", "PQ 3.009", "PQ 3.011", "PQ 3.013", "PQ 3.015"],
+    "PEL": ["PQ 4.001", "PQ 4.003", "PQ 4.005", "PQ 4.007", "PQ 4.009", "PQ 4.011", "PQ 4.013", "PQ 4.015", "PQ 4.017", "PQ 4.019", "PQ 4.021", "PQ 4.023", "PQ 4.025"],
+    "AIR": ["PQ 5.001", "PQ 5.003", "PQ 5.005", "PQ 5.007", "PQ 5.009", "PQ 5.011", "PQ 5.013", "PQ 5.015", "PQ 5.017"],
+    "OPS": ["PQ 6.001", "PQ 6.003", "PQ 6.005", "PQ 6.007", "PQ 6.009", "PQ 6.011", "PQ 6.013", "PQ 6.015", "PQ 6.017", "PQ 6.019", "PQ 6.021", "PQ 6.023"],
+    "CNS": ["PQ 7.001", "PQ 7.003", "PQ 7.005", "PQ 7.007", "PQ 7.009", "PQ 7.011", "PQ 7.013", "PQ 7.015", "PQ 7.017", "PQ 7.019", "PQ 7.021"],
+    "ATS": ["PQ 7.031", "PQ 7.033", "PQ 7.035", "PQ 7.037", "PQ 7.039", "PQ 7.041", "PQ 7.043", "PQ 7.045", "PQ 7.047", "PQ 7.101", "PQ 7.103"],
+    "AGA": ["PQ 7.051", "PQ 7.053", "PQ 7.055", "PQ 7.057", "PQ 7.059", "PQ 7.061", "PQ 7.063", "PQ 7.065", "PQ 7.081", "PQ 7.083", "PQ 7.085"],
+    "MOS": ["PQ 7.043", "PQ 7.045", "PQ 7.047", "PQ 7.049"],
+    "AIG": ["PQ 8.001", "PQ 8.003", "PQ 8.005", "PQ 8.007", "PQ 8.009", "PQ 8.011", "PQ 8.013", "PQ 8.015"]
+  }
+}

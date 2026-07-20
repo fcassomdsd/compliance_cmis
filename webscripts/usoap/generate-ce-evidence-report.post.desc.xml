@@ -1,0 +1,9 @@
+<webscript>
+   <shortname>Generate CE Evidence Report</shortname>
+   <description>Generate a structured evidence report for a specific USOAP Critical Element</description>
+   <url>/api/usoap/ce-evidence-report</url>
+   <format default="json"/>
+   <content-type>application/json</content-type>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>
