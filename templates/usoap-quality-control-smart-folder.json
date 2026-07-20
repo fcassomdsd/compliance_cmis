@@ -1,0 +1,44 @@
+{
+  "id": "vso-usoap-quality-control",
+  "name": "Control de Calidad USOAP (Global)",
+  "nodes": [
+    {
+      "id": "usoap-qc-global",
+      "name": "Control de Calidad Global",
+      "nodes": [
+        {
+          "id": "usoap-cross-qc-sin-pq-asignado",
+          "name": "Sin PQ asignado",
+          "search": {
+            "language": "fts-alfresco",
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND -@vso\\:usoapPqReference:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+          }
+        },
+        {
+          "id": "usoap-cross-qc-sin-base-de-evidencia",
+          "name": "Sin base de evidencia",
+          "search": {
+            "language": "fts-alfresco",
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND -@vso\\:usoapEvidenceBasis:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+          }
+        },
+        {
+          "id": "usoap-cross-qc-sin-referencia-sarps",
+          "name": "Sin referencia SARPs",
+          "search": {
+            "language": "fts-alfresco",
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND -@vso\\:icaoReference:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+          }
+        },
+        {
+          "id": "usoap-cross-qc-sin-regulación-nacional",
+          "name": "Sin regulación nacional",
+          "search": {
+            "language": "fts-alfresco",
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND -@vso\\:nationalRegulation:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+          }
+        }
+      ]
+    }
+  ]
+}
