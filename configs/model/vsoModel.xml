@@ -8,7 +8,7 @@
 
   <description>Operational Safety Oversight Model for Alfresco 25.2</description>
   <author>VSO Team</author>
-  <version>1.5</version>
+  <version>1.6</version>
 
   <!-- ========================================================= -->
   <!-- Imports -->
@@ -76,6 +76,43 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:scopeProfileTypeList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>general</value>
+          <value>provider</value>
+          <value>location</value>
+          <value>specialty</value>
+          <value>usoap-ce</value>
+          <value>usoap-area</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:usoapAreaList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>ATS</value>
+          <value>CNS</value>
+          <value>SAR</value>
+          <value>AIM</value>
+          <value>SMS</value>
+          <value>MET</value>
+          <value>AGA</value>
+          <value>P/OPS</value>
+          <value>CHT</value>
+          <value>PEL</value>
+          <value>OPS</value>
+          <value>AIR</value>
+          <value>FAL</value>
+          <value>AVSEC</value>
+          <value>DG</value>
+          <value>ENV</value>
+          <value>AIG</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:findingStatusList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -133,6 +170,18 @@
           <value>Finding Support</value>
           <value>Progress Evidence</value>
           <value>Closure Evidence</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:usoapEvidenceBasisList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Primary Legislation</value>
+          <value>Specific Regulation</value>
+          <value>Technical Guidance</value>
+          <value>Implementation Procedure</value>
+          <value>Oversight Record</value>
         </list>
       </parameter>
     </constraint>
@@ -329,6 +378,7 @@
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+        <aspect>vso:usoapEvidenceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -373,6 +423,7 @@
         <aspect>vso:evidenceIntegrity</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+        <aspect>vso:usoapEvidenceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -491,6 +542,7 @@
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+        <aspect>vso:usoapEvidenceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -737,8 +789,74 @@
           <title>Elemento crítico relacionado</title>
           <description>USOAP Critical Element mapping</description>
           <type>d:text</type>
+          <multiple>true</multiple>
           <constraints>
             <constraint ref="vso:ceList"/>
+          </constraints>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="vso:smartFolderScope">
+      <title>Smart Folder Scope</title>
+      <properties>
+        <property name="vso:scopeProviderId">
+          <title>Scope provider ID</title>
+          <description>Provider scope used by smart-folder templates</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:scopeLocationCode">
+          <title>Scope location code</title>
+          <description>Location scope used by smart-folder templates</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:scopeSpecialtyCode">
+          <title>Scope specialty code</title>
+          <description>Specialty scope used by smart-folder templates</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:scopeProfileType">
+          <title>Scope profile type</title>
+          <description>Profile selector for reusable templates</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:scopeProfileTypeList"/>
+          </constraints>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="vso:usoapEvidenceContext">
+      <title>USOAP Evidence Context</title>
+      <properties>
+        <property name="vso:usoapCriticalElement">
+          <title>USOAP critical element</title>
+          <description>USOAP critical element classification for any document</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:ceList"/>
+          </constraints>
+        </property>
+        <property name="vso:usoapAreaCode">
+          <title>USOAP area code</title>
+          <description>USOAP PQ area code (ATS, CNS, SAR, AIM, SMS, MET, AGA, P/OPS, CHT)</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:usoapAreaList"/>
+          </constraints>
+        </property>
+        <property name="vso:usoapPqReference">
+          <title>USOAP Protocol Question reference</title>
+          <description>Specific USOAP PQ identifier (e.g., PQ 7.035)</description>
+          <type>d:text</type>
+          <multiple>true</multiple>
+        </property>
+        <property name="vso:usoapEvidenceBasis">
+          <title>USOAP Evidence Basis</title>
+          <description>Nature of the evidence supporting a PQ</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:usoapEvidenceBasisList"/>
           </constraints>
         </property>
       </properties>

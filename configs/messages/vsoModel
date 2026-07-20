@@ -17,6 +17,8 @@ aspect.vso_regulatoryTraceability.title=Regulatory Traceability
 aspect.vso_evidenceIntegrity.title=Evidence Integrity
 aspect.vso_evidenceReferences.title=Evidence References
 aspect.vso_serviceContext.title=Service Context
+aspect.vso_smartFolderScope.title=Smart Folder Scope
+aspect.vso_usoapEvidenceContext.title=USOAP Evidence Context
 
 # Properties
 prop.vso_inspectionId.title=Inspection ID
@@ -87,6 +89,14 @@ prop.vso_ceMapping.title=Critical Element (CE)
 prop.vso_hashValue.title=File Hash (SHA-256)
 prop.vso_immutable.title=Is Immutable?
 prop.vso_sealedDate.title=Sealing Date
+prop.vso_scopeProviderId.title=Scope Provider ID
+prop.vso_scopeLocationCode.title=Scope Location Code
+prop.vso_scopeSpecialtyCode.title=Scope Specialty Code
+prop.vso_scopeProfileType.title=Scope Profile Type
+prop.vso_usoapCriticalElement.title=USOAP Critical Element
+prop.vso_usoapAreaCode.title=USOAP Area Code
+prop.vso_usoapPqReference.title=USOAP Protocol Question(s)
+prop.vso_usoapEvidenceBasis.title=USOAP Evidence Basis
 
 # Associations
 assoc.vso_relatedEvidence.title=Related Evidence
