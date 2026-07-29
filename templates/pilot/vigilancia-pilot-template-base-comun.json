@@ -1165,6 +1165,36 @@
               ]
             }
           ]
+        },
+        {
+          "id": "base-hallazgos-severidad",
+          "name": "Por severidad",
+          "nodes": [
+            {
+              "id": "base-hallazgos-severidad-A",
+              "name": "A — 7 days",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingSeverity:\"A\""
+              }
+            },
+            {
+              "id": "base-hallazgos-severidad-B",
+              "name": "B — 30 days",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingSeverity:\"B\""
+              }
+            },
+            {
+              "id": "base-hallazgos-severidad-C",
+              "name": "C — 90 days",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingSeverity:\"C\""
+              }
+            }
+          ]
         }
       ]
     },

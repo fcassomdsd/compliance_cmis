@@ -179,6 +179,36 @@
                   }
                 }
               ]
+            },
+            {
+              "id": "usoap-ce-1-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-1-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                  }
+                }
+              ]
             }
           ]
         },
@@ -352,6 +382,36 @@
                   "search": {
                     "language": "fts-alfresco",
                     "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-2-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-2-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
                   }
                 }
               ]
@@ -531,6 +591,36 @@
                   }
                 }
               ]
+            },
+            {
+              "id": "usoap-ce-3-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-3-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                  }
+                }
+              ]
             }
           ]
         },
@@ -704,6 +794,36 @@
                   "search": {
                     "language": "fts-alfresco",
                     "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-4-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-4-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
                   }
                 }
               ]
@@ -883,6 +1003,36 @@
                   }
                 }
               ]
+            },
+            {
+              "id": "usoap-ce-5-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-5-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                  }
+                }
+              ]
             }
           ]
         },
@@ -1056,6 +1206,36 @@
                   "search": {
                     "language": "fts-alfresco",
                     "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-6-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-6-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
                   }
                 }
               ]
@@ -1235,6 +1415,36 @@
                   }
                 }
               ]
+            },
+            {
+              "id": "usoap-ce-7-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-7-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                  }
+                }
+              ]
             }
           ]
         },
@@ -1408,6 +1618,36 @@
                   "search": {
                     "language": "fts-alfresco",
                     "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-8-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-8-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
                   }
                 }
               ]
