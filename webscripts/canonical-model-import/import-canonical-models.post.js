@@ -1744,6 +1744,7 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:contentType", "finding");
   setPropertyIfPresent(findingNode, "vso:findingId", findingPayload.findingId);
   setPropertyIfPresent(findingNode, "vso:findingLevel", normalizeFindingLevel(findingPayload.findingLevel));
+  setPropertyIfPresent(findingNode, "vso:findingSeverity", findingPayload.findingSeverity);
   setPropertyIfPresent(findingNode, "vso:riskClassification", findingPayload.riskClassification || findingPayload.riskLevel);
   setPropertyIfPresent(findingNode, "vso:requirementBreached", findingPayload.requirementBreached);
   setPropertyIfPresent(findingNode, "vso:checklistItemCode", findingItemCode);
