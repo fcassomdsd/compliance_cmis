@@ -76,6 +76,16 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:findingSeverityList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>A</value>
+          <value>B</value>
+          <value>C</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:scopeProfileTypeList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -446,6 +456,15 @@
           <default>Non-Compliance</default>
           <constraints>
             <constraint ref="vso:findingLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:findingSeverity">
+          <title>Severidad del hallazgo</title>
+          <description>Severity level assigned by the inspector (A=7 days, B=30 days, C=90 days)</description>
+          <type>d:text</type>
+          <default>C</default>
+          <constraints>
+            <constraint ref="vso:findingSeverityList"/>
           </constraints>
         </property>
         <property name="vso:riskClassification">

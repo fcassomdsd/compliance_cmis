@@ -1086,6 +1086,7 @@
                <show id="vso:contentType" />
                <show id="vso:findingId" />
                <show id="vso:findingLevel" />
+               <show id="vso:findingSeverity" />
                <show id="vso:riskClassification" />
                <show id="vso:checklistItemCode" />
                <show id="vso:requirementBreached" />
@@ -1111,6 +1112,7 @@
                <field id="vso:contentType" set="vso-finding-info" />
                <field id="vso:findingId" set="vso-finding-info" />
                <field id="vso:findingLevel" set="vso-finding-info" />
+               <field id="vso:findingSeverity" set="vso-finding-info" />
                <field id="vso:riskClassification" set="vso-finding-info" />
                <field id="vso:checklistItemCode" set="vso-finding-info" />
                <field id="vso:requirementBreached" set="vso-finding-info" />
