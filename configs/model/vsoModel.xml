@@ -132,6 +132,7 @@
           <value>In Progress</value>
           <value>Pending Closure Review</value>
           <value>Verifying Effective Closure</value>
+          <value>Pending Closure Approval</value>
           <value>Closed</value>
           <value>Overdue</value>
         </list>
@@ -475,6 +476,22 @@
             <constraint ref="vso:riskLevelList"/>
           </constraints>
         </property>
+        <property name="vso:targetResidualRisk">
+          <title>Riesgo residual meta</title>
+          <description>Target residual risk after corrective actions are implemented</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:achievedResidualRisk">
+          <title>Riesgo residual alcanzado</title>
+          <description>Residual risk actually achieved at time of closure approval</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
+        </property>
         <property name="vso:requirementBreached">
           <title>Regulación incumplida</title>
           <description>Regulatory reference breached</description>
@@ -651,6 +668,14 @@
           <title>Porcentaje completado</title>
           <description>Percentage of corrective action completion</description>
           <type>d:int</type>
+        </property>
+        <property name="vso:currentResidualRisk">
+          <title>Riesgo residual actual</title>
+          <description>Current residual risk at time of this follow-up, based on evidence provided</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
         </property>
         <property name="vso:followUpClosureDate">
           <title>Fecha de cierre</title>
