@@ -73,6 +73,9 @@ prop.vso_dueDate.title=Due Date
 prop.vso_acceptanceStatus.title=Acceptance Status
 
 prop.vso_findingClosureDate.title=Finding Closure Date
+prop.vso_targetResidualRisk.title=Target Residual Risk
+prop.vso_achievedResidualRisk.title=Achieved Residual Risk
+prop.vso_currentResidualRisk.title=Current Residual Risk
 prop.vso_resolutionDeadline.title=Resolution Deadline
 prop.vso_followUpId.title=Follow-up ID
 prop.vso_followUpType.title=Follow-up Type

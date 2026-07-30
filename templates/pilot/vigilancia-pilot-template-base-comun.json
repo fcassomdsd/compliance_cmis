@@ -1195,6 +1195,68 @@
               }
             }
           ]
+        },
+        {
+          "id": "base-hallazgos-riesgo-residual",
+          "name": "Por riesgo residual",
+          "nodes": [
+            {
+              "id": "base-hallazgos-target-risk-low",
+              "name": "Meta: Low",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:targetResidualRisk:\"Low\""
+              }
+            },
+            {
+              "id": "base-hallazgos-target-risk-medium",
+              "name": "Meta: Medium",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:targetResidualRisk:\"Medium\""
+              }
+            },
+            {
+              "id": "base-hallazgos-target-risk-high",
+              "name": "Meta: High",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:targetResidualRisk:\"High\""
+              }
+            },
+            {
+              "id": "base-hallazgos-ach-risk-low",
+              "name": "Alcanzado: Low",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:achievedResidualRisk:\"Low\""
+              }
+            },
+            {
+              "id": "base-hallazgos-ach-risk-medium",
+              "name": "Alcanzado: Medium",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:achievedResidualRisk:\"Medium\""
+              }
+            },
+            {
+              "id": "base-hallazgos-ach-risk-high",
+              "name": "Alcanzado: High",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:achievedResidualRisk:\"High\""
+              }
+            },
+            {
+              "id": "base-hallazgos-risk-pending-approval",
+              "name": "Pending Closure Approval",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Pending Closure Approval\""
+              }
+            }
+          ]
         }
       ]
     },

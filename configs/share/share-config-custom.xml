@@ -1034,6 +1034,7 @@
                <show id="vso:followUpType" />
                <show id="vso:followUpDate" />
                <show id="vso:percentComplete" />
+               <show id="vso:currentResidualRisk" />
                <show id="vso:followUpComment" />
                <show id="vso:closureVerificationMethod" />
                <show id="vso:followUpClosureDate" />
@@ -1053,8 +1054,9 @@
                <field id="vso:followUpId" set="vso-followup-info" />
                <field id="vso:followUpType" set="vso-followup-info" />
                <field id="vso:followUpDate" set="vso-followup-dates" />
-               <field id="vso:percentComplete" set="vso-followup-info" />
-               <field id="vso:followUpComment" set="vso-followup-info">
+                <field id="vso:percentComplete" set="vso-followup-info" />
+                <field id="vso:currentResidualRisk" set="vso-followup-info" />
+                <field id="vso:followUpComment" set="vso-followup-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
                <field id="vso:closureVerificationMethod" set="vso-followup-dates" />
@@ -1088,6 +1090,8 @@
                <show id="vso:findingLevel" />
                <show id="vso:findingSeverity" />
                <show id="vso:riskClassification" />
+               <show id="vso:targetResidualRisk" />
+               <show id="vso:achievedResidualRisk" />
                <show id="vso:checklistItemCode" />
                <show id="vso:requirementBreached" />
                <show id="vso:description" />
@@ -1114,6 +1118,8 @@
                <field id="vso:findingLevel" set="vso-finding-info" />
                <field id="vso:findingSeverity" set="vso-finding-info" />
                <field id="vso:riskClassification" set="vso-finding-info" />
+               <field id="vso:targetResidualRisk" set="vso-finding-info" />
+               <field id="vso:achievedResidualRisk" set="vso-finding-info" />
                <field id="vso:checklistItemCode" set="vso-finding-info" />
                <field id="vso:requirementBreached" set="vso-finding-info" />
                <field id="vso:description" set="vso-finding-info">

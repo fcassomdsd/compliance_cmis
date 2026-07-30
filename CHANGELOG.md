@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-08-01] — USOAP Traceability, Finding Severity & Residual Risk
+
+### Added
+- **USOAP reverse traceability**: `vso:usoapPqReference` and `vso:usoapEvidenceBasis` properties on `usoapEvidenceContext` aspect
+- Expanded `vso:usoapAreaList` with 8 ICAO area codes (17 total)
+- Made `vso:ceMapping` multi-valued for multi-CE support
+- ICAO Annex → CE/PQ lookup table (23 references, 107 PQs, 11 areas)
+- `POST /api/usoap/auto-populate-pq` webscript with dry-run mode
+- `POST /api/usoap/ce-evidence-report` webscript with gap analysis
+- USOAP evidence smart folder template (8 CEs × 19+ queries each)
+- USOAP quality control dashboard (cross-CE global view)
+- **Finding severity level**: `vso:findingSeverity` property (A/B/C) with constraint and default
+- `severityConfig` in checklist API for timespan lookup
+- **Residual risk-based closure**: `vso:targetResidualRisk`, `vso:achievedResidualRisk`, `vso:currentResidualRisk`
+- `Pending Closure Approval` status between Verifying Effective Closure and Closed
+- `Por severidad` and `Por riesgo residual` leaf queries in all smart folder templates
+
+### Changed
+- `vso:usoapEvidenceContext` made mandatory on checklistItem, finding, and evidenceItem types
+- Closure webscript sets `Pending Closure Approval` instead of `Closed` on closure trigger
+- `achievedResidualRisk` auto-populated from follow-up's `currentResidualRisk` at closure
+
+### Fixed
+- Fixed `resolveItemCode()` not checking `checklistItemCode` — findings now correctly match checklist items on import
+
 ## [2026-06-21] — Security Hardening & Code Quality
 
 ### Security
