@@ -1307,6 +1307,7 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   setPropertyIfPresent(checklistNode, "vso:checklistId", checklistPayload.checklistId);
   setPropertyIfPresent(checklistNode, "vso:scope", checklistPayload.scope);
   setDatePropertyIfPresent(checklistNode, "vso:completionDate", checklistPayload.completionDate);
+  setPropertyIfPresent(checklistNode, "vso:interviewee", checklistPayload.interviewee);
   setPropertyIfPresent(checklistNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(checklistNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(checklistNode, "vso:locationCode", contextValues.locationCode);
@@ -1714,6 +1715,7 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
   if (itemPayload.reference) {
     setPropertyIfPresent(itemNode, "vso:icaoReference", itemPayload.reference.icaoReference);
     setPropertyIfPresent(itemNode, "vso:nationalRegulation", itemPayload.reference.nationalRegulation);
+    setPropertyIfPresent(itemNode, "vso:regulationItem", itemPayload.reference.regulationItem);
   }
 
   itemNode.save();
@@ -1779,6 +1781,11 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
     findingNode,
     "vso:nationalRegulation",
     firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null)
+  );
+  setPropertyIfPresent(
+    findingNode,
+    "vso:regulationItem",
+    firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null)
   );
 
   findingNode.save();

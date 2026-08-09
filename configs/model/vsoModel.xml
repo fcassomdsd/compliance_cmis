@@ -276,6 +276,11 @@
           <description>Date checklist was completed</description>
           <type>d:date</type>
         </property>
+        <property name="vso:interviewee">
+          <title>Entrevistado</title>
+          <description>Name of the person(s) interviewed during the checklist inspection</description>
+          <type>d:text</type>
+        </property>
       </properties>
 
       <associations>
@@ -826,7 +831,12 @@
         </property>
         <property name="vso:nationalRegulation">
           <title>Referencia regulación nacional</title>
-          <description>National regulation reference</description>
+          <description>National regulation title</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:regulationItem">
+          <title>Articulo regulacion nacional</title>
+          <description>Specific item/article in the national regulation</description>
           <type>d:text</type>
         </property>
         <property name="vso:ceMapping">
