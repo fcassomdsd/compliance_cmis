@@ -134,6 +134,8 @@
           <value>Verifying Effective Closure</value>
           <value>Pending Closure Approval</value>
           <value>Closed</value>
+          <value>CAP Overdue</value>
+          <value>Solution Overdue</value>
           <value>Overdue</value>
         </list>
       </parameter>
