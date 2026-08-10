@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-08-02] — Inspection Report Enhancement & Interviewee Support
+
+### Added
+- **`vso:interviewee` property** on `vso:inspectionChecklist` type (d:text) — captures interviewee names per specialty checklist.
+- **`vso:regulationItem` property** on `vso:regulatoryTraceability` aspect (d:text) — separates the specific regulation article from the regulation title. `vso:nationalRegulation` now holds only the title.
+- **Inspection report pivoted summary table**: `buildChecklistSummaryTable()` now produces one row per specialty with `compliant`, `nonCompliant`, `notApplicable` counts (was multiple rows per compliance status).
+- **Interviewees and regulation titles in report data**: `lookupInspectionData()` collects deduplicated `interviewees[]` and `regulationTitles[]` from checklist nodes.
+- **Description and Conclusion fields**: Inspection report webscript now accepts `description`, `conclusion`, `objective`, `scope`, and `inspectionType` from the input JSON. Passed to template as `${description}`, `${conclusion}`, etc.
+
+### Changed
+- **Canonical import webscript**: `import-canonical-models.post.js` now writes `vso:interviewee` on checklist nodes and `vso:regulationItem` on checklist item and finding nodes.
+- **Checklist items and findings**: `regulationItem` set from `itemPayload.reference.regulationItem` during upsert.
+
+### Fixed
+- Fixed `providerId` and `providerName` commented out in `lookupInspectionData()` return object — uncommented, restoring Alfresco-sourced values.
+- Fixed `checklistSummaryTable: checklistTable.rows` referencing nonexistent variable — restored to `buildChecklistSummaryTable(checklistSummary)`.
+- Fixed `reportData.inspectors = services` overwriting inspectors with undefined `services` — corrected to `reportData.services = Array.isArray(inputData.services) ? inputData.services : []`.
+
 ## [2026-08-01] — USOAP Traceability, Finding Severity & Residual Risk
 
 ### Added
