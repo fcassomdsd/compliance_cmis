@@ -8,7 +8,7 @@
 
   <description>Operational Safety Oversight Model for Alfresco 25.2</description>
   <author>VSO Team</author>
-  <version>1.6</version>
+  <version>1.7</version>
 
   <!-- ========================================================= -->
   <!-- Imports -->
@@ -183,6 +183,8 @@
           <value>Finding Support</value>
           <value>Progress Evidence</value>
           <value>Closure Evidence</value>
+          <value>RCA Evidence</value>
+          <value>Risk Assessment Evidence</value>
         </list>
       </parameter>
     </constraint>
@@ -195,6 +197,39 @@
           <value>Technical Guidance</value>
           <value>Implementation Procedure</value>
           <value>Oversight Record</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:rcaMethodList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>5 Whys</value>
+          <value>Fishbone</value>
+          <value>BowTie</value>
+          <value>TapRooT</value>
+          <value>Barrier Analysis</value>
+          <value>Other</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:priorityList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>High</value>
+          <value>Medium</value>
+          <value>Low</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:actionItemStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Open</value>
+          <value>In Progress</value>
+          <value>Closed</value>
         </list>
       </parameter>
     </constraint>
@@ -637,12 +672,282 @@
             <many>true</many>
           </target>
         </child-association>
+        <child-association name="vso:hasRootCauseAnalysis">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:rootCauseAnalysis</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasRiskAssessment">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:riskAssessment</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasActionItem">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:correctiveActionItem</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasResidualRisk">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:residualRisk</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasEffectivenessVerification">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:effectivenessVerification</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
       </associations>
 
       <mandatory-aspects>
         <aspect>cm:versionable</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Root Cause Analysis ================= -->
+    <type name="vso:rootCauseAnalysis">
+      <title>Root Cause Analysis</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:rcaMethod">
+          <title>Método de análisis</title>
+          <description>Root cause analysis method used (5 Whys, Fishbone, BowTie, TapRooT, Barrier Analysis, Other)</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+          <constraints>
+            <constraint ref="vso:rcaMethodList"/>
+          </constraints>
+        </property>
+        <property name="vso:rcaOtherMethodDescription">
+          <title>Descripción de otro método</title>
+          <description>Free-text description of the method used when rcaMethod is 'Other'</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:rcaMainCategory">
+          <title>Categoría principal</title>
+          <description>Main category responsible for the cause</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:rootCause">
+          <title>Causa raíz</title>
+          <description>Identified root cause</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:contributingFactors">
+          <title>Factores contribuyentes</title>
+          <description>Contributing factors to the finding</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+        <aspect>vso:evidenceReferences</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Risk Assessment ================= -->
+    <type name="vso:riskAssessment">
+      <title>Risk Assessment</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:identifiedHazard">
+          <title>Peligro identificado</title>
+          <description>Identified hazard</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:potentialConsequence">
+          <title>Consecuencia potencial</title>
+          <description>Potential consequence of the hazard</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:raProbability">
+          <title>Probabilidad</title>
+          <description>Probability, as defined by the inspected entity's own risk assessment methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:raSeverity">
+          <title>Severidad</title>
+          <description>Severity, as defined by the inspected entity's own risk assessment methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:calculatedRiskLevel">
+          <title>Nivel de riesgo calculado</title>
+          <description>Risk level calculated from probability and severity, per the entity's own methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:tolerabilityLevel">
+          <title>Nivel de tolerabilidad</title>
+          <description>Tolerability level assigned to the calculated risk</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:raJustification">
+          <title>Justificación</title>
+          <description>Justification/explanation for the risk assessment outcome</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+        <aspect>vso:evidenceReferences</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Corrective Action Item ================= -->
+    <type name="vso:correctiveActionItem">
+      <title>Corrective Action Item</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:sequenceNumber">
+          <title>Número secuencial</title>
+          <description>Sequential number of this corrective action within the CAP</description>
+          <type>d:int</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:actionDescription">
+          <title>Descripción de la acción</title>
+          <description>Description of this corrective action</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:actionPriority">
+          <title>Prioridad</title>
+          <description>Priority of this corrective action</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:priorityList"/>
+          </constraints>
+        </property>
+        <property name="vso:actionResponsiblePerson">
+          <title>Persona responsable</title>
+          <description>Person responsible for executing this corrective action</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:actionDeadline">
+          <title>Fecha límite</title>
+          <description>Deadline for this corrective action</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:actionItemStatus">
+          <title>Estado de la acción</title>
+          <description>Lifecycle status of this individual corrective action</description>
+          <type>d:text</type>
+          <default>Open</default>
+          <constraints>
+            <constraint ref="vso:actionItemStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:actionClosureDate">
+          <title>Fecha de cierre</title>
+          <description>Date this corrective action was closed</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:actionClosureNotes">
+          <title>Notas de cierre</title>
+          <description>Notes recorded when closing this corrective action</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Residual Risk ================= -->
+    <type name="vso:residualRisk">
+      <title>Expected Residual Risk</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:residualProbability">
+          <title>Probabilidad residual</title>
+          <description>Expected residual probability, as defined by the inspected entity's own methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:residualSeverity">
+          <title>Severidad residual</title>
+          <description>Expected residual severity, as defined by the inspected entity's own methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:residualRiskLevel">
+          <title>Nivel de riesgo residual</title>
+          <description>Expected residual risk level after corrective actions are implemented</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:residualJustification">
+          <title>Justificación</title>
+          <description>Justification/explanation for the expected residual risk</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Effectiveness Verification ================= -->
+    <type name="vso:effectivenessVerification">
+      <title>Effectiveness Verification</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:verificationMethod">
+          <title>Método de verificación</title>
+          <description>Method by which the inspected entity will verify effectiveness of the corrective action plan</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:verificationIndicators">
+          <title>Indicadores</title>
+          <description>Indicator(s) used to verify effectiveness</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:projectedVerificationDate">
+          <title>Fecha proyectada de verificación</title>
+          <description>Projected date of effectiveness verification</description>
+          <type>d:date</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
       </mandatory-aspects>
     </type>
 

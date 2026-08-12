@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-08-10] — Rich Corrective Action Plan (CAP) Content Model
+
+### Added
+- **5 new child types under `vso:correctiveAction`**: `vso:rootCauseAnalysis`, `vso:riskAssessment`, `vso:correctiveActionItem`, `vso:residualRisk`, `vso:effectivenessVerification` — model version bumped to 1.7.
+- **New constraints**: `vso:rcaMethodList` (5 Whys, Fishbone, BowTie, TapRooT, Barrier Analysis, Other), `vso:priorityList` (High/Medium/Low), `vso:actionItemStatusList` (Open, In Progress, Closed).
+- **Extended `vso:evidenceRoleList`** with "RCA Evidence" and "Risk Assessment Evidence" roles, reusing the existing `vso:evidenceItem` type and `vso:evidenceReferences` association for RCA/Risk Assessment evidence uploads.
+- **i18n labels** added for all new types, properties and associations in `configs/messages/vsoModel`.
+- **Smoke tests ST-10 through ST-13** added to `scripts/run-model-smoke-tests.sh` covering creation and linkage of all 5 new child types, including RCA method constraint validation and multi-item corrective action lists.
+
 ## [2026-08-02] — Inspection Report Enhancement & Interviewee Support
 
 ### Added

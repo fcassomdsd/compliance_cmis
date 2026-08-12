@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Runs ST-01 through ST-09 against Alfresco public REST API.
+# Runs ST-01 through ST-13 against Alfresco public REST API.
 # Required env vars:
 #   BASE_URL, USERNAME, PASSWORD, PARENT_ID
 
@@ -221,7 +221,7 @@ EOF
   api_request "POST" "$BASE_URL/nodes/$source_id/targets" "$payload" >/dev/null
 }
 
-echo "Running model smoke tests ST-01 to ST-09"
+echo "Running model smoke tests ST-01 to ST-13"
 
 # Setup entities used by multiple tests
 FINDING_ID=$(create_node "finding-st-setup-$(date +%s).json" "vso:finding" '{"vso:findingId":"F-ST-SETUP-001","vso:findingLevel":"Observation","vso:description":"Setup finding for smoke tests"}') || {
@@ -414,6 +414,99 @@ EOF
   fi
 else
   report_fail "ST-09" "Missing correctiveAction node for version test"
+fi
+
+# ST-10 rootCauseAnalysis: allowed rcaMethod values + child association
+if [[ -n "$CA_ID" ]]; then
+  RCA_ID=$(create_node "rca-st10-$(date +%s).json" "vso:rootCauseAnalysis" '{"vso:rcaMethod":"Fishbone","vso:rootCause":"Inadequate training","vso:rcaMainCategory":"Human Factors"}') || true
+  if [[ -n "$RCA_ID" ]]; then
+    s1=$(add_assoc_target "$CA_ID" "$RCA_ID" "vso:hasRootCauseAnalysis"; echo $?)
+    if [[ "$s1" -eq 0 ]]; then
+      report_pass "ST-10" "rootCauseAnalysis created and linked via vso:hasRootCauseAnalysis"
+    else
+      report_fail "ST-10" "Could not link rootCauseAnalysis to correctiveAction"
+    fi
+  else
+    report_fail "ST-10" "Could not create vso:rootCauseAnalysis node"
+  fi
+else
+  report_fail "ST-10" "Missing correctiveAction node for rootCauseAnalysis test"
+fi
+
+# ST-10b Invalid rcaMethod value rejected
+payload="$WORKDIR/payload-st10b.json"
+cat > "$payload" <<EOF
+{
+  "name": "rca-st10b-$(date +%s).json",
+  "nodeType": "vso:rootCauseAnalysis",
+  "properties": {
+    "vso:rcaMethod": "Not A Real Method"
+  }
+}
+EOF
+status=$(api_request "POST" "$BASE_URL/nodes/$PARENT_ID/children" "$payload")
+if [[ "$status" =~ ^4[0-9][0-9]$ ]]; then
+  report_pass "ST-10b" "Invalid rcaMethod value was rejected"
+else
+  report_fail "ST-10b" "Invalid rcaMethod value was not rejected"
+  register_created_node "$(json_get "$last_response_file" "entry.id" 2>/dev/null || true)"
+fi
+
+# ST-11 riskAssessment: creation + child association
+if [[ -n "$CA_ID" ]]; then
+  RA_ID=$(create_node "risk-assessment-st11-$(date +%s).json" "vso:riskAssessment" '{"vso:identifiedHazard":"Runway incursion","vso:potentialConsequence":"Collision","vso:raProbability":"Occasional","vso:raSeverity":"Hazardous","vso:calculatedRiskLevel":"High","vso:tolerabilityLevel":"Unacceptable"}') || true
+  if [[ -n "$RA_ID" ]]; then
+    s1=$(add_assoc_target "$CA_ID" "$RA_ID" "vso:hasRiskAssessment"; echo $?)
+    if [[ "$s1" -eq 0 ]]; then
+      report_pass "ST-11" "riskAssessment created and linked via vso:hasRiskAssessment"
+    else
+      report_fail "ST-11" "Could not link riskAssessment to correctiveAction"
+    fi
+  else
+    report_fail "ST-11" "Could not create vso:riskAssessment node"
+  fi
+else
+  report_fail "ST-11" "Missing correctiveAction node for riskAssessment test"
+fi
+
+# ST-12 correctiveActionItem: default itemStatus=Open, sequencing, many=true association
+if [[ -n "$CA_ID" ]]; then
+  ITEM1_ID=$(create_node "action-item-st12-1-$(date +%s).json" "vso:correctiveActionItem" '{"vso:sequenceNumber":1,"vso:actionDescription":"Retrain staff","vso:actionPriority":"High","vso:actionResponsiblePerson":"J. Doe","vso:actionDeadline":"2026-06-30"}') || true
+  ITEM2_ID=$(create_node "action-item-st12-2-$(date +%s).json" "vso:correctiveActionItem" '{"vso:sequenceNumber":2,"vso:actionDescription":"Update procedure manual","vso:actionPriority":"Medium","vso:actionResponsiblePerson":"A. Smith","vso:actionDeadline":"2026-07-31"}') || true
+  if [[ -n "$ITEM1_ID" && -n "$ITEM2_ID" ]]; then
+    status=$(api_request "GET" "$BASE_URL/nodes/$ITEM1_ID?include=properties")
+    item_status=$(json_get "$last_response_file" "entry.properties.vso:actionItemStatus" 2>/dev/null || echo "")
+    s1=$(add_assoc_target "$CA_ID" "$ITEM1_ID" "vso:hasActionItem"; echo $?)
+    s2=$(add_assoc_target "$CA_ID" "$ITEM2_ID" "vso:hasActionItem"; echo $?)
+    if [[ "$item_status" == "Open" && "$s1" -eq 0 && "$s2" -eq 0 ]]; then
+      report_pass "ST-12" "correctiveActionItem defaults to Open and supports many-to-one linking"
+    else
+      report_fail "ST-12" "correctiveActionItem default status or linking failed"
+    fi
+  else
+    report_fail "ST-12" "Could not create vso:correctiveActionItem nodes"
+  fi
+else
+  report_fail "ST-12" "Missing correctiveAction node for correctiveActionItem test"
+fi
+
+# ST-13 residualRisk + effectivenessVerification: creation + child associations
+if [[ -n "$CA_ID" ]]; then
+  RR_ID=$(create_node "residual-risk-st13-$(date +%s).json" "vso:residualRisk" '{"vso:residualProbability":"Rare","vso:residualSeverity":"Minor","vso:residualRiskLevel":"Low","vso:residualJustification":"Controls implemented"}') || true
+  EV_ID=$(create_node "effectiveness-verification-st13-$(date +%s).json" "vso:effectivenessVerification" '{"vso:verificationMethod":"Follow-up audit","vso:verificationIndicators":"Zero recurrence in 6 months","vso:projectedVerificationDate":"2026-12-31"}') || true
+  if [[ -n "$RR_ID" && -n "$EV_ID" ]]; then
+    s1=$(add_assoc_target "$CA_ID" "$RR_ID" "vso:hasResidualRisk"; echo $?)
+    s2=$(add_assoc_target "$CA_ID" "$EV_ID" "vso:hasEffectivenessVerification"; echo $?)
+    if [[ "$s1" -eq 0 && "$s2" -eq 0 ]]; then
+      report_pass "ST-13" "residualRisk and effectivenessVerification created and linked"
+    else
+      report_fail "ST-13" "Could not link residualRisk/effectivenessVerification to correctiveAction"
+    fi
+  else
+    report_fail "ST-13" "Could not create residualRisk/effectivenessVerification nodes"
+  fi
+else
+  report_fail "ST-13" "Missing correctiveAction node for residualRisk/effectivenessVerification test"
 fi
 
 echo ""
