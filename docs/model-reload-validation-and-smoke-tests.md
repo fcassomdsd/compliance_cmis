@@ -16,6 +16,8 @@ This checklist validates the VSO model updates for revised follow-up and finding
 - Removed vso:verifiedBy child-association from vso:correctiveAction (no longer used)
 - Closure gate enforcement: only Closure Verification type with effectivenessConfirmed=true can close a finding
 
+It also covers the PDF rendering added to `import-canonical-models.post.js`: checklist/finding/follow-up node content is a rendered PDF rather than JSON, replaced in place on the same node (not a sibling document). This is a rendering feature layered on top of the existing model/webscript behavior above and does not itself change `vsoModel.xml`.
+
 ## Preconditions
 1. Backup repository and database/content store if this is not a disposable environment.
 2. Ensure the updated model file is deployed:
@@ -67,6 +69,23 @@ This checklist validates the VSO model updates for revised follow-up and finding
 | ST-14 | CAP Optional | Create follow-up without CAP | Submit follow-up report with no capId value | Follow-up created independently of CAP |
 | ST-15 | CAP Optional | Link follow-up to CAP later | Create follow-up without CAP, then add vso:relatedCorrectiveAction link | Update succeeds, CAP association added post-creation |
 
+## PDF Rendering Smoke Test Matrix
+
+Covers checklist, finding, and follow-up node content being a rendered PDF instead of JSON (see `README.md` -> "Checklist/finding/follow-up documents are rendered PDFs, not JSON"). Requires `checklistPdfTemplatePath`, `findingPdfTemplatePath`, and `followUpPdfTemplatePath` to be deployed at the configured Alfresco paths, and the `transform-core-aio` service reachable from the repository container.
+
+| ID | Area | Test | Steps | Expected Result |
+|---|---|---|---|---|
+| ST-16 | PDF Rendering | Checklist content is PDF | Import a canonical checklist | The checklist node's own content is a valid PDF with labeled fields; its name ends in `.pdf`, not `.json` |
+| ST-17 | PDF Rendering | Finding content is PDF | Import a canonical finding | The finding node's own content is a valid PDF; its name ends in `.pdf` |
+| ST-18 | PDF Rendering | Follow-up content is PDF | Process a canonical follow-up file | The follow-up node's own content is a valid PDF; its name ends in `.pdf` |
+| ST-19 | PDF Rendering | Nested items/evidence render | Import a checklist with items that have multiple `evidenceItems` and at least one item with zero evidence items | PDF lists every item, each with its own evidence table; the zero-evidence item shows an empty table (header row only), no error |
+| ST-20 | PDF Rendering | Finding without corrective action | Import a finding with no `correctiveAction` attached yet | PDF renders with the Corrective Action section fields blank, no error |
+| ST-21 | PDF Rendering | Degrades gracefully on missing template | Temporarily rename/remove one of the three `.fodt` templates, then run the corresponding import | Node properties are still created/updated correctly; a warning is logged; node content/name are left untouched (empty content and `.json` name for a brand-new node) |
+| ST-22 | PDF Rendering | Free-text special characters | Import a checklist/finding with `&`, `<`, `>` in a comment or description field | PDF renders the literal characters correctly (no broken layout, no missing content) |
+| ST-23 | PDF Rendering | Re-import updates in place, no duplicates | Import the same checklist/finding/follow-up a second time after ST-16/17/18 succeeded | The same nodes are found by their `.pdf` name and updated (`summary.updated` increments); no duplicate `.json`-named nodes are created |
+| ST-24 | PDF Rendering | Self-healing after a prior failure | Force ST-21's failure case (node stays `.json`-named with no content), then re-import successfully | The `.json`-named node is found via the fallback lookup, updated in place, and renamed to `.pdf` |
+| ST-25 | PDF Rendering | `get-open-findings` still works | Query `POST /findings/open/query` for a finding created under this scheme | Every field populates correctly from `vso:*` properties alone (no dependency on parsing finding content) |
+
 ## Suggested API-Level Checks (optional)
 1. Use CMIS/REST to create and read each modified type.
 2. Add assertions for:
@@ -102,9 +121,10 @@ This checklist validates the VSO model updates for revised follow-up and finding
    - Confirm error handling returns HTTP 400 if type mismatch.
 
 ## Exit Criteria
-1. All smoke tests ST-01 through ST-15 pass.
+1. All smoke tests ST-01 through ST-25 pass.
 2. No repository startup errors related to model bootstrap.
 3. Follow-up import succeeds with optional CAP, mandatory followUpType, and auto-generated FU-XXXXNNNYYY-MM-VV IDs.
 4. Closure gate prevents non-Closure-Verification types from closing findings.
 5. Follow-ups are children of findings, not corrective actions.
 6. Evidence role constraint is enforced on evidence items.
+7. Checklist, finding, and follow-up node content is a rendered PDF (not JSON), correctly renders nested items/evidence and optional corrective-action data, is found and updated in place (not duplicated) on re-import regardless of whether it's still `.json`-named or already `.pdf`-named, and a rendering failure (e.g. missing template) never blocks the underlying property writes.

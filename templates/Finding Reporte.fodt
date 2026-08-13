@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.text">
+<office:font-face-decls>
+<style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+</office:font-face-decls>
+<office:styles>
+<style:default-style style:family="paragraph">
+<style:text-properties style:font-name="Liberation Sans" fo:font-size="10pt" fo:language="es" fo:country="DO"/>
+</style:default-style>
+<style:style style:name="DocTitle" style:family="paragraph">
+<style:paragraph-properties fo:margin-bottom="0.4cm"/>
+<style:text-properties fo:font-size="16pt" fo:font-weight="bold"/>
+</style:style>
+<style:style style:name="SectionHeading" style:family="paragraph">
+<style:paragraph-properties fo:margin-top="0.5cm" fo:margin-bottom="0.2cm" fo:border-bottom="0.02cm solid #666666" fo:padding-bottom="0.05cm"/>
+<style:text-properties fo:font-size="13pt" fo:font-weight="bold"/>
+</style:style>
+<style:style style:name="FieldLine" style:family="paragraph">
+<style:paragraph-properties fo:margin-bottom="0.08cm"/>
+</style:style>
+<style:style style:name="Label" style:family="text">
+<style:text-properties fo:font-weight="bold"/>
+</style:style>
+</office:styles>
+<office:body>
+<office:text>
+<text:p text:style-name="DocTitle">Hallazgo de Inspección / Inspection Finding</text:p>
+
+<text:p text:style-name="SectionHeading">Identificación / Identification</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Hallazgo / Finding ID: </text:span>${findingId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Elemento de Checklist / Checklist Item: </text:span>${checklistItemCode}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Ubicación / Location: </text:span>${locationName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Especialidad / Specialty: </text:span>${specialtyName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Proveedor / Provider: </text:span>${providerName}</text:p>
+
+<text:p text:style-name="SectionHeading">Detalle del Hallazgo / Finding Detail</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Descripción / Description: </text:span>${description}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Requisito Incumplido / Requirement Breached: </text:span>${requirementBreached}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Referencia OACI / ICAO Reference: </text:span>${icaoReference}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Reglamento Nacional / National Regulation: </text:span>${nationalRegulation}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Artículo / Regulation Item: </text:span>${regulationItem}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Nivel / Level: </text:span>${findingLevel}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Severidad / Severity: </text:span>${findingSeverity}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Clasificación de Riesgo / Risk Classification: </text:span>${riskClassification}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Riesgo Residual Objetivo / Target Residual Risk: </text:span>${targetResidualRisk}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Riesgo Residual Alcanzado / Achieved Residual Risk: </text:span>${achievedResidualRisk}</text:p>
+
+<text:p text:style-name="SectionHeading">Estado y Fechas / Status and Dates</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Estado / Status: </text:span>${findingStatus}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Emisión / Date Issued: </text:span>${dateIssued}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Plazo de Envío de CAP / CAP Submission Deadline: </text:span>${submissionDeadline}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Plazo de Resolución / Resolution Deadline: </text:span>${resolutionDeadline}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Cierre / Closure Date: </text:span>${findingClosureDate}</text:p>
+
+<text:p text:style-name="SectionHeading">Acción Correctiva / Corrective Action</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de CAP / CAP ID: </text:span>${correctiveAction.capId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Acción Propuesta / Proposed Action: </text:span>${correctiveAction.proposedAction}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Entidad Responsable / Responsible Entity: </text:span>${correctiveAction.responsibleEntity}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha Límite / Due Date: </text:span>${correctiveAction.dueDate}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Estado de Aceptación / Acceptance Status: </text:span>${correctiveAction.acceptanceStatus}</text:p>
+
+</office:text>
+</office:body>
+</office:document>
