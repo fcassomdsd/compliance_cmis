@@ -9,10 +9,18 @@ if (typeof __VSO_PATHS === "undefined" || !__VSO_PATHS) {
     inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
     inspectionPlanTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt",
     inspectionReportTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
-    inspectionReportTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Informe Final.fodt"
+    inspectionReportTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Informe Final.fodt",
+    checklistPdfTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Checklist Reporte.fodt",
+    findingPdfTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Finding Reporte.fodt",
+    followUpPdfTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/FollowUp Reporte.fodt"
   };
 }
 
+// Note: importScript() has been observed to be unavailable (typeof "undefined")
+// in at least one repo webscript's execution context (canonical-model-import),
+// so this module can't be relied on to load via importScript there - that
+// webscript inlines its own copy instead. Verify importability before adding a
+// new importScript-based consumer of this module.
 if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
   TemplateGeneration = (function() {
     function trimToNull(value) {
@@ -321,13 +329,24 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
       return engine.render(templateAsString, data);
     }
 
+    // Uses Alfresco's local Transform Service (transform-core-aio) via the native
+    // ScriptNode API. Returns a new transient ScriptNode holding the PDF content,
+    // or null if the source node has no content or no transform is available.
+    function convertToPdf(sourceNode) {
+      if (!sourceNode || typeof sourceNode.transformDocument !== "function") {
+        return null;
+      }
+      return sourceNode.transformDocument("application/pdf");
+    }
+
     return {
       trimToNull: trimToNull,
       setError: setError,
       fail: fail,
       parseJsonPayload: parseJsonPayload,
       renderTemplateContent: renderTemplateContent,
-      upsertDocument: upsertDocument
+      upsertDocument: upsertDocument,
+      convertToPdf: convertToPdf
     };
   })();
 }
