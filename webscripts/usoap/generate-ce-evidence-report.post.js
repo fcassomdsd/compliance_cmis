@@ -47,7 +47,12 @@ function toIsoDate(val) {
 
 function loadArtifactsByCe(ce, year) {
   var artifacts = [];
-  var query = '+@vso\\:usoapCriticalElement:"' + ce + '"';
+  // Query on ceMapping (multi-valued) rather than usoapCriticalElement
+  // (single-valued "primary" CE) so artifacts relevant to more than one
+  // Critical Element - e.g. a finding supporting both a CE-7 and a CE-8
+  // PQ via the same citation - show up under every CE they belong to,
+  // not just the first one resolved.
+  var query = '+@vso\\:ceMapping:"' + ce + '"';
 
   // Query findings
   var findingQuery = '+TYPE:"vso:finding" AND ' + query;

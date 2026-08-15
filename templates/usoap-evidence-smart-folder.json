@@ -15,7 +15,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -27,7 +27,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -35,7 +35,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -43,7 +43,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -51,7 +51,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -59,7 +59,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -67,7 +67,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -75,7 +75,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -83,7 +83,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -91,7 +91,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -105,7 +105,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -113,7 +113,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -121,7 +121,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -129,7 +129,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -137,7 +137,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -151,7 +151,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -159,7 +159,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -167,7 +167,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -175,7 +175,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-1\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -189,7 +189,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 },
                 {
@@ -197,7 +197,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 },
                 {
@@ -205,7 +205,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 }
               ]
@@ -219,7 +219,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 },
                 {
@@ -227,7 +227,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 },
                 {
@@ -235,7 +235,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 },
                 {
@@ -243,7 +243,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-1\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-1\""
                   }
                 }
               ]
@@ -259,7 +259,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -271,7 +271,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -279,7 +279,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -287,7 +287,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -295,7 +295,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -303,7 +303,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -311,7 +311,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -319,7 +319,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -327,7 +327,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -335,7 +335,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -349,7 +349,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -357,7 +357,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -365,7 +365,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -373,7 +373,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -381,7 +381,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -395,7 +395,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -403,7 +403,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -411,7 +411,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -419,7 +419,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-2\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -433,7 +433,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 },
                 {
@@ -441,7 +441,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 },
                 {
@@ -449,7 +449,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 }
               ]
@@ -463,7 +463,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 },
                 {
@@ -471,7 +471,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 },
                 {
@@ -479,7 +479,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 },
                 {
@@ -487,7 +487,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-2\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-2\""
                   }
                 }
               ]
@@ -503,7 +503,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -515,7 +515,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -523,7 +523,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -531,7 +531,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -539,7 +539,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -547,7 +547,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -555,7 +555,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -563,7 +563,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -571,7 +571,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -579,7 +579,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -593,7 +593,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -601,7 +601,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -609,7 +609,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -617,7 +617,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -625,7 +625,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -639,7 +639,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -647,7 +647,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -655,7 +655,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -663,7 +663,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-3\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -677,7 +677,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 },
                 {
@@ -685,7 +685,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 },
                 {
@@ -693,7 +693,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 }
               ]
@@ -707,7 +707,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 },
                 {
@@ -715,7 +715,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 },
                 {
@@ -723,7 +723,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 },
                 {
@@ -731,7 +731,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-3\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-3\""
                   }
                 }
               ]
@@ -747,7 +747,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -759,7 +759,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -767,7 +767,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -775,7 +775,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -783,7 +783,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -791,7 +791,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -799,7 +799,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -807,7 +807,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -815,7 +815,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -823,7 +823,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -837,7 +837,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -845,7 +845,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -853,7 +853,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -861,7 +861,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -869,7 +869,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -883,7 +883,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -891,7 +891,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -899,7 +899,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -907,7 +907,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-4\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -921,7 +921,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 },
                 {
@@ -929,7 +929,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 },
                 {
@@ -937,7 +937,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 }
               ]
@@ -951,7 +951,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 },
                 {
@@ -959,7 +959,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 },
                 {
@@ -967,7 +967,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 },
                 {
@@ -975,7 +975,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-4\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-4\""
                   }
                 }
               ]
@@ -991,7 +991,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -1003,7 +1003,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -1011,7 +1011,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -1019,7 +1019,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -1027,7 +1027,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -1035,7 +1035,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -1043,7 +1043,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -1051,7 +1051,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -1059,7 +1059,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -1067,7 +1067,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -1081,7 +1081,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -1089,7 +1089,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -1097,7 +1097,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -1105,7 +1105,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -1113,7 +1113,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -1127,7 +1127,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -1135,7 +1135,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -1143,7 +1143,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -1151,7 +1151,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-5\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -1165,7 +1165,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 },
                 {
@@ -1173,7 +1173,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 },
                 {
@@ -1181,7 +1181,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 }
               ]
@@ -1195,7 +1195,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 },
                 {
@@ -1203,7 +1203,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 },
                 {
@@ -1211,7 +1211,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 },
                 {
@@ -1219,7 +1219,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-5\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-5\""
                   }
                 }
               ]
@@ -1235,7 +1235,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -1247,7 +1247,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -1255,7 +1255,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -1263,7 +1263,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -1271,7 +1271,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -1279,7 +1279,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -1287,7 +1287,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -1295,7 +1295,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -1303,7 +1303,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -1311,7 +1311,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -1325,7 +1325,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -1333,7 +1333,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -1341,7 +1341,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -1349,7 +1349,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -1357,7 +1357,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -1371,7 +1371,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -1379,7 +1379,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -1387,7 +1387,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -1395,7 +1395,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-6\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -1409,7 +1409,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 },
                 {
@@ -1417,7 +1417,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 },
                 {
@@ -1425,7 +1425,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 }
               ]
@@ -1439,7 +1439,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 },
                 {
@@ -1447,7 +1447,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 },
                 {
@@ -1455,7 +1455,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 },
                 {
@@ -1463,7 +1463,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-6\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-6\""
                   }
                 }
               ]
@@ -1479,7 +1479,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -1491,7 +1491,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -1499,7 +1499,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -1507,7 +1507,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -1515,7 +1515,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -1523,7 +1523,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -1531,7 +1531,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -1539,7 +1539,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -1547,7 +1547,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -1555,7 +1555,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -1569,7 +1569,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -1577,7 +1577,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -1585,7 +1585,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -1593,7 +1593,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -1601,7 +1601,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -1615,7 +1615,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -1623,7 +1623,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -1631,7 +1631,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -1639,7 +1639,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-7\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -1653,7 +1653,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 },
                 {
@@ -1661,7 +1661,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 },
                 {
@@ -1669,7 +1669,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 }
               ]
@@ -1683,7 +1683,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 },
                 {
@@ -1691,7 +1691,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 },
                 {
@@ -1699,7 +1699,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 },
                 {
@@ -1707,7 +1707,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-7\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-7\""
                   }
                 }
               ]
@@ -1723,7 +1723,7 @@
               "name": "Por Protocol Question",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapPqReference:\"*\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapPqReference:\"*\""
               }
             },
             {
@@ -1735,7 +1735,7 @@
                   "name": "ATS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"ATS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"ATS\""
                   }
                 },
                 {
@@ -1743,7 +1743,7 @@
                   "name": "CNS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"CNS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"CNS\""
                   }
                 },
                 {
@@ -1751,7 +1751,7 @@
                   "name": "SAR",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"SAR\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"SAR\""
                   }
                 },
                 {
@@ -1759,7 +1759,7 @@
                   "name": "AIM",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"AIM\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"AIM\""
                   }
                 },
                 {
@@ -1767,7 +1767,7 @@
                   "name": "SMS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"SMS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"SMS\""
                   }
                 },
                 {
@@ -1775,7 +1775,7 @@
                   "name": "MET",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"MET\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"MET\""
                   }
                 },
                 {
@@ -1783,7 +1783,7 @@
                   "name": "AGA",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"AGA\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"AGA\""
                   }
                 },
                 {
@@ -1791,7 +1791,7 @@
                   "name": "P/OPS",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"P/OPS\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"P/OPS\""
                   }
                 },
                 {
@@ -1799,7 +1799,7 @@
                   "name": "CHT",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapAreaCode:\"CHT\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"CHT\""
                   }
                 }
               ]
@@ -1813,7 +1813,7 @@
                   "name": "Primary Legislation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
                   }
                 },
                 {
@@ -1821,7 +1821,7 @@
                   "name": "Specific Regulation",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
                   }
                 },
                 {
@@ -1829,7 +1829,7 @@
                   "name": "Technical Guidance",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
                   }
                 },
                 {
@@ -1837,7 +1837,7 @@
                   "name": "Implementation Procedure",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
                   }
                 },
                 {
@@ -1845,7 +1845,7 @@
                   "name": "Oversight Record",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
                   }
                 }
               ]
@@ -1859,7 +1859,7 @@
                   "name": "Sin PQ asignado",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND -@vso\\:usoapPqReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:usoapPqReference:\"*\""
                   }
                 },
                 {
@@ -1867,7 +1867,7 @@
                   "name": "Sin base de evidencia",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:usoapEvidenceBasis:\"*\""
                   }
                 },
                 {
@@ -1875,7 +1875,7 @@
                   "name": "Sin referencia SARPs",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND -@vso\\:icaoReference:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:icaoReference:\"*\""
                   }
                 },
                 {
@@ -1883,7 +1883,7 @@
                   "name": "Sin regulación nacional",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:usoapCriticalElement:\"CE-8\" AND -@vso\\:nationalRegulation:\"*\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:nationalRegulation:\"*\""
                   }
                 }
               ]
@@ -1897,7 +1897,7 @@
                   "name": "A — 7 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 },
                 {
@@ -1905,7 +1905,7 @@
                   "name": "B — 30 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 },
                 {
@@ -1913,7 +1913,7 @@
                   "name": "C — 90 days",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 }
               ]
@@ -1927,7 +1927,7 @@
                   "name": "Alcanzado: Low",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 },
                 {
@@ -1935,7 +1935,7 @@
                   "name": "Alcanzado: Medium",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 },
                 {
@@ -1943,7 +1943,7 @@
                   "name": "Alcanzado: High",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 },
                 {
@@ -1951,7 +1951,7 @@
                   "name": "Pending Approval",
                   "search": {
                     "language": "fts-alfresco",
-                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:usoapCriticalElement:\"CE-8\""
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-8\""
                   }
                 }
               ]

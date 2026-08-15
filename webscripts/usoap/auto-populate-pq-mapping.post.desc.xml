@@ -1,9 +1,0 @@
-<webscript>
-   <shortname>Auto-populate USOAP PQ Mapping</shortname>
-   <description>Auto-populate vso:ceMapping and vso:usoapPqReference from vso:icaoReference using the USOAP PQ mapping table</description>
-   <url>/api/usoap/auto-populate-pq</url>
-   <format default="json"/>
-   <content-type>application/json</content-type>
-   <authentication>user</authentication>
-   <transaction>required</transaction>
-</webscript>

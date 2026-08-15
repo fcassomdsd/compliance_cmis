@@ -201,6 +201,15 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:usoapTagSourceList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Chain-derived</value>
+          <value>Direct</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:rcaMethodList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -1155,6 +1164,15 @@
             <constraint ref="vso:ceList"/>
           </constraints>
         </property>
+        <property name="vso:areaMapping">
+          <title>Areas USOAP relacionadas</title>
+          <description>Full set of USOAP area codes this node is relevant to (an artifact can support PQs from more than one area/CE via a single citation); vso:usoapAreaCode holds only the primary/first one</description>
+          <type>d:text</type>
+          <multiple>true</multiple>
+          <constraints>
+            <constraint ref="vso:usoapAreaList"/>
+          </constraints>
+        </property>
       </properties>
     </aspect>
 
@@ -1218,6 +1236,14 @@
           <type>d:text</type>
           <constraints>
             <constraint ref="vso:usoapEvidenceBasisList"/>
+          </constraints>
+        </property>
+        <property name="vso:usoapTagSource">
+          <title>USOAP tag source</title>
+          <description>Whether the CE/area/PQ tags were resolved via the Annex-to-checklist-item citation chain or assigned directly on this node</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:usoapTagSourceList"/>
           </constraints>
         </property>
       </properties>
