@@ -71,50 +71,62 @@ These values are not constrained in the model, so they must be used consistently
 
 ## Data-entry convention
 
-For each evidence assertion, register:
+For manually/directly tagged nodes (not produced by the chain-derived import path), register:
 
-1. CE in vso:usoapCriticalElement
-2. Area in vso:usoapAreaCode
+1. CE in vso:usoapCriticalElement, and every applicable CE in vso:ceMapping (include the primary one too)
+2. Area in vso:usoapAreaCode, and every applicable area in vso:areaMapping (include the primary one too)
 3. Role in vso:evidenceRole
 4. Support nature in vso:evidenceType
 5. Reference to specific paragraph/article in title or content summary
+
+Smart-folder navigation and the CE evidence report query `ceMapping`/`areaMapping`, not the single-valued fields — an entry missing from the mapping lists won't surface under its other applicable CE/area trees even if the primary field is set.
 
 ## Notes
 
 1. Classifier nodes were kept without search queries; only leaf nodes execute queries.
 2. Existing path scope remains fixed to the Vigilancia repository path used by the pilot templates.
 
-## Auto-population webscript
+## PQ tagging: citation-chain resolution (primary mechanism)
 
-A webscript at `POST /api/usoap/auto-populate-pq` reads existing `vso:icaoReference` values on findings, evidence items, and checklist items, matches them against the ICAO Annex → CE/PQ lookup table (`configs/usoap-pq-mapping.json`), and auto-populates `vso:ceMapping`, `vso:usoapPqReference`, `vso:usoapCriticalElement`, and `vso:usoapAreaCode`.
+CE/area/PQ tags are resolved through a citation chain maintained in `atrocore-docker`, not by regex-matching free text:
 
-### Usage
-
-```bash
-# Auto-populate all findings across all inspections:
-curl -u admin:admin -X POST \
-  -H "Content-Type: application/json" \
-  -d '{}' \
-  "http://localhost:8080/alfresco/s/api/usoap/auto-populate-pq"
-
-# Auto-populate findings for a specific inspection:
-curl -u admin:admin -X POST \
-  -H "Content-Type: application/json" \
-  -d '{"inspectionCode": "MDPP-001"}' \
-  "http://localhost:8080/alfresco/s/api/usoap/auto-populate-pq"
-
-# Dry run (no changes, only preview):
-curl -u admin:admin -X POST \
-  -H "Content-Type: application/json" \
-  -d '{"dryRun": true}' \
-  "http://localhost:8080/alfresco/s/api/usoap/auto-populate-pq"
+```
+UsoapProtocolQuestion (ICAO PQ, e.g. "PQ 7.035", CE, area)
+      │ cites (many-to-many)
+      ▼
+AcapiteOACI (Annex paragraph)  ──belongsTo──▶ DocumentoOACI (ICAO Annex/document)
+      │ hasMany
+      ▼
+Normativa (national regulation article)  ──belongsTo──▶ Reglamento (national regulation)
+      │ many-to-many (NormativaProtocolQuestion)
+      ▼
+ProtocolQuestion (local checklist-question catalog)
 ```
 
-### Mapping file
+`compliance_flow`'s Node-RED "getChecklistQuestion" flow resolves this chain for each checklist question and returns the matched PQ(s) — code, critical element, and area — as `reference.normativa.usoapPqReference` in the `/checklist` response. `compliance_checklist` carries that array through in the canonical checklist-item/finding export, and `compliance_cmis`'s `import-canonical-models.post.js` writes it onto the resulting `vso:checklistItem` node (and mirrors it onto any finding created against that item via `vso:checklistItemCode`) as `vso:usoapPqReference`, `vso:usoapCriticalElement`, `vso:usoapAreaCode`, `vso:ceMapping`, `vso:areaMapping`, with `vso:usoapTagSource = "Chain-derived"`.
 
-The lookup table at `configs/usoap-pq-mapping.json` maps ICAO Annex references to Critical Elements and areas. To update the mapping:
-1. Upload the updated JSON file to the repository
-2. Re-run the webscript
+This gives an exact checklist-item-to-PQ relationship (via the specific Annex paragraph and national regulation article actually cited), rather than a bulk area-level assignment.
+
+### Evidence tag inheritance
+
+`vso:evidenceItem` nodes do not go through the citation chain themselves — they inherit tags from the artifact they support, so an evidence file never needs its own PQ resolution:
+
+- Evidence attached to a checklist item (`upsertEvidence`) is tagged directly from that item's `reference.usoapPqReference` (same call as the checklist item itself), via `applyChainDerivedUsoapTags`.
+- Evidence attached to a follow-up report (`upsertFollowUpEvidence`) is tagged by copying the already-saved finding's `vso:usoapPqReference`/`vso:usoapCriticalElement`/`vso:usoapAreaCode`/`vso:ceMapping`/`vso:areaMapping`/`vso:usoapTagSource` properties directly (`inheritUsoapTags`), since the finding is always saved first.
+
+Findings don't get their own evidence nodes — they reuse the checklist item's evidence via the `vso:relatedEvidence` association — so as long as the checklist item is tagged, its evidence is too. One known edge case: if a finding's `usoapPqReference` is explicitly overridden to differ from its checklist item's (rare — findings normally inherit the item's reference data), the shared evidence nodes still carry the *item's* tags, not the finding's override, mirroring the existing behavior for `icaoReference`/`nationalRegulation`/`regulationItem`.
+
+### Multi-CE / multi-area membership
+
+A single artifact can legitimately be relevant to more than one Critical Element or area — e.g. one Annex paragraph can be cited by both a CE-7 and a CE-8 Protocol Question. `vso:usoapCriticalElement` and `vso:usoapAreaCode` are single-valued "primary" fields (set from the first resolved PQ) and are not sufficient on their own to find all artifacts relevant to a given CE/area. The multi-valued `vso:ceMapping` and `vso:areaMapping` properties hold the *full* set and are what smart-folder navigation (`templates/usoap-evidence-smart-folder.json`, `templates/vigilancia-smart-folders-pilot.json`) and `POST /api/usoap/ce-evidence-report` actually query against — an artifact tagged with both CE-7 and CE-8 will correctly surface under both CE trees/reports, not just the first one resolved.
+
+### Direct/manual tagging
+
+For PQs that apply to an entire document, checklist, or inspection rather than one specific checklist item, apply the `vso:usoapEvidenceContext` aspect directly to that node (it is a generic aspect, already attachable to any content node, and is addable — not mandatory — on `vso:inspection` and `vso:inspectionChecklist`). Set `vso:usoapTagSource = "Direct"` on manually-applied tags so reports can distinguish them from chain-derived ones.
+
+### Retired: regex/bulk-area auto-population
+
+The previous `POST /api/usoap/auto-populate-pq` webscript and its `configs/usoap-pq-mapping.json` lookup table (which matched free-text `vso:icaoReference` against ICAO Annex names and bulk-assigned every PQ in that Annex's area) have been removed. That mechanism could only relate a node to "some PQ in area X," never to a specific PQ — precisely the limitation the citation-chain mechanism above replaces. No production data depended on it.
 
 ## CE Evidence Report webscript
 

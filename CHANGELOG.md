@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-08-15] — Evidence Tag Inheritance & Multi-CE/Area Querying
+
+### Added
+- **`vso:areaMapping` property** on `regulatoryTraceability` aspect (multi-valued, mirrors `vso:ceMapping`) — holds every USOAP area an artifact is relevant to, not just the primary one in `vso:usoapAreaCode`.
+- **Evidence items now inherit USOAP tags**: `upsertEvidence()` tags checklist-item evidence directly from the item's `reference.usoapPqReference`; `upsertFollowUpEvidence()` copies the already-tagged finding's USOAP properties onto its evidence (`inheritUsoapTags`). Previously evidence nodes were never tagged, so they were invisible to CE/PQ-scoped smart-folder navigation and the CE evidence report even when the finding/checklist item they supported was correctly tagged.
+
+### Changed
+- **`ce-evidence-report` and smart-folder templates now query `ceMapping`/`areaMapping`** (multi-valued) instead of `usoapCriticalElement`/`usoapAreaCode` (single-valued "primary" fields) — an artifact relevant to more than one CE or area (e.g. one Annex paragraph cited by both a CE-7 and a CE-8 PQ) now correctly surfaces under every CE/area it belongs to, not just the first one resolved by the citation chain.
+
+## [2026-08-14] — PQ Citation-Chain Tagging
+
+### Added
+- **`vso:usoapTagSource` property** on `usoapEvidenceContext` aspect (`Chain-derived` | `Direct`) — distinguishes PQ/CE/area tags resolved via the Annex-to-checklist-item citation chain from manually/directly assigned ones (e.g. whole-document, whole-checklist, whole-inspection tagging).
+- **Canonical import webscript now writes chain-derived PQ tags**: `import-canonical-models.post.js` sets `vso:usoapPqReference`, `vso:usoapCriticalElement`, `vso:usoapAreaCode`, `vso:ceMapping`, and `vso:usoapTagSource="Chain-derived"` on checklist items (from `itemPayload.reference.usoapPqReference`, resolved upstream by `compliance_flow`'s Node-RED `ProtocolQuestion → Normativa → AcapiteOACI → UsoapProtocolQuestion` chain) and mirrors the same tags onto findings via their `vso:checklistItemCode` link.
+
+### Removed
+- **`POST /api/usoap/auto-populate-pq` webscript** (`webscripts/usoap/auto-populate-pq-mapping.post.*`) and `configs/usoap-pq-mapping.json` — retired in favor of precise, chain-derived PQ tagging. The removed mechanism only bulk-assigned every PQ in an Annex's ICAO area via regex matching on free-text `vso:icaoReference`, which could not relate a checklist item to a specific PQ. No production data depended on it.
+
 ## [2026-08-10] — Rich Corrective Action Plan (CAP) Content Model
 
 ### Added
