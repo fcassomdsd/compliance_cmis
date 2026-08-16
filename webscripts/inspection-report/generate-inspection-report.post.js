@@ -329,34 +329,38 @@ function resolveSpecialtyNameFromNodes(itemNode, checklistNode, domainFolder, in
 }
 
 function buildChecklistSummaryTable(checklistData) {
-  var summaryMap = {};
+
+  const MAX_STATUS = 3;
+  var pivot = {};
+  var titles = [];
 
   for (var index = 0; index < checklistData.length; index++) {
     var item = checklistData[index];
     var specialtyName = item.specialtyName || "Unknown";
-    var complianceStatus = item.complianceStatus || "Unknown";
-    var key = specialtyName + "||" + complianceStatus;
+    var complianceStatus = item.complianceStatus || "";
 
-    if (!summaryMap[key]) {
-      summaryMap[key] = {
-        domain: specialtyName,
-        specialtyName: specialtyName,
-        complianceStatus: complianceStatus,
-        count: 0
-      };
+    if (!pivot[specialtyName]) {
+      pivot[specialtyName] = { specialtyName: specialtyName, count : Array(MAX_STATUS).fill(0) };
     }
 
-    summaryMap[key].count += 1;
+    var idx = titles.findIndex((x) => x === complianceStatus);
+    if (idx == -1 ) {
+      idx += titles.push(complianceStatus);
+    }
+    
+    pivot[specialtyName].count[idx]++;
+    
   }
 
   var rows = [];
-  for (var summaryKey in summaryMap) {
-    if (summaryMap.hasOwnProperty(summaryKey)) {
-      rows.push(summaryMap[summaryKey]);
+  for (var key in pivot) {
+    if (pivot.hasOwnProperty(key)) {
+      rows.push(pivot[key]);
     }
   }
 
-  return rows;
+  return { "titles" : titles, "rows" : rows };
+
 }
 
 function buildFindingSpecs(findings) {
@@ -637,6 +641,10 @@ function lookupInspectionData(inspectionCode, providerId) {
   }
 
   var checklistSummary = [];
+  var interviewees = [];
+  var intervieweesSeen = {};
+  var regulationTitles = [];
+  var regulationTitlesSeen = {};
   var domainFolders = inspectionFolder.childFileFolders(false, true);
 
   for (var di = 0; di < domainFolders.length; di++) {
@@ -649,6 +657,12 @@ function lookupInspectionData(inspectionCode, providerId) {
       var checklistNode = domainChildren[dci];
       if (!checklistNode.isSubType("vso:inspectionChecklist")) {
         continue;
+      }
+
+      var checklistInterviewee = trimProp(checklistNode, "vso:interviewee");
+      if (checklistInterviewee && !intervieweesSeen[checklistInterviewee]) {
+        intervieweesSeen[checklistInterviewee] = true;
+        interviewees.push({ name: checklistInterviewee });
       }
 
       var checklistNodeContentSpecialty = firstNonEmptySpecialty(
@@ -725,6 +739,12 @@ function lookupInspectionData(inspectionCode, providerId) {
             requirementText: trimProp(itemNode, "vso:requirementText"),
             complianceStatus: trimProp(itemNode, "vso:complianceStatus")
           });
+
+          var itemNatReg = trimProp(itemNode, "vso:nationalRegulation");
+          if (itemNatReg && !regulationTitlesSeen[itemNatReg]) {
+            regulationTitlesSeen[itemNatReg] = true;
+            regulationTitles.push({ title: itemNatReg });
+          }
         }
       }
     }
@@ -790,7 +810,8 @@ function lookupInspectionData(inspectionCode, providerId) {
   }
 
   var findingSpecs = buildFindingSpecs(findings);
-
+  const checklistTable = buildChecklistSummaryTable(checklistSummary);
+  
   return {
     inspectionCode: inspectionCode,
     providerId: providerId,
@@ -803,7 +824,10 @@ function lookupInspectionData(inspectionCode, providerId) {
     dateRange: formatSpanishDateRange(startDate, endDate),
     findingSpecs: findingSpecs,
     checklistSummary: checklistSummary,
-    checklistSummaryTable: buildChecklistSummaryTable(checklistSummary)
+    checklistSummaryTable: checklistTable.rows,
+    titles : checklistTable.titles,
+    interviewees: interviewees,
+    regulationTitles: regulationTitles
   };
 }
 
@@ -830,6 +854,7 @@ try {
   }
 
   var inspectors = Array.isArray(inputData.inspectors) ? inputData.inspectors : [];
+  var services = Array.isArray(inputData.services) ? inputData.services : [];
   var mainInspector = TemplateGeneration.trimToNull(inputData.mainInspector) ||
     (inspectors.length > 0 ? (inspectors[0].name || "") : "");
 
@@ -853,8 +878,15 @@ try {
   }
   reportData.specialtyName = firstNonEmptySpecialty(reportData.specialtyName, leadInspectorSpecialty);
   reportData.inspectors = inspectors;
+  reportData.services = services;
+  reportData.providerName = inputData.providerName;
   reportData.mainInspector = mainInspector;
   reportData.reportDate = TemplateGeneration.trimToNull(inputData.reportDate) || new Date().toISOString().slice(0, 10);
+  reportData.description = TemplateGeneration.trimToNull(inputData.description) || "";
+  reportData.conclusion = TemplateGeneration.trimToNull(inputData.conclusion) || "";
+  reportData.objective = TemplateGeneration.trimToNull(inputData.objective) || "";
+  reportData.scope = TemplateGeneration.trimToNull(inputData.scope) || "";
+  reportData.inspectionType = TemplateGeneration.trimToNull(inputData.inspectionType) || "";
 
   var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
   var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || DESTINATION_PATH;
@@ -906,6 +938,8 @@ try {
     nodeRef: outputFile.nodeRef.toString(),
     name: outputFile.name,
     url: outputFile.url,
+    inputData : (inputData ? JSON.stringify(inputData) : "No input data"),
+    reportData : (reportData ? JSON.stringify(reportData) : "No report data"),
     downloadUrl: outputFile.downloadUrl,
     path: destinationFolder.displayPath + "/" + outputFile.name,
     createdDate: outputFile.properties["cm:created"],

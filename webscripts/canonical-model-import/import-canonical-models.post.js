@@ -8,7 +8,10 @@ function resolveVsoPaths() {
     inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
     canonicalSourceBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo",
     findingBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Hallazgos",
-    inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data"
+    inspectionPlanTemplateDataPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
+    checklistPdfTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Checklist Reporte.fodt",
+    findingPdfTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Finding Reporte.fodt",
+    followUpPdfTemplatePath: "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/FollowUp Reporte.fodt"
   };
 
   if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
@@ -41,6 +44,9 @@ var DEFAULT_DESTINATION_BASE_PATH = VSO_PATHS.inspectionInProcessPath;
 var DEFAULT_FINDINGS_BASE_PATH = VSO_PATHS.findingBasePath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Hallazgos";
 // Use text/plain so Share can preview JSON content inline.
 var JSON_MIMETYPE = "text/plain";
+var CHECKLIST_PDF_TEMPLATE_PATH = VSO_PATHS.checklistPdfTemplatePath;
+var FINDING_PDF_TEMPLATE_PATH = VSO_PATHS.findingPdfTemplatePath;
+var FOLLOWUP_PDF_TEMPLATE_PATH = VSO_PATHS.followUpPdfTemplatePath;
 
 function setError(code, message) {
   status.code = code;
@@ -323,6 +329,88 @@ function setPropertyIfPresent(node, propertyName, value) {
   }
 }
 
+function setMultiPropertyIfPresent(node, propertyName, values) {
+  if (!values || !values.length) {
+    return;
+  }
+  var normalized = [];
+  for (var index = 0; index < values.length; index++) {
+    var trimmed = trimToNull(values[index]);
+    if (trimmed !== null && normalized.indexOf(trimmed) === -1) {
+      normalized.push(trimmed);
+    }
+  }
+  if (normalized.length) {
+    node.properties[propertyName] = normalized;
+  }
+}
+
+/**
+ * Applies chain-derived USOAP PQ/CE/area tags resolved by the Node-RED
+ * citation chain (ICAO PQ -> Annex paragraph -> national regulation article
+ * -> checklist item), as opposed to a manually/directly assigned tag.
+ * usoapPqReference is an array of { code, criticalElement, areaCode }.
+ */
+function applyChainDerivedUsoapTags(node, usoapPqReference) {
+  if (!usoapPqReference || !usoapPqReference.length) {
+    return;
+  }
+  ensureAspect(node, "vso:usoapEvidenceContext");
+
+  var pqCodes = [];
+  var ceValues = [];
+  var areaValues = [];
+  for (var index = 0; index < usoapPqReference.length; index++) {
+    var entry = usoapPqReference[index] || {};
+    if (entry.code) {
+      pqCodes.push(entry.code);
+    }
+    if (entry.criticalElement) {
+      ceValues.push(entry.criticalElement);
+    }
+    if (entry.areaCode) {
+      areaValues.push(entry.areaCode);
+    }
+  }
+
+  setMultiPropertyIfPresent(node, "vso:usoapPqReference", pqCodes);
+  setMultiPropertyIfPresent(node, "vso:ceMapping", ceValues);
+  setMultiPropertyIfPresent(node, "vso:areaMapping", areaValues);
+  setPropertyIfPresent(node, "vso:usoapCriticalElement", usoapPqReference[0].criticalElement);
+  setPropertyIfPresent(node, "vso:usoapAreaCode", usoapPqReference[0].areaCode);
+  setPropertyIfPresent(node, "vso:usoapTagSource", "Chain-derived");
+}
+
+/**
+ * Copies already-materialized USOAP tags from one saved node onto another,
+ * e.g. from a finding onto its follow-up evidence. Unlike
+ * applyChainDerivedUsoapTags, this reads real Alfresco property values
+ * rather than the raw {code, criticalElement, areaCode} chain-resolution
+ * shape.
+ */
+function inheritUsoapTags(targetNode, sourceNode) {
+  if (!sourceNode || !sourceNode.hasAspect("vso:usoapEvidenceContext")) {
+    return;
+  }
+  ensureAspect(targetNode, "vso:usoapEvidenceContext");
+
+  var scalarProps = ["vso:usoapCriticalElement", "vso:usoapAreaCode", "vso:usoapTagSource"];
+  for (var index = 0; index < scalarProps.length; index++) {
+    var value = sourceNode.properties[scalarProps[index]];
+    if (value !== null && value !== undefined && value !== "") {
+      targetNode.properties[scalarProps[index]] = value;
+    }
+  }
+
+  var multiProps = ["vso:usoapPqReference", "vso:ceMapping", "vso:areaMapping"];
+  for (var multiIndex = 0; multiIndex < multiProps.length; multiIndex++) {
+    var multiValue = sourceNode.properties[multiProps[multiIndex]];
+    if (multiValue && multiValue.length) {
+      targetNode.properties[multiProps[multiIndex]] = multiValue;
+    }
+  }
+}
+
 function setDatePropertyIfPresent(node, propertyName, value) {
   var normalized = trimToNull(value);
   if (normalized !== null) {
@@ -375,6 +463,278 @@ function ensureChildNode(parentNode, nodeName, nodeType, assocType) {
     node: parentNode.createNode(nodeName, nodeType, assocType),
     created: true
   };
+}
+
+// Looks up a canonical checklist/finding/follow-up node by its .pdf name
+// first (the steady-state name after content has been replaced with PDF),
+// falling back to the original .json-suffixed lookup-or-create. Covers three
+// cases: first-ever import (neither exists, creates as .json - gets renamed
+// to .pdf once replaceContentWithPdf() succeeds), a normal re-import of an
+// already-PDF'd node (found by its .pdf name), and a node whose previous PDF
+// generation failed and was left named .json (found by the .json fallback,
+// self-healing to .pdf on the next successful generation).
+function ensureCanonicalDocumentNode(parentNode, jsonStyleName, nodeType, assocType) {
+  var pdfStyleName = jsonStyleName.replace(/\.json$/i, ".pdf");
+  var existingPdf = parentNode.childByNamePath(pdfStyleName);
+  if (existingPdf && existingPdf.exists()) {
+    if (!existingPdf.isSubType(nodeType)) {
+      existingPdf.specializeType(nodeType);
+    }
+    return { node: existingPdf, created: false, pdfName: pdfStyleName };
+  }
+
+  var result = ensureChildNode(parentNode, jsonStyleName, nodeType, assocType);
+  return { node: result.node, created: result.created, pdfName: pdfStyleName };
+}
+
+// importScript() is not available in this webscript's execution context (verified:
+// typeof importScript === "undefined" here), so the MiniFreemarker renderer used for
+// PDF companion templates is inlined rather than loaded from
+// webscripts/common/vso-paths.lib.js's TemplateGeneration module. This mirrors the
+// same inline-fallback approach generate-inspection-report.post.js already uses.
+function renderPdfTemplateContent(templateContent, data) {
+  function tokenize(input) {
+    var tokens = [];
+    var index = 0;
+
+    while (index < input.length) {
+      if (input.indexOf("${", index) === index) {
+        var variableEnd = input.indexOf("}", index);
+        if (variableEnd === -1) {
+          throw new Error("Unclosed ${ expression");
+        }
+        tokens.push({ type: "variable", value: input.slice(index + 2, variableEnd).trim() });
+        index = variableEnd + 1;
+        continue;
+      }
+
+      if (input.indexOf("[#list", index) === index) {
+        var listEnd = input.indexOf("]", index);
+        if (listEnd === -1) {
+          throw new Error("Unclosed [#list]");
+        }
+        tokens.push({ type: "list_open", value: input.slice(index + 6, listEnd).trim() });
+        index = listEnd + 1;
+        continue;
+      }
+
+      if (input.indexOf("[/#list]", index) === index) {
+        tokens.push({ type: "list_close" });
+        index += 8;
+        continue;
+      }
+
+      var nextTokenIndex = findNextSpecial(input, index);
+      if (nextTokenIndex > index) {
+        tokens.push({ type: "text", value: input.slice(index, nextTokenIndex) });
+      }
+      index = nextTokenIndex;
+    }
+
+    return tokens;
+  }
+
+  function findNextSpecial(input, start) {
+    var markers = ["${", "[#list", "[/#list]"];
+    var nearest = input.length;
+    for (var markerIndex = 0; markerIndex < markers.length; markerIndex++) {
+      var markerPos = input.indexOf(markers[markerIndex], start);
+      if (markerPos !== -1 && markerPos < nearest) {
+        nearest = markerPos;
+      }
+    }
+    return nearest;
+  }
+
+  function parse(tokens) {
+    function parseToken(token, tokenList) {
+      if (token.type === "text") {
+        return { count: 1, data: token };
+      }
+      if (token.type === "variable") {
+        return { count: 1, data: { type: "variable", path: token.value } };
+      }
+      if (token.type === "list_open") {
+        var parts = token.value.split(/\s+/);
+        if (parts.length !== 3 || parts[1] !== "as") {
+          throw new Error("Invalid [#list] syntax: " + token.value);
+        }
+        var body = parse(tokenList);
+        return {
+          count: body.count + 2,
+          data: { type: "list", collection: parts[0], item: parts[2], body: body.data }
+        };
+      }
+      return { count: 1, data: null };
+    }
+
+    var nodes = [];
+    var tokenIndex = 0;
+    while (tokenIndex < tokens.length && tokens[tokenIndex].type !== "list_close") {
+      var node = parseToken(tokens[tokenIndex], tokens.slice(tokenIndex + 1));
+      nodes.push(node.data);
+      tokenIndex += node.count;
+    }
+    return { count: tokenIndex, data: nodes };
+  }
+
+  function resolvePath(objectRoot, path) {
+    var context = objectRoot;
+    var parts = String(path).split(".");
+    for (var index = 0; index < parts.length; index++) {
+      if (!context || typeof context !== "object") {
+        return "";
+      }
+      var part = parts[index];
+      if (!(part in context)) {
+        return "";
+      }
+      context = context[part];
+    }
+    if (context === null || context === undefined) {
+      return "";
+    }
+    return context;
+  }
+
+  function evaluate(nodes, context) {
+    function evaluateNode(node, currentContext) {
+      if (!node) {
+        return "";
+      }
+      if (node.type === "text") {
+        return node.value;
+      }
+      if (node.type === "variable") {
+        return resolvePath(currentContext, node.path);
+      }
+      if (node.type === "list") {
+        var collection = resolvePath(currentContext, node.collection);
+        if (!Array.isArray(collection)) {
+          return "";
+        }
+        var listOutput = "";
+        for (var elementIndex = 0; elementIndex < collection.length; elementIndex++) {
+          var itemContext = Object.create(currentContext || {});
+          itemContext[node.item] = collection[elementIndex];
+          listOutput += evaluate(node.body, itemContext);
+        }
+        return listOutput;
+      }
+      return "";
+    }
+
+    var output = "";
+    for (var nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
+      output += evaluateNode(nodes[nodeIndex], context);
+    }
+    return output;
+  }
+
+  var ast = parse(tokenize(templateContent));
+  return evaluate(ast.data, data);
+}
+
+// Recursively XML-escapes string leaves so free-text fields (comments,
+// descriptions, etc.) can't break the FODT XML markup they get substituted
+// into. The MiniFreemarker engine does plain string substitution with no
+// escaping of its own, so this must happen before renderTemplateContent().
+function xmlEscapeDeep(value) {
+  if (value === null || value === undefined) {
+    return value;
+  }
+  if (value instanceof Date) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    var escapedArray = [];
+    for (var arrayIndex = 0; arrayIndex < value.length; arrayIndex++) {
+      escapedArray.push(xmlEscapeDeep(value[arrayIndex]));
+    }
+    return escapedArray;
+  }
+  if (typeof value === "object") {
+    var escapedObject = {};
+    for (var key in value) {
+      if (value.hasOwnProperty(key)) {
+        escapedObject[key] = xmlEscapeDeep(value[key]);
+      }
+    }
+    return escapedObject;
+  }
+  if (typeof value === "string") {
+    return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  return value;
+}
+
+// Renders templatePath (a .fodt) with `data`, converts it to PDF via Alfresco's
+// local Transform Service, and stores it as pdfFileName in destinationFolder,
+// alongside the JSON document it companions. Best-effort: any failure is logged
+// and swallowed so the canonical JSON import (the load-bearing operation, which
+// has already completed by the time this runs) is never failed because of it.
+// Renders templatePath (a .fodt) with `data`, converts it to PDF via Alfresco's
+// local Transform Service, and replaces targetNode's own content with it in
+// place (same nodeRef, same properties/associations - no sibling node is
+// created). scratchFolder is a real folder to create the transient rendering
+// artifacts in; it can't always be targetNode.parent (e.g. a follow-up
+// report's parent is a vso:finding node, not a folder, and can't hold an
+// arbitrary child via the generic cm:contains association).
+// Best-effort: any failure is logged and swallowed, leaving targetNode's
+// existing content/mimetype/name completely untouched - properties are set
+// independently of this and are never affected either way.
+function replaceContentWithPdf(targetNode, scratchFolder, templatePath, data, desiredFileName, aspects) {
+  var scratchNode = null;
+  var transformedNode = null;
+  try {
+    var templateNode = companyhome.childByNamePath(templatePath);
+    if (!templateNode || !templateNode.exists()) {
+      logger.warn("[import-canonical-models] pdf-render skipped for " + desiredFileName + ": template not found at " + templatePath);
+      return false;
+    }
+
+    var renderedFodt = renderPdfTemplateContent(String(templateNode.content), xmlEscapeDeep(data));
+    var baseName = desiredFileName.replace(/\.pdf$/i, "");
+    scratchNode = scratchFolder.createNode("._pdf-render-" + baseName + ".fodt", "cm:content");
+    scratchNode.content = renderedFodt;
+    scratchNode.mimetype = "application/vnd.oasis.opendocument.text";
+    scratchNode.save();
+
+    transformedNode = (typeof scratchNode.transformDocument === "function") ? scratchNode.transformDocument("application/pdf") : null;
+    if (!transformedNode) {
+      logger.warn("[import-canonical-models] pdf-render skipped for " + desiredFileName + ": PDF transform returned no result");
+      scratchNode.remove();
+      return false;
+    }
+
+    targetNode.properties.content.write(transformedNode.properties.content);
+    targetNode.properties.content.mimetype = "application/pdf";
+    if (targetNode.name !== desiredFileName) {
+      targetNode.name = desiredFileName;
+    }
+    for (var aspectIndex = 0; aspectIndex < aspects.length; aspectIndex++) {
+      ensureAspect(targetNode, aspects[aspectIndex]);
+    }
+    targetNode.save();
+
+    transformedNode.remove();
+    scratchNode.remove();
+
+    logger.log("[import-canonical-models] pdf-render replaced content: " + desiredFileName);
+    return true;
+  } catch (pdfError) {
+    logger.warn("[import-canonical-models] pdf-render failed for " + desiredFileName + ": " + pdfError.toString());
+    try {
+      if (transformedNode) {
+        transformedNode.remove();
+      }
+      if (scratchNode) {
+        scratchNode.remove();
+      }
+    } catch (cleanupError) {
+    }
+    return false;
+  }
 }
 
 function findDocumentByName(parentNode, nodeName) {
@@ -861,6 +1221,7 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
     if (evidencePayload.immutable !== null && evidencePayload.immutable !== undefined) {
       evidenceNode.properties["vso:immutable"] = !!evidencePayload.immutable;
     }
+    inheritUsoapTags(evidenceNode, findingNode);
     evidenceNode.save();
 
     ensureAssociation(followUpNode, evidenceNode, "vso:relatedEvidence");
@@ -901,15 +1262,12 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
 
   var findingNode = findingMatches[0];
   var followUpNodeName = buildFollowUpNodeName(report, followUpFileNode.name);
-  var followUpResult = ensureChildNode(findingNode, followUpNodeName, "vso:followUpReport", "vso:hasFollowUp");
+  var followUpResult = ensureCanonicalDocumentNode(findingNode, followUpNodeName, "vso:followUpReport", "vso:hasFollowUp");
   var followUpNode = followUpResult.node;
 
   ensureVersionable(followUpNode);
   ensureAspect(followUpNode, "vso:inspectionContext");
   ensureAspect(followUpNode, "vso:serviceContext");
-
-  followUpNode.content = JSON.stringify(parsed.root, null, 2);
-  followUpNode.mimetype = JSON_MIMETYPE;
 
   setPropertyIfPresent(followUpNode, "cm:title", trimToNull(report.followUpId) || followUpNodeName);
   setPropertyIfPresent(followUpNode, "vso:contentType", "followUpReport");
@@ -984,6 +1342,31 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
     findingNode.save();
     summary.findingClosures++;
   }
+
+  replaceContentWithPdf(
+    followUpNode,
+    findingNode.parent,
+    FOLLOWUP_PDF_TEMPLATE_PATH,
+    {
+      followUpId: report.followUpId,
+      findingId: findingId,
+      followUpType: report.followUpType,
+      followUpDate: report.followUpDate,
+      percentComplete: report.percentComplete,
+      followUpClosureDate: report.followUpClosureDate,
+      closureVerificationMethod: report.closureVerificationMethod,
+      effectivenessConfirmed: report.effectivenessConfirmed,
+      currentResidualRisk: report.currentResidualRisk,
+      followUpComment: report.followUpComment,
+      capId: report.capId,
+      locationName: firstNonEmpty(report.locationName, findingNode.properties["vso:locationName"]),
+      specialtyName: firstNonEmpty(report.specialtyName, findingNode.properties["vso:specialtyName"]),
+      providerName: firstNonEmpty(report.providerName, findingNode.properties["vso:providerName"]),
+      evidenceItems: report.evidenceItems
+    },
+    followUpResult.pdfName,
+    ["vso:inspectionContext", "vso:serviceContext"]
+  );
 
   return {
     status: "processed",
@@ -1289,15 +1672,12 @@ function upsertDomainFolder(inspectionFolder, checklistPayload, summary) {
 
 function upsertChecklist(domainFolder, checklistPayload, summary) {
   var checklistName = checklistPayload.checklistId + ".json";
-  var checklistResult = ensureChildNode(domainFolder, checklistName, "vso:inspectionChecklist", "cm:contains");
+  var checklistResult = ensureCanonicalDocumentNode(domainFolder, checklistName, "vso:inspectionChecklist", "cm:contains");
   var checklistNode = checklistResult.node;
 
   ensureVersionable(checklistNode);
   ensureAspect(checklistNode, "vso:inspectionContext");
   ensureAspect(checklistNode, "vso:serviceContext");
-
-  checklistNode.content = buildJsonContent(checklistPayload);
-  checklistNode.mimetype = JSON_MIMETYPE;
 
   var contextValues = resolveContextValues(checklistPayload, null);
   var inspectionIdentifier = resolveInspectionIdentifier(checklistPayload, null);
@@ -1307,6 +1687,7 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   setPropertyIfPresent(checklistNode, "vso:checklistId", checklistPayload.checklistId);
   setPropertyIfPresent(checklistNode, "vso:scope", checklistPayload.scope);
   setDatePropertyIfPresent(checklistNode, "vso:completionDate", checklistPayload.completionDate);
+  setPropertyIfPresent(checklistNode, "vso:interviewee", checklistPayload.interviewee);
   setPropertyIfPresent(checklistNode, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(checklistNode, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(checklistNode, "vso:locationCode", contextValues.locationCode);
@@ -1657,6 +2038,7 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     } else {
       evidenceNode.properties["vso:immutable"] = false;
     }
+    applyChainDerivedUsoapTags(evidenceNode, itemPayload.reference && itemPayload.reference.usoapPqReference);
     evidenceNode.save();
 
     if (sourceKey && importedBySource && sourceFile) {
@@ -1714,6 +2096,8 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
   if (itemPayload.reference) {
     setPropertyIfPresent(itemNode, "vso:icaoReference", itemPayload.reference.icaoReference);
     setPropertyIfPresent(itemNode, "vso:nationalRegulation", itemPayload.reference.nationalRegulation);
+    setPropertyIfPresent(itemNode, "vso:regulationItem", itemPayload.reference.regulationItem);
+    applyChainDerivedUsoapTags(itemNode, itemPayload.reference.usoapPqReference);
   }
 
   itemNode.save();
@@ -1725,16 +2109,13 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
 
 function upsertFinding(inspectionFolder, checklistData, findingPayload, findingItemCode, relatedItemPayload, summary) {
   var findingName = findingPayload.findingId + ".json";
-  var findingResult = ensureChildNode(inspectionFolder, findingName, "vso:finding", "cm:contains");
+  var findingResult = ensureCanonicalDocumentNode(inspectionFolder, findingName, "vso:finding", "cm:contains");
   var findingNode = findingResult.node;
 
   ensureVersionable(findingNode);
   ensureAspect(findingNode, "vso:regulatoryTraceability");
   ensureAspect(findingNode, "vso:inspectionContext");
   ensureAspect(findingNode, "vso:serviceContext");
-
-  findingNode.content = buildJsonContent(findingPayload);
-  findingNode.mimetype = JSON_MIMETYPE;
 
   var findingContextValues = resolveContextValues(findingPayload, null);
   var checklistContextValues = resolveContextValues(checklistData, null);
@@ -1744,7 +2125,9 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:contentType", "finding");
   setPropertyIfPresent(findingNode, "vso:findingId", findingPayload.findingId);
   setPropertyIfPresent(findingNode, "vso:findingLevel", normalizeFindingLevel(findingPayload.findingLevel));
+  setPropertyIfPresent(findingNode, "vso:findingSeverity", findingPayload.findingSeverity);
   setPropertyIfPresent(findingNode, "vso:riskClassification", findingPayload.riskClassification || findingPayload.riskLevel);
+  setPropertyIfPresent(findingNode, "vso:targetResidualRisk", findingPayload.targetResidualRisk);
   setPropertyIfPresent(findingNode, "vso:requirementBreached", findingPayload.requirementBreached);
   setPropertyIfPresent(findingNode, "vso:checklistItemCode", findingItemCode);
   setPropertyIfPresent(findingNode, "vso:description", findingPayload.description);
@@ -1777,6 +2160,17 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
     findingNode,
     "vso:nationalRegulation",
     firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null)
+  );
+  setPropertyIfPresent(
+    findingNode,
+    "vso:regulationItem",
+    firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null)
+  );
+  applyChainDerivedUsoapTags(
+    findingNode,
+    (findingPayload.usoapPqReference && findingPayload.usoapPqReference.length)
+      ? findingPayload.usoapPqReference
+      : (relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.usoapPqReference : null)
   );
 
   findingNode.save();
@@ -1955,12 +2349,67 @@ try {
       }
     }
 
+    var checklistItemsForPdf = [];
+    for (var pdfItemIndex = 0; pdfItemIndex < checklistItems.length; pdfItemIndex++) {
+      var sourceItemForPdf = checklistItems[pdfItemIndex];
+      var mergedItemForPdf = {};
+      for (var itemKeyForPdf in sourceItemForPdf) {
+        if (sourceItemForPdf.hasOwnProperty(itemKeyForPdf)) {
+          mergedItemForPdf[itemKeyForPdf] = sourceItemForPdf[itemKeyForPdf];
+        }
+      }
+      // Evidence may arrive under either key; upsertEvidence() accepts both, so the PDF must too.
+      mergedItemForPdf.evidenceItems = sourceItemForPdf.evidenceItems !== undefined ? sourceItemForPdf.evidenceItems : sourceItemForPdf.evidence;
+      checklistItemsForPdf.push(mergedItemForPdf);
+    }
+
+    replaceContentWithPdf(
+      checklistNode,
+      destinationDomainFolder,
+      CHECKLIST_PDF_TEMPLATE_PATH,
+      { checklist: checklistPayload, items: checklistItemsForPdf },
+      checklistPayload.checklistId + ".pdf",
+      ["vso:inspectionContext", "vso:serviceContext"]
+    );
+
     for (findingIndex = 0; findingIndex < matchedFindings.length; findingIndex++) {
       var findingPayload = matchedFindings[findingIndex].payload.finding;
       normalizeFindingIdentity(findingPayload, normalizedIdentityContext, findingIndex + 1);
       var findingItemCode = resolveItemCode(findingPayload || {});
       var relatedItemPayload = itemPayloadById[findingItemCode];
       var findingNode = upsertFinding(destinationFindingsYearFolder, checklistPayload, findingPayload, findingItemCode, relatedItemPayload, summary);
+      var findingContextValuesForPdf = resolveContextValues(findingPayload, null);
+      var checklistContextValuesForPdf = resolveContextValues(checklistPayload, null);
+      replaceContentWithPdf(
+        findingNode,
+        destinationFindingsYearFolder,
+        FINDING_PDF_TEMPLATE_PATH,
+        {
+          findingId: findingPayload.findingId,
+          findingLevel: findingPayload.findingLevel,
+          findingSeverity: findingPayload.findingSeverity,
+          riskClassification: findingPayload.riskClassification || findingPayload.riskLevel,
+          targetResidualRisk: findingPayload.targetResidualRisk,
+          achievedResidualRisk: findingPayload.achievedResidualRisk,
+          requirementBreached: findingPayload.requirementBreached,
+          checklistItemCode: findingItemCode,
+          description: findingPayload.description,
+          findingStatus: findingPayload.findingStatus,
+          dateIssued: firstNonEmpty(findingPayload.dateIssued, findingPayload.openedDate, findingPayload.dateOpened),
+          submissionDeadline: findingPayload.submissionDeadline,
+          findingClosureDate: findingPayload.findingClosureDate,
+          resolutionDeadline: findingPayload.resolutionDeadline,
+          locationName: findingContextValuesForPdf.locationName || checklistContextValuesForPdf.locationName,
+          specialtyName: findingContextValuesForPdf.specialtyName || checklistContextValuesForPdf.specialtyName,
+          providerName: checklistPayload.providerName,
+          icaoReference: firstNonEmpty(findingPayload.icaoReference, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.icaoReference : null),
+          nationalRegulation: firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null),
+          regulationItem: firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null),
+          correctiveAction: findingPayload.correctiveAction || null
+        },
+        findingPayload.findingId + ".pdf",
+        ["vso:inspectionContext", "vso:serviceContext", "vso:regulatoryTraceability"]
+      );
       var relatedItemNode = itemNodesById[findingItemCode];
 
       if (relatedItemNode) {

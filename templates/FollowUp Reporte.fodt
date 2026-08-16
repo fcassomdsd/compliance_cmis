@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.text">
+<office:font-face-decls>
+<style:font-face style:name="Liberation Sans" svg:font-family="'Liberation Sans'" style:font-family-generic="swiss" style:font-pitch="variable"/>
+</office:font-face-decls>
+<office:styles>
+<style:default-style style:family="paragraph">
+<style:text-properties style:font-name="Liberation Sans" fo:font-size="10pt" fo:language="es" fo:country="DO"/>
+</style:default-style>
+<style:style style:name="DocTitle" style:family="paragraph">
+<style:paragraph-properties fo:margin-bottom="0.4cm"/>
+<style:text-properties fo:font-size="16pt" fo:font-weight="bold"/>
+</style:style>
+<style:style style:name="SectionHeading" style:family="paragraph">
+<style:paragraph-properties fo:margin-top="0.5cm" fo:margin-bottom="0.2cm" fo:border-bottom="0.02cm solid #666666" fo:padding-bottom="0.05cm"/>
+<style:text-properties fo:font-size="13pt" fo:font-weight="bold"/>
+</style:style>
+<style:style style:name="FieldLine" style:family="paragraph">
+<style:paragraph-properties fo:margin-bottom="0.08cm"/>
+</style:style>
+<style:style style:name="Label" style:family="text">
+<style:text-properties fo:font-weight="bold"/>
+</style:style>
+</office:styles>
+<office:automatic-styles>
+<style:style style:name="EvidenceTable" style:family="table">
+<style:table-properties style:width="16cm"/>
+</style:style>
+<style:style style:name="EvColHead" style:family="table-column"/>
+<style:style style:name="HeaderCell" style:family="table-cell">
+<style:table-cell-properties fo:padding="0.08cm" fo:border="0.01cm solid #999999" fo:background-color="#dddddd"/>
+</style:style>
+<style:style style:name="DataCell" style:family="table-cell">
+<style:table-cell-properties fo:padding="0.08cm" fo:border="0.01cm solid #999999"/>
+</style:style>
+</office:automatic-styles>
+<office:body>
+<office:text>
+<text:p text:style-name="DocTitle">Reporte de Seguimiento / Follow-up Report</text:p>
+
+<text:p text:style-name="SectionHeading">Identificación / Identification</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Seguimiento / Follow-up ID: </text:span>${followUpId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Hallazgo / Finding ID: </text:span>${findingId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de CAP / CAP ID: </text:span>${capId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Ubicación / Location: </text:span>${locationName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Especialidad / Specialty: </text:span>${specialtyName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Proveedor / Provider: </text:span>${providerName}</text:p>
+
+<text:p text:style-name="SectionHeading">Detalle del Seguimiento / Follow-up Detail</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Tipo de Seguimiento / Follow-up Type: </text:span>${followUpType}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Seguimiento / Follow-up Date: </text:span>${followUpDate}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Porcentaje Completado / Percent Complete: </text:span>${percentComplete}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Riesgo Residual Actual / Current Residual Risk: </text:span>${currentResidualRisk}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Comentario / Comment: </text:span>${followUpComment}</text:p>
+
+<text:p text:style-name="SectionHeading">Cierre / Closure</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Efectividad Confirmada / Effectiveness Confirmed: </text:span>${effectivenessConfirmed}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Método de Verificación de Cierre / Closure Verification Method: </text:span>${closureVerificationMethod}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Cierre de Seguimiento / Follow-up Closure Date: </text:span>${followUpClosureDate}</text:p>
+
+<text:p text:style-name="SectionHeading">Evidencia / Evidence</text:p>
+<table:table table:name="FollowUpEvidenceTable" table:style-name="EvidenceTable">
+<table:table-column table:style-name="EvColHead"/>
+<table:table-column table:style-name="EvColHead"/>
+<table:table-column table:style-name="EvColHead"/>
+<table:table-column table:style-name="EvColHead"/>
+<table:table-column table:style-name="EvColHead"/>
+<table:table-row>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>ID de Evidencia / Evidence ID</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Tipo / Type</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Rol / Role</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Fuente / Source</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Fecha de Recolección / Collection Date</text:p></table:table-cell>
+</table:table-row>
+[#list evidenceItems as evidence]
+<table:table-row>
+<table:table-cell table:style-name="DataCell" office:value-type="string"><text:p>${evidence.evidenceId}</text:p></table:table-cell>
+<table:table-cell table:style-name="DataCell" office:value-type="string"><text:p>${evidence.evidenceType}</text:p></table:table-cell>
+<table:table-cell table:style-name="DataCell" office:value-type="string"><text:p>${evidence.evidenceRole}</text:p></table:table-cell>
+<table:table-cell table:style-name="DataCell" office:value-type="string"><text:p>${evidence.source}</text:p></table:table-cell>
+<table:table-cell table:style-name="DataCell" office:value-type="string"><text:p>${evidence.collectionDate}</text:p></table:table-cell>
+</table:table-row>
+[/#list]
+</table:table>
+
+</office:text>
+</office:body>
+</office:document>

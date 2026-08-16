@@ -1,0 +1,2104 @@
+{
+  "id": "vso-pilot-profile-aga",
+  "name": "Piloto - Perfil AGA",
+  "nodes": [
+    {
+      "id": "profile-aga-listas-verificacion",
+      "name": "Listas de Verificación",
+      "nodes": [
+        {
+          "id": "profile-aga-listas-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-aga-listas-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND ( @vso\\:specialtyCode:\"AYVIS\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-listas-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND ( @vso\\:specialtyCode:\"AYVIS\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-listas-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-aga-listas-general-especialidad-pav",
+                  "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:specialtyCode:\"PAV\""
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-fau",
+                  "name": "FAU - Control de Fauna Silvestre",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:specialtyCode:\"FAU\""
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-ptfm",
+                  "name": "PTFM - Gestion de Plataformas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:specialtyCode:\"PTFM\""
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-ssei",
+                  "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:specialtyCode:\"SSEI\""
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-ayvis",
+                  "name": "AYVIS - Ayudas Visuales",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:specialtyCode:\"AYVIS\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-aga-listas-verificacion-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-aga-listas-verificacion-por-proveedor-aerodom",
+              "name": "AERODOM",
+              "nodes": [
+                {
+                  "id": "profile-aga-listas-general-this-year-aerodom",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-last-year-aerodom",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-aerodom",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aerodom-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aerodom-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aerodom-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aerodom-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aerodom-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-listas-verificacion-por-proveedor-ams-crc",
+              "name": "AMS-CRC",
+              "nodes": [
+                {
+                  "id": "profile-aga-listas-general-this-year-ams-crc",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-last-year-ams-crc",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-ams-crc",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-listas-general-especialidad-ams-crc-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-ams-crc-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-ams-crc-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-ams-crc-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-ams-crc-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-listas-verificacion-por-proveedor-g-punta-cana",
+              "name": "G-Punta Cana",
+              "nodes": [
+                {
+                  "id": "profile-aga-listas-general-this-year-g-punta-cana",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-last-year-g-punta-cana",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-g-punta-cana",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-listas-general-especialidad-g-punta-cana-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-g-punta-cana-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-g-punta-cana-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-g-punta-cana-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-g-punta-cana-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-listas-verificacion-por-proveedor-aic",
+              "name": "AIC",
+              "nodes": [
+                {
+                  "id": "profile-aga-listas-general-this-year-aic",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-last-year-aic",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-listas-general-especialidad-aic",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aic-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aic-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aic-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aic-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-listas-general-especialidad-aic-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-aga-hallazgos",
+      "name": "Hallazgos",
+      "nodes": [
+        {
+          "id": "profile-aga-hallazgos-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-aga-hallazgos-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-hallazgos-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-hallazgos-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-aga-hallazgos-general-especialidad-pav",
+                  "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:specialtyCode:\"PAV\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-especialidad-fau",
+                  "name": "FAU - Control de Fauna Silvestre",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:specialtyCode:\"FAU\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-especialidad-ptfm",
+                  "name": "PTFM - Gestion de Plataformas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:specialtyCode:\"PTFM\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-especialidad-ssei",
+                  "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:specialtyCode:\"SSEI\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-especialidad-ayvis",
+                  "name": "AYVIS - Ayudas Visuales",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:specialtyCode:\"AYVIS\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-hallazgos-general-estado",
+              "name": "Por estado",
+              "nodes": [
+                {
+                  "id": "profile-aga-hallazgos-general-estado-open",
+                  "name": "Open",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Open\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-cap-submitted",
+                  "name": "CAP Submitted",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-cap-accepted",
+                  "name": "CAP Accepted",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-in-progress",
+                  "name": "In Progress",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"In Progress\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-pending-closure-review",
+                  "name": "Pending Closure Review",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-verifying-effective-closure",
+                  "name": "Verifying Effective Closure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-closed",
+                  "name": "Closed",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-estado-overdue",
+                  "name": "Overdue",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Overdue\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-hallazgos-general-riesgo",
+              "name": "Por riesgo",
+              "nodes": [
+                {
+                  "id": "profile-aga-hallazgos-general-riesgo-low",
+                  "name": "Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:riskClassification:\"Low\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-riesgo-medium",
+                  "name": "Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:riskClassification:\"Medium\""
+                  }
+                },
+                {
+                  "id": "profile-aga-hallazgos-general-riesgo-high",
+                  "name": "High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:riskClassification:\"High\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-aga-hallazgos-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-aga-Hallazgos-por-proveedor-aerodom",
+              "name": "AERODOM",
+              "nodes": [
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aerodom-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aerodom-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aerodom-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado",
+                  "name": "Por estado",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-open",
+                      "name": "Open",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"Open\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-cap-submitted",
+                      "name": "CAP Submitted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-cap-accepted",
+                      "name": "CAP Accepted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-in-progress",
+                      "name": "In Progress",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"In Progress\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-pending-closure-review",
+                      "name": "Pending Closure Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-verifying-effective-closure",
+                      "name": "Verifying Effective Closure",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-closed",
+                      "name": "Closed",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"Closed\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-estado-overdue",
+                      "name": "Overdue",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:findingStatus:\"Overdue\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aerodom-riesgo",
+                  "name": "Por riesgo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-riesgo-low",
+                      "name": "Low",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:riskClassification:\"Low\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-riesgo-medium",
+                      "name": "Medium",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:riskClassification:\"Medium\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aerodom-riesgo-high",
+                      "name": "High",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:riskClassification:\"High\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Hallazgos-por-proveedor-ams-crc",
+              "name": "AMS-CRC",
+              "nodes": [
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado",
+                  "name": "Por estado",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-open",
+                      "name": "Open",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"Open\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-cap-submitted",
+                      "name": "CAP Submitted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-cap-accepted",
+                      "name": "CAP Accepted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-in-progress",
+                      "name": "In Progress",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"In Progress\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-pending-closure-review",
+                      "name": "Pending Closure Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-verifying-effective-closure",
+                      "name": "Verifying Effective Closure",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-closed",
+                      "name": "Closed",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"Closed\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-estado-overdue",
+                      "name": "Overdue",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:findingStatus:\"Overdue\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-riesgo",
+                  "name": "Por riesgo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-riesgo-low",
+                      "name": "Low",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:riskClassification:\"Low\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-riesgo-medium",
+                      "name": "Medium",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:riskClassification:\"Medium\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-ams-crc-riesgo-high",
+                      "name": "High",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:riskClassification:\"High\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana",
+              "name": "G-Punta Cana",
+              "nodes": [
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado",
+                  "name": "Por estado",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-open",
+                      "name": "Open",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"Open\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-cap-submitted",
+                      "name": "CAP Submitted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-cap-accepted",
+                      "name": "CAP Accepted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-in-progress",
+                      "name": "In Progress",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"In Progress\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-pending-closure-review",
+                      "name": "Pending Closure Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-verifying-effective-closure",
+                      "name": "Verifying Effective Closure",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-closed",
+                      "name": "Closed",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"Closed\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-estado-overdue",
+                      "name": "Overdue",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:findingStatus:\"Overdue\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-riesgo",
+                  "name": "Por riesgo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-riesgo-low",
+                      "name": "Low",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:riskClassification:\"Low\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-riesgo-medium",
+                      "name": "Medium",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:riskClassification:\"Medium\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-g-punta-cana-riesgo-high",
+                      "name": "High",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:riskClassification:\"High\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Hallazgos-por-proveedor-aic",
+              "name": "AIC",
+              "nodes": [
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aic-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aic-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aic-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aic-estado",
+                  "name": "Por estado",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-open",
+                      "name": "Open",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"Open\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-cap-submitted",
+                      "name": "CAP Submitted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"CAP Submitted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-cap-accepted",
+                      "name": "CAP Accepted",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"CAP Accepted\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-in-progress",
+                      "name": "In Progress",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"In Progress\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-pending-closure-review",
+                      "name": "Pending Closure Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"Pending Closure Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-verifying-effective-closure",
+                      "name": "Verifying Effective Closure",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-closed",
+                      "name": "Closed",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"Closed\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-estado-overdue",
+                      "name": "Overdue",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:findingStatus:\"Overdue\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Hallazgos-por-proveedor-aic-riesgo",
+                  "name": "Por riesgo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-riesgo-low",
+                      "name": "Low",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:riskClassification:\"Low\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-riesgo-medium",
+                      "name": "Medium",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:riskClassification:\"Medium\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Hallazgos-por-proveedor-aic-riesgo-high",
+                      "name": "High",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:riskClassification:\"High\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-aga-acciones-correctivas",
+      "name": "Acciones correctivas",
+      "nodes": [
+        {
+          "id": "profile-aga-acciones-correctivas-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-aga-acciones-correctivas-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-acciones-correctivas-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-acciones-correctivas-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-aga-acciones-correctivas-general-especialidad-pav",
+                  "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:specialtyCode:\"PAV\""
+                  }
+                },
+                {
+                  "id": "profile-aga-acciones-correctivas-general-especialidad-fau",
+                  "name": "FAU - Control de Fauna Silvestre",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:specialtyCode:\"FAU\""
+                  }
+                },
+                {
+                  "id": "profile-aga-acciones-correctivas-general-especialidad-ptfm",
+                  "name": "PTFM - Gestion de Plataformas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:specialtyCode:\"PTFM\""
+                  }
+                },
+                {
+                  "id": "profile-aga-acciones-correctivas-general-especialidad-ssei",
+                  "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:specialtyCode:\"SSEI\""
+                  }
+                },
+                {
+                  "id": "profile-aga-acciones-correctivas-general-especialidad-ayvis",
+                  "name": "AYVIS - Ayudas Visuales",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:specialtyCode:\"AYVIS\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-aga-acciones-correctivas-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom",
+              "name": "AERODOM",
+              "nodes": [
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aerodom-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc",
+              "name": "AMS-CRC",
+              "nodes": [
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-ams-crc-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana",
+              "name": "G-Punta Cana",
+              "nodes": [
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-g-punta-cana-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Acciones correctivas-por-proveedor-aic",
+              "name": "AIC",
+              "nodes": [
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-aic-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-aic-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Acciones correctivas-por-proveedor-aic-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aic-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aic-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aic-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aic-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Acciones correctivas-por-proveedor-aic-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "profile-aga-seguimientos",
+      "name": "Seguimientos",
+      "nodes": [
+        {
+          "id": "profile-aga-seguimientos-general",
+          "name": "General",
+          "nodes": [
+            {
+              "id": "profile-aga-seguimientos-general-this-year",
+              "name": "Este año",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-seguimientos-general-last-year",
+              "name": "Año pasado",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+              }
+            },
+            {
+              "id": "profile-aga-seguimientos-general-especialidad",
+              "name": "Por especialidad",
+              "nodes": [
+                {
+                  "id": "profile-aga-seguimientos-general-especialidad-pav",
+                  "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:specialtyCode:\"PAV\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-especialidad-fau",
+                  "name": "FAU - Control de Fauna Silvestre",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:specialtyCode:\"FAU\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-especialidad-ptfm",
+                  "name": "PTFM - Gestion de Plataformas",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:specialtyCode:\"PTFM\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-especialidad-ssei",
+                  "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:specialtyCode:\"SSEI\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-especialidad-ayvis",
+                  "name": "AYVIS - Ayudas Visuales",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:specialtyCode:\"AYVIS\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-seguimientos-general-tipo",
+              "name": "Por tipo",
+              "nodes": [
+                {
+                  "id": "profile-aga-seguimientos-general-tipo-progress-review",
+                  "name": "Progress Review",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:followUpType:\"Progress Review\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-tipo-cap-verification",
+                  "name": "CAP Verification",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:followUpType:\"CAP Verification\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-tipo-closure-verification",
+                  "name": "Closure Verification",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:followUpType:\"Closure Verification\""
+                  }
+                },
+                {
+                  "id": "profile-aga-seguimientos-general-tipo-ad-hoc-inquiry",
+                  "name": "Ad-hoc Inquiry",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "profile-aga-seguimientos-por-proveedor",
+          "name": "Por proveedor",
+          "nodes": [
+            {
+              "id": "profile-aga-Seguimientos-por-proveedor-aerodom",
+              "name": "AERODOM",
+              "nodes": [
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aerodom-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aerodom-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aerodom-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aerodom-tipo",
+                  "name": "Por tipo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-tipo-progress-review",
+                      "name": "Progress Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:followUpType:\"Progress Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-tipo-cap-verification",
+                      "name": "CAP Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:followUpType:\"CAP Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-tipo-closure-verification",
+                      "name": "Closure Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:followUpType:\"Closure Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aerodom-tipo-ad-hoc-inquiry",
+                      "name": "Ad-hoc Inquiry",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xv8efy8m51y28jm3w5t\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Seguimientos-por-proveedor-ams-crc",
+              "name": "AMS-CRC",
+              "nodes": [
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-tipo",
+                  "name": "Por tipo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-tipo-progress-review",
+                      "name": "Progress Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:followUpType:\"Progress Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-tipo-cap-verification",
+                      "name": "CAP Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:followUpType:\"CAP Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-tipo-closure-verification",
+                      "name": "Closure Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:followUpType:\"Closure Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-ams-crc-tipo-ad-hoc-inquiry",
+                      "name": "Ad-hoc Inquiry",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvfee7vk1dh5y0s3qba\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana",
+              "name": "G-Punta Cana",
+              "nodes": [
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-tipo",
+                  "name": "Por tipo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-tipo-progress-review",
+                      "name": "Progress Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:followUpType:\"Progress Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-tipo-cap-verification",
+                      "name": "CAP Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:followUpType:\"CAP Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-tipo-closure-verification",
+                      "name": "Closure Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:followUpType:\"Closure Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-g-punta-cana-tipo-ad-hoc-inquiry",
+                      "name": "Ad-hoc Inquiry",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvjefy8e06qej7rsbce\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "profile-aga-Seguimientos-por-proveedor-aic",
+              "name": "AIC",
+              "nodes": [
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aic-this-year",
+                  "name": "Este año",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aic-last-year",
+                  "name": "Año pasado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND ( @vso\\:specialtyCode:\"PAV\" OR @vso\\:specialtyCode:\"FAU\" OR @vso\\:specialtyCode:\"PTFM\" OR @vso\\:specialtyCode:\"SSEI\" OR @vso\\:specialtyCode:\"AYVIS\" ) AND @vso\\:completionDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
+                  }
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aic-especialidad",
+                  "name": "Por especialidad",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-especialidad-pav",
+                      "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PAV\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-especialidad-fau",
+                      "name": "FAU - Control de Fauna Silvestre",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"FAU\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-especialidad-ptfm",
+                      "name": "PTFM - Gestion de Plataformas",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"PTFM\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-especialidad-ssei",
+                      "name": "SSEI - Servicios de Salvamento y Extincion de Incendios",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"SSEI\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-especialidad-ayvis",
+                      "name": "AYVIS - Ayudas Visuales",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:specialtyCode:\"AYVIS\""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "profile-aga-Seguimientos-por-proveedor-aic-tipo",
+                  "name": "Por tipo",
+                  "nodes": [
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-tipo-progress-review",
+                      "name": "Progress Review",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:followUpType:\"Progress Review\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-tipo-cap-verification",
+                      "name": "CAP Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:followUpType:\"CAP Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-tipo-closure-verification",
+                      "name": "Closure Verification",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:followUpType:\"Closure Verification\""
+                      }
+                    },
+                    {
+                      "id": "profile-aga-Seguimientos-por-proveedor-aic-tipo-ad-hoc-inquiry",
+                      "name": "Ad-hoc Inquiry",
+                      "search": {
+                        "language": "fts-alfresco",
+                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND @vso\\:providerId:\"a01k5qj6xvne95vzxjt37f6k1br\" AND @vso\\:followUpType:\"Ad-hoc Inquiry\""
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

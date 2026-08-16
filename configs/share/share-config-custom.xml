@@ -379,6 +379,8 @@
             <aspect name="vso:inspectionContext" />
             <aspect name="vso:serviceContext" />
             <aspect name="vso:regulatoryTraceability" />
+            <aspect name="vso:smartFolderScope" />
+            <aspect name="vso:usoapEvidenceContext" />
             <aspect name="vso:evidenceIntegrity" />
          </visible>
 
@@ -1032,6 +1034,7 @@
                <show id="vso:followUpType" />
                <show id="vso:followUpDate" />
                <show id="vso:percentComplete" />
+               <show id="vso:currentResidualRisk" />
                <show id="vso:followUpComment" />
                <show id="vso:closureVerificationMethod" />
                <show id="vso:followUpClosureDate" />
@@ -1051,8 +1054,9 @@
                <field id="vso:followUpId" set="vso-followup-info" />
                <field id="vso:followUpType" set="vso-followup-info" />
                <field id="vso:followUpDate" set="vso-followup-dates" />
-               <field id="vso:percentComplete" set="vso-followup-info" />
-               <field id="vso:followUpComment" set="vso-followup-info">
+                <field id="vso:percentComplete" set="vso-followup-info" />
+                <field id="vso:currentResidualRisk" set="vso-followup-info" />
+                <field id="vso:followUpComment" set="vso-followup-info">
                   <control template="/org/alfresco/components/form/controls/textarea.ftl" />
                </field>
                <field id="vso:closureVerificationMethod" set="vso-followup-dates" />
@@ -1084,7 +1088,10 @@
                <show id="vso:contentType" />
                <show id="vso:findingId" />
                <show id="vso:findingLevel" />
+               <show id="vso:findingSeverity" />
                <show id="vso:riskClassification" />
+               <show id="vso:targetResidualRisk" />
+               <show id="vso:achievedResidualRisk" />
                <show id="vso:checklistItemCode" />
                <show id="vso:requirementBreached" />
                <show id="vso:description" />
@@ -1109,7 +1116,10 @@
                <field id="vso:contentType" set="vso-finding-info" />
                <field id="vso:findingId" set="vso-finding-info" />
                <field id="vso:findingLevel" set="vso-finding-info" />
+               <field id="vso:findingSeverity" set="vso-finding-info" />
                <field id="vso:riskClassification" set="vso-finding-info" />
+               <field id="vso:targetResidualRisk" set="vso-finding-info" />
+               <field id="vso:achievedResidualRisk" set="vso-finding-info" />
                <field id="vso:checklistItemCode" set="vso-finding-info" />
                <field id="vso:requirementBreached" set="vso-finding-info" />
                <field id="vso:description" set="vso-finding-info">
@@ -1217,6 +1227,46 @@
                <field set="vso-evidence-integrity" id="vso:hashValue" />
                <field set="vso-evidence-integrity" id="vso:immutable" />
                <field set="vso-evidence-integrity" id="vso:sealedDate" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:smartFolderScope">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:scopeProviderId" />
+               <show id="vso:scopeLocationCode" />
+               <show id="vso:scopeSpecialtyCode" />
+               <show id="vso:scopeProfileType" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-smart-folder-scope" appearance="bordered-panel" label-id="aspect.vso_smartFolderScope" />
+               <field set="vso-smart-folder-scope" id="vso:scopeProviderId" />
+               <field set="vso-smart-folder-scope" id="vso:scopeLocationCode" />
+               <field set="vso-smart-folder-scope" id="vso:scopeSpecialtyCode" />
+               <field set="vso-smart-folder-scope" id="vso:scopeProfileType" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+
+   <config evaluator="aspect" condition="vso:usoapEvidenceContext">
+      <forms>
+         <form>
+            <field-visibility>
+               <show id="vso:usoapCriticalElement" />
+               <show id="vso:usoapAreaCode" />
+               <show id="vso:usoapPqReference" />
+               <show id="vso:usoapEvidenceBasis" />
+            </field-visibility>
+            <appearance>
+               <set id="vso-usoap-evidence-context" appearance="bordered-panel" label-id="aspect.vso_usoapEvidenceContext" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapCriticalElement" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapAreaCode" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapPqReference" />
+               <field set="vso-usoap-evidence-context" id="vso:usoapEvidenceBasis" />
             </appearance>
          </form>
       </forms>

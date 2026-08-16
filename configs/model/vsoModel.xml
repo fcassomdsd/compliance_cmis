@@ -8,7 +8,7 @@
 
   <description>Operational Safety Oversight Model for Alfresco 25.2</description>
   <author>VSO Team</author>
-  <version>1.5</version>
+  <version>1.7</version>
 
   <!-- ========================================================= -->
   <!-- Imports -->
@@ -76,6 +76,53 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:findingSeverityList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>A</value>
+          <value>B</value>
+          <value>C</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:scopeProfileTypeList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>general</value>
+          <value>provider</value>
+          <value>location</value>
+          <value>specialty</value>
+          <value>usoap-ce</value>
+          <value>usoap-area</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:usoapAreaList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>ATS</value>
+          <value>CNS</value>
+          <value>SAR</value>
+          <value>AIM</value>
+          <value>SMS</value>
+          <value>MET</value>
+          <value>AGA</value>
+          <value>P/OPS</value>
+          <value>CHT</value>
+          <value>PEL</value>
+          <value>OPS</value>
+          <value>AIR</value>
+          <value>FAL</value>
+          <value>AVSEC</value>
+          <value>DG</value>
+          <value>ENV</value>
+          <value>AIG</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:findingStatusList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -85,7 +132,10 @@
           <value>In Progress</value>
           <value>Pending Closure Review</value>
           <value>Verifying Effective Closure</value>
+          <value>Pending Closure Approval</value>
           <value>Closed</value>
+          <value>CAP Overdue</value>
+          <value>Solution Overdue</value>
           <value>Overdue</value>
         </list>
       </parameter>
@@ -133,6 +183,62 @@
           <value>Finding Support</value>
           <value>Progress Evidence</value>
           <value>Closure Evidence</value>
+          <value>RCA Evidence</value>
+          <value>Risk Assessment Evidence</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:usoapEvidenceBasisList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Primary Legislation</value>
+          <value>Specific Regulation</value>
+          <value>Technical Guidance</value>
+          <value>Implementation Procedure</value>
+          <value>Oversight Record</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:usoapTagSourceList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Chain-derived</value>
+          <value>Direct</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:rcaMethodList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>5 Whys</value>
+          <value>Fishbone</value>
+          <value>BowTie</value>
+          <value>TapRooT</value>
+          <value>Barrier Analysis</value>
+          <value>Other</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:priorityList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>High</value>
+          <value>Medium</value>
+          <value>Low</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:actionItemStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Open</value>
+          <value>In Progress</value>
+          <value>Closed</value>
         </list>
       </parameter>
     </constraint>
@@ -215,6 +321,11 @@
           <title>Fecha completado</title>
           <description>Date checklist was completed</description>
           <type>d:date</type>
+        </property>
+        <property name="vso:interviewee">
+          <title>Entrevistado</title>
+          <description>Name of the person(s) interviewed during the checklist inspection</description>
+          <type>d:text</type>
         </property>
       </properties>
 
@@ -329,6 +440,7 @@
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+        <aspect>vso:usoapEvidenceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -373,6 +485,7 @@
         <aspect>vso:evidenceIntegrity</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+        <aspect>vso:usoapEvidenceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -397,9 +510,34 @@
             <constraint ref="vso:findingLevelList"/>
           </constraints>
         </property>
+        <property name="vso:findingSeverity">
+          <title>Severidad del hallazgo</title>
+          <description>Severity level assigned by the inspector (A=7 days, B=30 days, C=90 days)</description>
+          <type>d:text</type>
+          <default>C</default>
+          <constraints>
+            <constraint ref="vso:findingSeverityList"/>
+          </constraints>
+        </property>
         <property name="vso:riskClassification">
           <title>Clasificación de riesgo</title>
           <description>Risk classification associated with the detected discrepancy</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:targetResidualRisk">
+          <title>Riesgo residual meta</title>
+          <description>Target residual risk after corrective actions are implemented</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
+        </property>
+        <property name="vso:achievedResidualRisk">
+          <title>Riesgo residual alcanzado</title>
+          <description>Residual risk actually achieved at time of closure approval</description>
           <type>d:text</type>
           <constraints>
             <constraint ref="vso:riskLevelList"/>
@@ -491,6 +629,7 @@
         <aspect>vso:regulatoryTraceability</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+        <aspect>vso:usoapEvidenceContext</aspect>
       </mandatory-aspects>
     </type>
 
@@ -542,12 +681,282 @@
             <many>true</many>
           </target>
         </child-association>
+        <child-association name="vso:hasRootCauseAnalysis">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:rootCauseAnalysis</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasRiskAssessment">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:riskAssessment</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasActionItem">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:correctiveActionItem</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasResidualRisk">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:residualRisk</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasEffectivenessVerification">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:effectivenessVerification</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
       </associations>
 
       <mandatory-aspects>
         <aspect>cm:versionable</aspect>
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Root Cause Analysis ================= -->
+    <type name="vso:rootCauseAnalysis">
+      <title>Root Cause Analysis</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:rcaMethod">
+          <title>Método de análisis</title>
+          <description>Root cause analysis method used (5 Whys, Fishbone, BowTie, TapRooT, Barrier Analysis, Other)</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+          <constraints>
+            <constraint ref="vso:rcaMethodList"/>
+          </constraints>
+        </property>
+        <property name="vso:rcaOtherMethodDescription">
+          <title>Descripción de otro método</title>
+          <description>Free-text description of the method used when rcaMethod is 'Other'</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:rcaMainCategory">
+          <title>Categoría principal</title>
+          <description>Main category responsible for the cause</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:rootCause">
+          <title>Causa raíz</title>
+          <description>Identified root cause</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:contributingFactors">
+          <title>Factores contribuyentes</title>
+          <description>Contributing factors to the finding</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+        <aspect>vso:evidenceReferences</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Risk Assessment ================= -->
+    <type name="vso:riskAssessment">
+      <title>Risk Assessment</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:identifiedHazard">
+          <title>Peligro identificado</title>
+          <description>Identified hazard</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:potentialConsequence">
+          <title>Consecuencia potencial</title>
+          <description>Potential consequence of the hazard</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:raProbability">
+          <title>Probabilidad</title>
+          <description>Probability, as defined by the inspected entity's own risk assessment methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:raSeverity">
+          <title>Severidad</title>
+          <description>Severity, as defined by the inspected entity's own risk assessment methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:calculatedRiskLevel">
+          <title>Nivel de riesgo calculado</title>
+          <description>Risk level calculated from probability and severity, per the entity's own methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:tolerabilityLevel">
+          <title>Nivel de tolerabilidad</title>
+          <description>Tolerability level assigned to the calculated risk</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:raJustification">
+          <title>Justificación</title>
+          <description>Justification/explanation for the risk assessment outcome</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+        <aspect>vso:evidenceReferences</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Corrective Action Item ================= -->
+    <type name="vso:correctiveActionItem">
+      <title>Corrective Action Item</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:sequenceNumber">
+          <title>Número secuencial</title>
+          <description>Sequential number of this corrective action within the CAP</description>
+          <type>d:int</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:actionDescription">
+          <title>Descripción de la acción</title>
+          <description>Description of this corrective action</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:actionPriority">
+          <title>Prioridad</title>
+          <description>Priority of this corrective action</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:priorityList"/>
+          </constraints>
+        </property>
+        <property name="vso:actionResponsiblePerson">
+          <title>Persona responsable</title>
+          <description>Person responsible for executing this corrective action</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:actionDeadline">
+          <title>Fecha límite</title>
+          <description>Deadline for this corrective action</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:actionItemStatus">
+          <title>Estado de la acción</title>
+          <description>Lifecycle status of this individual corrective action</description>
+          <type>d:text</type>
+          <default>Open</default>
+          <constraints>
+            <constraint ref="vso:actionItemStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:actionClosureDate">
+          <title>Fecha de cierre</title>
+          <description>Date this corrective action was closed</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:actionClosureNotes">
+          <title>Notas de cierre</title>
+          <description>Notes recorded when closing this corrective action</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Residual Risk ================= -->
+    <type name="vso:residualRisk">
+      <title>Expected Residual Risk</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:residualProbability">
+          <title>Probabilidad residual</title>
+          <description>Expected residual probability, as defined by the inspected entity's own methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:residualSeverity">
+          <title>Severidad residual</title>
+          <description>Expected residual severity, as defined by the inspected entity's own methodology</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:residualRiskLevel">
+          <title>Nivel de riesgo residual</title>
+          <description>Expected residual risk level after corrective actions are implemented</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:residualJustification">
+          <title>Justificación</title>
+          <description>Justification/explanation for the expected residual risk</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Effectiveness Verification ================= -->
+    <type name="vso:effectivenessVerification">
+      <title>Effectiveness Verification</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:verificationMethod">
+          <title>Método de verificación</title>
+          <description>Method by which the inspected entity will verify effectiveness of the corrective action plan</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:verificationIndicators">
+          <title>Indicadores</title>
+          <description>Indicator(s) used to verify effectiveness</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:projectedVerificationDate">
+          <title>Fecha proyectada de verificación</title>
+          <description>Projected date of effectiveness verification</description>
+          <type>d:date</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
       </mandatory-aspects>
     </type>
 
@@ -580,6 +989,14 @@
           <title>Porcentaje completado</title>
           <description>Percentage of corrective action completion</description>
           <type>d:int</type>
+        </property>
+        <property name="vso:currentResidualRisk">
+          <title>Riesgo residual actual</title>
+          <description>Current residual risk at time of this follow-up, based on evidence provided</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:riskLevelList"/>
+          </constraints>
         </property>
         <property name="vso:followUpClosureDate">
           <title>Fecha de cierre</title>
@@ -730,15 +1147,103 @@
         </property>
         <property name="vso:nationalRegulation">
           <title>Referencia regulación nacional</title>
-          <description>National regulation reference</description>
+          <description>National regulation title</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:regulationItem">
+          <title>Articulo regulacion nacional</title>
+          <description>Specific item/article in the national regulation</description>
           <type>d:text</type>
         </property>
         <property name="vso:ceMapping">
           <title>Elemento crítico relacionado</title>
           <description>USOAP Critical Element mapping</description>
           <type>d:text</type>
+          <multiple>true</multiple>
           <constraints>
             <constraint ref="vso:ceList"/>
+          </constraints>
+        </property>
+        <property name="vso:areaMapping">
+          <title>Areas USOAP relacionadas</title>
+          <description>Full set of USOAP area codes this node is relevant to (an artifact can support PQs from more than one area/CE via a single citation); vso:usoapAreaCode holds only the primary/first one</description>
+          <type>d:text</type>
+          <multiple>true</multiple>
+          <constraints>
+            <constraint ref="vso:usoapAreaList"/>
+          </constraints>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="vso:smartFolderScope">
+      <title>Smart Folder Scope</title>
+      <properties>
+        <property name="vso:scopeProviderId">
+          <title>Scope provider ID</title>
+          <description>Provider scope used by smart-folder templates</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:scopeLocationCode">
+          <title>Scope location code</title>
+          <description>Location scope used by smart-folder templates</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:scopeSpecialtyCode">
+          <title>Scope specialty code</title>
+          <description>Specialty scope used by smart-folder templates</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:scopeProfileType">
+          <title>Scope profile type</title>
+          <description>Profile selector for reusable templates</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:scopeProfileTypeList"/>
+          </constraints>
+        </property>
+      </properties>
+    </aspect>
+
+    <aspect name="vso:usoapEvidenceContext">
+      <title>USOAP Evidence Context</title>
+      <properties>
+        <property name="vso:usoapCriticalElement">
+          <title>USOAP critical element</title>
+          <description>USOAP critical element classification for any document</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:ceList"/>
+          </constraints>
+        </property>
+        <property name="vso:usoapAreaCode">
+          <title>USOAP area code</title>
+          <description>USOAP PQ area code (ATS, CNS, SAR, AIM, SMS, MET, AGA, P/OPS, CHT)</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:usoapAreaList"/>
+          </constraints>
+        </property>
+        <property name="vso:usoapPqReference">
+          <title>USOAP Protocol Question reference</title>
+          <description>Specific USOAP PQ identifier (e.g., PQ 7.035)</description>
+          <type>d:text</type>
+          <multiple>true</multiple>
+        </property>
+        <property name="vso:usoapEvidenceBasis">
+          <title>USOAP Evidence Basis</title>
+          <description>Nature of the evidence supporting a PQ</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:usoapEvidenceBasisList"/>
+          </constraints>
+        </property>
+        <property name="vso:usoapTagSource">
+          <title>USOAP tag source</title>
+          <description>Whether the CE/area/PQ tags were resolved via the Annex-to-checklist-item citation chain or assigned directly on this node</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:usoapTagSourceList"/>
           </constraints>
         </property>
       </properties>

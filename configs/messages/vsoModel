@@ -9,6 +9,11 @@ type.vso_checklistItem.title=Checklist Item
 type.vso_evidenceItem.title=Evidence Item
 type.vso_finding.title=Finding
 type.vso_correctiveAction.title=Corrective Action
+type.vso_rootCauseAnalysis.title=Root Cause Analysis
+type.vso_riskAssessment.title=Risk Assessment
+type.vso_correctiveActionItem.title=Corrective Action Item
+type.vso_residualRisk.title=Expected Residual Risk
+type.vso_effectivenessVerification.title=Effectiveness Verification
 type.vso_followUpReport.title=Follow-up Report
 
 # Aspects
@@ -17,6 +22,8 @@ aspect.vso_regulatoryTraceability.title=Regulatory Traceability
 aspect.vso_evidenceIntegrity.title=Evidence Integrity
 aspect.vso_evidenceReferences.title=Evidence References
 aspect.vso_serviceContext.title=Service Context
+aspect.vso_smartFolderScope.title=Smart Folder Scope
+aspect.vso_usoapEvidenceContext.title=USOAP Evidence Context
 
 # Properties
 prop.vso_inspectionId.title=Inspection ID
@@ -55,6 +62,7 @@ prop.vso_evidenceRole.title=Evidence Role
 
 prop.vso_findingId.title=Finding ID
 prop.vso_findingLevel.title=Finding Classification
+prop.vso_findingSeverity.title=Finding Severity
 prop.vso_requirementBreached.title=Regulatory Reference
 prop.vso_checklistItemCode.title=Related Question Code
 prop.vso_description.title=Finding Description
@@ -69,7 +77,42 @@ prop.vso_responsibleEntity.title=Responsible Party
 prop.vso_dueDate.title=Due Date
 prop.vso_acceptanceStatus.title=Acceptance Status
 
+prop.vso_rcaMethod.title=Root Cause Analysis Method
+prop.vso_rcaOtherMethodDescription.title=Other Method Description
+prop.vso_rcaMainCategory.title=Main Category
+prop.vso_rootCause.title=Root Cause
+prop.vso_contributingFactors.title=Contributing Factors
+
+prop.vso_identifiedHazard.title=Identified Hazard
+prop.vso_potentialConsequence.title=Potential Consequence
+prop.vso_raProbability.title=Probability
+prop.vso_raSeverity.title=Severity
+prop.vso_calculatedRiskLevel.title=Calculated Risk Level
+prop.vso_tolerabilityLevel.title=Tolerability Level
+prop.vso_raJustification.title=Justification
+
+prop.vso_sequenceNumber.title=Sequence Number
+prop.vso_actionDescription.title=Action Description
+prop.vso_actionPriority.title=Priority
+prop.vso_actionResponsiblePerson.title=Person Responsible
+prop.vso_actionDeadline.title=Deadline
+prop.vso_actionItemStatus.title=Action Status
+prop.vso_actionClosureDate.title=Action Closure Date
+prop.vso_actionClosureNotes.title=Action Closure Notes
+
+prop.vso_residualProbability.title=Residual Probability
+prop.vso_residualSeverity.title=Residual Severity
+prop.vso_residualRiskLevel.title=Residual Risk Level
+prop.vso_residualJustification.title=Residual Risk Justification
+
+prop.vso_verificationMethod.title=Verification Method
+prop.vso_verificationIndicators.title=Verification Indicator(s)
+prop.vso_projectedVerificationDate.title=Projected Verification Date
+
 prop.vso_findingClosureDate.title=Finding Closure Date
+prop.vso_targetResidualRisk.title=Target Residual Risk
+prop.vso_achievedResidualRisk.title=Achieved Residual Risk
+prop.vso_currentResidualRisk.title=Current Residual Risk
 prop.vso_resolutionDeadline.title=Resolution Deadline
 prop.vso_followUpId.title=Follow-up ID
 prop.vso_followUpType.title=Follow-up Type
@@ -87,8 +130,21 @@ prop.vso_ceMapping.title=Critical Element (CE)
 prop.vso_hashValue.title=File Hash (SHA-256)
 prop.vso_immutable.title=Is Immutable?
 prop.vso_sealedDate.title=Sealing Date
+prop.vso_scopeProviderId.title=Scope Provider ID
+prop.vso_scopeLocationCode.title=Scope Location Code
+prop.vso_scopeSpecialtyCode.title=Scope Specialty Code
+prop.vso_scopeProfileType.title=Scope Profile Type
+prop.vso_usoapCriticalElement.title=USOAP Critical Element
+prop.vso_usoapAreaCode.title=USOAP Area Code
+prop.vso_usoapPqReference.title=USOAP Protocol Question(s)
+prop.vso_usoapEvidenceBasis.title=USOAP Evidence Basis
 
 # Associations
 assoc.vso_relatedEvidence.title=Related Evidence
 assoc.vso_hasFollowUp.title=Follow-up Reports
 assoc.vso_relatedCorrectiveAction.title=Related Corrective Action
+assoc.vso_hasRootCauseAnalysis.title=Root Cause Analysis
+assoc.vso_hasRiskAssessment.title=Risk Assessment
+assoc.vso_hasActionItem.title=Corrective Action Items
+assoc.vso_hasResidualRisk.title=Expected Residual Risk
+assoc.vso_hasEffectivenessVerification.title=Effectiveness Verification

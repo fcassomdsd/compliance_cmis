@@ -21,7 +21,7 @@ It defines a custom VSO content model, Share form configuration, and Web Script 
 - `configs/messages/`: labels for model fields and associations.
 - `webscripts/`: API endpoints and shared helpers.
 - `example/`: ready-to-run sample request payloads.
-- `templates/`: FODT templates and smart folder templates.
+- `templates/`: FODT templates (inspection plan/report, and checklist/finding/follow-up document rendering) and smart folder templates.
 - `docs/`: model validation and test documentation.
 - `scripts/run-model-smoke-tests.sh`: REST-based smoke test runner.
 - `scripts/verify-resolve-paths.sh`: verify `resolveVsoPaths()` consistency across Web Scripts.
@@ -138,6 +138,19 @@ Update this file when destination/source folders change. Important keys include:
 - `inspectionPlanTemplatePath`
 - `inspectionReportTemplateDataPath`
 - `inspectionReportTemplatePath`
+- `checklistPdfTemplatePath`
+- `findingPdfTemplatePath`
+- `followUpPdfTemplatePath`
+
+## Checklist/finding/follow-up documents are rendered PDFs, not JSON
+
+`POST /api/inspection/import-canonical` writes checklist, finding, and follow-up report nodes with their content as a rendered, human-readable PDF — not JSON. The node's `vso:*` properties remain the canonical, queryable/searchable representation of the data (unchanged by this); the document body exists purely for people browsing Share who need something readable, not for programmatic parsing. Nothing in this codebase parses the content of these node types after they're stored (verified when this was built) — every other webscript (report generation, USOAP, prior-finding queries) reads from properties only.
+
+On successful generation the node's name is updated from `<id>.json` to `<id>.pdf`. Re-importing/updating an already-PDF'd document is found by its `.pdf` name; a document whose previous PDF generation failed (still named `.json`) is found by that fallback and self-heals to `.pdf` on the next successful run — see `ensureCanonicalDocumentNode()` in `import-canonical-models.post.js`. If generation fails (missing template, transform service unavailable), the node's properties are still written/updated normally, but its content and name are left untouched — no JSON fallback.
+
+Generation renders the corresponding `.fodt` template (`checklistPdfTemplatePath` / `findingPdfTemplatePath` / `followUpPdfTemplatePath`) via an inlined MiniFreemarker renderer (`importScript()` is not available in this webscript's execution context, so it can't load `TemplateGeneration` from `vso-paths.lib.js` — see the comment above `renderPdfTemplateContent()`) and converts it to PDF via Alfresco's local Transform Service (`ScriptNode.transformDocument("application/pdf")`, routed to the `transform-core-aio` container). The rendered PDF then replaces the target node's own content in place — via `targetNode.properties.content.write(transformedNode.properties.content)`, not a property reassignment (`cm:content` can't be set directly through `NodeService#setProperties`) and not a new sibling node.
+
+`vso:checklistItem` (the per-item child documents within a checklist) are unaffected and remain JSON — nothing reads them either, but the checklist-level PDF already shows every item and its evidence in one consolidated document, so converting them individually wasn't worth the churn.
 
 ## Data governance conventions
 
@@ -185,6 +198,7 @@ Notes:
 
 - For `POST /follow-up/import`, finding closure is allowed only with `followUpType="Closure Verification"` and `effectivenessConfirmed=true`.
 - For `POST /inspection/import-canonical`, evidence files linked to processed follow-ups are moved into finding-scoped evidence folders.
+- For `POST /inspection/import-canonical`, checklist/finding/follow-up document content is a rendered PDF, not JSON (see "Checklist/finding/follow-up documents are rendered PDFs, not JSON" above).
 - For `POST /inspection/report/generate`, checklist summary specialty now resolves from item, checklist, domain, and inspection context (in that order) before falling back to item-code prefix (for example `VIG-0048` -> `VIG`).
 
 ## Quick test commands
@@ -237,6 +251,15 @@ Templates:
 
 - `templates/vigilancia-datos-smart-folders.json`
 - `templates/vigilancia-datos-smart-folders-bucketed.json`
+- `templates/pilot/vigilancia-pilot-template-base-comun.json`
+- `templates/pilot/vigilancia-pilot-template-profile-sna.json`
+- `templates/pilot/vigilancia-pilot-template-profile-met.json`
+- `templates/pilot/vigilancia-pilot-template-profile-aga.json`
+
+Operational map:
+
+- `docs/smart-folders-operational-map.md`
+- `docs/usoap-evidence-structure.md`
 
 Apply template:
 

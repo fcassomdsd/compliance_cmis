@@ -1,0 +1,1964 @@
+{
+  "id": "vso-usoap-evidence",
+  "name": "Evidencia USOAP",
+  "nodes": [
+    {
+      "id": "usoap-evidencia",
+      "name": "Evidencia USOAP",
+      "nodes": [
+        {
+          "id": "usoap-ce-1",
+          "name": "CE-1 Legislación Aeronáutica Primaria",
+          "nodes": [
+            {
+              "id": "usoap-ce-1-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-1-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-1-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-1-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-1-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-1-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-1-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-1\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-1-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-1-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-1-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-1-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-1-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-1\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-2",
+          "name": "CE-2 Reglamentos de Explotación Específicos",
+          "nodes": [
+            {
+              "id": "usoap-ce-2-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-2-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-2-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-2-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-2-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-2-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-2-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-2\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-2-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-2-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-2-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-2-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-2-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-2\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-3",
+          "name": "CE-3 Sistema Estatal de Aviación Civil",
+          "nodes": [
+            {
+              "id": "usoap-ce-3-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-3-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-3-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-3-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-3-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-3-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-3-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-3\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-3-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-3-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-3-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-3-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-3-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-3\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-4",
+          "name": "CE-4 Cualificación y Formación",
+          "nodes": [
+            {
+              "id": "usoap-ce-4-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-4-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-4-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-4-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-4-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-4-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-4-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-4\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-4-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-4-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-4-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-4-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-4-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-4\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-5",
+          "name": "CE-5 Otorgamiento de Licencias y Certificados",
+          "nodes": [
+            {
+              "id": "usoap-ce-5-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-5-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-5-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-5-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-5-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-5-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-5-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-5\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-5-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-5-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-5-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-5-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-5-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-5\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-6",
+          "name": "CE-6 Obligaciones de Supervisión",
+          "nodes": [
+            {
+              "id": "usoap-ce-6-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-6-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-6-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-6-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-6-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-6-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-6-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-6\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-6-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-6-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-6-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-6-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-6-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-6\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-7",
+          "name": "CE-7 Obligaciones de Vigilancia",
+          "nodes": [
+            {
+              "id": "usoap-ce-7-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-7-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-7-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-7-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-7-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-7-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-7-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-7\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-7-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-7-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-7-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-7-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-7-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-7\""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "usoap-ce-8",
+          "name": "CE-8 Resolución de Problemas de Seguridad",
+          "nodes": [
+            {
+              "id": "usoap-ce-8-por-pq",
+              "name": "Por Protocol Question",
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapPqReference:\"*\""
+              }
+            },
+            {
+              "id": "usoap-ce-8-por-area",
+              "name": "Por Area",
+              "nodes": [
+                {
+                  "id": "usoap-ce-8-area-ats",
+                  "name": "ATS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"ATS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-cns",
+                  "name": "CNS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"CNS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-sar",
+                  "name": "SAR",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"SAR\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-aim",
+                  "name": "AIM",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"AIM\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-sms",
+                  "name": "SMS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"SMS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-met",
+                  "name": "MET",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"MET\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-aga",
+                  "name": "AGA",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"AGA\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-p/ops",
+                  "name": "P/OPS",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"P/OPS\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-area-cht",
+                  "name": "CHT",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:areaMapping:\"CHT\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-8-por-basis",
+              "name": "Por Base de Evidencia",
+              "nodes": [
+                {
+                  "id": "usoap-ce-8-basis-primary-legislation",
+                  "name": "Primary Legislation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Primary Legislation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-basis-specific-regulation",
+                  "name": "Specific Regulation",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Specific Regulation\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-basis-technical-guidance",
+                  "name": "Technical Guidance",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Technical Guidance\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-basis-implementation-procedure",
+                  "name": "Implementation Procedure",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Implementation Procedure\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-basis-oversight-record",
+                  "name": "Oversight Record",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND +@vso\\:usoapEvidenceBasis:\"Oversight Record\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-8-control-calidad",
+              "name": "Control de Calidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-8-qc-sin-pq",
+                  "name": "Sin PQ asignado",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:usoapPqReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-qc-sin-basis",
+                  "name": "Sin base de evidencia",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:usoapEvidenceBasis:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-qc-sin-sarps",
+                  "name": "Sin referencia SARPs",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:icaoReference:\"*\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-qc-sin-natreg",
+                  "name": "Sin regulación nacional",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:ceMapping:\"CE-8\" AND -@vso\\:nationalRegulation:\"*\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-8-severidad",
+              "name": "Por severidad",
+              "nodes": [
+                {
+                  "id": "usoap-ce-8-sev-A",
+                  "name": "A — 7 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"A\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-sev-B",
+                  "name": "B — 30 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"B\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-sev-C",
+                  "name": "C — 90 days",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingSeverity:\"C\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                }
+              ]
+            },
+            {
+              "id": "usoap-ce-8-riesgo-residual",
+              "name": "Por riesgo residual",
+              "nodes": [
+                {
+                  "id": "usoap-ce-8-residual-low",
+                  "name": "Alcanzado: Low",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Low\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-residual-medium",
+                  "name": "Alcanzado: Medium",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"Medium\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-residual-high",
+                  "name": "Alcanzado: High",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:achievedResidualRisk:\"High\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                },
+                {
+                  "id": "usoap-ce-8-pending-approval",
+                  "name": "Pending Approval",
+                  "search": {
+                    "language": "fts-alfresco",
+                    "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND +@vso\\:findingStatus:\"Pending Closure Approval\" AND +@vso\\:ceMapping:\"CE-8\""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -125,18 +125,6 @@ function collectAssocNodesByShortName(node, shortName) {
   return collected;
 }
 
-function parseNodeJson(node) {
-  if (!node || !node.content) {
-    return {};
-  }
-
-  try {
-    return JSON.parse(String(node.content));
-  } catch (error) {
-    return {};
-  }
-}
-
 function selectFirstNodeBySubtype(nodes, subtype) {
   for (var index = 0; index < nodes.length; index++) {
     if (nodes[index] && nodes[index].isSubType && nodes[index].isSubType(subtype)) {
@@ -316,9 +304,6 @@ try {
       continue;
     }
 
-    var findingJson = parseNodeJson(findingNode);
-    var findingPayload = findingJson.finding || findingJson;
-
     var relatedChecklistItems = collectAssocNodesByShortName(findingNode, "hasFinding");
     var relatedChecklistItem = selectFirstNodeBySubtype(relatedChecklistItems, "vso:checklistItem");
 
@@ -338,7 +323,7 @@ try {
     var result = {
       finding: {
         contentType: trimProp(findingNode, "vso:contentType") || "finding",
-        findingId: trimProp(findingNode, "vso:findingId") || trimToNull(findingPayload.findingId) || "",
+        findingId: trimProp(findingNode, "vso:findingId") || "",
         specialtyId: specialtyContext.specialtyId,
         specialtyCode: specialtyContext.specialtyCode,
         specialtyName: specialtyContext.specialtyName,
@@ -349,20 +334,20 @@ try {
         locationName: trimProp(findingNode, "vso:locationName"),
         checklistItemCode: trimProp(findingNode, "vso:checklistItemCode") ||
           (relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:itemCode") : "") ||
-          (trimToNull(findingPayload.itemCode) || trimToNull(findingPayload.itemId) || ""),
-        requirementBreached: trimProp(findingNode, "vso:requirementBreached") || trimToNull(findingPayload.requirementBreached) || "",
-        icaoReference: trimProp(findingNode, "vso:icaoReference") || trimToNull(findingPayload.icaoReference) || "",
-        nationalRegulation: trimProp(findingNode, "vso:nationalRegulation") || trimToNull(findingPayload.nationalRegulation) || "",
+          "",
+        requirementBreached: trimProp(findingNode, "vso:requirementBreached") || "",
+        icaoReference: trimProp(findingNode, "vso:icaoReference") || "",
+        nationalRegulation: trimProp(findingNode, "vso:nationalRegulation") || "",
         dateIssued: toDateString(findingNode.properties["vso:dateIssued"] || findingNode.properties["vso:openedDate"]),
         submissionDeadline: toDateString(findingNode.properties["vso:submissionDeadline"]),
         findingClosureDate: toDateString(findingNode.properties["vso:findingClosureDate"]),
         lastStatusChange: toDateString(findingNode.properties["vso:lastStatusChange"]),
         resolutionDeadline: toDateString(findingNode.properties["vso:resolutionDeadline"]),
-        inspectionId: trimProp(findingNode, "vso:inspectionId") || trimToNull(findingPayload.inspectionId) || "",
+        inspectionId: trimProp(findingNode, "vso:inspectionId") || "",
         findingLevel: trimProp(findingNode, "vso:findingLevel"),
-        description: clampDescription(trimProp(findingNode, "vso:description") || trimToNull(findingPayload.description), 2000),
+        description: clampDescription(trimProp(findingNode, "vso:description"), 2000),
         nominalRisk: relatedChecklistItem ? trimProp(relatedChecklistItem, "vso:nominalRisk") : "",
-        riskClassification: trimProp(findingNode, "vso:riskClassification") || trimToNull(findingPayload.riskClassification) || "",
+        riskClassification: trimProp(findingNode, "vso:riskClassification") || "",
         findingStatus: findingStatus,
         correctiveAction: {
           capId: correctiveActionNode ? trimProp(correctiveActionNode, "vso:capId") : "",

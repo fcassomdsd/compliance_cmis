@@ -705,6 +705,7 @@ function ensureFollowUpNode(findingNode, payload, rawPayload, correctiveActionNo
   setTextPropertyIfPresent(followUpNode, "vso:followUpType", payload.followUpType);
   setDatePropertyIfPresent(followUpNode, "vso:followUpDate", new Date(payload.followUpDate));
   setIntPropertyIfPresent(followUpNode, "vso:percentComplete", payload.percentComplete);
+  setTextPropertyIfPresent(followUpNode, "vso:currentResidualRisk", payload.currentResidualRisk);
   setDatePropertyIfPresent(followUpNode, "vso:followUpClosureDate", normalizeDate(payload.followUpClosureDate, "followUpReport.followUpClosureDate"));
   setTextPropertyIfPresent(followUpNode, "vso:closureVerificationMethod", payload.closureVerificationMethod);
   setBooleanPropertyIfPresent(followUpNode, "vso:effectivenessConfirmed", payload.effectivenessConfirmed);
@@ -745,7 +746,10 @@ function updateFindingStatusFromFollowUp(findingNode, payload) {
   ensureAspect(findingNode, "vso:inspectionContext");
   ensureAspect(findingNode, "vso:serviceContext");
 
-  findingNode.properties["vso:findingStatus"] = "Closed";
+  if (payload.currentResidualRisk) {
+    findingNode.properties["vso:achievedResidualRisk"] = payload.currentResidualRisk;
+  }
+  findingNode.properties["vso:findingStatus"] = "Pending Closure Approval";
   findingNode.properties["vso:findingClosureDate"] = normalizeDate(payload.followUpClosureDate || payload.followUpDate, "followUpReport.followUpDate");
   findingNode.properties["vso:lastStatusChange"] = new Date();
   findingNode.save();
