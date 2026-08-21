@@ -247,10 +247,8 @@ curl -u admin:admin -X POST \
 
 ## Smart folders (Share)
 
-Templates:
+Templates (generated — see `tools/generate-smart-folder-templates.js`, do not hand-edit):
 
-- `templates/vigilancia-datos-smart-folders.json`
-- `templates/vigilancia-datos-smart-folders-bucketed.json`
 - `templates/pilot/vigilancia-pilot-template-base-comun.json`
 - `templates/pilot/vigilancia-pilot-template-profile-sna.json`
 - `templates/pilot/vigilancia-pilot-template-profile-met.json`
