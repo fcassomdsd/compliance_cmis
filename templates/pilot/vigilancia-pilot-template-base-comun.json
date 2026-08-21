@@ -3,31 +3,15 @@
   "name": "Piloto - Base común",
   "nodes": [
     {
-      "id": "base-inspecciones",
+      "id": "base-comun-inspecciones",
       "name": "Inspecciones",
       "nodes": [
         {
-          "id": "base-inspecciones-this-year",
-          "name": "Este año",
-          "search": {
-            "language": "fts-alfresco",
-            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspection\" AND @vso\\:startDate:[NOW/YEAR TO NOW+1YEAR/YEAR>"
-          }
-        },
-        {
-          "id": "base-inspecciones-last-year",
-          "name": "Año pasado",
-          "search": {
-            "language": "fts-alfresco",
-            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspection\" AND @vso\\:startDate:[NOW-1YEAR/YEAR TO NOW/YEAR>"
-          }
-        },
-        {
-          "id": "base-inspecciones-localidad",
+          "id": "base-comun-inspecciones-por-localidad",
           "name": "Por localidad",
           "nodes": [
             {
-              "id": "base-inspecciones-localidad-mdsd",
+              "id": "base-comun-inspecciones-por-localidad-mdsd",
               "name": "MDSD - Aeropuerto de Las Américas",
               "search": {
                 "language": "fts-alfresco",
@@ -35,7 +19,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdpp",
+              "id": "base-comun-inspecciones-por-localidad-mdpp",
               "name": "MDPP - Aeropuerto Gregorio Luperón",
               "search": {
                 "language": "fts-alfresco",
@@ -43,7 +27,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdab",
+              "id": "base-comun-inspecciones-por-localidad-mdab",
               "name": "MDAB - Aeropuerto Doméstico Arroyo Barril",
               "search": {
                 "language": "fts-alfresco",
@@ -51,7 +35,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdlr",
+              "id": "base-comun-inspecciones-por-localidad-mdlr",
               "name": "MDLR - Aeropuerto Internacional Casa De Campo",
               "search": {
                 "language": "fts-alfresco",
@@ -59,7 +43,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdst",
+              "id": "base-comun-inspecciones-por-localidad-mdst",
               "name": "MDST - Aeropuerto Internacional Cibao-Santiago",
               "search": {
                 "language": "fts-alfresco",
@@ -67,7 +51,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdjb",
+              "id": "base-comun-inspecciones-por-localidad-mdjb",
               "name": "MDJB - Aeropuerto Internacional La Isabela, Dr. Joaquín Balaguer",
               "search": {
                 "language": "fts-alfresco",
@@ -75,7 +59,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdbh",
+              "id": "base-comun-inspecciones-por-localidad-mdbh",
               "name": "MDBH - Aeropuerto Internacional María Montez",
               "search": {
                 "language": "fts-alfresco",
@@ -83,7 +67,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdcy",
+              "id": "base-comun-inspecciones-por-localidad-mdcy",
               "name": "MDCY - Aeropuerto Internacional Presidente Juan Bosch",
               "search": {
                 "language": "fts-alfresco",
@@ -91,7 +75,7 @@
               }
             },
             {
-              "id": "base-inspecciones-localidad-mdpc",
+              "id": "base-comun-inspecciones-por-localidad-mdpc",
               "name": "MDPC - Aeropuerto Internacional Punta Cana",
               "search": {
                 "language": "fts-alfresco",
@@ -103,1157 +87,83 @@
       ]
     },
     {
-      "id": "base-hallazgos",
+      "id": "base-comun-hallazgos",
       "name": "Hallazgos",
       "nodes": [
         {
-          "id": "base-hallazgos-estado",
-          "name": "Por estado",
-          "nodes": [
-            {
-              "id": "base-hallazgos-estado-open",
-              "name": "Open",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Open\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-cap-submitted",
-              "name": "CAP Submitted",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"CAP Submitted\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-cap-accepted",
-              "name": "CAP Accepted",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"CAP Accepted\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-in-progress",
-              "name": "In Progress",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"In Progress\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-pending-closure-review",
-              "name": "Pending Closure Review",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-verifying-effective-closure",
-              "name": "Verifying Effective Closure",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-closed",
-              "name": "Closed",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Closed\""
-              }
-            },
-            {
-              "id": "base-hallazgos-estado-overdue",
-              "name": "Overdue",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Overdue\""
-              }
-            }
-          ]
-        },
-        {
-          "id": "base-hallazgos-riesgo",
-          "name": "Por riesgo",
-          "nodes": [
-            {
-              "id": "base-hallazgos-riesgo-low",
-              "name": "Low",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:riskClassification:\"Low\""
-              }
-            },
-            {
-              "id": "base-hallazgos-riesgo-medium",
-              "name": "Medium",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:riskClassification:\"Medium\""
-              }
-            },
-            {
-              "id": "base-hallazgos-riesgo-high",
-              "name": "High",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:riskClassification:\"High\""
-              }
-            }
-          ]
-        },
-        {
-          "id": "base-hallazgos-localidad",
+          "id": "base-comun-hallazgos-por-localidad",
           "name": "Por localidad",
           "nodes": [
             {
-              "id": "base-hallazgos-localidad-mdsd",
+              "id": "base-comun-hallazgos-por-localidad-mdsd",
               "name": "MDSD - Aeropuerto de Las Américas",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdsd-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdsd-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdsd-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDSD\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdpp",
+              "id": "base-comun-hallazgos-por-localidad-mdpp",
               "name": "MDPP - Aeropuerto Gregorio Luperón",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdpp-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdpp-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpp-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPP\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdab",
+              "id": "base-comun-hallazgos-por-localidad-mdab",
               "name": "MDAB - Aeropuerto Doméstico Arroyo Barril",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdab-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdab-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdab-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdab-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDAB\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdlr",
+              "id": "base-comun-hallazgos-por-localidad-mdlr",
               "name": "MDLR - Aeropuerto Internacional Casa De Campo",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdlr-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdlr-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdlr-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDLR\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdst",
+              "id": "base-comun-hallazgos-por-localidad-mdst",
               "name": "MDST - Aeropuerto Internacional Cibao-Santiago",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdst-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdst-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdst-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdst-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDST\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdjb",
+              "id": "base-comun-hallazgos-por-localidad-mdjb",
               "name": "MDJB - Aeropuerto Internacional La Isabela, Dr. Joaquín Balaguer",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdjb-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdjb-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdjb-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDJB\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdbh",
+              "id": "base-comun-hallazgos-por-localidad-mdbh",
               "name": "MDBH - Aeropuerto Internacional María Montez",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdbh-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdbh-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdbh-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDBH\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdcy",
+              "id": "base-comun-hallazgos-por-localidad-mdcy",
               "name": "MDCY - Aeropuerto Internacional Presidente Juan Bosch",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdcy-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdcy-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdcy-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
+              "search": {
+                "language": "fts-alfresco",
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDCY\""
+              }
             },
             {
-              "id": "base-hallazgos-localidad-mdpc",
+              "id": "base-comun-hallazgos-por-localidad-mdpc",
               "name": "MDPC - Aeropuerto Internacional Punta Cana",
-              "nodes": [
-                {
-                  "id": "base-hallazgos-localidad-mdpc-estado",
-                  "name": "Por estado",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-open",
-                      "name": "Open",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"Open\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-cap-submitted",
-                      "name": "CAP Submitted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"CAP Submitted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-cap-accepted",
-                      "name": "CAP Accepted",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"CAP Accepted\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-in-progress",
-                      "name": "In Progress",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"In Progress\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-pending-closure-review",
-                      "name": "Pending Closure Review",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"Pending Closure Review\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-verifying-effective-closure",
-                      "name": "Verifying Effective Closure",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"Verifying Effective Closure\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-closed",
-                      "name": "Closed",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"Closed\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-estado-overdue",
-                      "name": "Overdue",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:findingStatus:\"Overdue\""
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "base-hallazgos-localidad-mdpc-riesgo",
-                  "name": "Por riesgo",
-                  "nodes": [
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-riesgo-low",
-                      "name": "Low",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:riskClassification:\"Low\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-riesgo-medium",
-                      "name": "Medium",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:riskClassification:\"Medium\""
-                      }
-                    },
-                    {
-                      "id": "base-hallazgos-localidad-mdpc-riesgo-high",
-                      "name": "High",
-                      "search": {
-                        "language": "fts-alfresco",
-                        "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\" AND @vso\\:riskClassification:\"High\""
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "base-hallazgos-severidad",
-          "name": "Por severidad",
-          "nodes": [
-            {
-              "id": "base-hallazgos-severidad-A",
-              "name": "A — 7 days",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingSeverity:\"A\""
-              }
-            },
-            {
-              "id": "base-hallazgos-severidad-B",
-              "name": "B — 30 days",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingSeverity:\"B\""
-              }
-            },
-            {
-              "id": "base-hallazgos-severidad-C",
-              "name": "C — 90 days",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingSeverity:\"C\""
-              }
-            }
-          ]
-        },
-        {
-          "id": "base-hallazgos-riesgo-residual",
-          "name": "Por riesgo residual",
-          "nodes": [
-            {
-              "id": "base-hallazgos-target-risk-low",
-              "name": "Meta: Low",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:targetResidualRisk:\"Low\""
-              }
-            },
-            {
-              "id": "base-hallazgos-target-risk-medium",
-              "name": "Meta: Medium",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:targetResidualRisk:\"Medium\""
-              }
-            },
-            {
-              "id": "base-hallazgos-target-risk-high",
-              "name": "Meta: High",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:targetResidualRisk:\"High\""
-              }
-            },
-            {
-              "id": "base-hallazgos-ach-risk-low",
-              "name": "Alcanzado: Low",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:achievedResidualRisk:\"Low\""
-              }
-            },
-            {
-              "id": "base-hallazgos-ach-risk-medium",
-              "name": "Alcanzado: Medium",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:achievedResidualRisk:\"Medium\""
-              }
-            },
-            {
-              "id": "base-hallazgos-ach-risk-high",
-              "name": "Alcanzado: High",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:achievedResidualRisk:\"High\""
-              }
-            },
-            {
-              "id": "base-hallazgos-risk-pending-approval",
-              "name": "Pending Closure Approval",
-              "search": {
-                "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:findingStatus:\"Pending Closure Approval\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND @vso\\:locationCode:\"MDPC\""
               }
             }
           ]
@@ -1261,15 +171,15 @@
       ]
     },
     {
-      "id": "base-seguimientos",
+      "id": "base-comun-seguimientos",
       "name": "Seguimientos",
       "nodes": [
         {
-          "id": "base-seguimientos-tipo",
+          "id": "base-comun-seguimientos-por-tipo",
           "name": "Por tipo",
           "nodes": [
             {
-              "id": "base-seguimientos-tipo-progress-review",
+              "id": "base-comun-seguimientos-por-tipo-progress-review",
               "name": "Progress Review",
               "search": {
                 "language": "fts-alfresco",
@@ -1277,7 +187,7 @@
               }
             },
             {
-              "id": "base-seguimientos-tipo-cap-verification",
+              "id": "base-comun-seguimientos-por-tipo-cap-verification",
               "name": "CAP Verification",
               "search": {
                 "language": "fts-alfresco",
@@ -1285,7 +195,7 @@
               }
             },
             {
-              "id": "base-seguimientos-tipo-closure-verification",
+              "id": "base-comun-seguimientos-por-tipo-closure-verification",
               "name": "Closure Verification",
               "search": {
                 "language": "fts-alfresco",
@@ -1293,7 +203,7 @@
               }
             },
             {
-              "id": "base-seguimientos-tipo-ad-hoc-inquiry",
+              "id": "base-comun-seguimientos-por-tipo-ad-hoc-inquiry",
               "name": "Ad-hoc Inquiry",
               "search": {
                 "language": "fts-alfresco",
