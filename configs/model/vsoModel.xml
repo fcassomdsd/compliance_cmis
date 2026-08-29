@@ -141,6 +141,16 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:evidenceReviewStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Pending Review</value>
+          <value>Adequate</value>
+          <value>Inadequate</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:deadlineExtensionStatusList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -1055,6 +1065,25 @@
           <title>Comentario de seguimiento</title>
           <description>Free-text comment recorded during the follow-up</description>
           <type>d:text</type>
+        </property>
+        <property name="vso:evidenceReviewStatus">
+          <title>Estatus revisión de evidencia</title>
+          <description>Whether a reviewer has judged this follow-up's evidence adequate. A follow-up cannot affect vso:findingStatus until this is Adequate</description>
+          <type>d:text</type>
+          <default>Pending Review</default>
+          <constraints>
+            <constraint ref="vso:evidenceReviewStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:evidenceReviewNotes">
+          <title>Notas de revisión de evidencia</title>
+          <description>Reviewer's notes, particularly the reason when evidence is judged inadequate</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:evidenceReviewDate">
+          <title>Fecha de revisión de evidencia</title>
+          <description>Date the evidence adequacy review decision was made</description>
+          <type>d:date</type>
         </property>
       </properties>
 
