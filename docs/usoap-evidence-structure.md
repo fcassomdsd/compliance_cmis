@@ -6,9 +6,9 @@ Provide an auditor-friendly navigation model for USOAP evidence using existing r
 
 ## Implemented template
 
-The structure was implemented in:
+The structure is implemented in:
 
-- templates/vigilancia-smart-folders-pilot.json
+- templates/usoap-evidence-smart-folder.json (deployed to the `Evidence` anchor under `Sites/vigilancia-de-la-so/documentLibrary/Datos/USOAP/` — confirmed live 2026-08-29, see `docs/smart-folders-operational-map.md`). A duplicate, `templates/vigilancia-smart-folders-pilot.json`, has been retired.
 
 Main tree:
 
@@ -118,7 +118,7 @@ Findings don't get their own evidence nodes — they reuse the checklist item's 
 
 ### Multi-CE / multi-area membership
 
-A single artifact can legitimately be relevant to more than one Critical Element or area — e.g. one Annex paragraph can be cited by both a CE-7 and a CE-8 Protocol Question. `vso:usoapCriticalElement` and `vso:usoapAreaCode` are single-valued "primary" fields (set from the first resolved PQ) and are not sufficient on their own to find all artifacts relevant to a given CE/area. The multi-valued `vso:ceMapping` and `vso:areaMapping` properties hold the *full* set and are what smart-folder navigation (`templates/usoap-evidence-smart-folder.json`, `templates/vigilancia-smart-folders-pilot.json`) and `POST /api/usoap/ce-evidence-report` actually query against — an artifact tagged with both CE-7 and CE-8 will correctly surface under both CE trees/reports, not just the first one resolved.
+A single artifact can legitimately be relevant to more than one Critical Element or area — e.g. one Annex paragraph can be cited by both a CE-7 and a CE-8 Protocol Question. `vso:usoapCriticalElement` and `vso:usoapAreaCode` are single-valued "primary" fields (set from the first resolved PQ) and are not sufficient on their own to find all artifacts relevant to a given CE/area. The multi-valued `vso:ceMapping` and `vso:areaMapping` properties hold the *full* set and are what smart-folder navigation (`templates/usoap-evidence-smart-folder.json`, `templates/usoap-quality-control-smart-folder.json`) and `POST /api/usoap/ce-evidence-report` actually query against — an artifact tagged with both CE-7 and CE-8 will correctly surface under both CE trees/reports, not just the first one resolved.
 
 ### Direct/manual tagging
 
