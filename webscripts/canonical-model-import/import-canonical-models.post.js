@@ -1335,12 +1335,16 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
   }
 
   if (closurePolicy.shouldClose) {
+    // Closing a finding is a two-step gate: a valid Closure Verification
+    // follow-up only makes it eligible for closure, it does not close the
+    // finding directly. A separate reviewer must approve via
+    // compliance_web's PATCH /findings/:findingId/closure-review before
+    // vso:findingStatus becomes "Closed" and vso:findingClosureDate is set.
     var now = new Date();
-    findingNode.properties["vso:findingStatus"] = "Closed";
-    findingNode.properties["vso:findingClosureDate"] = now;
+    findingNode.properties["vso:findingStatus"] = "Pending Closure Approval";
     findingNode.properties["vso:lastStatusChange"] = now;
     findingNode.save();
-    summary.findingClosures++;
+    summary.pendingClosureApprovals++;
   }
 
   replaceContentWithPdf(
@@ -1392,7 +1396,7 @@ function processFollowUpsByFileNames(followUpFileNames, requestBody) {
   var summary = {
     requested: followUpFileNames.length,
     processed: 0,
-    findingClosures: 0,
+    pendingClosureApprovals: 0,
     evidenceImported: 0,
     notFound: 0,
     ambiguous: 0,
