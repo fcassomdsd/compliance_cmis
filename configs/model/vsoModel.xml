@@ -141,6 +141,16 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:deadlineExtensionStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Requested</value>
+          <value>Accepted</value>
+          <value>Rejected</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:inspectionStatusList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -595,6 +605,34 @@
         <property name="vso:resolutionDeadline">
           <title>Fecha limite de resolución</title>
           <description>Deadline by which the finding must be resolved</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:deadlineExtensionStatus">
+          <title>Estatus solicitud de nuevo plazo</title>
+          <description>Status of the most recent resolution-deadline extension request, if any. A new request can only be submitted while this is unset or in a terminal state (Accepted/Rejected)</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:deadlineExtensionStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:requestedResolutionDeadline">
+          <title>Nuevo plazo de resolución solicitado</title>
+          <description>The resolution deadline requested in the pending extension request; copied onto vso:resolutionDeadline only if the request is accepted</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:deadlineExtensionReason">
+          <title>Justificación de la solicitud de plazo</title>
+          <description>Reason given for the requested resolution-deadline extension</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:deadlineExtensionRequestedDate">
+          <title>Fecha de solicitud de nuevo plazo</title>
+          <description>Date the resolution-deadline extension was requested</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:deadlineExtensionDecisionDate">
+          <title>Fecha de decisión sobre nuevo plazo</title>
+          <description>Date the resolution-deadline extension request was accepted or rejected</description>
           <type>d:date</type>
         </property>
       </properties>
