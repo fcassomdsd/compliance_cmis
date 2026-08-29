@@ -11,7 +11,7 @@
           "name": "Sin PQ asignado",
           "search": {
             "language": "fts-alfresco",
-            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND -@vso\\:usoapPqReference:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND -@vso\\:usoapPqReference:\"*\" AND +@vso\\:ceMapping:\"*\""
           }
         },
         {
@@ -19,7 +19,7 @@
           "name": "Sin base de evidencia",
           "search": {
             "language": "fts-alfresco",
-            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND -@vso\\:usoapEvidenceBasis:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND -@vso\\:usoapEvidenceBasis:\"*\" AND +@vso\\:ceMapping:\"*\""
           }
         },
         {
@@ -27,7 +27,7 @@
           "name": "Sin referencia SARPs",
           "search": {
             "language": "fts-alfresco",
-            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND -@vso\\:icaoReference:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND -@vso\\:icaoReference:\"*\" AND +@vso\\:ceMapping:\"*\""
           }
         },
         {
@@ -35,7 +35,7 @@
           "name": "Sin regulación nacional",
           "search": {
             "language": "fts-alfresco",
-            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND -@vso\\:nationalRegulation:\"*\" AND +@vso\\:usoapCriticalElement:\"*\""
+            "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND +TYPE:\"vso:finding\" AND -@vso\\:nationalRegulation:\"*\" AND +@vso\\:ceMapping:\"*\""
           }
         }
       ]
