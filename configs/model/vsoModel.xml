@@ -141,6 +141,35 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:findingReviewStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Pending Review</value>
+          <value>Confirmed</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:evidenceReviewStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Pending Review</value>
+          <value>Adequate</value>
+          <value>Inadequate</value>
+        </list>
+      </parameter>
+    </constraint>
+
+    <constraint name="vso:deadlineExtensionStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Requested</value>
+          <value>Accepted</value>
+          <value>Rejected</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:inspectionStatusList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -597,6 +626,48 @@
           <description>Deadline by which the finding must be resolved</description>
           <type>d:date</type>
         </property>
+        <property name="vso:deadlineExtensionStatus">
+          <title>Estatus solicitud de nuevo plazo</title>
+          <description>Status of the most recent resolution-deadline extension request, if any. A new request can only be submitted while this is unset or in a terminal state (Accepted/Rejected)</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:deadlineExtensionStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:requestedResolutionDeadline">
+          <title>Nuevo plazo de resolución solicitado</title>
+          <description>The resolution deadline requested in the pending extension request; copied onto vso:resolutionDeadline only if the request is accepted</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:deadlineExtensionReason">
+          <title>Justificación de la solicitud de plazo</title>
+          <description>Reason given for the requested resolution-deadline extension</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:deadlineExtensionRequestedDate">
+          <title>Fecha de solicitud de nuevo plazo</title>
+          <description>Date the resolution-deadline extension was requested</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:deadlineExtensionDecisionDate">
+          <title>Fecha de decisión sobre nuevo plazo</title>
+          <description>Date the resolution-deadline extension request was accepted or rejected</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:findingReviewStatus">
+          <title>Estatus revisión del hallazgo</title>
+          <description>Whether a reviewer has confirmed this finding (separately from whoever formulated it in the field). Set to Pending Review on creation via the canonical import path</description>
+          <type>d:text</type>
+          <default>Pending Review</default>
+          <constraints>
+            <constraint ref="vso:findingReviewStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:findingReviewDate">
+          <title>Fecha de revisión del hallazgo</title>
+          <description>Date the finding review was confirmed</description>
+          <type>d:date</type>
+        </property>
       </properties>
 
       <associations>
@@ -1017,6 +1088,25 @@
           <title>Comentario de seguimiento</title>
           <description>Free-text comment recorded during the follow-up</description>
           <type>d:text</type>
+        </property>
+        <property name="vso:evidenceReviewStatus">
+          <title>Estatus revisión de evidencia</title>
+          <description>Whether a reviewer has judged this follow-up's evidence adequate. A follow-up cannot affect vso:findingStatus until this is Adequate</description>
+          <type>d:text</type>
+          <default>Pending Review</default>
+          <constraints>
+            <constraint ref="vso:evidenceReviewStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:evidenceReviewNotes">
+          <title>Notas de revisión de evidencia</title>
+          <description>Reviewer's notes, particularly the reason when evidence is judged inadequate</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:evidenceReviewDate">
+          <title>Fecha de revisión de evidencia</title>
+          <description>Date the evidence adequacy review decision was made</description>
+          <type>d:date</type>
         </property>
       </properties>
 
