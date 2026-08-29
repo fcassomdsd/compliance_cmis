@@ -2177,6 +2177,15 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
       : (relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.usoapPqReference : null)
   );
 
+  if (findingResult.created) {
+    // A finding formulated directly by the inspector during field capture
+    // still needs a separate reviewer's sign-off (PATCH
+    // /findings/:findingId/review in compliance_web) before it's
+    // considered final. Only set on creation — re-importing an existing
+    // finding must not reset an already-reviewed one back to pending.
+    findingNode.properties["vso:findingReviewStatus"] = "Pending Review";
+  }
+
   findingNode.save();
 
   summary[findingResult.created ? "created" : "updated"]++;

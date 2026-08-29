@@ -141,6 +141,15 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:findingReviewStatusList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Pending Review</value>
+          <value>Confirmed</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:evidenceReviewStatusList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -643,6 +652,20 @@
         <property name="vso:deadlineExtensionDecisionDate">
           <title>Fecha de decisión sobre nuevo plazo</title>
           <description>Date the resolution-deadline extension request was accepted or rejected</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:findingReviewStatus">
+          <title>Estatus revisión del hallazgo</title>
+          <description>Whether a reviewer has confirmed this finding (separately from whoever formulated it in the field). Set to Pending Review on creation via the canonical import path</description>
+          <type>d:text</type>
+          <default>Pending Review</default>
+          <constraints>
+            <constraint ref="vso:findingReviewStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:findingReviewDate">
+          <title>Fecha de revisión del hallazgo</title>
+          <description>Date the finding review was confirmed</description>
           <type>d:date</type>
         </property>
       </properties>
