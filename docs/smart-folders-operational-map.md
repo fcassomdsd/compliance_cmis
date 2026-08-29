@@ -85,6 +85,23 @@ Use one physical anchor folder per template under:
 | G-Punta Cana | `vigilancia-pilot-template-profile-aga.json` | AGA only |
 | AIC | `vigilancia-pilot-template-profile-aga.json` | AGA only |
 
+## Live-instance verification (2026-08-29)
+
+Checked the running instance directly (searched for nodes carrying the `smf:systemConfigSmartFolder` aspect, then resolved each anchor's `smf:system-template-location` to a file) rather than assuming this document's mapping matrix reflects reality. Findings:
+
+- **The `00-Base-Comun`/`10-Perfil-IDAC-SNA`/`20-Perfil-INDOMET-MET`/`30-Perfil-AGA-RESTO` anchors described above do not exist in the running instance.** Only **two** Smart Folder anchors are actually configured, both under `Sites/vigilancia-de-la-so/documentLibrary/Datos/USOAP/` (not `.../Vigilancia/Datos/` as this document's deployment procedure describes):
+  - `Evidence` → `templates/usoap-evidence-smart-folder.json`
+  - `QC` → `templates/usoap-quality-control-smart-folder.json`
+- The four `templates/pilot/*.json` provider-profile templates described above are real, generated, checked-in files, but **are not deployed to any live anchor** — this section of the document describes an intended/planned deployment, not the current one. Treat the "Templates and roles" / "Folder-to-template mapping matrix" sections above as a deployment plan to execute, not a description of what's live today.
+- This resolves the "Known duplication" question below.
+
+## USOAP Smart Folders (the ones actually live)
+
+Two templates, deployed under `Sites/vigilancia-de-la-so/documentLibrary/Datos/USOAP/`, implementing the CE×area USOAP navigation described in `docs/usoap-evidence-structure.md`:
+
+- **`Evidence` anchor → `templates/usoap-evidence-smart-folder.json`.** Per-CE (CE-1...CE-8) and per-area evidence browsing, plus a "Control de calidad" branch per CE/area (evidence without an attachment, without a specific regulatory reference, or without minimum classification).
+- **`QC` anchor → `templates/usoap-quality-control-smart-folder.json`.** A global (not per-CE) cross-cutting quality-control tree, scoped to anything under the Vigilancia site with a `vso:ceMapping` value set: items missing PQ assignment, missing evidence basis, findings missing an ICAO/SARPs reference, and findings missing a national-regulation reference. Complements the `Evidence` anchor's per-CE QC branches with one global view.
+
 ## Deployment procedure (Share)
 
 1. Upload all four JSON files into `Repository/Data Dictionary/Smart Folder Templates`.
@@ -109,8 +126,9 @@ Use one physical anchor folder per template under:
 
 ## Retired templates
 
-`templates/vigilancia-datos-smart-folders.json` and `templates/vigilancia-datos-smart-folders-bucketed.json` have been removed. Neither was part of this operational map's anchor-folder model, and both were fully superseded in function by the four templates above (the bucketed file's location/provider/specialty browsing is now covered by `base-comun` + the profile templates; its status/risk/acceptance breakdowns are covered by `compliance_web`'s oversight posture dashboard).
+- `templates/vigilancia-datos-smart-folders.json` and `templates/vigilancia-datos-smart-folders-bucketed.json` have been removed. Neither was part of this operational map's anchor-folder model, and both were fully superseded in function by the four templates above (the bucketed file's location/provider/specialty browsing is now covered by `base-comun` + the profile templates; its status/risk/acceptance breakdowns are covered by `compliance_web`'s oversight posture dashboard).
+- `templates/vigilancia-smart-folders-pilot.json` has been removed (2026-08-29). It duplicated `templates/usoap-evidence-smart-folder.json`'s CE×area USOAP evidence navigation; live-instance verification (see above) confirmed `usoap-evidence-smart-folder.json` is the one actually wired to the `Evidence` anchor, so the pilot copy was the unused duplicate.
 
-## Known duplication needing reconciliation (not resolved by this cleanup)
+## Known duplication needing reconciliation
 
-`templates/vigilancia-smart-folders-pilot.json` and `templates/usoap-evidence-smart-folder.json` both implement CE×area USOAP evidence navigation (see `docs/usoap-evidence-structure.md`), and it's undocumented which one is actually wired to a live anchor folder in Share. This cleanup deliberately left both untouched — deleting or merging either without confirming against the live deployment risks removing the only working copy of USOAP evidence navigation. Follow-up: check Share, then retire whichever one isn't deployed (or merge them if both are in independent use).
+Resolved 2026-08-29 — see "Live-instance verification" above. `templates/usoap-evidence-smart-folder.json` is the deployed one; the duplicate (`templates/vigilancia-smart-folders-pilot.json`) has been retired.
