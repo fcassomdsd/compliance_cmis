@@ -188,8 +188,7 @@
         <list>
           <value>Pending review</value>
           <value>Accepted</value>
-          <value>Rejected</value>
-          <value>Returned</value>
+          <value>Not Accepted</value>
         </list>
       </parameter>
     </constraint>
@@ -738,6 +737,21 @@
             <constraint ref="vso:acceptanceStatusList"/>
           </constraints>
         </property>
+        <property name="vso:capReviewedBy">
+          <title>Revisor del PAC</title>
+          <description>Username of the reviewer who applied the acceptance decision</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:capReviewDate">
+          <title>Fecha de revisión del PAC</title>
+          <description>Date the acceptance decision was applied</description>
+          <type>d:date</type>
+        </property>
+        <property name="vso:capReviewReason">
+          <title>Justificación de la decisión</title>
+          <description>Reviewer's justification for the acceptance decision — mandatory when the decision is Not Accepted</description>
+          <type>d:text</type>
+        </property>
       </properties>
 
       <associations>
@@ -770,6 +784,17 @@
           </source>
           <target>
             <class>vso:riskAssessment</class>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </target>
+        </child-association>
+        <child-association name="vso:hasContainmentMeasures">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:containmentMeasures</class>
             <mandatory>false</mandatory>
             <many>false</many>
           </target>
@@ -899,6 +924,30 @@
           <title>Justificación</title>
           <description>Justification/explanation for the risk assessment outcome</description>
           <type>d:text</type>
+        </property>
+      </properties>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+        <aspect>vso:evidenceReferences</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= Containment Measures ================= -->
+    <type name="vso:containmentMeasures">
+      <title>Immediate Containment Measures</title>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:containmentDescription">
+          <title>Descripción de la medida de contención</title>
+          <description>Immediate containment measure(s) taken to reduce risk while the corrective action plan is implemented</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:containmentImplementedDate">
+          <title>Fecha de implementación</title>
+          <description>Date the containment measure was implemented</description>
+          <type>d:date</type>
         </property>
       </properties>
 
