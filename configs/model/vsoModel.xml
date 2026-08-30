@@ -213,6 +213,7 @@
           <value>Closure Evidence</value>
           <value>RCA Evidence</value>
           <value>Risk Assessment Evidence</value>
+          <value>Containment Evidence</value>
         </list>
       </parameter>
     </constraint>
