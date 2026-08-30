@@ -218,6 +218,16 @@
       </parameter>
     </constraint>
 
+    <constraint name="vso:collectionMethodList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>On-site</value>
+          <value>Remote</value>
+          <value>Provider-submitted</value>
+        </list>
+      </parameter>
+    </constraint>
+
     <constraint name="vso:usoapEvidenceBasisList" type="LIST">
       <parameter name="allowedValues">
         <list>
@@ -506,6 +516,14 @@
           <type>d:text</type>
           <constraints>
             <constraint ref="vso:evidenceRoleList"/>
+          </constraints>
+        </property>
+        <property name="vso:collectionMethod">
+          <title>Método de recolección</title>
+          <description>How this evidence entered the system: collected on-site by an inspector, or submitted remotely (by the inspector on the provider's behalf, or directly by the provider) and vetted before upload</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:collectionMethodList"/>
           </constraints>
         </property>
       </properties>
@@ -1107,6 +1125,11 @@
           <title>Fecha de revisión de evidencia</title>
           <description>Date the evidence adequacy review decision was made</description>
           <type>d:date</type>
+        </property>
+        <property name="vso:evidenceReviewedBy">
+          <title>Revisor de evidencia</title>
+          <description>Username of the reviewer who applied the evidence adequacy decision</description>
+          <type>d:text</type>
         </property>
       </properties>
 

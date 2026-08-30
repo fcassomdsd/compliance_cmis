@@ -1216,6 +1216,11 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
     setPropertyIfPresent(evidenceNode, "vso:providerName", firstNonEmpty(reportPayload.providerName, findingNode.properties["vso:providerName"]));
     setDatePropertyIfPresent(evidenceNode, "vso:collectionDate", evidencePayload.collectionDate);
     setPropertyIfPresent(evidenceNode, "vso:evidenceRole", evidencePayload.evidenceRole);
+    // Evidence reaching Alfresco through this canonical-import path always
+    // came from the field app's on-site follow-up collection flow — never
+    // set for any other evidence-creation path (compliance_web's own
+    // upload endpoint sets Remote/Provider-submitted directly).
+    setPropertyIfPresent(evidenceNode, "vso:collectionMethod", "On-site");
     setPropertyIfPresent(evidenceNode, "vso:hashValue", evidencePayload.hashValue);
     setDatePropertyIfPresent(evidenceNode, "vso:sealedDate", evidencePayload.sealedDate);
     if (evidencePayload.immutable !== null && evidencePayload.immutable !== undefined) {
