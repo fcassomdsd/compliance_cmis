@@ -3,10 +3,10 @@
 // from tools/smart-folder-catalog.json.
 //
 // Why a generator instead of hand-edited JSON: these templates used to be
-// several-thousand-node hand-maintained trees (SNA alone was 4,072 nodes),
-// and hand-editing them produced real bugs — e.g. every "specialty" leaf
-// under one accidental extra nesting level in the old SNA template was
-// hardcoded to specialtyCode:"VIG" regardless of the branch's actual name.
+// several-thousand-node hand-maintained trees (the IDAC/ex-SNA one alone was
+// 4,072 nodes), and hand-editing them produced real bugs — e.g. every
+// "specialty" leaf under one accidental extra nesting level in that template
+// was hardcoded to a single specialty code regardless of the branch's name.
 // Building each leaf's query from the same catalog entry used for its
 // node id/name makes that class of copy-paste bug impossible.
 //
@@ -27,6 +27,26 @@ const catalogPath = path.join(__dirname, "smart-folder-catalog.json");
 const outputDir = path.join(__dirname, "..", "templates", "pilot");
 
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+
+// The catalog carries one flat specialty list (the 16-code Nomenclatura vocabulary;
+// the old AGA/SNA/MET domain grouping is retired) and each provider profile
+// references it by code. Resolving here rather than duplicating {code,name} per
+// profile keeps a profile from drifting away from the catalog's display names,
+// and turns a typo'd/retired code into a build failure instead of a silently
+// empty Share folder.
+const specialtiesByCode = new Map(catalog.specialties.map((s) => [s.code, s]));
+
+function resolveSpecialties(profile) {
+  return profile.specialtyCodes.map((code) => {
+    const specialty = specialtiesByCode.get(code);
+    if (!specialty) {
+      throw new Error(
+        `Profile "${profile.id}" references specialty code "${code}", which is not in the catalog's flat specialties list`
+      );
+    }
+    return specialty;
+  });
+}
 
 function slugify(name) {
   return name
@@ -104,9 +124,10 @@ function buildSectionForScope(idPrefix, section, specialties, extraPredicates) {
 
 function buildSection(profile, section) {
   const idPrefix = `profile-${profile.id}-${section.id}`;
-  const nodes = buildSectionForScope(idPrefix, section, profile.specialties, [providerSetPredicate(profile.providers)]);
+  const specialties = resolveSpecialties(profile);
+  const nodes = buildSectionForScope(idPrefix, section, specialties, [providerSetPredicate(profile.providers)]);
 
-  // Single-provider profiles (SNA, MET) skip "Por proveedor" entirely —
+  // Single-provider profiles (idac, indomet) skip "Por proveedor" entirely —
   // it would just duplicate "General" for a profile that only ever has
   // one provider.
   if (profile.providers.length > 1) {
@@ -116,7 +137,7 @@ function buildSection(profile, section) {
         return classifier(
           providerIdPrefix,
           provider.name,
-          buildSectionForScope(providerIdPrefix, section, profile.specialties, [providerPredicate(provider.id)])
+          buildSectionForScope(providerIdPrefix, section, specialties, [providerPredicate(provider.id)])
         );
       }))
     );
@@ -238,7 +259,7 @@ for (const profile of catalog.profiles) {
   assertNoSearchOnClassifiers(template, "");
   assertNoOrphanReferences(template, `profile ${profile.id}`, {
     providerIds: profile.providers.map((p) => p.id),
-    specialtyCodes: profile.specialties.map((s) => s.code),
+    specialtyCodes: resolveSpecialties(profile).map((s) => s.code),
   });
   writeTemplate(`vigilancia-pilot-template-profile-${profile.id}.json`, template);
 }

@@ -187,9 +187,9 @@ Base URL used below: `http://localhost:8080/alfresco/s/api`
 | Endpoint | Purpose | Required fields (minimum) | Common optional fields | Example payload file |
 |---|---|---|---|---|
 | `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `inspectionsPath`, `destinationPath`, `templatePath` | `example/generate-inspection-plan.sample.json` |
-| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload | `example/generate-inspection-report.sample.json`, `example/generate-inspection-report-mdpp001-vig.sample.json` |
+| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload | `example/generate-inspection-report.sample.json`, `example/generate-inspection-report-mdppa0001-sur.sample.json` |
 | `POST /inspection/import-canonical` | Import canonical follow-up data by file names or ids | Either `followUpFiles` or `followUpIds`, or array of follow-up file names | `sourceBasePath`, `sourceSpecialtyFolderName`, `specialtyFolderName` | `example/process-followups-by-files.sample.json` |
-| `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp MDPP-VIG-2025-02 CAP-10.json` |
+| `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp H-MDPPA0001-AVIS-001 01.json` |
 | `POST /findings/open/query` | Query open findings by location and specialty context | one of `locationId/locationCode/icaoCode` and one of `specialtyId/specialtyCode/domain` | `skipCount`, `maxItems` | `example/get-open-findings.sample.json` |
 | `POST /checklist/prior-findings/open` | Get checklist items with open prior findings | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `refreshBeforeQuery`, `refreshDryRun`, `priorOnly` | `example/get-prior-finding-flags.sample.json` |
 | `POST /checklist/prior-findings/refresh-flags` | Recompute and persist prior-finding flags | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `dryRun`, `priorOnly` | `example/refresh-prior-finding-flags.sample.json` |
@@ -199,7 +199,7 @@ Notes:
 - For `POST /follow-up/import`, finding closure is allowed only with `followUpType="Closure Verification"` and `effectivenessConfirmed=true`.
 - For `POST /inspection/import-canonical`, evidence files linked to processed follow-ups are moved into finding-scoped evidence folders.
 - For `POST /inspection/import-canonical`, checklist/finding/follow-up document content is a rendered PDF, not JSON (see "Checklist/finding/follow-up documents are rendered PDFs, not JSON" above).
-- For `POST /inspection/report/generate`, checklist summary specialty now resolves from item, checklist, domain, and inspection context (in that order) before falling back to item-code prefix (for example `VIG-0048` -> `VIG`).
+- For `POST /inspection/report/generate`, checklist summary specialty now resolves from item, checklist, domain, and inspection context (in that order) before falling back to item-code prefix (for example `SUR-0048` -> `SUR`).
 
 ## Quick test commands
 
@@ -216,7 +216,7 @@ curl -u admin:admin -X POST \
 
 curl -u admin:admin -X POST \
   -H "Content-Type: application/json" \
-  --data @example/generate-inspection-report-mdpp001-vig.sample.json \
+  --data @example/generate-inspection-report-mdppa0001-sur.sample.json \
   "http://localhost:8080/alfresco/s/api/inspection/report/generate"
 
 curl -u admin:admin -X POST \
@@ -241,7 +241,7 @@ curl -u admin:admin -X POST \
 
 curl -u admin:admin -X POST \
   -H "Content-Type: application/json" \
-  --data @"example/FollowUp MDPP-VIG-2025-02 CAP-10.json" \
+  --data @"example/FollowUp H-MDPPA0001-AVIS-001 01.json" \
   "http://localhost:8080/alfresco/s/api/follow-up/import"
 ```
 

@@ -310,7 +310,7 @@
       <properties>
         <property name="vso:inspectionType">
           <title>Tipo de inspección</title>
-          <description>Type of inspection (initial, routine, follow-up)</description>
+          <description>Free-text label for the category of oversight activity. The canonical, machine-readable classification is the vso:activityTypeId/Code/Name triad on the vso:inspectionContext aspect; this property is a display/legacy label only and is not a lifecycle phase (lifecycle lives in vso:inspectionStatus).</description>
           <type>d:text</type>
         </property>
         <property name="vso:startDate">
@@ -347,7 +347,7 @@
       <properties>
         <property name="vso:checklistId">
           <title>ID lista de verificación</title>
-          <description>Unique identifier of the checklist</description>
+          <description>Unique identifier of the checklist (Lista de verificación), format LV-XXXXT####-EEE where XXXXT#### is the compact activity code (AV- prefix and dashes stripped) and EEE the specialty code. Example: LV-MDSDA0002-COM.</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
@@ -544,7 +544,7 @@
       <properties>
         <property name="vso:findingId">
           <title>ID hallazgo</title>
-          <description>Finding identifier</description>
+          <description>Finding identifier (Hallazgo), format H-XXXXT####-EEE-### where XXXXT#### is the compact activity code, EEE the specialty code and ### the finding's own 3-digit sequence. Example: H-MDSDA0002-COM-001.</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
@@ -730,7 +730,7 @@
       <properties>
         <property name="vso:capId">
           <title>ID Plan de Acción Correctiva</title>
-          <description>Corrective Action Plan identifier</description>
+          <description>Corrective Action Plan identifier (Plan de acciones correctivas), format P-XXXXT####-EEE###-## where EEE### is the specialty code plus the parent finding's 3-digit sequence and ## is the CAP's own 2-digit sequence. Example: P-MDSDA0002-COM001-01.</description>
           <type>d:text</type>
         </property>
         <property name="vso:proposedAction">
@@ -1107,7 +1107,7 @@
       <properties>
         <property name="vso:followUpId">
           <title>ID seguimiento</title>
-          <description>Follow-up report identifier</description>
+          <description>Follow-up report identifier (Seguimiento), auto-generated as S-XXXXT####-EEE###-## when omitted, sequenced per finding. EEE### is the specialty code plus the parent finding's 3-digit sequence; ## is the follow-up's own 2-digit sequence. Example: S-MDSDA0002-COM001-01.</description>
           <type>d:text</type>
         </property>
         <property name="vso:followUpType">
@@ -1233,7 +1233,32 @@
       <properties>
         <property name="vso:inspectionId">
           <title>ID inspección</title>
-          <description>Associated inspection identifier</description>
+          <description>Associated surveillance activity identifier (Actividad de vigilancia), format AV-XXXX-T-#### where XXXX is the 4-char ICAO location code, T the activity type letter and #### an independent 4-digit sequence per location and activity type. Example: AV-MDSD-A-0002. Sequenced independently of the parent site-visit code (V-XXXX-YYYY-##).</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:activityTypeId">
+          <title>ID tipo de actividad</title>
+          <description>Canonical activity type identifier (ActivityType reference record in the AtroCore backend)</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:activityTypeCode">
+          <title>Código tipo de actividad</title>
+          <description>Single-letter activity type code used in activity IDs, search and integrations: A=Auditoría, I=Inspección, M=Monitoreo, D=Revisión documental, S=Análisis de suceso. Deliberately unconstrained at model level because the ActivityType catalog is owned by the AtroCore backend and resolved dynamically.</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:activityTypeName">
+          <title>Nombre tipo de actividad</title>
+          <description>Display name snapshot for the activity type</description>
           <type>d:text</type>
         </property>
         <property name="vso:locationId">

@@ -93,7 +93,7 @@ function resolveFollowUpHelpers() {
       if (normalized === null) {
         return null;
       }
-      if (normalized.indexOf("CA-") === 0) {
+      if (normalized.indexOf("P-") === 0) {
         return normalized;
       }
       if (normalized.indexOf("CAP-") === 0) {
@@ -185,6 +185,31 @@ function extractTrailingDigits(value) {
   return match ? match[1] : null;
 }
 
+// Activity type letter used in activity codes: A=Auditoría, I=Inspección,
+// M=Monitoreo, D=Revisión documental, S=Análisis de suceso. Not constrained to
+// that set here — ActivityType is a reference entity owned by the AtroCore
+// backend and fetched dynamically, so this only enforces the shape.
+function resolveActivityTypeToken(source, importRequest) {
+  var token = sanitizeUpperToken(firstNonEmpty(
+    source ? source.activityTypeCode : null,
+    source ? source.activityType : null,
+    importRequest ? importRequest.activityTypeCode : null,
+    importRequest ? importRequest.activityType : null
+  ));
+
+  if (token === null || !/^[A-Z]$/.test(token)) {
+    return null;
+  }
+
+  return token;
+}
+
+// Activity code (Actividad de vigilancia): AV-XXXX-T-#### (for example AV-MDSD-A-0002).
+// The activity is sequenced independently per location + activity type; it is NOT
+// derived from, and carries no relationship to, its parent site-visit code. Whatever
+// AV- code upstream (compliance_web) assigns is accepted as-is, and the compact form
+// XXXXT#### (dashes and the AV- prefix stripped) is derived from it for use inside
+// checklist/finding/CAP/follow-up ids.
 function resolveInspectionKey(source, importRequest) {
   var inspectionSeed = firstNonEmpty(
     source ? source.inspectionId : null,
@@ -202,30 +227,36 @@ function resolveInspectionKey(source, importRequest) {
 
   var seedText = trimToNull(inspectionSeed);
   if (seedText !== null) {
-    var hyphenMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})-(\d{1,})$/);
+    var hyphenMatch = String(seedText).toUpperCase().match(/^(?:AV-)?([A-Z]{4})-([A-Z])-(\d{1,4})$/);
     if (hyphenMatch) {
-      var directSeq = padNumber(hyphenMatch[2], 3);
+      var directSeq = padNumber(hyphenMatch[3], 4);
       if (directSeq !== null) {
         return {
           locationCode: hyphenMatch[1],
+          activityTypeCode: hyphenMatch[2],
           sequence: directSeq
         };
       }
     }
 
-    var compactMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})(\d{3})$/);
+    var compactMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})([A-Z])(\d{4})$/);
     if (compactMatch) {
       return {
         locationCode: compactMatch[1],
-        sequence: compactMatch[2]
+        activityTypeCode: compactMatch[2],
+        sequence: compactMatch[3]
       };
     }
   }
 
-  var sequenceFromSeed = padNumber(extractTrailingDigits(seedText), 3);
-  if (preferredLocationCode && sequenceFromSeed) {
+  // Fallback: rebuild the key from discrete context fields. Requires an explicit
+  // activity type — there is no safe default letter to invent.
+  var activityTypeCode = resolveActivityTypeToken(source, importRequest);
+  var sequenceFromSeed = padNumber(extractTrailingDigits(seedText), 4);
+  if (preferredLocationCode && activityTypeCode && sequenceFromSeed) {
     return {
       locationCode: preferredLocationCode.substring(0, 4),
+      activityTypeCode: activityTypeCode,
       sequence: sequenceFromSeed
     };
   }
@@ -237,14 +268,14 @@ function buildInspectionId(key) {
   if (!key) {
     return null;
   }
-  return key.locationCode + "-" + key.sequence;
+  return "AV-" + key.locationCode + "-" + key.activityTypeCode + "-" + key.sequence;
 }
 
 function buildInspectionCompactId(key) {
   if (!key) {
     return null;
   }
-  return key.locationCode + key.sequence;
+  return key.locationCode + key.activityTypeCode + key.sequence;
 }
 
 function resolveSpecialtyToken(source, importRequest) {
@@ -256,27 +287,31 @@ function resolveSpecialtyToken(source, importRequest) {
   ));
 }
 
+// Checklist id (Lista de verificación): LV-XXXXT####-EEE (for example LV-MDSDA0002-COM).
 function buildChecklistId(inspectionCompactId, specialtyToken) {
   if (!inspectionCompactId || !specialtyToken) {
     return null;
   }
-  return "CHK-" + inspectionCompactId + "-" + specialtyToken;
+  return "LV-" + inspectionCompactId + "-" + specialtyToken;
 }
 
 function resolveFindingSequence(findingPayload, fallbackSequence) {
-  var fromFindingId = padNumber(extractTrailingDigits(findingPayload ? findingPayload.findingId : null), 2);
+  var fromFindingId = padNumber(extractTrailingDigits(findingPayload ? findingPayload.findingId : null), 3);
   if (fromFindingId !== null) {
     return fromFindingId;
   }
 
-  return padNumber(fallbackSequence, 2);
+  return padNumber(fallbackSequence, 3);
 }
 
+// Finding id (Hallazgo): H-XXXXT####-EEE-### (for example H-MDSDA0002-COM-001).
+// Must stay consistent with parseFindingParts() in webscripts/common/vso-follow-up.lib.js,
+// which decomposes this id to build the CAP (P-) and follow-up (S-) ids.
 function buildFindingId(inspectionCompactId, specialtyToken, findingSequence) {
   if (!inspectionCompactId || !specialtyToken || !findingSequence) {
     return null;
   }
-  return inspectionCompactId + "-" + specialtyToken + "-" + findingSequence;
+  return "H-" + inspectionCompactId + "-" + specialtyToken + "-" + findingSequence;
 }
 
 function normalizeChecklistIdentity(checklistPayload, importRequest) {
@@ -297,10 +332,12 @@ function normalizeChecklistIdentity(checklistPayload, importRequest) {
   checklistPayload.inspectionId = inspectionId;
   checklistPayload.inspectionCode = inspectionId;
   checklistPayload.checklistId = checklistId;
+  checklistPayload.activityTypeCode = inspectionKey.activityTypeCode;
 
   return {
     inspectionId: inspectionId,
     inspectionCompactId: inspectionCompactId,
+    activityTypeCode: inspectionKey.activityTypeCode,
     specialtyToken: specialtyToken,
     checklistId: checklistId
   };
@@ -842,6 +879,9 @@ function validateImportRequest(requestBody) {
     specialtyCode: trimToNull(requestBody.specialtyCode),
     specialtyName: trimToNull(requestBody.specialtyName),
     inspectionType: trimToNull(requestBody.inspectionType),
+    activityTypeId: trimToNull(requestBody.activityTypeId),
+    activityTypeCode: trimToNull(requestBody.activityTypeCode) || trimToNull(requestBody.activityType),
+    activityTypeName: trimToNull(requestBody.activityTypeName),
     inspectionStatus: trimToNull(requestBody.inspectionStatus) || "Reported",
     startDate: trimToNull(requestBody.startDate),
     endDate: trimToNull(requestBody.endDate)
@@ -1495,13 +1535,20 @@ function resolveContextValues(source, importRequest) {
   var specialtyCode = firstNonEmpty(src.specialtyCode, req.specialtyCode);
   var specialtyName = firstNonEmpty(src.specialtyName, req.specialtyName);
 
+  var activityTypeId = firstNonEmpty(src.activityTypeId, req.activityTypeId);
+  var activityTypeCode = firstNonEmpty(src.activityTypeCode, src.activityType, req.activityTypeCode, req.activityType);
+  var activityTypeName = firstNonEmpty(src.activityTypeName, req.activityTypeName);
+
   return {
     locationId: locationId,
     locationCode: locationCode,
     locationName: locationName,
     specialtyId: specialtyId,
     specialtyCode: specialtyCode,
-    specialtyName: specialtyName
+    specialtyName: specialtyName,
+    activityTypeId: activityTypeId,
+    activityTypeCode: activityTypeCode,
+    activityTypeName: activityTypeName
   };
 }
 
@@ -1634,6 +1681,9 @@ function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistD
   setPropertyIfPresent(inspectionFolder, "cm:title", inspectionFolderName);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionType", importRequest.inspectionType);
+  setPropertyIfPresent(inspectionFolder, "vso:activityTypeId", importRequest.activityTypeId);
+  setPropertyIfPresent(inspectionFolder, "vso:activityTypeCode", importRequest.activityTypeCode);
+  setPropertyIfPresent(inspectionFolder, "vso:activityTypeName", importRequest.activityTypeName);
   setDatePropertyIfPresent(inspectionFolder, "vso:startDate", importRequest.startDate);
   setDatePropertyIfPresent(inspectionFolder, "vso:endDate", importRequest.endDate);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionStatus", importRequest.inspectionStatus);
@@ -1670,6 +1720,9 @@ function upsertDomainFolder(inspectionFolder, checklistPayload, summary) {
   setPropertyIfPresent(domainFolder, "vso:specialtyId", contextValues.specialtyId);
   setPropertyIfPresent(domainFolder, "vso:specialtyCode", contextValues.specialtyCode);
   setPropertyIfPresent(domainFolder, "vso:specialtyName", contextValues.specialtyName);
+  setPropertyIfPresent(domainFolder, "vso:activityTypeId", contextValues.activityTypeId);
+  setPropertyIfPresent(domainFolder, "vso:activityTypeCode", contextValues.activityTypeCode);
+  setPropertyIfPresent(domainFolder, "vso:activityTypeName", contextValues.activityTypeName);
   setPropertyIfPresent(domainFolder, "vso:providerId", checklistPayload.providerId);
   setPropertyIfPresent(domainFolder, "vso:providerName", checklistPayload.providerName);
   domainFolder.save();
@@ -1704,6 +1757,9 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   setPropertyIfPresent(checklistNode, "vso:specialtyId", contextValues.specialtyId);
   setPropertyIfPresent(checklistNode, "vso:specialtyCode", contextValues.specialtyCode);
   setPropertyIfPresent(checklistNode, "vso:specialtyName", contextValues.specialtyName);
+  setPropertyIfPresent(checklistNode, "vso:activityTypeId", contextValues.activityTypeId);
+  setPropertyIfPresent(checklistNode, "vso:activityTypeCode", contextValues.activityTypeCode);
+  setPropertyIfPresent(checklistNode, "vso:activityTypeName", contextValues.activityTypeName);
   setPropertyIfPresent(checklistNode, "vso:providerId", checklistPayload.providerId);
   setPropertyIfPresent(checklistNode, "vso:providerName", checklistPayload.providerName);
   checklistNode.save();
@@ -2157,6 +2213,9 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:specialtyId", findingContextValues.specialtyId || checklistContextValues.specialtyId);
   setPropertyIfPresent(findingNode, "vso:specialtyCode", findingContextValues.specialtyCode || checklistContextValues.specialtyCode);
   setPropertyIfPresent(findingNode, "vso:specialtyName", findingContextValues.specialtyName || checklistContextValues.specialtyName);
+  setPropertyIfPresent(findingNode, "vso:activityTypeId", findingContextValues.activityTypeId || checklistContextValues.activityTypeId);
+  setPropertyIfPresent(findingNode, "vso:activityTypeCode", findingContextValues.activityTypeCode || checklistContextValues.activityTypeCode);
+  setPropertyIfPresent(findingNode, "vso:activityTypeName", findingContextValues.activityTypeName || checklistContextValues.activityTypeName);
   setPropertyIfPresent(findingNode, "vso:providerId", findingPayload.providerId || checklistData.providerId);
   setPropertyIfPresent(findingNode, "vso:providerName", checklistData.providerName);
 
