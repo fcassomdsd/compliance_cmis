@@ -1,13 +1,13 @@
 {
-  "id": "profile-sna",
-  "name": "Piloto - Perfil SNA",
+  "id": "profile-idac",
+  "name": "Piloto - Perfil IDAC",
   "nodes": [
     {
-      "id": "profile-sna-listas-verificacion",
+      "id": "profile-idac-listas-verificacion",
       "name": "Listas de Verificación",
       "nodes": [
         {
-          "id": "profile-sna-listas-verificacion-general",
+          "id": "profile-idac-listas-verificacion-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -15,19 +15,19 @@
           }
         },
         {
-          "id": "profile-sna-listas-verificacion-por-especialidad",
+          "id": "profile-idac-listas-verificacion-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-vig",
-              "name": "VIG - Sistemas de Vigilancia",
+              "id": "profile-idac-listas-verificacion-por-especialidad-sur",
+              "name": "SUR - Sistemas de Vigilancia",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"VIG\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"SUR\""
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-com",
+              "id": "profile-idac-listas-verificacion-por-especialidad-com",
               "name": "COM - Comunicaciones de Radio",
               "search": {
                 "language": "fts-alfresco",
@@ -35,15 +35,15 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-rna",
-              "name": "RNA - Radioayudas a la Navegacion",
+              "id": "profile-idac-listas-verificacion-por-especialidad-nav",
+              "name": "NAV - Radioayudas a la Navegacion",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"RNA\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"NAV\""
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-ats",
+              "id": "profile-idac-listas-verificacion-por-especialidad-ats",
               "name": "ATS - Control de Transito Aereo",
               "search": {
                 "language": "fts-alfresco",
@@ -51,7 +51,7 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-sar",
+              "id": "profile-idac-listas-verificacion-por-especialidad-sar",
               "name": "SAR - Busqueda y Salvamento",
               "search": {
                 "language": "fts-alfresco",
@@ -59,7 +59,7 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-fis",
+              "id": "profile-idac-listas-verificacion-por-especialidad-fis",
               "name": "FIS - Servicio de Informacion Aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -67,7 +67,7 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-aim",
+              "id": "profile-idac-listas-verificacion-por-especialidad-aim",
               "name": "AIM - Gestion de informacion aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -75,7 +75,7 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-ecns",
+              "id": "profile-idac-listas-verificacion-por-especialidad-ecns",
               "name": "ECNS - Energia CNS",
               "search": {
                 "language": "fts-alfresco",
@@ -83,7 +83,7 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-emet",
+              "id": "profile-idac-listas-verificacion-por-especialidad-emet",
               "name": "EMET - Equipos Meteorologicos",
               "search": {
                 "language": "fts-alfresco",
@@ -91,11 +91,11 @@
               }
             },
             {
-              "id": "profile-sna-listas-verificacion-por-especialidad-p-ops",
-              "name": "P/OPS - PANS/OPS",
+              "id": "profile-idac-listas-verificacion-por-especialidad-dpr",
+              "name": "DPR - Procesamiento de Datos Radar y ATN",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"P/OPS\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"DPR\""
               }
             }
           ]
@@ -103,11 +103,11 @@
       ]
     },
     {
-      "id": "profile-sna-hallazgos",
+      "id": "profile-idac-hallazgos",
       "name": "Hallazgos",
       "nodes": [
         {
-          "id": "profile-sna-hallazgos-general",
+          "id": "profile-idac-hallazgos-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -115,19 +115,19 @@
           }
         },
         {
-          "id": "profile-sna-hallazgos-por-especialidad",
+          "id": "profile-idac-hallazgos-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-sna-hallazgos-por-especialidad-vig",
-              "name": "VIG - Sistemas de Vigilancia",
+              "id": "profile-idac-hallazgos-por-especialidad-sur",
+              "name": "SUR - Sistemas de Vigilancia",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"VIG\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"SUR\""
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-com",
+              "id": "profile-idac-hallazgos-por-especialidad-com",
               "name": "COM - Comunicaciones de Radio",
               "search": {
                 "language": "fts-alfresco",
@@ -135,15 +135,15 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-rna",
-              "name": "RNA - Radioayudas a la Navegacion",
+              "id": "profile-idac-hallazgos-por-especialidad-nav",
+              "name": "NAV - Radioayudas a la Navegacion",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"RNA\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"NAV\""
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-ats",
+              "id": "profile-idac-hallazgos-por-especialidad-ats",
               "name": "ATS - Control de Transito Aereo",
               "search": {
                 "language": "fts-alfresco",
@@ -151,7 +151,7 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-sar",
+              "id": "profile-idac-hallazgos-por-especialidad-sar",
               "name": "SAR - Busqueda y Salvamento",
               "search": {
                 "language": "fts-alfresco",
@@ -159,7 +159,7 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-fis",
+              "id": "profile-idac-hallazgos-por-especialidad-fis",
               "name": "FIS - Servicio de Informacion Aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -167,7 +167,7 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-aim",
+              "id": "profile-idac-hallazgos-por-especialidad-aim",
               "name": "AIM - Gestion de informacion aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -175,7 +175,7 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-ecns",
+              "id": "profile-idac-hallazgos-por-especialidad-ecns",
               "name": "ECNS - Energia CNS",
               "search": {
                 "language": "fts-alfresco",
@@ -183,7 +183,7 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-emet",
+              "id": "profile-idac-hallazgos-por-especialidad-emet",
               "name": "EMET - Equipos Meteorologicos",
               "search": {
                 "language": "fts-alfresco",
@@ -191,11 +191,11 @@
               }
             },
             {
-              "id": "profile-sna-hallazgos-por-especialidad-p-ops",
-              "name": "P/OPS - PANS/OPS",
+              "id": "profile-idac-hallazgos-por-especialidad-dpr",
+              "name": "DPR - Procesamiento de Datos Radar y ATN",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"P/OPS\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"DPR\""
               }
             }
           ]
@@ -203,11 +203,11 @@
       ]
     },
     {
-      "id": "profile-sna-acciones-correctivas",
+      "id": "profile-idac-acciones-correctivas",
       "name": "Acciones correctivas",
       "nodes": [
         {
-          "id": "profile-sna-acciones-correctivas-general",
+          "id": "profile-idac-acciones-correctivas-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -215,19 +215,19 @@
           }
         },
         {
-          "id": "profile-sna-acciones-correctivas-por-especialidad",
+          "id": "profile-idac-acciones-correctivas-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-vig",
-              "name": "VIG - Sistemas de Vigilancia",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-sur",
+              "name": "SUR - Sistemas de Vigilancia",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"VIG\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"SUR\""
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-com",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-com",
               "name": "COM - Comunicaciones de Radio",
               "search": {
                 "language": "fts-alfresco",
@@ -235,15 +235,15 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-rna",
-              "name": "RNA - Radioayudas a la Navegacion",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-nav",
+              "name": "NAV - Radioayudas a la Navegacion",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"RNA\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"NAV\""
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-ats",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-ats",
               "name": "ATS - Control de Transito Aereo",
               "search": {
                 "language": "fts-alfresco",
@@ -251,7 +251,7 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-sar",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-sar",
               "name": "SAR - Busqueda y Salvamento",
               "search": {
                 "language": "fts-alfresco",
@@ -259,7 +259,7 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-fis",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-fis",
               "name": "FIS - Servicio de Informacion Aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -267,7 +267,7 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-aim",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-aim",
               "name": "AIM - Gestion de informacion aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -275,7 +275,7 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-ecns",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-ecns",
               "name": "ECNS - Energia CNS",
               "search": {
                 "language": "fts-alfresco",
@@ -283,7 +283,7 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-emet",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-emet",
               "name": "EMET - Equipos Meteorologicos",
               "search": {
                 "language": "fts-alfresco",
@@ -291,11 +291,11 @@
               }
             },
             {
-              "id": "profile-sna-acciones-correctivas-por-especialidad-p-ops",
-              "name": "P/OPS - PANS/OPS",
+              "id": "profile-idac-acciones-correctivas-por-especialidad-dpr",
+              "name": "DPR - Procesamiento de Datos Radar y ATN",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"P/OPS\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"DPR\""
               }
             }
           ]
@@ -303,11 +303,11 @@
       ]
     },
     {
-      "id": "profile-sna-seguimientos",
+      "id": "profile-idac-seguimientos",
       "name": "Seguimientos",
       "nodes": [
         {
-          "id": "profile-sna-seguimientos-general",
+          "id": "profile-idac-seguimientos-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -315,19 +315,19 @@
           }
         },
         {
-          "id": "profile-sna-seguimientos-por-especialidad",
+          "id": "profile-idac-seguimientos-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-sna-seguimientos-por-especialidad-vig",
-              "name": "VIG - Sistemas de Vigilancia",
+              "id": "profile-idac-seguimientos-por-especialidad-sur",
+              "name": "SUR - Sistemas de Vigilancia",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"VIG\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"SUR\""
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-com",
+              "id": "profile-idac-seguimientos-por-especialidad-com",
               "name": "COM - Comunicaciones de Radio",
               "search": {
                 "language": "fts-alfresco",
@@ -335,15 +335,15 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-rna",
-              "name": "RNA - Radioayudas a la Navegacion",
+              "id": "profile-idac-seguimientos-por-especialidad-nav",
+              "name": "NAV - Radioayudas a la Navegacion",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"RNA\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"NAV\""
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-ats",
+              "id": "profile-idac-seguimientos-por-especialidad-ats",
               "name": "ATS - Control de Transito Aereo",
               "search": {
                 "language": "fts-alfresco",
@@ -351,7 +351,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-sar",
+              "id": "profile-idac-seguimientos-por-especialidad-sar",
               "name": "SAR - Busqueda y Salvamento",
               "search": {
                 "language": "fts-alfresco",
@@ -359,7 +359,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-fis",
+              "id": "profile-idac-seguimientos-por-especialidad-fis",
               "name": "FIS - Servicio de Informacion Aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -367,7 +367,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-aim",
+              "id": "profile-idac-seguimientos-por-especialidad-aim",
               "name": "AIM - Gestion de informacion aeronautica",
               "search": {
                 "language": "fts-alfresco",
@@ -375,7 +375,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-ecns",
+              "id": "profile-idac-seguimientos-por-especialidad-ecns",
               "name": "ECNS - Energia CNS",
               "search": {
                 "language": "fts-alfresco",
@@ -383,7 +383,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-emet",
+              "id": "profile-idac-seguimientos-por-especialidad-emet",
               "name": "EMET - Equipos Meteorologicos",
               "search": {
                 "language": "fts-alfresco",
@@ -391,21 +391,21 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-especialidad-p-ops",
-              "name": "P/OPS - PANS/OPS",
+              "id": "profile-idac-seguimientos-por-especialidad-dpr",
+              "name": "DPR - Procesamiento de Datos Radar y ATN",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"P/OPS\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5q8tb0reenryr2y0m9ysxhd\") AND @vso\\:specialtyCode:\"DPR\""
               }
             }
           ]
         },
         {
-          "id": "profile-sna-seguimientos-por-tipo",
+          "id": "profile-idac-seguimientos-por-tipo",
           "name": "Por tipo",
           "nodes": [
             {
-              "id": "profile-sna-seguimientos-por-tipo-progress-review",
+              "id": "profile-idac-seguimientos-por-tipo-progress-review",
               "name": "Progress Review",
               "search": {
                 "language": "fts-alfresco",
@@ -413,7 +413,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-tipo-cap-verification",
+              "id": "profile-idac-seguimientos-por-tipo-cap-verification",
               "name": "CAP Verification",
               "search": {
                 "language": "fts-alfresco",
@@ -421,7 +421,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-tipo-closure-verification",
+              "id": "profile-idac-seguimientos-por-tipo-closure-verification",
               "name": "Closure Verification",
               "search": {
                 "language": "fts-alfresco",
@@ -429,7 +429,7 @@
               }
             },
             {
-              "id": "profile-sna-seguimientos-por-tipo-ad-hoc-inquiry",
+              "id": "profile-idac-seguimientos-por-tipo-ad-hoc-inquiry",
               "name": "Ad-hoc Inquiry",
               "search": {
                 "language": "fts-alfresco",

@@ -161,7 +161,7 @@ curl -u admin:admin -X POST \
     "byType": { "finding": 43, "evidence": 89, "checklistItem": 24 },
     "byPq": { "PQ 7.035": 18, "PQ 7.101": 12, "Sin PQ": 7 },
     "byArea": { "CNS": 52, "ATS": 48, "AGA": 34, "Sin area": 22 },
-    "gaps": [{"type":"finding","id":"MDPP001-VIG-01","gap":"Missing ICAO reference"}]
+    "gaps": [{"type":"finding","id":"H-MDPPA0001-SUR-001","gap":"Missing ICAO reference"}]
   },
   "byPq": {
     "PQ 7.035": [ { "type": "finding", "findingId": "...", ... } ]

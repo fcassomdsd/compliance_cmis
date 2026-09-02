@@ -8,13 +8,19 @@ This checklist validates the VSO model updates for revised follow-up and finding
    - vso:hasFollowUp child-association (primary relation for follow-up reports)
 - New properties and associations in vso:followUpReport:
    - vso:followUpType (mandatory, constrained: Progress Review, CAP Verification, Closure Verification, Ad-hoc Inquiry)
-   - vso:followUpId generated as FU-XXXXNNNYYY-MM-VV when omitted
+   - vso:followUpId generated as S-XXXXT####-EEE###-## when omitted
    - vso:relatedCorrectiveAction (optional peer association to vso:correctiveAction)
    - Moved from child-under-CA to child-under-Finding via vso:hasFollowUp
 - New property in vso:evidenceItem:
    - vso:evidenceRole (constrained: Compliance Evidence, Finding Support, Progress Evidence, Closure Evidence)
 - Removed vso:verifiedBy child-association from vso:correctiveAction (no longer used)
+- New property in vso:finding: vso:findingReviewedBy (d:text, reviewer's username) alongside the existing vso:findingReviewStatus/vso:findingReviewDate — set by the "Confirm Review" action in compliance_web
 - Closure gate enforcement: only Closure Verification type with effectivenessConfirmed=true can close a finding
+- Nomenclatura ID formats on the vso:inspectionContext aspect and the *Id properties:
+   - vso:activityTypeId / vso:activityTypeCode / vso:activityTypeName (new triad; code is the single activity-type letter A=Auditoría, I=Inspección, M=Monitoreo, D=Revisión documental, S=Análisis de suceso)
+   - vso:inspectionId now carries the independently-sequenced activity code AV-XXXX-T-#### (for example AV-MDSD-A-0002); it is no longer derived from the parent site-visit code
+   - vso:checklistId LV-XXXXT####-EEE, vso:findingId H-XXXXT####-EEE-###, vso:capId P-XXXXT####-EEE###-##
+   - vso:inspectionType description corrected: it is a display/legacy activity-category label, not a lifecycle phase
 
 It also covers the PDF rendering added to `import-canonical-models.post.js`: checklist/finding/follow-up node content is a rendered PDF rather than JSON, replaced in place on the same node (not a sibling document). This is a rendering feature layered on top of the existing model/webscript behavior above and does not itself change `vsoModel.xml`.
 
@@ -47,7 +53,10 @@ It also covers the PDF rendering added to `import-canonical-models.post.js`: che
 9. Verify vso:followUpType property is mandatory on vso:followUpReport.
 10. Verify associations:
     - vso:hasFollowUp on vso:finding (child-association, target many=true)
-    - vso:relatedCorrectiveAction on vso:followUpReport (peer association, target many=false)
+    - vso:relatedCorrectiveAction on vso:followUpReport (peer association, target many=false, source many=true — many follow-ups may reference the same CAP over its lifecycle, e.g. Progress Review then CAP Verification then Closure Verification; a single follow-up still references at most one CAP)
+11. Verify the vso:inspectionContext aspect registers the new activity-type triad:
+    - vso:activityTypeId, vso:activityTypeCode, vso:activityTypeName (all d:text, no LIST constraint — the ActivityType catalog is owned by the AtroCore backend and resolved dynamically)
+    - vso:activityTypeId and vso:activityTypeCode are indexed untokenised (queryable for smart folders), mirroring vso:specialtyId/vso:specialtyCode
 
 ## Functional Smoke Test Matrix
 
@@ -61,7 +70,7 @@ It also covers the PDF rendering added to `import-canonical-models.post.js`: che
 | ST-06 | Property | Resolution deadline present | Set/read vso:resolutionDeadline on vso:finding | Property persists and is queryable |
 | ST-07 | Assoc | hasFollowUp child association | Create vso:followUpReport as child of vso:finding via vso:hasFollowUp | Node created, parent-child relation established |
 | ST-08 | Assoc | Multiple follow-ups per finding | Link multiple vso:followUpReport nodes to one vso:finding via vso:hasFollowUp | Multiple child relations persist |
-| ST-09 | ID | Sequential followUpId generation | Create 3 follow-ups on same finding without followUpId and verify suffixes -01, -02, -03 | IDs are generated as FU-XXXXNNNYYY-MM-VV without collisions |
+| ST-09 | ID | Sequential followUpId generation | Create 3 follow-ups on same finding without followUpId and verify suffixes -01, -02, -03 | IDs are generated as S-XXXXT####-EEE###-## without collisions (for example S-MDSDA0002-COM001-01) |
 | ST-10 | Assoc | relatedCorrectiveAction optional | Create vso:followUpReport without linking to vso:correctiveAction | Create succeeds (optional association) |
 | ST-11 | Assoc | relatedCorrectiveAction peer link | Create vso:followUpReport and link to vso:correctiveAction via vso:relatedCorrectiveAction | Peer association created |
 | ST-12 | Closure Gate | Closure Verification only can close | Try creating follow-up with effectivenessConfirmed=true and followUpType=Progress Review | Save fails with validation error |
@@ -85,6 +94,8 @@ Covers checklist, finding, and follow-up node content being a rendered PDF inste
 | ST-23 | PDF Rendering | Re-import updates in place, no duplicates | Import the same checklist/finding/follow-up a second time after ST-16/17/18 succeeded | The same nodes are found by their `.pdf` name and updated (`summary.updated` increments); no duplicate `.json`-named nodes are created |
 | ST-24 | PDF Rendering | Self-healing after a prior failure | Force ST-21's failure case (node stays `.json`-named with no content), then re-import successfully | The `.json`-named node is found via the fallback lookup, updated in place, and renamed to `.pdf` |
 | ST-25 | PDF Rendering | `get-open-findings` still works | Query `POST /findings/open/query` for a finding created under this scheme | Every field populates correctly from `vso:*` properties alone (no dependency on parsing finding content) |
+| ST-26 | Finding Review | vso:findingReviewedBy accepted | Set vso:findingReviewStatus=Confirmed, vso:findingReviewDate, and vso:findingReviewedBy (a username) on a vso:finding via a node property update | Save succeeds; all three properties persist and read back correctly |
+| ST-27 | Assoc | Multiple follow-ups may reference the same CAP | Create two vso:followUpReport children on the same vso:finding, link both to the same vso:correctiveAction via vso:relatedCorrectiveAction | Both associations succeed (no "association source multiplicity" integrity violation) |
 
 ## Suggested API-Level Checks (optional)
 1. Use CMIS/REST to create and read each modified type.
@@ -108,8 +119,9 @@ Covers checklist, finding, and follow-up node content being a rendered PDF inste
 4. Version not created for vso:correctiveAction:
    - Confirm cm:versionable is present as mandatory aspect and versioning behavior in repository config is enabled.
 5. Sequential followUpId generation not incrementing:
-   - Verify hasFollowUp association is correctly queried to compute the next VV suffix.
-   - Confirm existing follow-ups have vso:followUpId values using the FU-XXXXNNNYYY-MM-VV pattern.
+   - Verify hasFollowUp association is correctly queried to compute the next 2-digit suffix.
+   - Confirm existing follow-ups have vso:followUpId values using the S-XXXXT####-EEE###-## pattern.
+   - Note the ID scheme is a clean replacement, not a migration: follow-ups or findings still carrying the retired FU-/CHK-/CA- formats are rejected with HTTP 400 by design.
 6. CAP optional but still rejected:
    - Verify normalizeRequest() handles capId as trimToNull (not normalizeField).
    - Verify ensureCorrectiveActionNode() returns early if capId is null.
@@ -123,7 +135,7 @@ Covers checklist, finding, and follow-up node content being a rendered PDF inste
 ## Exit Criteria
 1. All smoke tests ST-01 through ST-25 pass.
 2. No repository startup errors related to model bootstrap.
-3. Follow-up import succeeds with optional CAP, mandatory followUpType, and auto-generated FU-XXXXNNNYYY-MM-VV IDs.
+3. Follow-up import succeeds with optional CAP, mandatory followUpType, and auto-generated S-XXXXT####-EEE###-## IDs.
 4. Closure gate prevents non-Closure-Verification types from closing findings.
 5. Follow-ups are children of findings, not corrective actions.
 6. Evidence role constraint is enforced on evidence items.

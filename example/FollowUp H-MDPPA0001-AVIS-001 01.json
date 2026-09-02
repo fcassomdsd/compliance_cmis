@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
   "followUpReport": {
-    "findingId": "MDPP001-AYVIS-01",
+    "findingId": "H-MDPPA0001-AVIS-001",
     "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
     "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
     "locationName": "Aeropuerto Internacional Gregorio Luperon",
@@ -10,6 +10,8 @@
     "percentComplete": 30,
     "effectivenessConfirmed": false,
     "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
+    "specialtyCode": "AVIS",
+    "specialtyName": "Ayudas Visuales",
     "capId": "01",
     "evidence": [
       {

@@ -1,22 +1,25 @@
 {
   "schemaVersion": "1.0",
   "checklist": {
-    "inspectionId": "MDPP-001",
-    "inspectionCode": "MDPP-001",
+    "inspectionId": "AV-MDPP-A-0001",
+    "inspectionCode": "AV-MDPP-A-0001",
+    "activityTypeId": "a01k7r2mnpqef3b881xzc4t6ghs",
+    "activityTypeCode": "A",
+    "activityTypeName": "Auditoría",
     "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
-    "specialtyCode": "VIG",
+    "specialtyCode": "SUR",
     "specialtyName": "Sistemas de Vigilancia",
     "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
     "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
     "locationName": "Aeropuerto Internacional Gregorio Luperon",
     "icaoCode": "MDPP",
-    "checklistId": "CHK-MDPP001-VIG",
+    "checklistId": "LV-MDPPA0001-SUR",
     "providerName": "DTIC Instituto Dominicano de Aviación Civil"
   },
   "items": [
     {
       "itemId": "a01k65hkdvdeertcaaehayk7nhn",
-      "itemCode": "VIG-0048",
+      "itemCode": "SUR-0048",
       "complianceStatus": "Compliant",
       "requirementText": "¿Cuenta el proveedor del servicio de vigilancia, con los sistemas y equipos de trabajo necesarios para dar un servicio eficiente y seguro a la navegación aérea?",
       "itemVerificationMethod": "Verificar estado:\ncomputadoras,\nTeléfonos,\nRack de equipos,\nFax y otros,\nInternet,\n Intranet.\nMaletín herramienta\nOsciloscopio",
@@ -24,7 +27,7 @@
     },
     {
       "itemId": "a01k65hkdvpe8v8c5gtfbcf659z",
-      "itemCode": "VIG-0050",
+      "itemCode": "SUR-0050",
       "complianceStatus": "Compliant",
       "requirementText": "¿Ha establecido el proveedor del servicio de vigilancia, los cursos y entrenamientos mínimos que debe tener su personal técnico para brindar un servicio óptimo, eficiente y seguro a la navegación aérea?",
       "itemVerificationMethod": "Examinar la programación de los cursos para cada cargo.",
@@ -50,7 +53,7 @@
     },
     {
       "itemId": "a01k65hkdwceag9j2p68tjjxcmf",
-      "itemCode": "VIG-0054",
+      "itemCode": "SUR-0054",
       "complianceStatus": "Non-Compliant",
       "requirementText": "¿Se asegura el proveedor del servicio de vigilancia, de que los servicios de vigilancia estén protegidos contra ataques y malware?",
       "itemVerificationMethod": "Verificar software y procedimientos, para fines de ataque o virus a la red\nVerificar método",

@@ -1,13 +1,13 @@
 {
-  "id": "profile-met",
-  "name": "Piloto - Perfil MET",
+  "id": "profile-indomet",
+  "name": "Piloto - Perfil INDOMET",
   "nodes": [
     {
-      "id": "profile-met-listas-verificacion",
+      "id": "profile-indomet-listas-verificacion",
       "name": "Listas de Verificación",
       "nodes": [
         {
-          "id": "profile-met-listas-verificacion-general",
+          "id": "profile-indomet-listas-verificacion-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -15,15 +15,15 @@
           }
         },
         {
-          "id": "profile-met-listas-verificacion-por-especialidad",
+          "id": "profile-indomet-listas-verificacion-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-met-listas-verificacion-por-especialidad-met-ad",
-              "name": "MET-AD - Meteorología Aeronáutica",
+              "id": "profile-indomet-listas-verificacion-por-especialidad-met",
+              "name": "MET - Meteorología Aeronáutica",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET-AD\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:inspectionChecklist\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET\""
               }
             }
           ]
@@ -31,11 +31,11 @@
       ]
     },
     {
-      "id": "profile-met-hallazgos",
+      "id": "profile-indomet-hallazgos",
       "name": "Hallazgos",
       "nodes": [
         {
-          "id": "profile-met-hallazgos-general",
+          "id": "profile-indomet-hallazgos-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -43,15 +43,15 @@
           }
         },
         {
-          "id": "profile-met-hallazgos-por-especialidad",
+          "id": "profile-indomet-hallazgos-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-met-hallazgos-por-especialidad-met-ad",
-              "name": "MET-AD - Meteorología Aeronáutica",
+              "id": "profile-indomet-hallazgos-por-especialidad-met",
+              "name": "MET - Meteorología Aeronáutica",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET-AD\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:finding\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET\""
               }
             }
           ]
@@ -59,11 +59,11 @@
       ]
     },
     {
-      "id": "profile-met-acciones-correctivas",
+      "id": "profile-indomet-acciones-correctivas",
       "name": "Acciones correctivas",
       "nodes": [
         {
-          "id": "profile-met-acciones-correctivas-general",
+          "id": "profile-indomet-acciones-correctivas-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -71,15 +71,15 @@
           }
         },
         {
-          "id": "profile-met-acciones-correctivas-por-especialidad",
+          "id": "profile-indomet-acciones-correctivas-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-met-acciones-correctivas-por-especialidad-met-ad",
-              "name": "MET-AD - Meteorología Aeronáutica",
+              "id": "profile-indomet-acciones-correctivas-por-especialidad-met",
+              "name": "MET - Meteorología Aeronáutica",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET-AD\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:correctiveAction\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET\""
               }
             }
           ]
@@ -87,11 +87,11 @@
       ]
     },
     {
-      "id": "profile-met-seguimientos",
+      "id": "profile-indomet-seguimientos",
       "name": "Seguimientos",
       "nodes": [
         {
-          "id": "profile-met-seguimientos-general",
+          "id": "profile-indomet-seguimientos-general",
           "name": "General",
           "search": {
             "language": "fts-alfresco",
@@ -99,25 +99,25 @@
           }
         },
         {
-          "id": "profile-met-seguimientos-por-especialidad",
+          "id": "profile-indomet-seguimientos-por-especialidad",
           "name": "Por especialidad",
           "nodes": [
             {
-              "id": "profile-met-seguimientos-por-especialidad-met-ad",
-              "name": "MET-AD - Meteorología Aeronáutica",
+              "id": "profile-indomet-seguimientos-por-especialidad-met",
+              "name": "MET - Meteorología Aeronáutica",
               "search": {
                 "language": "fts-alfresco",
-                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET-AD\""
+                "query": "+PATH:\"//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*\" AND TYPE:\"vso:followUpReport\" AND (@vso\\:providerId:\"a01k5qj6xvce87vz90yxa59exh2\") AND @vso\\:specialtyCode:\"MET\""
               }
             }
           ]
         },
         {
-          "id": "profile-met-seguimientos-por-tipo",
+          "id": "profile-indomet-seguimientos-por-tipo",
           "name": "Por tipo",
           "nodes": [
             {
-              "id": "profile-met-seguimientos-por-tipo-progress-review",
+              "id": "profile-indomet-seguimientos-por-tipo-progress-review",
               "name": "Progress Review",
               "search": {
                 "language": "fts-alfresco",
@@ -125,7 +125,7 @@
               }
             },
             {
-              "id": "profile-met-seguimientos-por-tipo-cap-verification",
+              "id": "profile-indomet-seguimientos-por-tipo-cap-verification",
               "name": "CAP Verification",
               "search": {
                 "language": "fts-alfresco",
@@ -133,7 +133,7 @@
               }
             },
             {
-              "id": "profile-met-seguimientos-por-tipo-closure-verification",
+              "id": "profile-indomet-seguimientos-por-tipo-closure-verification",
               "name": "Closure Verification",
               "search": {
                 "language": "fts-alfresco",
@@ -141,7 +141,7 @@
               }
             },
             {
-              "id": "profile-met-seguimientos-por-tipo-ad-hoc-inquiry",
+              "id": "profile-indomet-seguimientos-por-tipo-ad-hoc-inquiry",
               "name": "Ad-hoc Inquiry",
               "search": {
                 "language": "fts-alfresco",

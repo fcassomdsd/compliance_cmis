@@ -26,7 +26,10 @@ aspect.vso_smartFolderScope.title=Smart Folder Scope
 aspect.vso_usoapEvidenceContext.title=USOAP Evidence Context
 
 # Properties
-prop.vso_inspectionId.title=Inspection ID
+prop.vso_inspectionId.title=Activity ID
+prop.vso_activityTypeId.title=Activity Type ID
+prop.vso_activityTypeCode.title=Activity Type Code
+prop.vso_activityTypeName.title=Activity Type Name
 prop.vso_specialtyId.title=Specialty ID
 prop.vso_specialtyCode.title=Specialty Code
 prop.vso_specialtyName.title=Specialty Name

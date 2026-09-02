@@ -35,25 +35,32 @@
     return match ? match[1] : null;
   }
 
+  // Finding id (Hallazgo): H-XXXXT####-EEE-### (for example H-MDSDA0002-COM-001)
+  //   XXXXT#### = compact activity code (AV-MDSD-A-0002 with the AV- prefix and dashes stripped)
+  //   EEE       = specialty code
+  //   ###       = the finding's own 3-digit sequence within that activity/specialty
+  // The H- prefix is accepted as optional on input and always emitted canonically.
+  // reducedFindingId (EEE### concatenated) is the shared segment of the CAP (P-)
+  // and follow-up (S-) ids, each of which appends its own 2-digit sequence.
   function parseFindingParts(findingId) {
     var normalized = trimToNull(findingId);
     if (normalized === null) {
       return null;
     }
 
-    var match = String(normalized).toUpperCase().match(/^([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,})$/);
+    var match = String(normalized).toUpperCase().match(/^(?:H-)?([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,3})$/);
     if (!match) {
       return null;
     }
 
-    var findingSequence = padNumber(match[3], 2);
+    var findingSequence = padNumber(match[3], 3);
     if (findingSequence === null) {
       return null;
     }
 
     return {
-      findingId: match[1] + "-" + match[2] + "-" + findingSequence,
-      reducedFindingId: match[1] + match[2] + "-" + findingSequence,
+      findingId: "H-" + match[1] + "-" + match[2] + "-" + findingSequence,
+      reducedFindingId: match[1] + "-" + match[2] + findingSequence,
       findingSequence: findingSequence
     };
   }
@@ -64,7 +71,7 @@
       return null;
     }
 
-    if (normalized.indexOf("CA-") === 0) {
+    if (normalized.indexOf("P-") === 0) {
       return normalized;
     }
 
@@ -92,7 +99,7 @@
       return null;
     }
 
-    return "CA-" + findingParts.reducedFindingId + "-" + capSequence;
+    return "P-" + findingParts.reducedFindingId + "-" + capSequence;
   }
 
   function buildFollowUpId(findingId, followUpSequence) {
@@ -111,7 +118,7 @@
       return null;
     }
 
-    return "FU-" + findingParts.reducedFindingId + "-" + sequence;
+    return "S-" + findingParts.reducedFindingId + "-" + sequence;
   }
 
   function parseFollowUpSequenceFromId(followUpId, findingId) {
@@ -121,7 +128,7 @@
       return null;
     }
 
-    var prefix = "FU-" + findingParts.reducedFindingId + "-";
+    var prefix = "S-" + findingParts.reducedFindingId + "-";
     if (normalizedId.indexOf(prefix) !== 0) {
       return null;
     }

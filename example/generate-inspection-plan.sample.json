@@ -18,7 +18,7 @@
     },
     {
       "name": "Téc. Rafael Pérez",
-      "specialty": "VIG"
+      "specialty": "SUR"
     }
   ],
   "checklistItems": [
@@ -29,7 +29,7 @@
       "comment": "Evidencia actualizada y disponible"
     },
     {
-      "itemCode": "VIG-2.3",
+      "itemCode": "SUR-2.3",
       "question": "¿Se ejecutan rutinas de inspección programadas?",
       "complianceStatus": "Non-Compliant",
       "comment": "Se detectaron registros incompletos"

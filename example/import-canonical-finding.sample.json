@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0",
   "finding": {
-    "findingId": "MDPP001-VIG-02",
+    "findingId": "H-MDPPA0001-SUR-002",
     "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
     "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
     "locationName": "Aeropuerto Internacional Gregorio Luperon",
     "locationCode": "MDPP",
-    "itemCode": "VIG-0054",
+    "itemCode": "SUR-0054",
     "itemId": "a01k65hkdwceag9j2p68tjjxcmf",
     "description": "DDASFAF",
     "regulationBreached": "RAD 10 Volumen III 10.11 d)",
@@ -15,7 +15,7 @@
     "riskClassification": "Medium",
     "findingLevel": "Non-Compliance",
     "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
-    "specialtyCode": "VIG",
+    "specialtyCode": "SUR",
     "specialtyName": "Sistemas de Vigilancia"
   }
 }

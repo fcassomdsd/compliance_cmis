@@ -826,6 +826,9 @@
                <show id="vso:locationId" />
                <show id="vso:locationCode" />
                <show id="vso:locationName" />
+               <show id="vso:activityTypeId" />
+               <show id="vso:activityTypeCode" />
+               <show id="vso:activityTypeName" />
                <show id="vso:inspectionType" />
                <show id="vso:startDate" />
                <show id="vso:endDate" />
@@ -845,6 +848,9 @@
                <field id="vso:locationCode" set="vso-context" />
                <field id="vso:locationName" set="vso-context" />
                
+               <field id="vso:activityTypeId" set="vso-context" />
+               <field id="vso:activityTypeCode" set="vso-context" />
+               <field id="vso:activityTypeName" set="vso-context" />
                <field id="vso:inspectionType" set="vso-details" />
                <field id="vso:startDate" set="vso-details" />
                <field id="vso:endDate" set="vso-details" />
