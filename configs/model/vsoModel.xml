@@ -686,6 +686,11 @@
           <description>Date the finding review was confirmed</description>
           <type>d:date</type>
         </property>
+        <property name="vso:findingReviewedBy">
+          <title>Revisado por</title>
+          <description>Username of the reviewer who confirmed this finding</description>
+          <type>d:text</type>
+        </property>
       </properties>
 
       <associations>
