@@ -1608,11 +1608,38 @@ function resolveFindingYear(importRequest, checklistPayload) {
   return null;
 }
 
+// Callers of this webscript do not agree on whether "inspectionCode" carries
+// the "AV-" activity-code prefix: compliance_flow's /importCanonical resolves
+// and sends the Inspection entity's own code (with the prefix), while
+// compliance_import's checklist/finding payloads carry the prefix-stripped
+// "XXXX-T-####" form (see resolveInspectionKey's identical (?:AV-)? handling
+// above). Compare the normalized key, not the raw strings, so a checklist
+// stored under one form is still found when looked up under the other.
+function normalizeInspectionCodeForCompare(value) {
+  var text = trimToNull(value);
+  if (text === null) {
+    return null;
+  }
+  var hyphenMatch = String(text).toUpperCase().match(/^(?:AV-)?([A-Z]{4})-([A-Z])-(\d{1,4})$/);
+  if (hyphenMatch) {
+    var seq = padNumber(hyphenMatch[3], 4);
+    if (seq !== null) {
+      return hyphenMatch[1] + hyphenMatch[2] + seq;
+    }
+  }
+  var compactMatch = String(text).toUpperCase().match(/^([A-Z]{4})([A-Z])(\d{4})$/);
+  if (compactMatch) {
+    return compactMatch[1] + compactMatch[2] + compactMatch[3];
+  }
+  return String(text).toUpperCase();
+}
+
 function loadCanonicalDocuments(domainFolder, inspectionCode) {
   var documents = domainFolder.childFileFolders(true, false);
   var checklistDocument = null;
   var findingDocuments = [];
   var importedSources = [];
+  var normalizedTarget = normalizeInspectionCodeForCompare(inspectionCode);
 
   for (var index = 0; index < documents.length; index++) {
     var documentNode = documents[index];
@@ -1621,7 +1648,8 @@ function loadCanonicalDocuments(domainFolder, inspectionCode) {
     }
 
     var payload = parseJsonContent(documentNode);
-    if (payload.checklist && payload.checklist.inspectionCode === inspectionCode) {
+    if (payload.checklist && normalizedTarget !== null &&
+        normalizeInspectionCodeForCompare(payload.checklist.inspectionCode) === normalizedTarget) {
       checklistDocument = {
         node: documentNode,
         payload: payload
