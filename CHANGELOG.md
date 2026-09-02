@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-09-02] — Nomenclatura ID Formats & Three Bug Fixes
+
+### Changed
+- **BREAKING — adopted the platform-wide Nomenclatura document-ID formats**: `V-XXXX-YYYY-##` (Visita), `AV-XXXX-T-####` (Actividad de vigilancia), `LV-XXXXT####-EEE` (Lista de verificación, was `CHK-XXXXNNN-YYY`), `H-XXXXT####-EEE-###` (Hallazgo, 3-digit sequence, was `XXXXNNN-YYY-SS`), `P-XXXXT####-EEE###-##` (Plan de acciones correctivas, was `CA-XXXXNNNYYY-SS-VV`), `S-XXXXT####-EEE###-##` (Seguimiento, was `FU-XXXXNNNYYY-MM-VV`). Activity codes are now sequenced independently of their parent Visita's code (previously the same value).
+- **BREAKING — specialty catalog replaced** with a flat 16-code list (APR, AVIS, FAU, PAV, SSEI, AIM, ATS, COM, ECNS, EMET, FIS, MET, NAV, SAR, SUR, DPR), dropping the AGA/SNA/MET domain-grouping concept. Smart-folder profiles re-keyed by provider (`idac`/`indomet`/`aeropuertos`) instead of domain.
+- **Added `activityTypeId`/`activityTypeCode`/`activityTypeName` property triad** to `vso:inspection`, mirroring the existing specialty triad.
+
+### Fixed
+- **Checklist canonical-import lookup**: `loadCanonicalDocuments()` compared the raw `inspectionCode` string for equality instead of normalizing the optional `AV-` prefix the same way `resolveInspectionKey()` already does, so every checklist upload failed with "Checklist canonical model not found" whenever the caller and the stored checklist disagreed on whether to include the prefix (they legitimately do, by design, across `compliance_flow` and `compliance_import`).
+- **Missing `vso:findingReviewedBy` model property**: present in `server/findings/router.cjs` since the finding-review feature shipped (2026-08-30) but never added to the content model — every "Confirm Review" attempt failed with a 400 "Unknown property" the first time anyone exercised it end-to-end.
+- **`vso:relatedCorrectiveAction` association multiplicity**: `<source><many>` was `false`, which Alfresco enforces as "at most one follow-up may ever reference a given CAP" — but the real workflow needs multiple follow-ups (Progress Review, CAP Verification, Closure Verification) to reference the same CAP over its lifecycle. Flipped to `true`. Pre-existing since 2026-04-22, unrelated to the ID-format work.
+
 ## [2026-08-15] — Evidence Tag Inheritance & Multi-CE/Area Querying
 
 ### Added

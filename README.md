@@ -250,9 +250,9 @@ curl -u admin:admin -X POST \
 Templates (generated — see `tools/generate-smart-folder-templates.js`, do not hand-edit):
 
 - `templates/pilot/vigilancia-pilot-template-base-comun.json`
-- `templates/pilot/vigilancia-pilot-template-profile-sna.json`
-- `templates/pilot/vigilancia-pilot-template-profile-met.json`
-- `templates/pilot/vigilancia-pilot-template-profile-aga.json`
+- `templates/pilot/vigilancia-pilot-template-profile-idac.json`
+- `templates/pilot/vigilancia-pilot-template-profile-indomet.json`
+- `templates/pilot/vigilancia-pilot-template-profile-aeropuertos.json`
 
 Operational map:
 
