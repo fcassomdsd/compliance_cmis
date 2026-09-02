@@ -1192,7 +1192,7 @@
         <association name="vso:relatedCorrectiveAction">
           <source>
             <mandatory>false</mandatory>
-            <many>false</many>
+            <many>true</many>
           </source>
           <target>
             <class>vso:correctiveAction</class>
