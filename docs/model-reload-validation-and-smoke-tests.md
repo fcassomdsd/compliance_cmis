@@ -21,6 +21,7 @@ This checklist validates the VSO model updates for revised follow-up and finding
    - vso:inspectionId now carries the independently-sequenced activity code AV-XXXX-T-#### (for example AV-MDSD-A-0002); it is no longer derived from the parent site-visit code
    - vso:checklistId LV-XXXXT####-EEE, vso:findingId H-XXXXT####-EEE-###, vso:capId P-XXXXT####-EEE###-##
    - vso:inspectionType description corrected: it is a display/legacy activity-category label, not a lifecycle phase
+- English/Spanish localization: all 157 inline `<title>` overrides removed from `vsoModel.xml` (types, aspects, properties, associations) — every label now resolves from the message bundle (`configs/messages/vsoModel` / `vsoModel_es`) instead. This is the first model change where a bundle miss is a silent regression (a blank label in Share) rather than a dictionary load failure, so verify actual label rendering after restart, not just that the model loads — see step 12 below.
 
 It also covers the PDF rendering added to `import-canonical-models.post.js`: checklist/finding/follow-up node content is a rendered PDF rather than JSON, replaced in place on the same node (not a sibling document). This is a rendering feature layered on top of the existing model/webscript behavior above and does not itself change `vsoModel.xml`.
 
@@ -57,6 +58,10 @@ It also covers the PDF rendering added to `import-canonical-models.post.js`: che
 11. Verify the vso:inspectionContext aspect registers the new activity-type triad:
     - vso:activityTypeId, vso:activityTypeCode, vso:activityTypeName (all d:text, no LIST constraint — the ActivityType catalog is owned by the AtroCore backend and resolved dynamically)
     - vso:activityTypeId and vso:activityTypeCode are indexed untokenised (queryable for smart folders), mirroring vso:specialtyId/vso:specialtyCode
+12. Verify message-bundle labels actually render, in both locales — a clean model load does not confirm this (see Scope note above):
+    - `GET /alfresco/service/api/classes/vso_inspection` (default `Accept-Language`) returns a non-empty, English title.
+    - The same request with `Accept-Language: es` returns the Spanish title from `vsoModel_es`.
+    - Open a `vso:inspection` node's edit-metadata form in Share and confirm property labels are populated, not blank.
 
 ## Functional Smoke Test Matrix
 
@@ -131,6 +136,10 @@ Covers checklist, finding, and follow-up node content being a rendered PDF inste
 8. Closure gate constraint not enforced:
    - Verify validation logic checks followUpType == "Closure Verification" before allowing effectivenessConfirmed=true for closure.
    - Confirm error handling returns HTTP 400 if type mismatch.
+9. Label blank in Share or the classes API for a `vso:` element:
+   - Confirm the corresponding `type./aspect./prop./assoc.<name>.title` key exists in `configs/messages/vsoModel` (English) — a missing key renders blank, it does not fall back to a literal in `vsoModel.xml` since inline titles were removed.
+   - For a blank Spanish label specifically, check `configs/messages/vsoModel_es` for the same key — the two files are not kept in sync automatically.
+   - Confirm both `docker-compose.yml` volume mounts point at the right container path (`vsoModel.properties` / `vsoModel_es.properties`) and that the repository was restarted after editing either file.
 
 ## Exit Criteria
 1. All smoke tests ST-01 through ST-25 pass.
