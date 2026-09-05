@@ -24,40 +24,40 @@
 </office:styles>
 <office:body>
 <office:text>
-<text:p text:style-name="DocTitle">Hallazgo de Inspección / Inspection Finding</text:p>
+<text:p text:style-name="DocTitle">${labels.inspectionFinding}</text:p>
 
-<text:p text:style-name="SectionHeading">Identificación / Identification</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Hallazgo / Finding ID: </text:span>${findingId}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Elemento de Checklist / Checklist Item: </text:span>${checklistItemCode}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Ubicación / Location: </text:span>${locationName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Especialidad / Specialty: </text:span>${specialtyName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Proveedor / Provider: </text:span>${providerName}</text:p>
+<text:p text:style-name="SectionHeading">${labels.identification}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.findingId} </text:span>${findingId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.checklistItem} </text:span>${checklistItemCode}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.location} </text:span>${locationName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.specialty} </text:span>${specialtyName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.provider} </text:span>${providerName}</text:p>
 
-<text:p text:style-name="SectionHeading">Detalle del Hallazgo / Finding Detail</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Descripción / Description: </text:span>${description}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Requisito Incumplido / Requirement Breached: </text:span>${requirementBreached}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Referencia OACI / ICAO Reference: </text:span>${icaoReference}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Reglamento Nacional / National Regulation: </text:span>${nationalRegulation}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Artículo / Regulation Item: </text:span>${regulationItem}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Nivel / Level: </text:span>${findingLevel}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Severidad / Severity: </text:span>${findingSeverity}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Clasificación de Riesgo / Risk Classification: </text:span>${riskClassification}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Riesgo Residual Objetivo / Target Residual Risk: </text:span>${targetResidualRisk}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Riesgo Residual Alcanzado / Achieved Residual Risk: </text:span>${achievedResidualRisk}</text:p>
+<text:p text:style-name="SectionHeading">${labels.findingDetail}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.description} </text:span>${description}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.requirementBreached} </text:span>${requirementBreached}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.iCAOReference} </text:span>${icaoReference}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.nationalRegulation} </text:span>${nationalRegulation}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.regulationItem} </text:span>${regulationItem}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.level} </text:span>${findingLevel}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.severity} </text:span>${findingSeverity}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.riskClassification} </text:span>${riskClassification}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.targetResidualRisk} </text:span>${targetResidualRisk}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.achievedResidualRisk} </text:span>${achievedResidualRisk}</text:p>
 
-<text:p text:style-name="SectionHeading">Estado y Fechas / Status and Dates</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Estado / Status: </text:span>${findingStatus}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Emisión / Date Issued: </text:span>${dateIssued}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Plazo de Envío de CAP / CAP Submission Deadline: </text:span>${submissionDeadline}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Plazo de Resolución / Resolution Deadline: </text:span>${resolutionDeadline}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Cierre / Closure Date: </text:span>${findingClosureDate}</text:p>
+<text:p text:style-name="SectionHeading">${labels.statusAndDates}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.status} </text:span>${findingStatus}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.dateIssued} </text:span>${dateIssued}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.cAPSubmissionDeadline} </text:span>${submissionDeadline}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.resolutionDeadline} </text:span>${resolutionDeadline}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.closureDate} </text:span>${findingClosureDate}</text:p>
 
-<text:p text:style-name="SectionHeading">Acción Correctiva / Corrective Action</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de CAP / CAP ID: </text:span>${correctiveAction.capId}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Acción Propuesta / Proposed Action: </text:span>${correctiveAction.proposedAction}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Entidad Responsable / Responsible Entity: </text:span>${correctiveAction.responsibleEntity}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha Límite / Due Date: </text:span>${correctiveAction.dueDate}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Estado de Aceptación / Acceptance Status: </text:span>${correctiveAction.acceptanceStatus}</text:p>
+<text:p text:style-name="SectionHeading">${labels.correctiveAction}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.cAPId} </text:span>${correctiveAction.capId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.proposedAction} </text:span>${correctiveAction.proposedAction}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.responsibleEntity} </text:span>${correctiveAction.responsibleEntity}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.dueDate} </text:span>${correctiveAction.dueDate}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.acceptanceStatus} </text:span>${correctiveAction.acceptanceStatus}</text:p>
 
 </office:text>
 </office:body>

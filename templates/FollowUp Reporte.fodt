@@ -36,29 +36,29 @@
 </office:automatic-styles>
 <office:body>
 <office:text>
-<text:p text:style-name="DocTitle">Reporte de Seguimiento / Follow-up Report</text:p>
+<text:p text:style-name="DocTitle">${labels.followupReport}</text:p>
 
-<text:p text:style-name="SectionHeading">Identificación / Identification</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Seguimiento / Follow-up ID: </text:span>${followUpId}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Hallazgo / Finding ID: </text:span>${findingId}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de CAP / CAP ID: </text:span>${capId}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Ubicación / Location: </text:span>${locationName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Especialidad / Specialty: </text:span>${specialtyName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Proveedor / Provider: </text:span>${providerName}</text:p>
+<text:p text:style-name="SectionHeading">${labels.identification}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.followupId} </text:span>${followUpId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.findingId} </text:span>${findingId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.cAPId} </text:span>${capId}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.location} </text:span>${locationName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.specialty} </text:span>${specialtyName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.provider} </text:span>${providerName}</text:p>
 
-<text:p text:style-name="SectionHeading">Detalle del Seguimiento / Follow-up Detail</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Tipo de Seguimiento / Follow-up Type: </text:span>${followUpType}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Seguimiento / Follow-up Date: </text:span>${followUpDate}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Porcentaje Completado / Percent Complete: </text:span>${percentComplete}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Riesgo Residual Actual / Current Residual Risk: </text:span>${currentResidualRisk}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Comentario / Comment: </text:span>${followUpComment}</text:p>
+<text:p text:style-name="SectionHeading">${labels.followupDetail}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.followupType} </text:span>${followUpType}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.followupDate} </text:span>${followUpDate}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.percentComplete} </text:span>${percentComplete}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.currentResidualRisk} </text:span>${currentResidualRisk}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.comment} </text:span>${followUpComment}</text:p>
 
-<text:p text:style-name="SectionHeading">Cierre / Closure</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Efectividad Confirmada / Effectiveness Confirmed: </text:span>${effectivenessConfirmed}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Método de Verificación de Cierre / Closure Verification Method: </text:span>${closureVerificationMethod}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Cierre de Seguimiento / Follow-up Closure Date: </text:span>${followUpClosureDate}</text:p>
+<text:p text:style-name="SectionHeading">${labels.closure}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.effectivenessConfirmed} </text:span>${effectivenessConfirmed}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.closureVerificationMethod} </text:span>${closureVerificationMethod}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.followupClosureDate} </text:span>${followUpClosureDate}</text:p>
 
-<text:p text:style-name="SectionHeading">Evidencia / Evidence</text:p>
+<text:p text:style-name="SectionHeading">${labels.evidence}</text:p>
 <table:table table:name="FollowUpEvidenceTable" table:style-name="EvidenceTable">
 <table:table-column table:style-name="EvColHead"/>
 <table:table-column table:style-name="EvColHead"/>
@@ -66,11 +66,11 @@
 <table:table-column table:style-name="EvColHead"/>
 <table:table-column table:style-name="EvColHead"/>
 <table:table-row>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>ID de Evidencia / Evidence ID</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Tipo / Type</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Rol / Role</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Fuente / Source</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Fecha de Recolección / Collection Date</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.evidenceId}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.type}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.role}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.source}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.collectionDate}</text:p></table:table-cell>
 </table:table-row>
 [#list evidenceItems as evidence]
 <table:table-row>

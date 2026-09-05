@@ -101,6 +101,58 @@ function importTemplateGenerationLibrary() {
         TemplateGeneration.fail(400, "Invalid JSON: " + error.message);
       }
     },
+    loadEntityProfile: function loadEntityProfile() {
+      var fallback = {
+        entityName: "DEPARTAMENTO DE CONTROL DE VIGILANCIA SNA/AGA",
+        entityLogoBase64: "",
+        docControlCodes: { informeFinal: "DVSO-CS-F04", planDeInspeccion: "DVSO-CS-F02" },
+        docControlVersion: "3.0"
+      };
+      try {
+        var file = new Packages.java.io.File("/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json");
+        if (!file.exists()) {
+          return fallback;
+        }
+        var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
+        var parsed = JSON.parse(text);
+        return {
+          entityName: parsed.entityName || fallback.entityName,
+          entityLogoBase64: parsed.entityLogoBase64 || fallback.entityLogoBase64,
+          docControlCodes: parsed.docControlCodes || fallback.docControlCodes,
+          docControlVersion: parsed.docControlVersion || fallback.docControlVersion
+        };
+      } catch (loadError) {
+        return fallback;
+      }
+    },
+    xmlEscapeDeep: function xmlEscapeDeep(value) {
+      if (value === null || value === undefined) {
+        return value;
+      }
+      if (value instanceof Date) {
+        return value;
+      }
+      if (Array.isArray(value)) {
+        var escapedArray = [];
+        for (var arrayIndex = 0; arrayIndex < value.length; arrayIndex++) {
+          escapedArray.push(xmlEscapeDeep(value[arrayIndex]));
+        }
+        return escapedArray;
+      }
+      if (typeof value === "object") {
+        var escapedObject = {};
+        for (var key in value) {
+          if (value.hasOwnProperty(key)) {
+            escapedObject[key] = xmlEscapeDeep(value[key]);
+          }
+        }
+        return escapedObject;
+      }
+      if (typeof value === "string") {
+        return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      return value;
+    },
     renderTemplateContent: function(templateNode, data) {
       function resolvePath(context, path) {
         var parts = String(path).split(".");
@@ -255,6 +307,23 @@ var FILE_PREFIX = "Plan de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
 var MIMETYPE = "application/vnd.oasis.opendocument.text";
 
+// Locale-keyed static header labels for formato plan de inspeccion.fodt.
+// Keys correspond to ${labels.<key>} placeholders in the template.
+var PLAN_LABELS = {
+  en: {
+    formHeading: "FORM",
+    codeLabel: "Code",
+    versionLabel: "Version",
+    docTitle: "INSPECTION PLAN"
+  },
+  es: {
+    formHeading: "FORMULARIO",
+    codeLabel: "Código",
+    versionLabel: "Versión",
+    docTitle: "PLAN DE INSPECCIÓN"
+  }
+};
+
 importTemplateGenerationLibrary();
 
 function setPropertyIfPresent(node, propertyName, value) {
@@ -397,7 +466,16 @@ try {
   var inspectionFolder = ensureInspectionFolder(inspectionsFolder, inspectionNo);
   populateInspectionFolderData(inspectionFolder, inputData);
 
-  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, inputData);
+  var planLocale = (TemplateGeneration.trimToNull(inputData.locale) === "en") ? "en" : "es";
+  var planEntityProfile = TemplateGeneration.loadEntityProfile();
+  inputData.entityName = planEntityProfile.entityName;
+  inputData.entityLogoBase64 = planEntityProfile.entityLogoBase64;
+  inputData.docControlCode = planEntityProfile.docControlCodes.planDeInspeccion;
+  inputData.docControlVersion = planEntityProfile.docControlVersion;
+  inputData.labels = PLAN_LABELS[planLocale];
+  var templateRenderData = TemplateGeneration.xmlEscapeDeep(inputData);
+
+  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, templateRenderData);
   var outputName = FILE_PREFIX + inspectionNo + FILE_EXTENSION;
 
   var result = TemplateGeneration.upsertDocument({

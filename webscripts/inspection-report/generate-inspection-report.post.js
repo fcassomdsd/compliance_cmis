@@ -101,6 +101,58 @@ function importTemplateGenerationLibrary() {
         TemplateGeneration.fail(400, "Invalid JSON: " + error.message);
       }
     },
+    loadEntityProfile: function loadEntityProfile() {
+      var fallback = {
+        entityName: "DEPARTAMENTO DE CONTROL DE VIGILANCIA SNA/AGA",
+        entityLogoBase64: "",
+        docControlCodes: { informeFinal: "DVSO-CS-F04", planDeInspeccion: "DVSO-CS-F02" },
+        docControlVersion: "3.0"
+      };
+      try {
+        var file = new Packages.java.io.File("/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json");
+        if (!file.exists()) {
+          return fallback;
+        }
+        var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
+        var parsed = JSON.parse(text);
+        return {
+          entityName: parsed.entityName || fallback.entityName,
+          entityLogoBase64: parsed.entityLogoBase64 || fallback.entityLogoBase64,
+          docControlCodes: parsed.docControlCodes || fallback.docControlCodes,
+          docControlVersion: parsed.docControlVersion || fallback.docControlVersion
+        };
+      } catch (loadError) {
+        return fallback;
+      }
+    },
+    xmlEscapeDeep: function xmlEscapeDeep(value) {
+      if (value === null || value === undefined) {
+        return value;
+      }
+      if (value instanceof Date) {
+        return value;
+      }
+      if (Array.isArray(value)) {
+        var escapedArray = [];
+        for (var arrayIndex = 0; arrayIndex < value.length; arrayIndex++) {
+          escapedArray.push(xmlEscapeDeep(value[arrayIndex]));
+        }
+        return escapedArray;
+      }
+      if (typeof value === "object") {
+        var escapedObject = {};
+        for (var key in value) {
+          if (value.hasOwnProperty(key)) {
+            escapedObject[key] = xmlEscapeDeep(value[key]);
+          }
+        }
+        return escapedObject;
+      }
+      if (typeof value === "string") {
+        return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      return value;
+    },
     renderTemplateContent: function(templateNode, data) {
       function resolvePath(context, path) {
         var parts = String(path).split(".");
@@ -838,6 +890,23 @@ var FILE_PREFIX = "Informe de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
 var MIMETYPE = "application/vnd.oasis.opendocument.text";
 
+// Locale-keyed static header labels for Informe Final.fodt. Keys correspond
+// to ${labels.<key>} placeholders in the template.
+var INFORME_FINAL_LABELS = {
+  en: {
+    formHeading: "FORM",
+    codeLabel: "Code",
+    versionLabel: "Version",
+    docTitle: "FINAL REPORT"
+  },
+  es: {
+    formHeading: "FORMULARIO",
+    codeLabel: "Código",
+    versionLabel: "Versión",
+    docTitle: "INFORME FINAL"
+  }
+};
+
 importTemplateGenerationLibrary();
 
 try {
@@ -888,6 +957,14 @@ try {
   reportData.scope = TemplateGeneration.trimToNull(inputData.scope) || "";
   reportData.inspectionType = TemplateGeneration.trimToNull(inputData.inspectionType) || "";
 
+  var reportLocale = (TemplateGeneration.trimToNull(inputData.locale) === "en") ? "en" : "es";
+  var entityProfile = TemplateGeneration.loadEntityProfile();
+  reportData.entityName = entityProfile.entityName;
+  reportData.entityLogoBase64 = entityProfile.entityLogoBase64;
+  reportData.docControlCode = entityProfile.docControlCodes.informeFinal;
+  reportData.docControlVersion = entityProfile.docControlVersion;
+  reportData.labels = INFORME_FINAL_LABELS[reportLocale];
+
   var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
   var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || DESTINATION_PATH;
 
@@ -903,7 +980,8 @@ try {
     TemplateGeneration.fail(500, "Destination folder not found");
   }
 
-  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, reportData);
+  var templateRenderData = TemplateGeneration.xmlEscapeDeep(reportData);
+  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, templateRenderData);
   var providerSuffix = TemplateGeneration.trimToNull(reportData.providerName);
   var outputName =
     FILE_PREFIX +

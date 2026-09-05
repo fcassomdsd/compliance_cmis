@@ -65,6 +65,8 @@ services:
       - ./configs/model/vsoModel.xml:/usr/local/tomcat/shared/classes/alfresco/extension/model/vsoModel.xml
       - ./configs/model/vso-bootstrap-context.xml:/usr/local/tomcat/shared/classes/alfresco/extension/vso-bootstrap-context.xml
       - ./configs/messages/vsoModel:/usr/local/tomcat/shared/classes/alfresco/extension/vsoModel.properties
+      - ./configs/messages/vsoModel_es:/usr/local/tomcat/shared/classes/alfresco/extension/vsoModel_es.properties
+      - ./configs/entity-profile.json:/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json
       - ./configs/module.properties:/usr/local/tomcat/shared/classes/alfresco/extension/module.properties
       - ./webscripts:/usr/local/tomcat/shared/classes/alfresco/extension/templates/webscripts
     extends:
