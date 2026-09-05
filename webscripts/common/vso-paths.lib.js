@@ -329,6 +329,40 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
       return engine.render(templateAsString, data);
     }
 
+    // MiniFreemarker does plain string substitution with no XML-escaping of its
+    // own, so any free-text field (entity name, comments, descriptions, etc.)
+    // must be escaped before it's substituted into a .fodt template - otherwise
+    // a value containing &, <, or > corrupts the generated XML. Recurses through
+    // arrays/objects so it can be applied once to a whole data object.
+    function xmlEscapeDeep(value) {
+      if (value === null || value === undefined) {
+        return value;
+      }
+      if (value instanceof Date) {
+        return value;
+      }
+      if (Array.isArray(value)) {
+        var escapedArray = [];
+        for (var arrayIndex = 0; arrayIndex < value.length; arrayIndex++) {
+          escapedArray.push(xmlEscapeDeep(value[arrayIndex]));
+        }
+        return escapedArray;
+      }
+      if (typeof value === "object") {
+        var escapedObject = {};
+        for (var key in value) {
+          if (value.hasOwnProperty(key)) {
+            escapedObject[key] = xmlEscapeDeep(value[key]);
+          }
+        }
+        return escapedObject;
+      }
+      if (typeof value === "string") {
+        return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      return value;
+    }
+
     // Uses Alfresco's local Transform Service (transform-core-aio) via the native
     // ScriptNode API. Returns a new transient ScriptNode holding the PDF content,
     // or null if the source node has no content or no transform is available.
@@ -339,12 +373,47 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
       return sourceNode.transformDocument("application/pdf");
     }
 
+    // Deployment-level entity/branding config (name, logo, document-control
+    // codes) for the regulatory report templates - independent of any single
+    // request's `locale`. Mounted into the container at build/deploy time
+    // (see docker-compose.yml) alongside vsoModel.xml/vsoModel.properties.
+    // Falls back to IDAC's own current values if the file can't be read, so a
+    // deployment that never sets this up renders exactly as it did before
+    // entity/locale parametrization was introduced.
+    var ENTITY_PROFILE_FALLBACK = {
+      entityName: "DEPARTAMENTO DE CONTROL DE VIGILANCIA SNA/AGA",
+      entityLogoBase64: "",
+      docControlCodes: { informeFinal: "DVSO-CS-F04", planDeInspeccion: "DVSO-CS-F02" },
+      docControlVersion: "3.0"
+    };
+
+    function loadEntityProfile() {
+      try {
+        var file = new Packages.java.io.File("/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json");
+        if (!file.exists()) {
+          return ENTITY_PROFILE_FALLBACK;
+        }
+        var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
+        var parsed = JSON.parse(text);
+        return {
+          entityName: parsed.entityName || ENTITY_PROFILE_FALLBACK.entityName,
+          entityLogoBase64: parsed.entityLogoBase64 || ENTITY_PROFILE_FALLBACK.entityLogoBase64,
+          docControlCodes: parsed.docControlCodes || ENTITY_PROFILE_FALLBACK.docControlCodes,
+          docControlVersion: parsed.docControlVersion || ENTITY_PROFILE_FALLBACK.docControlVersion
+        };
+      } catch (loadError) {
+        return ENTITY_PROFILE_FALLBACK;
+      }
+    }
+
     return {
       trimToNull: trimToNull,
       setError: setError,
       fail: fail,
       parseJsonPayload: parseJsonPayload,
       renderTemplateContent: renderTemplateContent,
+      xmlEscapeDeep: xmlEscapeDeep,
+      loadEntityProfile: loadEntityProfile,
       upsertDocument: upsertDocument,
       convertToPdf: convertToPdf
     };

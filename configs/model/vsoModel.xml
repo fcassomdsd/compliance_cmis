@@ -300,12 +300,10 @@
 
     <!-- ===================== Base VSO Content ====================== -->
     <type name="vso:vsoContent">
-      <title>VSO Content</title>
       <parent>cm:content</parent>
 
       <properties>
         <property name="vso:contentType">
-          <title>Tipo de contenido VSO</title>
           <description>VSO business content classification</description>
           <type>d:text</type>
         </property>
@@ -314,27 +312,22 @@
 
     <!-- ===================== Inspection ====================== -->
     <type name="vso:inspection">
-      <title>Inspección</title>
       <parent>cm:folder</parent>
 
       <properties>
         <property name="vso:inspectionType">
-          <title>Tipo de inspección</title>
           <description>Free-text label for the category of oversight activity. The canonical, machine-readable classification is the vso:activityTypeId/Code/Name triad on the vso:inspectionContext aspect; this property is a display/legacy label only and is not a lifecycle phase (lifecycle lives in vso:inspectionStatus).</description>
           <type>d:text</type>
         </property>
         <property name="vso:startDate">
-          <title>Fecha de inicio</title>
           <description>Inspection start date</description>
           <type>d:date</type>
         </property>
         <property name="vso:endDate">
-          <title>Fecha de cierre</title>
           <description>Inspection end date</description>
           <type>d:date</type>
         </property>
         <property name="vso:inspectionStatus">
-          <title>Estatus inspección</title>
           <description>Current inspection lifecycle status</description>
           <type>d:text</type>
           <default>Created</default>
@@ -351,28 +344,23 @@
 
     <!-- ================= Inspection Checklist ================= -->
     <type name="vso:inspectionChecklist">
-      <title>Lista de Verificación</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:checklistId">
-          <title>ID lista de verificación</title>
           <description>Unique identifier of the checklist (Lista de verificación), format LV-XXXXT####-EEE where XXXXT#### is the compact activity code (AV- prefix and dashes stripped) and EEE the specialty code. Example: LV-MDSDA0002-COM.</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:scope">
-          <title>Alcance lista de verificación</title>
           <description>Checklist scope or inspection area</description>
           <type>d:text</type>
         </property>
         <property name="vso:completionDate">
-          <title>Fecha completado</title>
           <description>Date checklist was completed</description>
           <type>d:date</type>
         </property>
         <property name="vso:interviewee">
-          <title>Entrevistado</title>
           <description>Name of the person(s) interviewed during the checklist inspection</description>
           <type>d:text</type>
         </property>
@@ -395,18 +383,15 @@
 
     <!-- ================= Checklist Item ================= -->
     <type name="vso:checklistItem">
-      <title>Checklist Item</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:itemId">
-          <title>ID pregunta inspección</title>
           <description>Checklist item instance identifier</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:itemCode">
-          <title>Código pregunta inspección</title>
           <description>Reusable question code shared across checklists</description>
           <type>d:text</type>
           <index enabled="true">
@@ -416,17 +401,14 @@
           </index>
         </property>
         <property name="vso:requirementText">
-          <title>Texto requisito</title>
           <description>Regulatory requirement being assessed</description>
           <type>d:text</type>
         </property>
         <property name="vso:itemVerificationMethod">
-          <title>Método de verificación</title>
           <description>Method used to verify compliance</description>
           <type>d:text</type>
         </property>
         <property name="vso:complianceStatus">
-          <title>Estado de cumplimiento</title>
           <description>Compliance assessment result</description>
           <type>d:text</type>
           <constraints>
@@ -434,12 +416,10 @@
           </constraints>
         </property>
         <property name="vso:inspectorComment">
-          <title>Comentario del inspector</title>
           <description>Inspector observations or remarks</description>
           <type>d:text</type>
         </property>
         <property name="vso:nominalRisk">
-          <title>Riesgo nominal</title>
           <description>Nominal risk level associated with the requirement</description>
           <type>d:text</type>
           <constraints>
@@ -447,7 +427,6 @@
           </constraints>
         </property>
         <property name="vso:hasOpenPriorFinding">
-          <title>Tiene hallazgos previos abiertos?</title>
           <description>Precomputed flag to speed up checklist searches for related prior findings that are not closed</description>
           <type>d:boolean</type>
           <default>false</default>
@@ -495,33 +474,27 @@
 
     <!-- ================= Evidence Item ================= -->
     <type name="vso:evidenceItem">
-      <title>Evidence Item</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:evidenceId">
-          <title>ID evidencia</title>
           <description>Unique evidence identifier</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:evidenceType">
-          <title>Tipo de evidencia</title>
           <description>Type of evidence (document, photo, log)</description>
           <type>d:text</type>
         </property>
         <property name="vso:source">
-          <title>Fuente de evidencia</title>
           <description>Origin or system from which evidence was collected</description>
           <type>d:text</type>
         </property>
         <property name="vso:collectionDate">
-          <title>Fecha de obtención</title>
           <description>Date evidence was collected</description>
           <type>d:date</type>
         </property>
         <property name="vso:evidenceRole">
-          <title>Rol de evidencia</title>
           <description>Role of evidence in proving compliance or finding resolution</description>
           <type>d:text</type>
           <constraints>
@@ -529,7 +502,6 @@
           </constraints>
         </property>
         <property name="vso:collectionMethod">
-          <title>Método de recolección</title>
           <description>How this evidence entered the system: collected on-site by an inspector, or submitted remotely (by the inspector on the provider's behalf, or directly by the provider) and vetted before upload</description>
           <type>d:text</type>
           <constraints>
@@ -548,18 +520,15 @@
 
     <!-- ================= Finding ================= -->
     <type name="vso:finding">
-      <title>Finding</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:findingId">
-          <title>ID hallazgo</title>
           <description>Finding identifier (Hallazgo), format H-XXXXT####-EEE-### where XXXXT#### is the compact activity code, EEE the specialty code and ### the finding's own 3-digit sequence. Example: H-MDSDA0002-COM-001.</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:findingLevel">
-          <title>Clasificación hallazgo</title>
           <description>Finding classification</description>
           <type>d:text</type>
           <default>Non-Compliance</default>
@@ -568,7 +537,6 @@
           </constraints>
         </property>
         <property name="vso:findingSeverity">
-          <title>Severidad del hallazgo</title>
           <description>Severity level assigned by the inspector (A=7 days, B=30 days, C=90 days)</description>
           <type>d:text</type>
           <default>C</default>
@@ -577,7 +545,6 @@
           </constraints>
         </property>
         <property name="vso:riskClassification">
-          <title>Clasificación de riesgo</title>
           <description>Risk classification associated with the detected discrepancy</description>
           <type>d:text</type>
           <constraints>
@@ -585,7 +552,6 @@
           </constraints>
         </property>
         <property name="vso:targetResidualRisk">
-          <title>Riesgo residual meta</title>
           <description>Target residual risk after corrective actions are implemented</description>
           <type>d:text</type>
           <constraints>
@@ -593,7 +559,6 @@
           </constraints>
         </property>
         <property name="vso:achievedResidualRisk">
-          <title>Riesgo residual alcanzado</title>
           <description>Residual risk actually achieved at time of closure approval</description>
           <type>d:text</type>
           <constraints>
@@ -601,12 +566,10 @@
           </constraints>
         </property>
         <property name="vso:requirementBreached">
-          <title>Regulación incumplida</title>
           <description>Regulatory reference breached</description>
           <type>d:text</type>
         </property>
         <property name="vso:checklistItemCode">
-          <title>Código pregunta relacionada</title>
           <description>Question code associated with this finding</description>
           <type>d:text</type>
           <index enabled="true">
@@ -616,12 +579,10 @@
           </index>
         </property>
         <property name="vso:description">
-          <title>Descripción hallazgo</title>
           <description>Detailed finding description</description>
           <type>d:text</type>
         </property>
         <property name="vso:findingStatus">
-          <title>Estatus hallazgo</title>
           <description>Finding lifecycle status</description>
           <type>d:text</type>
           <default>Open</default>
@@ -630,32 +591,26 @@
           </constraints>
         </property>
         <property name="vso:submissionDeadline">
-          <title>Fecha limite de envio</title>
           <description>Deadline by which the regulated entity must submit a corrective action plan</description>
           <type>d:date</type>
         </property>
         <property name="vso:findingClosureDate">
-          <title>Fecha de cierre</title>
           <description>Date on which the finding was formally closed by the oversight authority</description>
           <type>d:date</type>
         </property>
         <property name="vso:dateIssued">
-          <title>Fecha de apertura</title>
           <description>Date the finding was formally raised, set on creation from the checklist upload</description>
           <type>d:date</type>
         </property>
         <property name="vso:lastStatusChange">
-          <title>Fecha ultimo cambio de estatus</title>
           <description>Date the findingStatus was last updated, maintained by the Node backend on each transition</description>
           <type>d:date</type>
         </property>
         <property name="vso:resolutionDeadline">
-          <title>Fecha limite de resolución</title>
           <description>Deadline by which the finding must be resolved</description>
           <type>d:date</type>
         </property>
         <property name="vso:deadlineExtensionStatus">
-          <title>Estatus solicitud de nuevo plazo</title>
           <description>Status of the most recent resolution-deadline extension request, if any. A new request can only be submitted while this is unset or in a terminal state (Accepted/Rejected)</description>
           <type>d:text</type>
           <constraints>
@@ -663,27 +618,22 @@
           </constraints>
         </property>
         <property name="vso:requestedResolutionDeadline">
-          <title>Nuevo plazo de resolución solicitado</title>
           <description>The resolution deadline requested in the pending extension request; copied onto vso:resolutionDeadline only if the request is accepted</description>
           <type>d:date</type>
         </property>
         <property name="vso:deadlineExtensionReason">
-          <title>Justificación de la solicitud de plazo</title>
           <description>Reason given for the requested resolution-deadline extension</description>
           <type>d:text</type>
         </property>
         <property name="vso:deadlineExtensionRequestedDate">
-          <title>Fecha de solicitud de nuevo plazo</title>
           <description>Date the resolution-deadline extension was requested</description>
           <type>d:date</type>
         </property>
         <property name="vso:deadlineExtensionDecisionDate">
-          <title>Fecha de decisión sobre nuevo plazo</title>
           <description>Date the resolution-deadline extension request was accepted or rejected</description>
           <type>d:date</type>
         </property>
         <property name="vso:findingReviewStatus">
-          <title>Estatus revisión del hallazgo</title>
           <description>Whether a reviewer has confirmed this finding (separately from whoever formulated it in the field). Set to Pending Review on creation via the canonical import path</description>
           <type>d:text</type>
           <default>Pending Review</default>
@@ -692,12 +642,10 @@
           </constraints>
         </property>
         <property name="vso:findingReviewDate">
-          <title>Fecha de revisión del hallazgo</title>
           <description>Date the finding review was confirmed</description>
           <type>d:date</type>
         </property>
         <property name="vso:findingReviewedBy">
-          <title>Revisado por</title>
           <description>Username of the reviewer who confirmed this finding</description>
           <type>d:text</type>
         </property>
@@ -739,32 +687,26 @@
 
     <!-- ================= Corrective Action ================= -->
     <type name="vso:correctiveAction">
-      <title>Corrective Action</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:capId">
-          <title>ID Plan de Acción Correctiva</title>
           <description>Corrective Action Plan identifier (Plan de acciones correctivas), format P-XXXXT####-EEE###-## where EEE### is the specialty code plus the parent finding's 3-digit sequence and ## is the CAP's own 2-digit sequence. Example: P-MDSDA0002-COM001-01.</description>
           <type>d:text</type>
         </property>
         <property name="vso:proposedAction">
-          <title>Acción propuesta</title>
           <description>Description of corrective action</description>
           <type>d:text</type>
         </property>
         <property name="vso:responsibleEntity">
-          <title>Entidad responsable</title>
           <description>Entity responsible for implementation</description>
           <type>d:text</type>
         </property>
         <property name="vso:dueDate">
-          <title>Fecha de vencimiento</title>
           <description>Corrective action due date</description>
           <type>d:date</type>
         </property>
         <property name="vso:acceptanceStatus">
-          <title>Estado de aceptación</title>
           <description>Acceptance status by authority</description>
           <type>d:text</type>
           <constraints>
@@ -772,17 +714,14 @@
           </constraints>
         </property>
         <property name="vso:capReviewedBy">
-          <title>Revisor del PAC</title>
           <description>Username of the reviewer who applied the acceptance decision</description>
           <type>d:text</type>
         </property>
         <property name="vso:capReviewDate">
-          <title>Fecha de revisión del PAC</title>
           <description>Date the acceptance decision was applied</description>
           <type>d:date</type>
         </property>
         <property name="vso:capReviewReason">
-          <title>Justificación de la decisión</title>
           <description>Reviewer's justification for the acceptance decision — mandatory when the decision is Not Accepted</description>
           <type>d:text</type>
         </property>
@@ -888,25 +827,21 @@
 
     <!-- ================= CAP Evaluation (IDAC-PAC-EVAL-01) ================= -->
     <type name="vso:capEvaluation">
-      <title>CAP Evaluation</title>
       <description>One manual review pass of a Corrective Action Plan against the IDAC-PAC-EVAL-01 checklist. A CAP accumulates one of these per review cycle (including after a reject/resubmit), preserving the full evaluation history.</description>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:evaluatedBy">
-          <title>Evaluador</title>
           <description>Username of the reviewer performing this evaluation pass</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:evaluationDate">
-          <title>Fecha de evaluación</title>
           <description>Date this evaluation pass was last updated</description>
           <type>d:date</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:evaluationDecisionOutcome">
-          <title>Resultado de la decisión</title>
           <description>Acceptance decision this evaluation pass resulted in — set only once the reviewer confirms Accept/Reject; empty while the evaluation is still in progress</description>
           <type>d:text</type>
           <constraints>
@@ -914,7 +849,6 @@
           </constraints>
         </property>
         <property name="vso:evaluationDecisionReason">
-          <title>Justificación de la decisión</title>
           <description>Reviewer's justification, set only when the outcome is Not Accepted</description>
           <type>d:text</type>
         </property>
@@ -942,31 +876,26 @@
 
     <!-- ================= CAP Evaluation Criterion ================= -->
     <type name="vso:capEvaluationCriterion">
-      <title>CAP Evaluation Criterion</title>
       <description>A single Sí/No/No aplica criterion (or free-text section conclusion) answered as part of a vso:capEvaluation pass, per the IDAC-PAC-EVAL-01 checklist.</description>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:criterionCode">
-          <title>Código del criterio</title>
           <description>Catalog code, e.g. RCA.ROOT_CAUSE_CLEAR</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:criterionSection">
-          <title>Sección del criterio</title>
           <description>Catalog section this criterion belongs to, e.g. RCA, RISK, ADMIN</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:criterionLabel">
-          <title>Enunciado del criterio</title>
           <description>Label snapshot at evaluation time, so historical evaluations stay self-contained if catalog wording changes later</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:criterionResponse">
-          <title>Respuesta</title>
           <description>Sí/No/No aplica response — empty for conclusion-kind rows</description>
           <type>d:text</type>
           <constraints>
@@ -974,7 +903,6 @@
           </constraints>
         </property>
         <property name="vso:criterionObservations">
-          <title>Observaciones</title>
           <description>Observation text for a Sí/No row, or the full text for a conclusion-kind row</description>
           <type>d:text</type>
         </property>
@@ -983,12 +911,10 @@
 
     <!-- ================= Root Cause Analysis ================= -->
     <type name="vso:rootCauseAnalysis">
-      <title>Root Cause Analysis</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:rcaMethod">
-          <title>Método de análisis</title>
           <description>Root cause analysis method used (5 Whys, Fishbone, BowTie, TapRooT, Barrier Analysis, Other)</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
@@ -997,22 +923,18 @@
           </constraints>
         </property>
         <property name="vso:rcaOtherMethodDescription">
-          <title>Descripción de otro método</title>
           <description>Free-text description of the method used when rcaMethod is 'Other'</description>
           <type>d:text</type>
         </property>
         <property name="vso:rcaMainCategory">
-          <title>Categoría principal</title>
           <description>Main category responsible for the cause</description>
           <type>d:text</type>
         </property>
         <property name="vso:rootCause">
-          <title>Causa raíz</title>
           <description>Identified root cause</description>
           <type>d:text</type>
         </property>
         <property name="vso:contributingFactors">
-          <title>Factores contribuyentes</title>
           <description>Contributing factors to the finding</description>
           <type>d:text</type>
         </property>
@@ -1026,42 +948,34 @@
 
     <!-- ================= Risk Assessment ================= -->
     <type name="vso:riskAssessment">
-      <title>Risk Assessment</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:identifiedHazard">
-          <title>Peligro identificado</title>
           <description>Identified hazard</description>
           <type>d:text</type>
         </property>
         <property name="vso:potentialConsequence">
-          <title>Consecuencia potencial</title>
           <description>Potential consequence of the hazard</description>
           <type>d:text</type>
         </property>
         <property name="vso:raProbability">
-          <title>Probabilidad</title>
           <description>Probability, as defined by the inspected entity's own risk assessment methodology</description>
           <type>d:text</type>
         </property>
         <property name="vso:raSeverity">
-          <title>Severidad</title>
           <description>Severity, as defined by the inspected entity's own risk assessment methodology</description>
           <type>d:text</type>
         </property>
         <property name="vso:calculatedRiskLevel">
-          <title>Nivel de riesgo calculado</title>
           <description>Risk level calculated from probability and severity, per the entity's own methodology</description>
           <type>d:text</type>
         </property>
         <property name="vso:tolerabilityLevel">
-          <title>Nivel de tolerabilidad</title>
           <description>Tolerability level assigned to the calculated risk</description>
           <type>d:text</type>
         </property>
         <property name="vso:raJustification">
-          <title>Justificación</title>
           <description>Justification/explanation for the risk assessment outcome</description>
           <type>d:text</type>
         </property>
@@ -1075,17 +989,14 @@
 
     <!-- ================= Containment Measures ================= -->
     <type name="vso:containmentMeasures">
-      <title>Immediate Containment Measures</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:containmentDescription">
-          <title>Descripción de la medida de contención</title>
           <description>Immediate containment measure(s) taken to reduce risk while the corrective action plan is implemented</description>
           <type>d:text</type>
         </property>
         <property name="vso:containmentImplementedDate">
-          <title>Fecha de implementación</title>
           <description>Date the containment measure was implemented</description>
           <type>d:date</type>
         </property>
@@ -1099,24 +1010,20 @@
 
     <!-- ================= Corrective Action Item ================= -->
     <type name="vso:correctiveActionItem">
-      <title>Corrective Action Item</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:sequenceNumber">
-          <title>Número secuencial</title>
           <description>Sequential number of this corrective action within the CAP</description>
           <type>d:int</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:actionDescription">
-          <title>Descripción de la acción</title>
           <description>Description of this corrective action</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
         </property>
         <property name="vso:actionPriority">
-          <title>Prioridad</title>
           <description>Priority of this corrective action</description>
           <type>d:text</type>
           <constraints>
@@ -1124,17 +1031,14 @@
           </constraints>
         </property>
         <property name="vso:actionResponsiblePerson">
-          <title>Persona responsable</title>
           <description>Person responsible for executing this corrective action</description>
           <type>d:text</type>
         </property>
         <property name="vso:actionDeadline">
-          <title>Fecha límite</title>
           <description>Deadline for this corrective action</description>
           <type>d:date</type>
         </property>
         <property name="vso:actionItemStatus">
-          <title>Estado de la acción</title>
           <description>Lifecycle status of this individual corrective action</description>
           <type>d:text</type>
           <default>Open</default>
@@ -1143,12 +1047,10 @@
           </constraints>
         </property>
         <property name="vso:actionClosureDate">
-          <title>Fecha de cierre</title>
           <description>Date this corrective action was closed</description>
           <type>d:date</type>
         </property>
         <property name="vso:actionClosureNotes">
-          <title>Notas de cierre</title>
           <description>Notes recorded when closing this corrective action</description>
           <type>d:text</type>
         </property>
@@ -1161,27 +1063,22 @@
 
     <!-- ================= Residual Risk ================= -->
     <type name="vso:residualRisk">
-      <title>Expected Residual Risk</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:residualProbability">
-          <title>Probabilidad residual</title>
           <description>Expected residual probability, as defined by the inspected entity's own methodology</description>
           <type>d:text</type>
         </property>
         <property name="vso:residualSeverity">
-          <title>Severidad residual</title>
           <description>Expected residual severity, as defined by the inspected entity's own methodology</description>
           <type>d:text</type>
         </property>
         <property name="vso:residualRiskLevel">
-          <title>Nivel de riesgo residual</title>
           <description>Expected residual risk level after corrective actions are implemented</description>
           <type>d:text</type>
         </property>
         <property name="vso:residualJustification">
-          <title>Justificación</title>
           <description>Justification/explanation for the expected residual risk</description>
           <type>d:text</type>
         </property>
@@ -1194,22 +1091,18 @@
 
     <!-- ================= Effectiveness Verification ================= -->
     <type name="vso:effectivenessVerification">
-      <title>Effectiveness Verification</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:verificationMethod">
-          <title>Método de verificación</title>
           <description>Method by which the inspected entity will verify effectiveness of the corrective action plan</description>
           <type>d:text</type>
         </property>
         <property name="vso:verificationIndicators">
-          <title>Indicadores</title>
           <description>Indicator(s) used to verify effectiveness</description>
           <type>d:text</type>
         </property>
         <property name="vso:projectedVerificationDate">
-          <title>Fecha proyectada de verificación</title>
           <description>Projected date of effectiveness verification</description>
           <type>d:date</type>
         </property>
@@ -1222,17 +1115,14 @@
 
     <!-- ================= Follow-up Report ================= -->
     <type name="vso:followUpReport">
-      <title>Follow-up Report</title>
       <parent>vso:vsoContent</parent>
 
       <properties>
         <property name="vso:followUpId">
-          <title>ID seguimiento</title>
           <description>Follow-up report identifier (Seguimiento), auto-generated as S-XXXXT####-EEE###-## when omitted, sequenced per finding. EEE### is the specialty code plus the parent finding's 3-digit sequence; ## is the follow-up's own 2-digit sequence. Example: S-MDSDA0002-COM001-01.</description>
           <type>d:text</type>
         </property>
         <property name="vso:followUpType">
-          <title>Tipo de seguimiento</title>
           <description>Type of follow-up activity</description>
           <type>d:text</type>
           <mandatory>true</mandatory>
@@ -1241,17 +1131,14 @@
           </constraints>
         </property>
         <property name="vso:followUpDate">
-          <title>Fecha de seguimiento</title>
           <description>Date (and time) the follow-up was conducted in the field, as recorded by the checklist app</description>
           <type>d:datetime</type>
         </property>
         <property name="vso:percentComplete">
-          <title>Porcentaje completado</title>
           <description>Percentage of corrective action completion</description>
           <type>d:int</type>
         </property>
         <property name="vso:currentResidualRisk">
-          <title>Riesgo residual actual</title>
           <description>Current residual risk at time of this follow-up, based on evidence provided</description>
           <type>d:text</type>
           <constraints>
@@ -1259,27 +1146,22 @@
           </constraints>
         </property>
         <property name="vso:followUpClosureDate">
-          <title>Fecha de cierre</title>
           <description>Date corrective action was closed</description>
           <type>d:date</type>
         </property>
         <property name="vso:closureVerificationMethod">
-          <title>Método de verificación</title>
           <description>Method used to verify effectiveness</description>
           <type>d:text</type>
         </property>
         <property name="vso:effectivenessConfirmed">
-          <title>Efectividad confirmada?</title>
           <description>Effectiveness verification result</description>
           <type>d:boolean</type>
         </property>
         <property name="vso:followUpComment">
-          <title>Comentario de seguimiento</title>
           <description>Free-text comment recorded during the follow-up</description>
           <type>d:text</type>
         </property>
         <property name="vso:evidenceReviewStatus">
-          <title>Estatus revisión de evidencia</title>
           <description>Whether a reviewer has judged this follow-up's evidence adequate. A follow-up cannot affect vso:findingStatus until this is Adequate</description>
           <type>d:text</type>
           <default>Pending Review</default>
@@ -1288,17 +1170,14 @@
           </constraints>
         </property>
         <property name="vso:evidenceReviewNotes">
-          <title>Notas de revisión de evidencia</title>
           <description>Reviewer's notes, particularly the reason when evidence is judged inadequate</description>
           <type>d:text</type>
         </property>
         <property name="vso:evidenceReviewDate">
-          <title>Fecha de revisión de evidencia</title>
           <description>Date the evidence adequacy review decision was made</description>
           <type>d:date</type>
         </property>
         <property name="vso:evidenceReviewedBy">
-          <title>Revisor de evidencia</title>
           <description>Username of the reviewer who applied the evidence adequacy decision</description>
           <type>d:text</type>
         </property>
@@ -1333,7 +1212,6 @@
   <aspects>
 
     <aspect name="vso:evidenceReferences">
-      <title>Evidence References</title>
       <associations>
         <association name="vso:relatedEvidence">
           <source>
@@ -1350,15 +1228,12 @@
     </aspect>
 
     <aspect name="vso:inspectionContext">
-      <title>Inspection Context</title>
       <properties>
         <property name="vso:inspectionId">
-          <title>ID inspección</title>
           <description>Associated surveillance activity identifier (Actividad de vigilancia), format AV-XXXX-T-#### where XXXX is the 4-char ICAO location code, T the activity type letter and #### an independent 4-digit sequence per location and activity type. Example: AV-MDSD-A-0002. Sequenced independently of the parent site-visit code (V-XXXX-YYYY-##).</description>
           <type>d:text</type>
         </property>
         <property name="vso:activityTypeId">
-          <title>ID tipo de actividad</title>
           <description>Canonical activity type identifier (ActivityType reference record in the AtroCore backend)</description>
           <type>d:text</type>
           <index enabled="true">
@@ -1368,7 +1243,6 @@
           </index>
         </property>
         <property name="vso:activityTypeCode">
-          <title>Código tipo de actividad</title>
           <description>Single-letter activity type code used in activity IDs, search and integrations: A=Auditoría, I=Inspección, M=Monitoreo, D=Revisión documental, S=Análisis de suceso. Deliberately unconstrained at model level because the ActivityType catalog is owned by the AtroCore backend and resolved dynamically.</description>
           <type>d:text</type>
           <index enabled="true">
@@ -1378,17 +1252,14 @@
           </index>
         </property>
         <property name="vso:activityTypeName">
-          <title>Nombre tipo de actividad</title>
           <description>Display name snapshot for the activity type</description>
           <type>d:text</type>
         </property>
         <property name="vso:locationId">
-          <title>ID ubicacion inspeccion</title>
           <description>Inspection location identifier</description>
           <type>d:text</type>
         </property>
         <property name="vso:locationCode">
-          <title>Código ubicacion inspeccion</title>
           <description>Stable location business code (for example ICAO code)</description>
           <type>d:text</type>
           <index enabled="true">
@@ -1398,7 +1269,6 @@
           </index>
         </property>
         <property name="vso:locationName">
-          <title>Nombre ubicacion inspeccion</title>
           <description>Inspection location name</description>
           <type>d:text</type>
         </property>
@@ -1406,10 +1276,8 @@
     </aspect>
 
     <aspect name="vso:serviceContext">
-      <title>Service Context</title>
       <properties>
         <property name="vso:specialtyId">
-          <title>ID especialidad</title>
           <description>Canonical specialty identifier</description>
           <type>d:text</type>
           <index enabled="true">
@@ -1419,7 +1287,6 @@
           </index>
         </property>
         <property name="vso:specialtyCode">
-          <title>Código especialidad</title>
           <description>Human-friendly specialty code used in search and integrations</description>
           <type>d:text</type>
           <index enabled="true">
@@ -1429,17 +1296,14 @@
           </index>
         </property>
         <property name="vso:specialtyName">
-          <title>Nombre especialidad</title>
           <description>Display name snapshot for specialty</description>
           <type>d:text</type>
         </property>
         <property name="vso:providerId">
-          <title>ID proveedor u operador</title>
           <description>Service provider identifier under oversight</description>
           <type>d:text</type>
         </property>
         <property name="vso:providerName">
-          <title>Nombre proveedor u operador</title>
           <description>Service provider name under oversight</description>
           <type>d:text</type>
         </property>
@@ -1447,25 +1311,20 @@
     </aspect>
 
     <aspect name="vso:regulatoryTraceability">
-      <title>Regulatory Traceability</title>
       <properties>
         <property name="vso:icaoReference">
-          <title>Referencia SARPs OACI</title>
           <description>ICAO SARPs reference</description>
           <type>d:text</type>
         </property>
         <property name="vso:nationalRegulation">
-          <title>Referencia regulación nacional</title>
           <description>National regulation title</description>
           <type>d:text</type>
         </property>
         <property name="vso:regulationItem">
-          <title>Articulo regulacion nacional</title>
           <description>Specific item/article in the national regulation</description>
           <type>d:text</type>
         </property>
         <property name="vso:ceMapping">
-          <title>Elemento crítico relacionado</title>
           <description>USOAP Critical Element mapping</description>
           <type>d:text</type>
           <multiple>true</multiple>
@@ -1474,7 +1333,6 @@
           </constraints>
         </property>
         <property name="vso:areaMapping">
-          <title>Areas USOAP relacionadas</title>
           <description>Full set of USOAP area codes this node is relevant to (an artifact can support PQs from more than one area/CE via a single citation); vso:usoapAreaCode holds only the primary/first one</description>
           <type>d:text</type>
           <multiple>true</multiple>
@@ -1486,25 +1344,20 @@
     </aspect>
 
     <aspect name="vso:smartFolderScope">
-      <title>Smart Folder Scope</title>
       <properties>
         <property name="vso:scopeProviderId">
-          <title>Scope provider ID</title>
           <description>Provider scope used by smart-folder templates</description>
           <type>d:text</type>
         </property>
         <property name="vso:scopeLocationCode">
-          <title>Scope location code</title>
           <description>Location scope used by smart-folder templates</description>
           <type>d:text</type>
         </property>
         <property name="vso:scopeSpecialtyCode">
-          <title>Scope specialty code</title>
           <description>Specialty scope used by smart-folder templates</description>
           <type>d:text</type>
         </property>
         <property name="vso:scopeProfileType">
-          <title>Scope profile type</title>
           <description>Profile selector for reusable templates</description>
           <type>d:text</type>
           <constraints>
@@ -1515,10 +1368,8 @@
     </aspect>
 
     <aspect name="vso:usoapEvidenceContext">
-      <title>USOAP Evidence Context</title>
       <properties>
         <property name="vso:usoapCriticalElement">
-          <title>USOAP critical element</title>
           <description>USOAP critical element classification for any document</description>
           <type>d:text</type>
           <constraints>
@@ -1526,7 +1377,6 @@
           </constraints>
         </property>
         <property name="vso:usoapAreaCode">
-          <title>USOAP area code</title>
           <description>USOAP PQ area code (ATS, CNS, SAR, AIM, SMS, MET, AGA, P/OPS, CHT)</description>
           <type>d:text</type>
           <constraints>
@@ -1534,13 +1384,11 @@
           </constraints>
         </property>
         <property name="vso:usoapPqReference">
-          <title>USOAP Protocol Question reference</title>
           <description>Specific USOAP PQ identifier (e.g., PQ 7.035)</description>
           <type>d:text</type>
           <multiple>true</multiple>
         </property>
         <property name="vso:usoapEvidenceBasis">
-          <title>USOAP Evidence Basis</title>
           <description>Nature of the evidence supporting a PQ</description>
           <type>d:text</type>
           <constraints>
@@ -1548,7 +1396,6 @@
           </constraints>
         </property>
         <property name="vso:usoapTagSource">
-          <title>USOAP tag source</title>
           <description>Whether the CE/area/PQ tags were resolved via the Annex-to-checklist-item citation chain or assigned directly on this node</description>
           <type>d:text</type>
           <constraints>
@@ -1559,20 +1406,16 @@
     </aspect>
 
     <aspect name="vso:evidenceIntegrity">
-      <title>Evidence Integrity</title>
       <properties>
         <property name="vso:hashValue">
-          <title>Hash criptográfico</title>
           <description>Cryptographic hash of evidence</description>
           <type>d:text</type>
         </property>
         <property name="vso:immutable">
-          <title>Inmutable?</title>
           <description>Indicates if evidence is sealed</description>
           <type>d:boolean</type>
         </property>
         <property name="vso:sealedDate">
-          <title>Fecha sellado</title>
           <description>Date evidence was sealed</description>
           <type>d:date</type>
         </property>

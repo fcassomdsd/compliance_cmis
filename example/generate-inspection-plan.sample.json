@@ -3,6 +3,7 @@
   "destinationPath": "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
   "inspectionNo": "INSP-2026-0225",
   "title": "Plan de inspección MDSD - DNA",
+  "locale": "es",
   "startDate": "2026-03-26",
   "endDate": "2026-03-27",
   "locationId": "MDSD",

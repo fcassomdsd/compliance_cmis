@@ -1,6 +1,196 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Locale-keyed label dictionaries for the three routine .fodt report templates
+// (Finding/Checklist/FollowUp Reporte). Keys correspond to ${labels.<key>}
+// placeholders in the templates under templates/. Add new locales here.
+var REPORT_LABELS = {
+  findingReport: {
+    en: {
+      inspectionFinding: "Inspection Finding",
+      identification: "Identification",
+      findingId: "Finding ID:",
+      checklistItem: "Checklist Item:",
+      location: "Location:",
+      specialty: "Specialty:",
+      provider: "Provider:",
+      findingDetail: "Finding Detail",
+      description: "Description:",
+      requirementBreached: "Requirement Breached:",
+      iCAOReference: "ICAO Reference:",
+      nationalRegulation: "National Regulation:",
+      regulationItem: "Regulation Item:",
+      level: "Level:",
+      severity: "Severity:",
+      riskClassification: "Risk Classification:",
+      targetResidualRisk: "Target Residual Risk:",
+      achievedResidualRisk: "Achieved Residual Risk:",
+      statusAndDates: "Status and Dates",
+      status: "Status:",
+      dateIssued: "Date Issued:",
+      cAPSubmissionDeadline: "CAP Submission Deadline:",
+      resolutionDeadline: "Resolution Deadline:",
+      closureDate: "Closure Date:",
+      correctiveAction: "Corrective Action",
+      cAPId: "CAP ID:",
+      proposedAction: "Proposed Action:",
+      responsibleEntity: "Responsible Entity:",
+      dueDate: "Due Date:",
+      acceptanceStatus: "Acceptance Status:",
+    },
+    es: {
+      inspectionFinding: "Hallazgo de Inspección",
+      identification: "Identificación",
+      findingId: "ID de Hallazgo:",
+      checklistItem: "Elemento de Checklist:",
+      location: "Ubicación:",
+      specialty: "Especialidad:",
+      provider: "Proveedor:",
+      findingDetail: "Detalle del Hallazgo",
+      description: "Descripción:",
+      requirementBreached: "Requisito Incumplido:",
+      iCAOReference: "Referencia OACI:",
+      nationalRegulation: "Reglamento Nacional:",
+      regulationItem: "Artículo:",
+      level: "Nivel:",
+      severity: "Severidad:",
+      riskClassification: "Clasificación de Riesgo:",
+      targetResidualRisk: "Riesgo Residual Objetivo:",
+      achievedResidualRisk: "Riesgo Residual Alcanzado:",
+      statusAndDates: "Estado y Fechas",
+      status: "Estado:",
+      dateIssued: "Fecha de Emisión:",
+      cAPSubmissionDeadline: "Plazo de Envío de CAP:",
+      resolutionDeadline: "Plazo de Resolución:",
+      closureDate: "Fecha de Cierre:",
+      correctiveAction: "Acción Correctiva",
+      cAPId: "ID de CAP:",
+      proposedAction: "Acción Propuesta:",
+      responsibleEntity: "Entidad Responsable:",
+      dueDate: "Fecha Límite:",
+      acceptanceStatus: "Estado de Aceptación:",
+    },
+  },
+  checklistReport: {
+    en: {
+      inspectionChecklist: "Inspection Checklist",
+      generalInformation: "General Information",
+      inspectionCode: "Inspection Code:",
+      location: "Location:",
+      specialty: "Specialty:",
+      provider: "Provider:",
+      scope: "Scope:",
+      completionDate: "Completion Date:",
+      interviewee: "Interviewee:",
+      checklistId: "Checklist ID:",
+      checklistItems: "Checklist Items",
+      verificationMethod: "Verification Method:",
+      complianceStatus: "Compliance Status:",
+      riskLevel: "Risk Level:",
+      inspectorComment: "Inspector Comment:",
+      iCAOReference: "ICAO Reference:",
+      nationalRegulation: "National Regulation:",
+      regulationItem: "Regulation Item:",
+      openPriorFinding: "Open Prior Finding:",
+      evidenceId: "Evidence ID",
+      type: "Type",
+      role: "Role",
+      source: "Source",
+      collectionDate: "Collection Date",
+    },
+    es: {
+      inspectionChecklist: "Checklist de Inspección",
+      generalInformation: "Datos Generales",
+      inspectionCode: "Código de Inspección:",
+      location: "Ubicación:",
+      specialty: "Especialidad:",
+      provider: "Proveedor:",
+      scope: "Alcance:",
+      completionDate: "Fecha de Finalización:",
+      interviewee: "Entrevistado:",
+      checklistId: "ID de Checklist:",
+      checklistItems: "Elementos de Verificación",
+      verificationMethod: "Método de Verificación:",
+      complianceStatus: "Estado de Cumplimiento:",
+      riskLevel: "Nivel de Riesgo:",
+      inspectorComment: "Comentario del Inspector:",
+      iCAOReference: "Referencia OACI:",
+      nationalRegulation: "Reglamento Nacional:",
+      regulationItem: "Artículo:",
+      openPriorFinding: "Hallazgo Previo Abierto:",
+      evidenceId: "ID de Evidencia",
+      type: "Tipo",
+      role: "Rol",
+      source: "Fuente",
+      collectionDate: "Fecha de Recolección",
+    },
+  },
+  followUpReport: {
+    en: {
+      followupReport: "Follow-up Report",
+      identification: "Identification",
+      followupId: "Follow-up ID:",
+      findingId: "Finding ID:",
+      cAPId: "CAP ID:",
+      location: "Location:",
+      specialty: "Specialty:",
+      provider: "Provider:",
+      followupDetail: "Follow-up Detail",
+      followupType: "Follow-up Type:",
+      followupDate: "Follow-up Date:",
+      percentComplete: "Percent Complete:",
+      currentResidualRisk: "Current Residual Risk:",
+      comment: "Comment:",
+      closure: "Closure",
+      effectivenessConfirmed: "Effectiveness Confirmed:",
+      closureVerificationMethod: "Closure Verification Method:",
+      followupClosureDate: "Follow-up Closure Date:",
+      evidence: "Evidence",
+      evidenceId: "Evidence ID",
+      type: "Type",
+      role: "Role",
+      source: "Source",
+      collectionDate: "Collection Date",
+    },
+    es: {
+      followupReport: "Reporte de Seguimiento",
+      identification: "Identificación",
+      followupId: "ID de Seguimiento:",
+      findingId: "ID de Hallazgo:",
+      cAPId: "ID de CAP:",
+      location: "Ubicación:",
+      specialty: "Especialidad:",
+      provider: "Proveedor:",
+      followupDetail: "Detalle del Seguimiento",
+      followupType: "Tipo de Seguimiento:",
+      followupDate: "Fecha de Seguimiento:",
+      percentComplete: "Porcentaje Completado:",
+      currentResidualRisk: "Riesgo Residual Actual:",
+      comment: "Comentario:",
+      closure: "Cierre",
+      effectivenessConfirmed: "Efectividad Confirmada:",
+      closureVerificationMethod: "Método de Verificación de Cierre:",
+      followupClosureDate: "Fecha de Cierre de Seguimiento:",
+      evidence: "Evidencia",
+      evidenceId: "ID de Evidencia",
+      type: "Tipo",
+      role: "Rol",
+      source: "Fuente",
+      collectionDate: "Fecha de Recolección",
+    },
+  },
+};
+
+function resolveReportLocale(requestBody) {
+  var locale = trimToNull(requestBody && requestBody.locale);
+  return (locale === "en") ? "en" : "es";
+}
+
+function getReportLabels(templateKey, locale) {
+  var templateLabels = REPORT_LABELS[templateKey] || {};
+  return templateLabels[locale] || templateLabels.es || {};
+}
+
 // Path configuration is centralized.
 // Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
 function resolveVsoPaths() {
@@ -884,7 +1074,8 @@ function validateImportRequest(requestBody) {
     activityTypeName: trimToNull(requestBody.activityTypeName),
     inspectionStatus: trimToNull(requestBody.inspectionStatus) || "Reported",
     startDate: trimToNull(requestBody.startDate),
-    endDate: trimToNull(requestBody.endDate)
+    endDate: trimToNull(requestBody.endDate),
+    locale: resolveReportLocale(requestBody)
   };
 }
 
@@ -1275,7 +1466,7 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
   }
 }
 
-function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, summary) {
+function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, summary, reportLocale) {
   var parsed = parseFollowUpCanonicalPayload(followUpFileNode);
   if (parsed.error) {
     return {
@@ -1411,6 +1602,7 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
       locationName: firstNonEmpty(report.locationName, findingNode.properties["vso:locationName"]),
       specialtyName: firstNonEmpty(report.specialtyName, findingNode.properties["vso:specialtyName"]),
       providerName: firstNonEmpty(report.providerName, findingNode.properties["vso:providerName"]),
+      labels: getReportLabels("followUpReport", reportLocale),
       evidenceItems: report.evidenceItems
     },
     followUpResult.pdfName,
@@ -1486,7 +1678,7 @@ function processFollowUpsByFileNames(followUpFileNames, requestBody) {
       continue;
     }
 
-    var fileResult = upsertFollowUpFromCanonicalFile(fileMatches[0], sourceRootFolder, summary);
+    var fileResult = upsertFollowUpFromCanonicalFile(fileMatches[0], sourceRootFolder, summary, resolveReportLocale(requestBody));
     if (fileResult.status === "processed") {
       summary.processed++;
     } else if (fileResult.status === "ambiguous-finding" || fileResult.status === "ambiguous-cap") {
@@ -2468,11 +2660,12 @@ try {
       checklistItemsForPdf.push(mergedItemForPdf);
     }
 
+    var checklistReportLocale = resolveReportLocale(importRequest);
     replaceContentWithPdf(
       checklistNode,
       destinationDomainFolder,
       CHECKLIST_PDF_TEMPLATE_PATH,
-      { checklist: checklistPayload, items: checklistItemsForPdf },
+      { checklist: checklistPayload, items: checklistItemsForPdf, labels: getReportLabels("checklistReport", checklistReportLocale) },
       checklistPayload.checklistId + ".pdf",
       ["vso:inspectionContext", "vso:serviceContext"]
     );
@@ -2510,7 +2703,8 @@ try {
           icaoReference: firstNonEmpty(findingPayload.icaoReference, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.icaoReference : null),
           nationalRegulation: firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null),
           regulationItem: firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null),
-          correctiveAction: findingPayload.correctiveAction || null
+          correctiveAction: findingPayload.correctiveAction || null,
+          labels: getReportLabels("findingReport", resolveReportLocale(importRequest))
         },
         findingPayload.findingId + ".pdf",
         ["vso:inspectionContext", "vso:serviceContext", "vso:regulatoryTraceability"]

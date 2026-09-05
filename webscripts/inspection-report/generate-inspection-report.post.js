@@ -101,6 +101,58 @@ function importTemplateGenerationLibrary() {
         TemplateGeneration.fail(400, "Invalid JSON: " + error.message);
       }
     },
+    loadEntityProfile: function loadEntityProfile() {
+      var fallback = {
+        entityName: "DEPARTAMENTO DE CONTROL DE VIGILANCIA SNA/AGA",
+        entityLogoBase64: "",
+        docControlCodes: { informeFinal: "DVSO-CS-F04", planDeInspeccion: "DVSO-CS-F02" },
+        docControlVersion: "3.0"
+      };
+      try {
+        var file = new Packages.java.io.File("/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json");
+        if (!file.exists()) {
+          return fallback;
+        }
+        var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
+        var parsed = JSON.parse(text);
+        return {
+          entityName: parsed.entityName || fallback.entityName,
+          entityLogoBase64: parsed.entityLogoBase64 || fallback.entityLogoBase64,
+          docControlCodes: parsed.docControlCodes || fallback.docControlCodes,
+          docControlVersion: parsed.docControlVersion || fallback.docControlVersion
+        };
+      } catch (loadError) {
+        return fallback;
+      }
+    },
+    xmlEscapeDeep: function xmlEscapeDeep(value) {
+      if (value === null || value === undefined) {
+        return value;
+      }
+      if (value instanceof Date) {
+        return value;
+      }
+      if (Array.isArray(value)) {
+        var escapedArray = [];
+        for (var arrayIndex = 0; arrayIndex < value.length; arrayIndex++) {
+          escapedArray.push(xmlEscapeDeep(value[arrayIndex]));
+        }
+        return escapedArray;
+      }
+      if (typeof value === "object") {
+        var escapedObject = {};
+        for (var key in value) {
+          if (value.hasOwnProperty(key)) {
+            escapedObject[key] = xmlEscapeDeep(value[key]);
+          }
+        }
+        return escapedObject;
+      }
+      if (typeof value === "string") {
+        return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      return value;
+    },
     renderTemplateContent: function(templateNode, data) {
       function resolvePath(context, path) {
         var parts = String(path).split(".");
@@ -838,6 +890,103 @@ var FILE_PREFIX = "Informe de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
 var MIMETYPE = "application/vnd.oasis.opendocument.text";
 
+// Locale-keyed static header labels for Informe Final.fodt. Keys correspond
+// to ${labels.<key>} placeholders in the template.
+var INFORME_FINAL_LABELS = {
+  en: {
+    formHeading: "FORM",
+    codeLabel: "Code",
+    versionLabel: "Version",
+    docTitle: "FINAL REPORT",
+    reportTitleLine1: "FINAL REPORT OF THE OPERATIONAL SAFETY",
+    reportTitleLine2: "OVERSIGHT INSPECTION",
+    directorateName: "OPERATIONAL SAFETY OVERSIGHT DIRECTORATE",
+    sectionIdentification: "Identification of the Oversight Activity",
+    activityLabel: "Oversight Activity",
+    entityInspectedLabel: "Inspected Entity",
+    activityTypeLabel: "Activity Type",
+    modalityLabel: "Modality",
+    modalityInPersonValue: "In-person",
+    specialtiesAreasLabel: "Specialties/Areas",
+    inspectionTeamLabel: "Inspection Team",
+    entityStaffAccompanyingLabel: "Entity Staff in Attendance",
+    dateAndPlaceLabel: "Date(s) and Location",
+    sectionObjectiveScope: "Objectives and Scope of the Oversight Activity",
+    sectionRegulatoryFramework: "Applicable Regulatory Framework",
+    sectionActivitiesDescription: "Description of Activities Performed",
+    sectionActivitySummary: "Summary of the Oversight Activity",
+    specialtyHeading: "Specialty",
+    sectionEntityResponsibility: "Responsibility of the Inspected Entity",
+    correctiveActionResponsibilityText: "It is the responsibility of the inspected entity to prepare a corrective action plan for each finding and submit it to the DVSNA within the deadlines established in the findings reports, counted from receipt of the Final Report, as required by the applicable regulations.",
+    sectionConclusions: "Conclusions and Comments:",
+    sectionFindingsDetail: "Findings Detail",
+    sectionSignatures: "Inspection Team Signatures:",
+    inspectorRoleLabel: "Operational Safety Inspector",
+    reviewedByLabel: "Reviewed by:",
+    approvedByLabel: "Approved by:",
+    leadInspectorTitle: "Lead Inspector",
+    divisionHeadTitle: "Head, SNA Oversight Division",
+    performedOnDateLabelLine1: "PERFORMED ON",
+    performedOnDateLabelLine2: "THE DATE OF ",
+    inspectionNoLabel: "INSPECTION NO. ",
+    leadInspectorLabel: "Lead Inspector: ",
+    objectiveLabel: "Objective: ",
+    scopeLabel: "Scope: ",
+    specialtyLabel: "Specialty: ",
+    questionLabel: "Question ",
+    findingClassLabel: "Finding class:",
+    nationalRegulationLabel: "National regulation: ",
+    findingDescriptionLabel: "Finding description: ",
+    reportDateLabel: "Report preparation date: "
+  },
+  es: {
+    formHeading: "FORMULARIO",
+    codeLabel: "Código",
+    versionLabel: "Versión",
+    docTitle: "INFORME FINAL",
+    reportTitleLine1: "INFORME FINAL DE INSPECCIÓN DE LA VIGILANCIA DE LA SEGURIDAD",
+    reportTitleLine2: "OPERACIONAL",
+    directorateName: "DIRECCIÓN DE VIGILANCIA DE LA SEGURIDAD OPERACIONAL",
+    sectionIdentification: "Identificación de la actividad de vigilancia",
+    activityLabel: "Actividad de vigilancia",
+    entityInspectedLabel: "Entidad inspeccionada",
+    activityTypeLabel: "Tipo de actividad",
+    modalityLabel: "Modalidad",
+    modalityInPersonValue: "Presencial",
+    specialtiesAreasLabel: "Especialidades/Áreas",
+    inspectionTeamLabel: "Equipo de inspección",
+    entityStaffAccompanyingLabel: "Personal de la entidad que acompañó",
+    dateAndPlaceLabel: "Fecha(s) y lugar",
+    sectionObjectiveScope: "Objetivos y alcance de la actividad de vigilancia",
+    sectionRegulatoryFramework: "Marco Normativo Aplicable",
+    sectionActivitiesDescription: "Descripción de las actividades realizadas",
+    sectionActivitySummary: "Resumen de la actividad de vigilancia",
+    specialtyHeading: "Especialidad",
+    sectionEntityResponsibility: "Responsabilidad de la entidad inspeccionada",
+    correctiveActionResponsibilityText: "Es responsabilidad de la entidad inspeccionada elaborar un plan de acciones correctivas para cada hallazgo y enviarlo a la DVSNA en los plazos establecidos por los informes de hallazgos, contados a partir de haber recibido el Informe Final, como lo establece la reglamentación.",
+    sectionConclusions: "Conclusiones y comentarios:",
+    sectionFindingsDetail: "Detalle de Hallazgos",
+    sectionSignatures: "Firmas del Equipo de Inspección:",
+    inspectorRoleLabel: "Inspector de Seguridad Operacional",
+    reviewedByLabel: "Revisado por:",
+    approvedByLabel: "Aprobado por:",
+    leadInspectorTitle: "Inspector Principal",
+    divisionHeadTitle: "Encargado División de Vigilancia SNA",
+    performedOnDateLabelLine1: "REALIZADO EN FECHA",
+    performedOnDateLabelLine2: "DEL ",
+    inspectionNoLabel: "INSPECCIÓN NO. ",
+    leadInspectorLabel: "Inspector Líder: ",
+    objectiveLabel: "Objetivo: ",
+    scopeLabel: "Alcance: ",
+    specialtyLabel: "Especialidad: ",
+    questionLabel: "Pregunta ",
+    findingClassLabel: "Clase de hallazgo:",
+    nationalRegulationLabel: "Reglamentacion nacional: ",
+    findingDescriptionLabel: "Descripcion hallazgo: ",
+    reportDateLabel: "Fecha de elaboración del informe: "
+  }
+};
+
 importTemplateGenerationLibrary();
 
 try {
@@ -888,6 +1037,14 @@ try {
   reportData.scope = TemplateGeneration.trimToNull(inputData.scope) || "";
   reportData.inspectionType = TemplateGeneration.trimToNull(inputData.inspectionType) || "";
 
+  var reportLocale = (TemplateGeneration.trimToNull(inputData.locale) === "en") ? "en" : "es";
+  var entityProfile = TemplateGeneration.loadEntityProfile();
+  reportData.entityName = entityProfile.entityName;
+  reportData.entityLogoBase64 = entityProfile.entityLogoBase64;
+  reportData.docControlCode = entityProfile.docControlCodes.informeFinal;
+  reportData.docControlVersion = entityProfile.docControlVersion;
+  reportData.labels = INFORME_FINAL_LABELS[reportLocale];
+
   var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
   var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || DESTINATION_PATH;
 
@@ -903,7 +1060,8 @@ try {
     TemplateGeneration.fail(500, "Destination folder not found");
   }
 
-  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, reportData);
+  var templateRenderData = TemplateGeneration.xmlEscapeDeep(reportData);
+  var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, templateRenderData);
   var providerSuffix = TemplateGeneration.trimToNull(reportData.providerName);
   var outputName =
     FILE_PREFIX +
