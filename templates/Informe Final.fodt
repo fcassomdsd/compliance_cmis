@@ -1210,8 +1210,8 @@
    </text:sequence-decls>
    <text:p text:style-name="P8"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
-   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">INFORME FINAL DE INSPEC</text:span><text:span text:style-name="T10">CI</text:span><text:span text:style-name="T11">Ó</text:span><text:span text:style-name="T10">N</text:span><text:span text:style-name="T9"> DE LA VIGILANCIA DE LA SEGURIDAD</text:span></text:p>
-   <text:p text:style-name="Informe_20_Encabezado_20_neg">OPERACIONAL</text:p>
+   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">${labels.reportTitleLine1}</text:span></text:p>
+   <text:p text:style-name="Informe_20_Encabezado_20_neg">${labels.reportTitleLine2}</text:p>
    <text:p text:style-name="Informe_20_Encabezado_20_neg"/>
    <text:p text:style-name="Informe_20_Encabezado_20_neg"/>
    <text:p text:style-name="Informe_20_Encabezado_20_neg">${locationName}</text:p>
@@ -1220,7 +1220,7 @@
    <text:p text:style-name="Informe_20_Encabezado_20_neg">${providerName}</text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
-   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T12">REALIZADO EN FECHA<text:line-break/>DEL </text:span><text:span text:style-name="T13">${dateRange}</text:span></text:p>
+   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T12">${labels.performedOnDateLabelLine1}<text:line-break/>${labels.performedOnDateLabelLine2}</text:span><text:span text:style-name="T13">${dateRange}</text:span></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"><draw:frame draw:style-name="fr2" draw:name="Imagen 1" text:anchor-type="char" svg:y="0.2in" svg:width="4.6874in" svg:height="2.5626in" draw:z-index="9"><draw:image draw:mime-type="image/jpeg">
       <office:binary-data>${entityLogoBase64}</office:binary-data>
@@ -1242,44 +1242,44 @@
    <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T9"/></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T9"/></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T9"/></text:p>
-   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">DIRECC</text:span><text:span text:style-name="T10">IÓN</text:span><text:span text:style-name="T9"> DE VIGILANCIA DE LA SEGURIDAD OPERACIONAL</text:span></text:p>
+   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">${labels.directorateName}</text:span></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
-   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">DEPARTAMENTO D</text:span><text:span text:style-name="T10">E CONTROL DE VIGILANCIA SNA/AGA</text:span></text:p>
+   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">${entityName}</text:span></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
-   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T14">INSPECCIÓN</text:span><text:span text:style-name="T9"> NO. </text:span><text:span text:style-name="T13">${inspectionCode}</text:span></text:p>
+   <text:p text:style-name="Informe_20_Encabezado_20_neg"><text:span text:style-name="T9">${labels.inspectionNoLabel}</text:span><text:span text:style-name="T13">${inspectionCode}</text:span></text:p>
    <text:list text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P9" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1335_220483553 Copy 1"/>Identificación de la actividad de vigilancia<text:bookmark-end text:name="__RefHeading___Toc1335_220483553 Copy 1"/></text:h>
+     <text:h text:style-name="P9" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1335_220483553 Copy 1"/>${labels.sectionIdentification}<text:bookmark-end text:name="__RefHeading___Toc1335_220483553 Copy 1"/></text:h>
     </text:list-item>
    </text:list>
    <table:table table:name="Table1" table:style-name="Table1">
     <table:table-column table:style-name="Table1.A" table:number-columns-repeated="3"/>
     <table:table-row table:style-name="Table1.1">
      <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Actividad de vigilancia</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.activityLabel}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">${inspectionCode}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table1.B1" table:number-columns-spanned="2" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Entidad inspeccionada</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.entityInspectedLabel}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">${providerName}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
     </table:table-row>
     <table:table-row table:style-name="Table1.1">
      <table:table-cell table:style-name="Table1.B1" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Tipo de actividad</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.activityTypeLabel}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">${inspectionType}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table1.B1" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Modalidad</text:p>
-      <text:p text:style-name="Informe_20_tabla_20_texto">Presencial</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.modalityLabel}</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_texto">${labels.modalityInPersonValue}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table1.B1" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label"><text:span text:style-name="T15">Especialidad</text:span><text:span text:style-name="T16">es/Áreas</text:span></text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label"><text:span text:style-name="T15">${labels.specialtiesAreasLabel}</text:span></text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">[#list services as service]</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">${service.name}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">[/#list]</text:p>
@@ -1287,21 +1287,21 @@
     </table:table-row>
     <table:table-row table:style-name="Table1.1">
      <table:table-cell table:style-name="Table1.B1" table:number-columns-spanned="2" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Equipo de inspección</text:p>
-      <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T17">Inspector Líder: </text:span>${mainInspector}</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.inspectionTeamLabel}</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T17">${labels.leadInspectorLabel}</text:span>${mainInspector}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">[#list inspectors as inspector]${inspector.name}, ${inspector.specialty}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">[/#list]</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:table-cell table:style-name="Table1.C3" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Personal de la entidad que acompañó</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.entityStaffAccompanyingLabel}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">[#list interviewees as entrevistado]${entrevistado.name}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">[/#list]</text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table1.1">
      <table:table-cell table:style-name="Table1.B1" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="Informe_20_tabla_20_label">Fecha(s) y lugar</text:p>
+      <text:p text:style-name="Informe_20_tabla_20_label">${labels.dateAndPlaceLabel}</text:p>
       <text:p text:style-name="Informe_20_tabla_20_texto">${dateRange} — ${locationName}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
@@ -1310,14 +1310,14 @@
    </table:table>
    <text:list text:continue-numbering="true" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711278"/><text:bookmark-start text:name="__RefHeading___Toc1335_220483553"/>Objetivos y <text:bookmark-end text:name="_Toc412711278"/>alcance de la actividad de vigilancia<text:bookmark-end text:name="__RefHeading___Toc1335_220483553"/></text:h>
+     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711278"/><text:bookmark-start text:name="__RefHeading___Toc1335_220483553"/>${labels.sectionObjectiveScope}<text:bookmark-end text:name="_Toc412711278"/><text:bookmark-end text:name="__RefHeading___Toc1335_220483553"/></text:h>
     </text:list-item>
    </text:list>
-   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T18">Objetivo:</text:span><text:span text:style-name="T19"> </text:span>${objective}</text:p>
-   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T18">Alcance:</text:span><text:span text:style-name="T19"> </text:span>${scope}</text:p>
+   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T18">${labels.objectiveLabel}</text:span>${objective}</text:p>
+   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T18">${labels.scopeLabel}</text:span>${scope}</text:p>
    <text:list xml:id="list234761220730308" text:continue-numbering="true" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2">Marco Normativo Aplicable</text:h>
+     <text:h text:style-name="P10" text:outline-level="2">${labels.sectionRegulatoryFramework}</text:h>
     </text:list-item>
    </text:list>
    <text:p text:style-name="Informe_20_texto">[#list regulationTitles as reglamento]</text:p>
@@ -1329,13 +1329,13 @@
    <text:p text:style-name="Informe_20_texto">[/#list]</text:p>
    <text:list text:continue-list="list234761220730308" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711282 Copy 1"/><text:bookmark-start text:name="__RefHeading___Toc1343_220483553 Copy 1"/>D<text:bookmark-end text:name="_Toc412711282 Copy 1"/>escripción de las actividades realizadas<text:bookmark-end text:name="__RefHeading___Toc1343_220483553 Copy 1"/></text:h>
+     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711282 Copy 1"/><text:bookmark-start text:name="__RefHeading___Toc1343_220483553 Copy 1"/>${labels.sectionActivitiesDescription}<text:bookmark-end text:name="_Toc412711282 Copy 1"/><text:bookmark-end text:name="__RefHeading___Toc1343_220483553 Copy 1"/></text:h>
     </text:list-item>
    </text:list>
    <text:p text:style-name="Informe_20_texto">${description}</text:p>
    <text:list text:continue-numbering="true" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711282"/><text:bookmark-start text:name="__RefHeading___Toc1343_220483553"/>R<text:bookmark-end text:name="_Toc412711282"/>esumen de la actividad de vigilancia<text:bookmark-end text:name="__RefHeading___Toc1343_220483553"/></text:h>
+     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711282"/><text:bookmark-start text:name="__RefHeading___Toc1343_220483553"/>${labels.sectionActivitySummary}<text:bookmark-end text:name="_Toc412711282"/><text:bookmark-end text:name="__RefHeading___Toc1343_220483553"/></text:h>
     </text:list-item>
    </text:list>
    <table:table table:name="ChecklistSummary" table:style-name="ChecklistSummary">
@@ -1344,7 +1344,7 @@
     <table:table-column table:style-name="ChecklistSummary.C" table:number-columns-repeated="2"/>
     <table:table-row table:style-name="ChecklistSummary.1">
      <table:table-cell table:style-name="ChecklistSummary.A1" office:value-type="string">
-      <text:p text:style-name="Informe_20_Encabezado_20_neg">Especialidad</text:p>
+      <text:p text:style-name="Informe_20_Encabezado_20_neg">${labels.specialtyHeading}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="ChecklistSummary.B1" office:value-type="string">
       <text:p text:style-name="Informe_20_Encabezado_20_neg">${titles.0}</text:p>
@@ -1376,32 +1376,32 @@
    </table:table>
    <text:list text:continue-numbering="true" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1341_220483553"/><text:bookmark-start text:name="_Toc412711281"/>Responsabilidad de<text:bookmark-end text:name="_Toc412711281"/> <text:span text:style-name="T20">la entidad inspeccionada</text:span><text:bookmark-end text:name="__RefHeading___Toc1341_220483553"/></text:h>
+     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1341_220483553"/><text:bookmark-start text:name="_Toc412711281"/>${labels.sectionEntityResponsibility}<text:bookmark-end text:name="_Toc412711281"/><text:bookmark-end text:name="__RefHeading___Toc1341_220483553"/></text:h>
     </text:list-item>
    </text:list>
-   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T3">Es responsabilidad de </text:span><text:span text:style-name="T21">la entidad inspeccionada </text:span><text:span text:style-name="T3">elaborar </text:span><text:span text:style-name="T21">un</text:span><text:span text:style-name="T3"> plan de acciones correctivas </text:span><text:span text:style-name="T21">para cada hallazgo</text:span><text:span text:style-name="T3"> </text:span><text:span text:style-name="T21">y</text:span><text:span text:style-name="T3"> enviarlo a la </text:span><text:span text:style-name="T21">DVSNA</text:span><text:span text:style-name="T22"> </text:span><text:span text:style-name="T23">en los plazos establecido</text:span><text:span text:style-name="T23">s</text:span><text:span text:style-name="T22"> </text:span><text:span text:style-name="T23">por los informes de </text:span><text:span text:style-name="T23">h</text:span><text:span text:style-name="T23">allazgos, contados a pa</text:span><text:span text:style-name="T23">rtir</text:span><text:span text:style-name="T3"> de haber recibido el Informe Final, </text:span><text:span text:style-name="T21">como lo establece la reglamentación</text:span><text:span text:style-name="T3">.</text:span></text:p>
+   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T3">${labels.correctiveActionResponsibilityText}</text:span></text:p>
    <text:list text:continue-numbering="true" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711292"/><text:bookmark-start text:name="__RefHeading___Toc1361_220483553"/><text:span text:style-name="T24">Conclusiones </text:span><text:span text:style-name="T25">y comentarios</text:span><text:span text:style-name="T24">:</text:span><text:bookmark-end text:name="_Toc412711292"/><text:bookmark-end text:name="__RefHeading___Toc1361_220483553"/></text:h>
+     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="_Toc412711292"/><text:bookmark-start text:name="__RefHeading___Toc1361_220483553"/><text:span text:style-name="T24">${labels.sectionConclusions}</text:span><text:bookmark-end text:name="_Toc412711292"/><text:bookmark-end text:name="__RefHeading___Toc1361_220483553"/></text:h>
     </text:list-item>
    </text:list>
    <text:p text:style-name="Informe_20_texto">${conclusion}</text:p>
    <text:list xml:id="list234760296477309" text:continue-numbering="true" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1363_220483553"/><text:span text:style-name="Título_20_1_20_Car"><text:span text:style-name="T20">Detalle de </text:span></text:span><text:span text:style-name="Título_20_1_20_Car"><text:span text:style-name="T26">Hallazgos</text:span></text:span><text:bookmark-end text:name="__RefHeading___Toc1363_220483553"/></text:h>
+     <text:h text:style-name="P10" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1363_220483553"/><text:span text:style-name="Título_20_1_20_Car">${labels.sectionFindingsDetail}</text:span><text:bookmark-end text:name="__RefHeading___Toc1363_220483553"/></text:h>
     </text:list-item>
    </text:list>
    <text:list text:style-name="Informe_20_hallazgo">
      <text:p text:style-name="P12">[#list findingSpecs as specialty]</text:p>
     <text:list-item>
-     <text:p text:style-name="P12"><text:span text:style-name="Informe_20_Hallazgo_20_1">Especialidad</text:span>: ${specialty.name}</text:p>
+     <text:p text:style-name="P12"><text:span text:style-name="Informe_20_Hallazgo_20_1">${labels.specialtyLabel}</text:span>${specialty.name}</text:p>
      <text:list>
        <text:p text:style-name="P13">[#list specialty.findings as finding]</text:p>
       <text:list-item>
-       <text:p text:style-name="P13"><text:span text:style-name="T13">Pregunta ${finding.itemCode}:</text:span> ${finding.requirementText}</text:p>
-       <text:p text:style-name="P13"><text:span text:style-name="T13">Clase de hallazgo:</text:span>${finding.level}</text:p>
-       <text:p text:style-name="P13"><text:span text:style-name="T13">Reglamentacion nacional:</text:span> ${finding.nationalRegulation}</text:p>
-       <text:p text:style-name="P13"><text:span text:style-name="T13">Descripcion hallazgo:</text:span> ${finding.description}</text:p>
+       <text:p text:style-name="P13"><text:span text:style-name="T13">${labels.questionLabel}${finding.itemCode}:</text:span> ${finding.requirementText}</text:p>
+       <text:p text:style-name="P13"><text:span text:style-name="T13">${labels.findingClassLabel}</text:span>${finding.level}</text:p>
+       <text:p text:style-name="P13"><text:span text:style-name="T13">${labels.nationalRegulationLabel}</text:span>${finding.nationalRegulation}</text:p>
+       <text:p text:style-name="P13"><text:span text:style-name="T13">${labels.findingDescriptionLabel}</text:span>${finding.description}</text:p>
       </text:list-item>
        <text:p text:style-name="P13">[/#list]</text:p>
      </text:list>
@@ -1410,7 +1410,7 @@
    </text:list>
    <text:list text:continue-list="list234760296477309" text:style-name="Informe_20_numeracion">
     <text:list-item>
-     <text:h text:style-name="P9" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1367_220483553"/><text:bookmark-start text:name="_Toc412711293"/><text:span text:style-name="T24">Firmas del Equipo de Inspección:</text:span><text:bookmark-end text:name="_Toc412711293"/><text:span text:style-name="T27"> </text:span><text:bookmark-end text:name="__RefHeading___Toc1367_220483553"/></text:h>
+     <text:h text:style-name="P9" text:outline-level="2"><text:bookmark-start text:name="__RefHeading___Toc1367_220483553"/><text:bookmark-start text:name="_Toc412711293"/><text:span text:style-name="T24">${labels.sectionSignatures}</text:span><text:bookmark-end text:name="_Toc412711293"/><text:bookmark-end text:name="__RefHeading___Toc1367_220483553"/></text:h>
     </text:list-item>
    </text:list>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
@@ -1421,7 +1421,7 @@
      <table:table-row table:style-name="Table2.1">
       <table:table-cell table:style-name="Table2.A1" office:value-type="string">
        <text:p text:style-name="Informe_20_Encabezado_20_neg">${inspector.name}</text:p>
-       <text:p text:style-name="P14">Inspector de Seguridad Operacional</text:p>
+       <text:p text:style-name="P14">${labels.inspectorRoleLabel}</text:p>
       </table:table-cell>
      </table:table-row>
     </table:table>
@@ -1429,7 +1429,7 @@
    </text:section>
    <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T28"/></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T28"/></text:p>
-   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T29">Fecha de elaboración del informe:</text:span><text:span text:style-name="T24"> <text:s/>${reportDate}</text:span></text:p>
+   <text:p text:style-name="Informe_20_texto"><text:span text:style-name="T29">${labels.reportDateLabel}</text:span><text:span text:style-name="T24">${reportDate}</text:span></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"><text:span text:style-name="T30"/></text:p>
    <table:table table:name="Table3" table:style-name="Table3">
     <table:table-column table:style-name="Table3.A"/>
@@ -1437,13 +1437,13 @@
     <table:table-column table:style-name="Table3.C"/>
     <table:table-row table:style-name="Table3.1">
      <table:table-cell table:style-name="Table3.A1" office:value-type="string">
-      <text:p text:style-name="Informe_20_Encabezado_20_neg">Revisado por:</text:p>
+      <text:p text:style-name="Informe_20_Encabezado_20_neg">${labels.reviewedByLabel}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B1" office:value-type="string">
       <text:p text:style-name="Informe_20_tabla_20_texto"/>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.A1" office:value-type="string">
-      <text:p text:style-name="Informe_20_Encabezado_20_neg">Aprobado por:</text:p>
+      <text:p text:style-name="Informe_20_Encabezado_20_neg">${labels.approvedByLabel}</text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table3.2">
@@ -1459,13 +1459,13 @@
     </table:table-row>
     <table:table-row table:style-name="Table3.3">
      <table:table-cell table:style-name="Table3.A1" office:value-type="string">
-      <text:p text:style-name="P15"><text:span text:style-name="T31">I</text:span><text:span text:style-name="T5">nspector Principal</text:span></text:p>
+      <text:p text:style-name="P15"><text:span text:style-name="T5">${labels.leadInspectorTitle}</text:span></text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B1" office:value-type="string">
       <text:p text:style-name="Informe_20_tabla_20_texto"/>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.A1" office:value-type="string">
-      <text:p text:style-name="P15"><text:span text:style-name="T5">Enc</text:span><text:span text:style-name="T32">argado</text:span><text:span text:style-name="T5"> División de Vigilancia SNA</text:span></text:p>
+      <text:p text:style-name="P15"><text:span text:style-name="T5">${labels.divisionHeadTitle}</text:span></text:p>
      </table:table-cell>
     </table:table-row>
    </table:table>

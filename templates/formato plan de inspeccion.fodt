@@ -741,7 +741,7 @@
     <table:table-column table:style-name="Table2.C"/>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A1" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Inspección No.:</text:span> <text:s/>${inspectionNo}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.inspectionNoLabel}</text:span>${inspectionNo}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table2.B1" table:number-columns-spanned="2" office:value-type="string">
       <text:p text:style-name="Table_20_Contents">${locationName}</text:p>
@@ -750,7 +750,7 @@
     </table:table-row>
     <table:table-row table:style-name="Table2.2">
      <table:table-cell table:style-name="Table2.A2" office:value-type="string">
-      <text:p text:style-name="P13">Entidad(es) a Inspeccionar:</text:p>
+      <text:p text:style-name="P13">${labels.entitiesToInspectLabel}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table2.B2" table:number-columns-spanned="2" office:value-type="string">
       <text:p text:style-name="Table_20_Contents">[#list providers as provider]<text:span text:style-name="T14">${provider.name}</text:span></text:p>
@@ -761,15 +761,15 @@
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Objetivos:</text:span> ${objective}</text:p>
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Alcance:</text:span> ${scope}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.objectivesLabel}</text:span>${objective}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.scopeLabel}</text:span>${scope}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P14">Uso de documentos de referencia para la inspección</text:p>
+      <text:p text:style-name="P14">${labels.referenceDocsUsageLabel}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
@@ -783,15 +783,15 @@
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P14">Miembros del equipo</text:p>
+      <text:p text:style-name="P14">${labels.teamMembersLabel}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Especialista Principal:</text:span> ${mainInspector}</text:p>
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Especialista Alterno:</text:span> ${secondaryInspector}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.mainSpecialistLabel}</text:span>${mainInspector}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.alternateSpecialistLabel}</text:span>${secondaryInspector}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
@@ -808,22 +808,22 @@
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Fecha propuesta de inspección:</text:span> ${startDate}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.proposedInspectionDateLabel}</text:span>${startDate}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Reunión propuesta de inicio:</text:span> ${openingDateTime}</text:p>
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Reunión propuesta de clausura:</text:span> ${closureDateTime}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.proposedOpeningMeetingLabel}</text:span>${openingDateTime}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.proposedClosingMeetingLabel}</text:span>${closureDateTime}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A3" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P17">Cronograma de entrevistas:</text:p>
+      <text:p text:style-name="P17">${labels.interviewScheduleLabel}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
@@ -842,10 +842,10 @@
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table2.A13" table:number-columns-spanned="3" office:value-type="string">
-      <text:p text:style-name="P17">Lista de distribución del informe final:</text:p>
+      <text:p text:style-name="P17">${labels.finalReportDistributionListLabel}</text:p>
       <text:p text:style-name="Table_20_Contents">[#list providers as provider]<text:span text:style-name="T14">${provider.contact.name}</text:span>, ${provider.contact.position} </text:p>
       <text:p text:style-name="Table_20_Contents">[/#list]</text:p>
-      <text:p text:style-name="P17">Fecha de entrega del informe final:</text:p>
+      <text:p text:style-name="P17">${labels.finalReportDeliveryDateLabel}</text:p>
      </table:table-cell>
      <table:covered-table-cell/>
      <table:covered-table-cell/>
@@ -856,34 +856,34 @@
     <table:table-column table:style-name="Table3.B"/>
     <table:table-row table:style-name="Table3.1">
      <table:table-cell table:style-name="Table3.A1" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Elaborado por: </text:span>${mainInspector}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.preparedByLabel}</text:span>${mainInspector}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B1" office:value-type="string">
-      <text:p text:style-name="P18">Aprobado por:<text:span text:style-name="T15"> </text:span><text:span text:style-name="T16">Ernesto de la Cruz</text:span></text:p>
+      <text:p text:style-name="P18">${labels.approvedByLabel}<text:span text:style-name="T15"> </text:span><text:span text:style-name="T16">Ernesto de la Cruz</text:span></text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row>
      <table:table-cell table:style-name="Table3.A2" office:value-type="string">
-      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">Cargo:</text:span> Especialista principal, equipo de inspección de la seguridad operacional, inspección ${inspectionNo}</text:p>
+      <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.positionLabel}</text:span> ${labels.leadSpecialistPositionText}${inspectionNo}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B2" office:value-type="string">
-      <text:p text:style-name="P18">Cargo: <text:span text:style-name="T16">Enc. Departamento de Control de </text:span><text:span text:style-name="T16">Vigilancia SNA/AGA</text:span></text:p>
+      <text:p text:style-name="P18">${labels.positionLabel} <text:span text:style-name="T16">Enc. Departamento de Control de </text:span><text:span text:style-name="T16">Vigilancia SNA/AGA</text:span></text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table3.3">
      <table:table-cell table:style-name="Table3.A2" office:value-type="string">
-      <text:p text:style-name="P18">Fecha: <text:span text:style-name="T15"><text:date style:data-style-name="N41" text:date-value="2026-03-07T14:45:39.188786339">7 de marzo de 2026</text:date></text:span></text:p>
+      <text:p text:style-name="P18">${labels.dateLabel} <text:span text:style-name="T15"><text:date style:data-style-name="N41" text:date-value="2026-03-07T14:45:39.188786339">7 de marzo de 2026</text:date></text:span></text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B2" office:value-type="string">
-      <text:p text:style-name="P18">Fecha: <text:span text:style-name="T15"><text:date style:data-style-name="N41" text:date-value="2026-03-07T14:45:39.189136493">7 de marzo de 2026</text:date></text:span><text:span text:style-name="T15"><text:s/></text:span></text:p>
+      <text:p text:style-name="P18">${labels.dateLabel} <text:span text:style-name="T15"><text:date style:data-style-name="N41" text:date-value="2026-03-07T14:45:39.189136493">7 de marzo de 2026</text:date></text:span><text:span text:style-name="T15"><text:s/></text:span></text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table3.4">
      <table:table-cell table:style-name="Table3.A2" office:value-type="string">
-      <text:p text:style-name="P19">Firma:<text:soft-page-break/></text:p>
+      <text:p text:style-name="P19">${labels.signatureLabel}<text:soft-page-break/></text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B2" office:value-type="string">
-      <text:p text:style-name="P18">Firma:</text:p>
+      <text:p text:style-name="P18">${labels.signatureLabel}</text:p>
      </table:table-cell>
     </table:table-row>
    </table:table>
