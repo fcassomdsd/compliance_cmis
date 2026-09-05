@@ -281,6 +281,16 @@
         </list>
       </parameter>
     </constraint>
+
+    <constraint name="vso:capCriterionResponseList" type="LIST">
+      <parameter name="allowedValues">
+        <list>
+          <value>Sí</value>
+          <value>No</value>
+          <value>No aplica</value>
+        </list>
+      </parameter>
+    </constraint>
   </constraints>
 
   <!-- ========================================================= -->
@@ -856,6 +866,17 @@
             <many>false</many>
           </target>
         </child-association>
+        <child-association name="vso:hasEvaluation">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:capEvaluation</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
       </associations>
 
       <mandatory-aspects>
@@ -863,6 +884,101 @@
         <aspect>vso:inspectionContext</aspect>
         <aspect>vso:serviceContext</aspect>
       </mandatory-aspects>
+    </type>
+
+    <!-- ================= CAP Evaluation (IDAC-PAC-EVAL-01) ================= -->
+    <type name="vso:capEvaluation">
+      <title>CAP Evaluation</title>
+      <description>One manual review pass of a Corrective Action Plan against the IDAC-PAC-EVAL-01 checklist. A CAP accumulates one of these per review cycle (including after a reject/resubmit), preserving the full evaluation history.</description>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:evaluatedBy">
+          <title>Evaluador</title>
+          <description>Username of the reviewer performing this evaluation pass</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:evaluationDate">
+          <title>Fecha de evaluación</title>
+          <description>Date this evaluation pass was last updated</description>
+          <type>d:date</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:evaluationDecisionOutcome">
+          <title>Resultado de la decisión</title>
+          <description>Acceptance decision this evaluation pass resulted in — set only once the reviewer confirms Accept/Reject; empty while the evaluation is still in progress</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:acceptanceStatusList"/>
+          </constraints>
+        </property>
+        <property name="vso:evaluationDecisionReason">
+          <title>Justificación de la decisión</title>
+          <description>Reviewer's justification, set only when the outcome is Not Accepted</description>
+          <type>d:text</type>
+        </property>
+      </properties>
+
+      <associations>
+        <child-association name="vso:hasCriterion">
+          <source>
+            <mandatory>false</mandatory>
+            <many>false</many>
+          </source>
+          <target>
+            <class>vso:capEvaluationCriterion</class>
+            <mandatory>false</mandatory>
+            <many>true</many>
+          </target>
+        </child-association>
+      </associations>
+
+      <mandatory-aspects>
+        <aspect>cm:versionable</aspect>
+        <aspect>vso:serviceContext</aspect>
+      </mandatory-aspects>
+    </type>
+
+    <!-- ================= CAP Evaluation Criterion ================= -->
+    <type name="vso:capEvaluationCriterion">
+      <title>CAP Evaluation Criterion</title>
+      <description>A single Sí/No/No aplica criterion (or free-text section conclusion) answered as part of a vso:capEvaluation pass, per the IDAC-PAC-EVAL-01 checklist.</description>
+      <parent>vso:vsoContent</parent>
+
+      <properties>
+        <property name="vso:criterionCode">
+          <title>Código del criterio</title>
+          <description>Catalog code, e.g. RCA.ROOT_CAUSE_CLEAR</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:criterionSection">
+          <title>Sección del criterio</title>
+          <description>Catalog section this criterion belongs to, e.g. RCA, RISK, ADMIN</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:criterionLabel">
+          <title>Enunciado del criterio</title>
+          <description>Label snapshot at evaluation time, so historical evaluations stay self-contained if catalog wording changes later</description>
+          <type>d:text</type>
+          <mandatory>true</mandatory>
+        </property>
+        <property name="vso:criterionResponse">
+          <title>Respuesta</title>
+          <description>Sí/No/No aplica response — empty for conclusion-kind rows</description>
+          <type>d:text</type>
+          <constraints>
+            <constraint ref="vso:capCriterionResponseList"/>
+          </constraints>
+        </property>
+        <property name="vso:criterionObservations">
+          <title>Observaciones</title>
+          <description>Observation text for a Sí/No row, or the full text for a conclusion-kind row</description>
+          <type>d:text</type>
+        </property>
+      </properties>
     </type>
 
     <!-- ================= Root Cause Analysis ================= -->
