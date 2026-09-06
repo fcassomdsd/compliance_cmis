@@ -1,5 +1,5 @@
 {
-  "_comment": "Source of truth for the pilot smart-folder profile templates, consumed by generate-smart-folder-templates.js. Provider/specialty ids and codes extracted directly from the pre-generator templates (see git history) rather than assumed. Should match docs/smart-folders-operational-map.md's Provider assignment map — update both together.",
+  "_comment": "Source of truth for the pilot smart-folder profile templates, consumed by generate-smart-folder-templates.js. `specialties` below is the flat 16-code Nomenclatura catalog — there is no AGA/SNA/MET domain grouping any more; profiles are keyed by provider and reference specialty codes from that flat list via `specialtyCodes`. Should match docs/smart-folders-operational-map.md's Specialty catalog and Provider assignment map — update both together.",
   "path": "//app:company_home//st:sites//cm:vigilancia-de-la-so//cm:documentLibrary//cm:Vigilancia//*",
   "sections": [
     { "id": "listas-verificacion", "name": "Listas de Verificación", "type": "vso:inspectionChecklist" },
@@ -20,52 +20,51 @@
       { "id": "hallazgos", "name": "Hallazgos", "type": "vso:finding" }
     ]
   },
+  "specialties": [
+    { "code": "APR", "name": "APR - Gestion de Plataformas" },
+    { "code": "AVIS", "name": "AVIS - Ayudas Visuales" },
+    { "code": "FAU", "name": "FAU - Control de Fauna Silvestre" },
+    { "code": "PAV", "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas" },
+    { "code": "SSEI", "name": "SSEI - Servicios de Salvamento y Extincion de Incendios" },
+    { "code": "AIM", "name": "AIM - Gestion de informacion aeronautica" },
+    { "code": "ATS", "name": "ATS - Control de Transito Aereo" },
+    { "code": "COM", "name": "COM - Comunicaciones de Radio" },
+    { "code": "ECNS", "name": "ECNS - Energia CNS" },
+    { "code": "EMET", "name": "EMET - Equipos Meteorologicos" },
+    { "code": "FIS", "name": "FIS - Servicio de Informacion Aeronautica" },
+    { "code": "MET", "name": "MET - Meteorología Aeronáutica" },
+    { "code": "NAV", "name": "NAV - Radioayudas a la Navegacion" },
+    { "code": "SAR", "name": "SAR - Busqueda y Salvamento" },
+    { "code": "SUR", "name": "SUR - Sistemas de Vigilancia" },
+    { "code": "DPR", "name": "DPR - Procesamiento de Datos Radar y ATN" }
+  ],
   "profiles": [
     {
-      "id": "sna",
-      "title": "Piloto - Perfil SNA",
+      "id": "idac",
+      "title": "Piloto - Perfil IDAC",
       "providers": [
         { "id": "a01k5q8tb0reenryr2y0m9ysxhd", "name": "IDAC" }
       ],
-      "specialties": [
-        { "code": "VIG", "name": "VIG - Sistemas de Vigilancia" },
-        { "code": "COM", "name": "COM - Comunicaciones de Radio" },
-        { "code": "RNA", "name": "RNA - Radioayudas a la Navegacion" },
-        { "code": "ATS", "name": "ATS - Control de Transito Aereo" },
-        { "code": "SAR", "name": "SAR - Busqueda y Salvamento" },
-        { "code": "FIS", "name": "FIS - Servicio de Informacion Aeronautica" },
-        { "code": "AIM", "name": "AIM - Gestion de informacion aeronautica" },
-        { "code": "ECNS", "name": "ECNS - Energia CNS" },
-        { "code": "EMET", "name": "EMET - Equipos Meteorologicos" },
-        { "code": "P/OPS", "name": "P/OPS - PANS/OPS" }
-      ]
+      "specialtyCodes": ["SUR", "COM", "NAV", "ATS", "SAR", "FIS", "AIM", "ECNS", "EMET", "DPR"]
     },
     {
-      "id": "met",
-      "title": "Piloto - Perfil MET",
+      "id": "indomet",
+      "title": "Piloto - Perfil INDOMET",
       "providers": [
         { "id": "a01k5qj6xvce87vz90yxa59exh2", "name": "INDOMET" }
       ],
-      "specialties": [
-        { "code": "MET-AD", "name": "MET-AD - Meteorología Aeronáutica" }
-      ]
+      "specialtyCodes": ["MET"]
     },
     {
-      "id": "aga",
-      "title": "Piloto - Perfil AGA",
+      "id": "aeropuertos",
+      "title": "Piloto - Perfil Aeropuertos",
       "providers": [
         { "id": "a01k5qj6xv8efy8m51y28jm3w5t", "name": "AERODOM" },
         { "id": "a01k5qj6xvfee7vk1dh5y0s3qba", "name": "AMS-CRC" },
         { "id": "a01k5qj6xvjefy8e06qej7rsbce", "name": "G-Punta Cana" },
         { "id": "a01k5qj6xvne95vzxjt37f6k1br", "name": "AIC" }
       ],
-      "specialties": [
-        { "code": "PAV", "name": "PAV - Gestion de Pavimento y Caracteristicas Fisicas" },
-        { "code": "FAU", "name": "FAU - Control de Fauna Silvestre" },
-        { "code": "PTFM", "name": "PTFM - Gestion de Plataformas" },
-        { "code": "SSEI", "name": "SSEI - Servicios de Salvamento y Extincion de Incendios" },
-        { "code": "AYVIS", "name": "AYVIS - Ayudas Visuales" }
-      ]
+      "specialtyCodes": ["PAV", "FAU", "APR", "SSEI", "AVIS"]
     }
   ],
   "locations": [

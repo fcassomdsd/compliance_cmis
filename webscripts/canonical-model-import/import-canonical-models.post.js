@@ -1,6 +1,196 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Locale-keyed label dictionaries for the three routine .fodt report templates
+// (Finding/Checklist/FollowUp Reporte). Keys correspond to ${labels.<key>}
+// placeholders in the templates under templates/. Add new locales here.
+var REPORT_LABELS = {
+  findingReport: {
+    en: {
+      inspectionFinding: "Inspection Finding",
+      identification: "Identification",
+      findingId: "Finding ID:",
+      checklistItem: "Checklist Item:",
+      location: "Location:",
+      specialty: "Specialty:",
+      provider: "Provider:",
+      findingDetail: "Finding Detail",
+      description: "Description:",
+      requirementBreached: "Requirement Breached:",
+      iCAOReference: "ICAO Reference:",
+      nationalRegulation: "National Regulation:",
+      regulationItem: "Regulation Item:",
+      level: "Level:",
+      severity: "Severity:",
+      riskClassification: "Risk Classification:",
+      targetResidualRisk: "Target Residual Risk:",
+      achievedResidualRisk: "Achieved Residual Risk:",
+      statusAndDates: "Status and Dates",
+      status: "Status:",
+      dateIssued: "Date Issued:",
+      cAPSubmissionDeadline: "CAP Submission Deadline:",
+      resolutionDeadline: "Resolution Deadline:",
+      closureDate: "Closure Date:",
+      correctiveAction: "Corrective Action",
+      cAPId: "CAP ID:",
+      proposedAction: "Proposed Action:",
+      responsibleEntity: "Responsible Entity:",
+      dueDate: "Due Date:",
+      acceptanceStatus: "Acceptance Status:",
+    },
+    es: {
+      inspectionFinding: "Hallazgo de Inspección",
+      identification: "Identificación",
+      findingId: "ID de Hallazgo:",
+      checklistItem: "Elemento de Checklist:",
+      location: "Ubicación:",
+      specialty: "Especialidad:",
+      provider: "Proveedor:",
+      findingDetail: "Detalle del Hallazgo",
+      description: "Descripción:",
+      requirementBreached: "Requisito Incumplido:",
+      iCAOReference: "Referencia OACI:",
+      nationalRegulation: "Reglamento Nacional:",
+      regulationItem: "Artículo:",
+      level: "Nivel:",
+      severity: "Severidad:",
+      riskClassification: "Clasificación de Riesgo:",
+      targetResidualRisk: "Riesgo Residual Objetivo:",
+      achievedResidualRisk: "Riesgo Residual Alcanzado:",
+      statusAndDates: "Estado y Fechas",
+      status: "Estado:",
+      dateIssued: "Fecha de Emisión:",
+      cAPSubmissionDeadline: "Plazo de Envío de CAP:",
+      resolutionDeadline: "Plazo de Resolución:",
+      closureDate: "Fecha de Cierre:",
+      correctiveAction: "Acción Correctiva",
+      cAPId: "ID de CAP:",
+      proposedAction: "Acción Propuesta:",
+      responsibleEntity: "Entidad Responsable:",
+      dueDate: "Fecha Límite:",
+      acceptanceStatus: "Estado de Aceptación:",
+    },
+  },
+  checklistReport: {
+    en: {
+      inspectionChecklist: "Inspection Checklist",
+      generalInformation: "General Information",
+      inspectionCode: "Inspection Code:",
+      location: "Location:",
+      specialty: "Specialty:",
+      provider: "Provider:",
+      scope: "Scope:",
+      completionDate: "Completion Date:",
+      interviewee: "Interviewee:",
+      checklistId: "Checklist ID:",
+      checklistItems: "Checklist Items",
+      verificationMethod: "Verification Method:",
+      complianceStatus: "Compliance Status:",
+      riskLevel: "Risk Level:",
+      inspectorComment: "Inspector Comment:",
+      iCAOReference: "ICAO Reference:",
+      nationalRegulation: "National Regulation:",
+      regulationItem: "Regulation Item:",
+      openPriorFinding: "Open Prior Finding:",
+      evidenceId: "Evidence ID",
+      type: "Type",
+      role: "Role",
+      source: "Source",
+      collectionDate: "Collection Date",
+    },
+    es: {
+      inspectionChecklist: "Checklist de Inspección",
+      generalInformation: "Datos Generales",
+      inspectionCode: "Código de Inspección:",
+      location: "Ubicación:",
+      specialty: "Especialidad:",
+      provider: "Proveedor:",
+      scope: "Alcance:",
+      completionDate: "Fecha de Finalización:",
+      interviewee: "Entrevistado:",
+      checklistId: "ID de Checklist:",
+      checklistItems: "Elementos de Verificación",
+      verificationMethod: "Método de Verificación:",
+      complianceStatus: "Estado de Cumplimiento:",
+      riskLevel: "Nivel de Riesgo:",
+      inspectorComment: "Comentario del Inspector:",
+      iCAOReference: "Referencia OACI:",
+      nationalRegulation: "Reglamento Nacional:",
+      regulationItem: "Artículo:",
+      openPriorFinding: "Hallazgo Previo Abierto:",
+      evidenceId: "ID de Evidencia",
+      type: "Tipo",
+      role: "Rol",
+      source: "Fuente",
+      collectionDate: "Fecha de Recolección",
+    },
+  },
+  followUpReport: {
+    en: {
+      followupReport: "Follow-up Report",
+      identification: "Identification",
+      followupId: "Follow-up ID:",
+      findingId: "Finding ID:",
+      cAPId: "CAP ID:",
+      location: "Location:",
+      specialty: "Specialty:",
+      provider: "Provider:",
+      followupDetail: "Follow-up Detail",
+      followupType: "Follow-up Type:",
+      followupDate: "Follow-up Date:",
+      percentComplete: "Percent Complete:",
+      currentResidualRisk: "Current Residual Risk:",
+      comment: "Comment:",
+      closure: "Closure",
+      effectivenessConfirmed: "Effectiveness Confirmed:",
+      closureVerificationMethod: "Closure Verification Method:",
+      followupClosureDate: "Follow-up Closure Date:",
+      evidence: "Evidence",
+      evidenceId: "Evidence ID",
+      type: "Type",
+      role: "Role",
+      source: "Source",
+      collectionDate: "Collection Date",
+    },
+    es: {
+      followupReport: "Reporte de Seguimiento",
+      identification: "Identificación",
+      followupId: "ID de Seguimiento:",
+      findingId: "ID de Hallazgo:",
+      cAPId: "ID de CAP:",
+      location: "Ubicación:",
+      specialty: "Especialidad:",
+      provider: "Proveedor:",
+      followupDetail: "Detalle del Seguimiento",
+      followupType: "Tipo de Seguimiento:",
+      followupDate: "Fecha de Seguimiento:",
+      percentComplete: "Porcentaje Completado:",
+      currentResidualRisk: "Riesgo Residual Actual:",
+      comment: "Comentario:",
+      closure: "Cierre",
+      effectivenessConfirmed: "Efectividad Confirmada:",
+      closureVerificationMethod: "Método de Verificación de Cierre:",
+      followupClosureDate: "Fecha de Cierre de Seguimiento:",
+      evidence: "Evidencia",
+      evidenceId: "ID de Evidencia",
+      type: "Tipo",
+      role: "Rol",
+      source: "Fuente",
+      collectionDate: "Fecha de Recolección",
+    },
+  },
+};
+
+function resolveReportLocale(requestBody) {
+  var locale = trimToNull(requestBody && requestBody.locale);
+  return (locale === "en") ? "en" : "es";
+}
+
+function getReportLabels(templateKey, locale) {
+  var templateLabels = REPORT_LABELS[templateKey] || {};
+  return templateLabels[locale] || templateLabels.es || {};
+}
+
 // Path configuration is centralized.
 // Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
 function resolveVsoPaths() {
@@ -93,7 +283,7 @@ function resolveFollowUpHelpers() {
       if (normalized === null) {
         return null;
       }
-      if (normalized.indexOf("CA-") === 0) {
+      if (normalized.indexOf("P-") === 0) {
         return normalized;
       }
       if (normalized.indexOf("CAP-") === 0) {
@@ -185,6 +375,31 @@ function extractTrailingDigits(value) {
   return match ? match[1] : null;
 }
 
+// Activity type letter used in activity codes: A=Auditoría, I=Inspección,
+// M=Monitoreo, D=Revisión documental, S=Análisis de suceso. Not constrained to
+// that set here — ActivityType is a reference entity owned by the AtroCore
+// backend and fetched dynamically, so this only enforces the shape.
+function resolveActivityTypeToken(source, importRequest) {
+  var token = sanitizeUpperToken(firstNonEmpty(
+    source ? source.activityTypeCode : null,
+    source ? source.activityType : null,
+    importRequest ? importRequest.activityTypeCode : null,
+    importRequest ? importRequest.activityType : null
+  ));
+
+  if (token === null || !/^[A-Z]$/.test(token)) {
+    return null;
+  }
+
+  return token;
+}
+
+// Activity code (Actividad de vigilancia): AV-XXXX-T-#### (for example AV-MDSD-A-0002).
+// The activity is sequenced independently per location + activity type; it is NOT
+// derived from, and carries no relationship to, its parent site-visit code. Whatever
+// AV- code upstream (compliance_web) assigns is accepted as-is, and the compact form
+// XXXXT#### (dashes and the AV- prefix stripped) is derived from it for use inside
+// checklist/finding/CAP/follow-up ids.
 function resolveInspectionKey(source, importRequest) {
   var inspectionSeed = firstNonEmpty(
     source ? source.inspectionId : null,
@@ -202,30 +417,36 @@ function resolveInspectionKey(source, importRequest) {
 
   var seedText = trimToNull(inspectionSeed);
   if (seedText !== null) {
-    var hyphenMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})-(\d{1,})$/);
+    var hyphenMatch = String(seedText).toUpperCase().match(/^(?:AV-)?([A-Z]{4})-([A-Z])-(\d{1,4})$/);
     if (hyphenMatch) {
-      var directSeq = padNumber(hyphenMatch[2], 3);
+      var directSeq = padNumber(hyphenMatch[3], 4);
       if (directSeq !== null) {
         return {
           locationCode: hyphenMatch[1],
+          activityTypeCode: hyphenMatch[2],
           sequence: directSeq
         };
       }
     }
 
-    var compactMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})(\d{3})$/);
+    var compactMatch = String(seedText).toUpperCase().match(/^([A-Z]{4})([A-Z])(\d{4})$/);
     if (compactMatch) {
       return {
         locationCode: compactMatch[1],
-        sequence: compactMatch[2]
+        activityTypeCode: compactMatch[2],
+        sequence: compactMatch[3]
       };
     }
   }
 
-  var sequenceFromSeed = padNumber(extractTrailingDigits(seedText), 3);
-  if (preferredLocationCode && sequenceFromSeed) {
+  // Fallback: rebuild the key from discrete context fields. Requires an explicit
+  // activity type — there is no safe default letter to invent.
+  var activityTypeCode = resolveActivityTypeToken(source, importRequest);
+  var sequenceFromSeed = padNumber(extractTrailingDigits(seedText), 4);
+  if (preferredLocationCode && activityTypeCode && sequenceFromSeed) {
     return {
       locationCode: preferredLocationCode.substring(0, 4),
+      activityTypeCode: activityTypeCode,
       sequence: sequenceFromSeed
     };
   }
@@ -237,14 +458,14 @@ function buildInspectionId(key) {
   if (!key) {
     return null;
   }
-  return key.locationCode + "-" + key.sequence;
+  return "AV-" + key.locationCode + "-" + key.activityTypeCode + "-" + key.sequence;
 }
 
 function buildInspectionCompactId(key) {
   if (!key) {
     return null;
   }
-  return key.locationCode + key.sequence;
+  return key.locationCode + key.activityTypeCode + key.sequence;
 }
 
 function resolveSpecialtyToken(source, importRequest) {
@@ -256,27 +477,31 @@ function resolveSpecialtyToken(source, importRequest) {
   ));
 }
 
+// Checklist id (Lista de verificación): LV-XXXXT####-EEE (for example LV-MDSDA0002-COM).
 function buildChecklistId(inspectionCompactId, specialtyToken) {
   if (!inspectionCompactId || !specialtyToken) {
     return null;
   }
-  return "CHK-" + inspectionCompactId + "-" + specialtyToken;
+  return "LV-" + inspectionCompactId + "-" + specialtyToken;
 }
 
 function resolveFindingSequence(findingPayload, fallbackSequence) {
-  var fromFindingId = padNumber(extractTrailingDigits(findingPayload ? findingPayload.findingId : null), 2);
+  var fromFindingId = padNumber(extractTrailingDigits(findingPayload ? findingPayload.findingId : null), 3);
   if (fromFindingId !== null) {
     return fromFindingId;
   }
 
-  return padNumber(fallbackSequence, 2);
+  return padNumber(fallbackSequence, 3);
 }
 
+// Finding id (Hallazgo): H-XXXXT####-EEE-### (for example H-MDSDA0002-COM-001).
+// Must stay consistent with parseFindingParts() in webscripts/common/vso-follow-up.lib.js,
+// which decomposes this id to build the CAP (P-) and follow-up (S-) ids.
 function buildFindingId(inspectionCompactId, specialtyToken, findingSequence) {
   if (!inspectionCompactId || !specialtyToken || !findingSequence) {
     return null;
   }
-  return inspectionCompactId + "-" + specialtyToken + "-" + findingSequence;
+  return "H-" + inspectionCompactId + "-" + specialtyToken + "-" + findingSequence;
 }
 
 function normalizeChecklistIdentity(checklistPayload, importRequest) {
@@ -297,10 +522,12 @@ function normalizeChecklistIdentity(checklistPayload, importRequest) {
   checklistPayload.inspectionId = inspectionId;
   checklistPayload.inspectionCode = inspectionId;
   checklistPayload.checklistId = checklistId;
+  checklistPayload.activityTypeCode = inspectionKey.activityTypeCode;
 
   return {
     inspectionId: inspectionId,
     inspectionCompactId: inspectionCompactId,
+    activityTypeCode: inspectionKey.activityTypeCode,
     specialtyToken: specialtyToken,
     checklistId: checklistId
   };
@@ -842,9 +1069,13 @@ function validateImportRequest(requestBody) {
     specialtyCode: trimToNull(requestBody.specialtyCode),
     specialtyName: trimToNull(requestBody.specialtyName),
     inspectionType: trimToNull(requestBody.inspectionType),
+    activityTypeId: trimToNull(requestBody.activityTypeId),
+    activityTypeCode: trimToNull(requestBody.activityTypeCode) || trimToNull(requestBody.activityType),
+    activityTypeName: trimToNull(requestBody.activityTypeName),
     inspectionStatus: trimToNull(requestBody.inspectionStatus) || "Reported",
     startDate: trimToNull(requestBody.startDate),
-    endDate: trimToNull(requestBody.endDate)
+    endDate: trimToNull(requestBody.endDate),
+    locale: resolveReportLocale(requestBody)
   };
 }
 
@@ -1216,6 +1447,11 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
     setPropertyIfPresent(evidenceNode, "vso:providerName", firstNonEmpty(reportPayload.providerName, findingNode.properties["vso:providerName"]));
     setDatePropertyIfPresent(evidenceNode, "vso:collectionDate", evidencePayload.collectionDate);
     setPropertyIfPresent(evidenceNode, "vso:evidenceRole", evidencePayload.evidenceRole);
+    // Evidence reaching Alfresco through this canonical-import path always
+    // came from the field app's on-site follow-up collection flow — never
+    // set for any other evidence-creation path (compliance_web's own
+    // upload endpoint sets Remote/Provider-submitted directly).
+    setPropertyIfPresent(evidenceNode, "vso:collectionMethod", "On-site");
     setPropertyIfPresent(evidenceNode, "vso:hashValue", evidencePayload.hashValue);
     setDatePropertyIfPresent(evidenceNode, "vso:sealedDate", evidencePayload.sealedDate);
     if (evidencePayload.immutable !== null && evidencePayload.immutable !== undefined) {
@@ -1230,7 +1466,7 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
   }
 }
 
-function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, summary) {
+function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, summary, reportLocale) {
   var parsed = parseFollowUpCanonicalPayload(followUpFileNode);
   if (parsed.error) {
     return {
@@ -1335,12 +1571,16 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
   }
 
   if (closurePolicy.shouldClose) {
+    // Closing a finding is a two-step gate: a valid Closure Verification
+    // follow-up only makes it eligible for closure, it does not close the
+    // finding directly. A separate reviewer must approve via
+    // compliance_web's PATCH /findings/:findingId/closure-review before
+    // vso:findingStatus becomes "Closed" and vso:findingClosureDate is set.
     var now = new Date();
-    findingNode.properties["vso:findingStatus"] = "Closed";
-    findingNode.properties["vso:findingClosureDate"] = now;
+    findingNode.properties["vso:findingStatus"] = "Pending Closure Approval";
     findingNode.properties["vso:lastStatusChange"] = now;
     findingNode.save();
-    summary.findingClosures++;
+    summary.pendingClosureApprovals++;
   }
 
   replaceContentWithPdf(
@@ -1362,6 +1602,7 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
       locationName: firstNonEmpty(report.locationName, findingNode.properties["vso:locationName"]),
       specialtyName: firstNonEmpty(report.specialtyName, findingNode.properties["vso:specialtyName"]),
       providerName: firstNonEmpty(report.providerName, findingNode.properties["vso:providerName"]),
+      labels: getReportLabels("followUpReport", reportLocale),
       evidenceItems: report.evidenceItems
     },
     followUpResult.pdfName,
@@ -1392,7 +1633,7 @@ function processFollowUpsByFileNames(followUpFileNames, requestBody) {
   var summary = {
     requested: followUpFileNames.length,
     processed: 0,
-    findingClosures: 0,
+    pendingClosureApprovals: 0,
     evidenceImported: 0,
     notFound: 0,
     ambiguous: 0,
@@ -1437,7 +1678,7 @@ function processFollowUpsByFileNames(followUpFileNames, requestBody) {
       continue;
     }
 
-    var fileResult = upsertFollowUpFromCanonicalFile(fileMatches[0], sourceRootFolder, summary);
+    var fileResult = upsertFollowUpFromCanonicalFile(fileMatches[0], sourceRootFolder, summary, resolveReportLocale(requestBody));
     if (fileResult.status === "processed") {
       summary.processed++;
     } else if (fileResult.status === "ambiguous-finding" || fileResult.status === "ambiguous-cap") {
@@ -1486,13 +1727,20 @@ function resolveContextValues(source, importRequest) {
   var specialtyCode = firstNonEmpty(src.specialtyCode, req.specialtyCode);
   var specialtyName = firstNonEmpty(src.specialtyName, req.specialtyName);
 
+  var activityTypeId = firstNonEmpty(src.activityTypeId, req.activityTypeId);
+  var activityTypeCode = firstNonEmpty(src.activityTypeCode, src.activityType, req.activityTypeCode, req.activityType);
+  var activityTypeName = firstNonEmpty(src.activityTypeName, req.activityTypeName);
+
   return {
     locationId: locationId,
     locationCode: locationCode,
     locationName: locationName,
     specialtyId: specialtyId,
     specialtyCode: specialtyCode,
-    specialtyName: specialtyName
+    specialtyName: specialtyName,
+    activityTypeId: activityTypeId,
+    activityTypeCode: activityTypeCode,
+    activityTypeName: activityTypeName
   };
 }
 
@@ -1552,11 +1800,38 @@ function resolveFindingYear(importRequest, checklistPayload) {
   return null;
 }
 
+// Callers of this webscript do not agree on whether "inspectionCode" carries
+// the "AV-" activity-code prefix: compliance_flow's /importCanonical resolves
+// and sends the Inspection entity's own code (with the prefix), while
+// compliance_import's checklist/finding payloads carry the prefix-stripped
+// "XXXX-T-####" form (see resolveInspectionKey's identical (?:AV-)? handling
+// above). Compare the normalized key, not the raw strings, so a checklist
+// stored under one form is still found when looked up under the other.
+function normalizeInspectionCodeForCompare(value) {
+  var text = trimToNull(value);
+  if (text === null) {
+    return null;
+  }
+  var hyphenMatch = String(text).toUpperCase().match(/^(?:AV-)?([A-Z]{4})-([A-Z])-(\d{1,4})$/);
+  if (hyphenMatch) {
+    var seq = padNumber(hyphenMatch[3], 4);
+    if (seq !== null) {
+      return hyphenMatch[1] + hyphenMatch[2] + seq;
+    }
+  }
+  var compactMatch = String(text).toUpperCase().match(/^([A-Z]{4})([A-Z])(\d{4})$/);
+  if (compactMatch) {
+    return compactMatch[1] + compactMatch[2] + compactMatch[3];
+  }
+  return String(text).toUpperCase();
+}
+
 function loadCanonicalDocuments(domainFolder, inspectionCode) {
   var documents = domainFolder.childFileFolders(true, false);
   var checklistDocument = null;
   var findingDocuments = [];
   var importedSources = [];
+  var normalizedTarget = normalizeInspectionCodeForCompare(inspectionCode);
 
   for (var index = 0; index < documents.length; index++) {
     var documentNode = documents[index];
@@ -1565,7 +1840,8 @@ function loadCanonicalDocuments(domainFolder, inspectionCode) {
     }
 
     var payload = parseJsonContent(documentNode);
-    if (payload.checklist && payload.checklist.inspectionCode === inspectionCode) {
+    if (payload.checklist && normalizedTarget !== null &&
+        normalizeInspectionCodeForCompare(payload.checklist.inspectionCode) === normalizedTarget) {
       checklistDocument = {
         node: documentNode,
         payload: payload
@@ -1625,6 +1901,9 @@ function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistD
   setPropertyIfPresent(inspectionFolder, "cm:title", inspectionFolderName);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionId", inspectionIdentifier);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionType", importRequest.inspectionType);
+  setPropertyIfPresent(inspectionFolder, "vso:activityTypeId", importRequest.activityTypeId);
+  setPropertyIfPresent(inspectionFolder, "vso:activityTypeCode", importRequest.activityTypeCode);
+  setPropertyIfPresent(inspectionFolder, "vso:activityTypeName", importRequest.activityTypeName);
   setDatePropertyIfPresent(inspectionFolder, "vso:startDate", importRequest.startDate);
   setDatePropertyIfPresent(inspectionFolder, "vso:endDate", importRequest.endDate);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionStatus", importRequest.inspectionStatus);
@@ -1661,6 +1940,9 @@ function upsertDomainFolder(inspectionFolder, checklistPayload, summary) {
   setPropertyIfPresent(domainFolder, "vso:specialtyId", contextValues.specialtyId);
   setPropertyIfPresent(domainFolder, "vso:specialtyCode", contextValues.specialtyCode);
   setPropertyIfPresent(domainFolder, "vso:specialtyName", contextValues.specialtyName);
+  setPropertyIfPresent(domainFolder, "vso:activityTypeId", contextValues.activityTypeId);
+  setPropertyIfPresent(domainFolder, "vso:activityTypeCode", contextValues.activityTypeCode);
+  setPropertyIfPresent(domainFolder, "vso:activityTypeName", contextValues.activityTypeName);
   setPropertyIfPresent(domainFolder, "vso:providerId", checklistPayload.providerId);
   setPropertyIfPresent(domainFolder, "vso:providerName", checklistPayload.providerName);
   domainFolder.save();
@@ -1695,6 +1977,9 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   setPropertyIfPresent(checklistNode, "vso:specialtyId", contextValues.specialtyId);
   setPropertyIfPresent(checklistNode, "vso:specialtyCode", contextValues.specialtyCode);
   setPropertyIfPresent(checklistNode, "vso:specialtyName", contextValues.specialtyName);
+  setPropertyIfPresent(checklistNode, "vso:activityTypeId", contextValues.activityTypeId);
+  setPropertyIfPresent(checklistNode, "vso:activityTypeCode", contextValues.activityTypeCode);
+  setPropertyIfPresent(checklistNode, "vso:activityTypeName", contextValues.activityTypeName);
   setPropertyIfPresent(checklistNode, "vso:providerId", checklistPayload.providerId);
   setPropertyIfPresent(checklistNode, "vso:providerName", checklistPayload.providerName);
   checklistNode.save();
@@ -2148,6 +2433,9 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   setPropertyIfPresent(findingNode, "vso:specialtyId", findingContextValues.specialtyId || checklistContextValues.specialtyId);
   setPropertyIfPresent(findingNode, "vso:specialtyCode", findingContextValues.specialtyCode || checklistContextValues.specialtyCode);
   setPropertyIfPresent(findingNode, "vso:specialtyName", findingContextValues.specialtyName || checklistContextValues.specialtyName);
+  setPropertyIfPresent(findingNode, "vso:activityTypeId", findingContextValues.activityTypeId || checklistContextValues.activityTypeId);
+  setPropertyIfPresent(findingNode, "vso:activityTypeCode", findingContextValues.activityTypeCode || checklistContextValues.activityTypeCode);
+  setPropertyIfPresent(findingNode, "vso:activityTypeName", findingContextValues.activityTypeName || checklistContextValues.activityTypeName);
   setPropertyIfPresent(findingNode, "vso:providerId", findingPayload.providerId || checklistData.providerId);
   setPropertyIfPresent(findingNode, "vso:providerName", checklistData.providerName);
 
@@ -2172,6 +2460,15 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
       ? findingPayload.usoapPqReference
       : (relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.usoapPqReference : null)
   );
+
+  if (findingResult.created) {
+    // A finding formulated directly by the inspector during field capture
+    // still needs a separate reviewer's sign-off (PATCH
+    // /findings/:findingId/review in compliance_web) before it's
+    // considered final. Only set on creation — re-importing an existing
+    // finding must not reset an already-reviewed one back to pending.
+    findingNode.properties["vso:findingReviewStatus"] = "Pending Review";
+  }
 
   findingNode.save();
 
@@ -2363,11 +2660,12 @@ try {
       checklistItemsForPdf.push(mergedItemForPdf);
     }
 
+    var checklistReportLocale = resolveReportLocale(importRequest);
     replaceContentWithPdf(
       checklistNode,
       destinationDomainFolder,
       CHECKLIST_PDF_TEMPLATE_PATH,
-      { checklist: checklistPayload, items: checklistItemsForPdf },
+      { checklist: checklistPayload, items: checklistItemsForPdf, labels: getReportLabels("checklistReport", checklistReportLocale) },
       checklistPayload.checklistId + ".pdf",
       ["vso:inspectionContext", "vso:serviceContext"]
     );
@@ -2405,7 +2703,8 @@ try {
           icaoReference: firstNonEmpty(findingPayload.icaoReference, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.icaoReference : null),
           nationalRegulation: firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null),
           regulationItem: firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null),
-          correctiveAction: findingPayload.correctiveAction || null
+          correctiveAction: findingPayload.correctiveAction || null,
+          labels: getReportLabels("findingReport", resolveReportLocale(importRequest))
         },
         findingPayload.findingId + ".pdf",
         ["vso:inspectionContext", "vso:serviceContext", "vso:regulatoryTraceability"]

@@ -17,8 +17,9 @@ It defines a custom VSO content model, Share form configuration, and Web Script 
 ## Repository map
 
 - `configs/model/`: model (`vsoModel.xml`) and bootstrap context.
-- `configs/share/`: Share form and UI configuration.
-- `configs/messages/`: labels for model fields and associations.
+- `configs/share/`: Share form and UI configuration, plus Share-side English/Spanish message bundles (`configs/share/messages/`, registered via `configs/share/vso-share-context.xml`) for UI it owns directly, like the "Manage Aspects" dialog — separate from the repository dictionary bundle below.
+- `configs/messages/`: English/Spanish label bundles for model fields and associations (`vsoModel`, `vsoModel_es`), consumed by the repository's own dictionary (types, aspects, properties, associations — Share forms included, since they inherit from the model).
+- `configs/entity-profile.json`: deployment-level entity branding (name, logo, document-control codes) substituted into report templates — defaults to IDAC's current values.
 - `webscripts/`: API endpoints and shared helpers.
 - `example/`: ready-to-run sample request payloads.
 - `templates/`: FODT templates (inspection plan/report, and checklist/finding/follow-up document rendering) and smart folder templates.
@@ -142,6 +143,27 @@ Update this file when destination/source folders change. Important keys include:
 - `findingPdfTemplatePath`
 - `followUpPdfTemplatePath`
 
+## English/Spanish localization
+
+The VSO model and report templates support English and Spanish.
+
+**Model / Share form labels**: `configs/model/vsoModel.xml` carries no inline `<title>` overrides — every type/aspect/property/association label resolves from an Alfresco message bundle instead, so Share forms and the classes API pick up the active locale automatically. The bundle is two files, both mounted read-only into the Alfresco container in `docker-compose.yml`:
+
+- `configs/messages/vsoModel` → `.../extension/vsoModel.properties` (English, the default bundle)
+- `configs/messages/vsoModel_es` → `.../extension/vsoModel_es.properties` (Spanish; Alfresco resolves the `_es` suffix automatically from the base bundle name registered in `configs/model/vso-bootstrap-context.xml` — no separate registration needed)
+
+Adding or renaming a `vso:` type/aspect/property/association means adding a matching key to **both** files — the model reload only picks up a title if the bundle has one; there's no fallback to a literal in the XML anymore. The key format is `<model QName>.<category>.<item QName>.title` with every `:` replaced by `_` — for this model that's always `vso_vsoModel.` + one of `type.`/`aspect.`/`property.`/`association.` + `vso_<name>.title` (e.g. `vso_vsoModel.property.vso_specialtyName.title`). This is Alfresco's own dictionary title-resolution algorithm (`M2Label.getLabel()`), not a convention specific to this repo — get any part of it wrong (missing the model prefix, or abbreviating `property`/`association` to `prop`/`assoc`) and the lookup silently misses, falling back to the raw QName with no error logged anywhere. Requires a repository restart (`docker compose restart alfresco`) to take effect, like any other model change. Verify a fix by checking the actual Share edit-metadata form for a real node — the legacy `/alfresco/service/api/classes/{id}` webscript reads the model's raw XML title directly and never consults this bundle at all, so it can't confirm this either way.
+
+Out of scope, by design: USOAP smart-folder navigation (`templates/usoap-evidence-smart-folder.json`) uses physical folder/rule names, not viewer-locale-resolved labels, so it isn't part of this mechanism; and field-level `<description>` text (tooltips) isn't localized yet.
+
+**Share's own "Manage Aspects" dialog uses a completely different, second bundle.** It reads aspect labels from `share-config-custom.xml`'s `<aspects><visible>` config, which only carries a label if you attach one via Share's own `aspect.<prefix>_<name>=<label>` convention (no model prefix, no `.title` suffix — compare `alfresco/messages/slingshot.properties`'s built-in `aspect.cm_versionable=Versionable`) — the repository bundle above has no effect here. VSO aspect labels for this dialog live in `configs/share/messages/vsoModel-share.properties` / `vsoModel-share_es.properties`, registered by `configs/share/vso-share-context.xml`, which overrides Share's own `webscripts.resources` bean (same bean id as the one in Share's `alfresco/slingshot-application-context.xml`). A same-id Spring bean override **replaces** the whole bean, it does not merge collection properties — our context file reproduces Share's original five bundle names explicitly before appending ours; dropping any of them silently breaks Share's own built-in message resolution (confirmed the hard way while building this). Requires a `docker compose restart share` (not `alfresco`) to take effect.
+
+**Report templates and entity branding**: `webscripts/inspection-report/generate-inspection-report.post.js` and `webscripts/inspection-plan/generate-inspection-plan.post.js` accept a `locale` field (`"en"`/`"es"`, default `"es"`) in their request payload. It selects a `labels` dictionary (`INFORME_FINAL_LABELS` / `PLAN_LABELS`, defined in each webscript) substituted into the `.fodt` template via `${labels.*}` placeholders, covering section headings, table captions, and mixed label+value text.
+
+Entity identity — the department name, logo, and document-control code/version shown in `Informe Final.fodt` and `formato plan de inspeccion.fodt` — is deployment-level config, independent of the request's `locale`, read from a new `configs/entity-profile.json` (also mounted via `docker-compose.yml`). It defaults to IDAC's current values, so an unmodified deployment's output is unchanged. A second CAA deploying this platform overrides this one file rather than editing the templates.
+
+Both report webscripts escape `labels`/`reportData` with `xmlEscapeDeep()` (see "resolveVsoPaths() consistency" in `CONTRIBUTING.md` — the same shared/local-copy pattern now applies to this helper too) before substitution, since the underlying renderer does plain string substitution with no escaping of its own.
+
 ## Checklist/finding/follow-up documents are rendered PDFs, not JSON
 
 `POST /api/inspection/import-canonical` writes checklist, finding, and follow-up report nodes with their content as a rendered, human-readable PDF — not JSON. The node's `vso:*` properties remain the canonical, queryable/searchable representation of the data (unchanged by this); the document body exists purely for people browsing Share who need something readable, not for programmatic parsing. Nothing in this codebase parses the content of these node types after they're stored (verified when this was built) — every other webscript (report generation, USOAP, prior-finding queries) reads from properties only.
@@ -186,10 +208,10 @@ Base URL used below: `http://localhost:8080/alfresco/s/api`
 
 | Endpoint | Purpose | Required fields (minimum) | Common optional fields | Example payload file |
 |---|---|---|---|---|
-| `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `inspectionsPath`, `destinationPath`, `templatePath` | `example/generate-inspection-plan.sample.json` |
-| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload | `example/generate-inspection-report.sample.json`, `example/generate-inspection-report-mdpp001-vig.sample.json` |
+| `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `inspectionsPath`, `destinationPath`, `templatePath`, `locale` (`en`/`es`, default `es`) | `example/generate-inspection-plan.sample.json` |
+| `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload, `locale` (`en`/`es`, default `es`) | `example/generate-inspection-report.sample.json`, `example/generate-inspection-report-mdppa0001-sur.sample.json` |
 | `POST /inspection/import-canonical` | Import canonical follow-up data by file names or ids | Either `followUpFiles` or `followUpIds`, or array of follow-up file names | `sourceBasePath`, `sourceSpecialtyFolderName`, `specialtyFolderName` | `example/process-followups-by-files.sample.json` |
-| `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp MDPP-VIG-2025-02 CAP-10.json` |
+| `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp H-MDPPA0001-AVIS-001 01.json` |
 | `POST /findings/open/query` | Query open findings by location and specialty context | one of `locationId/locationCode/icaoCode` and one of `specialtyId/specialtyCode/domain` | `skipCount`, `maxItems` | `example/get-open-findings.sample.json` |
 | `POST /checklist/prior-findings/open` | Get checklist items with open prior findings | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `refreshBeforeQuery`, `refreshDryRun`, `priorOnly` | `example/get-prior-finding-flags.sample.json` |
 | `POST /checklist/prior-findings/refresh-flags` | Recompute and persist prior-finding flags | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `dryRun`, `priorOnly` | `example/refresh-prior-finding-flags.sample.json` |
@@ -199,7 +221,8 @@ Notes:
 - For `POST /follow-up/import`, finding closure is allowed only with `followUpType="Closure Verification"` and `effectivenessConfirmed=true`.
 - For `POST /inspection/import-canonical`, evidence files linked to processed follow-ups are moved into finding-scoped evidence folders.
 - For `POST /inspection/import-canonical`, checklist/finding/follow-up document content is a rendered PDF, not JSON (see "Checklist/finding/follow-up documents are rendered PDFs, not JSON" above).
-- For `POST /inspection/report/generate`, checklist summary specialty now resolves from item, checklist, domain, and inspection context (in that order) before falling back to item-code prefix (for example `VIG-0048` -> `VIG`).
+- For `POST /inspection/report/generate`, checklist summary specialty now resolves from item, checklist, domain, and inspection context (in that order) before falling back to item-code prefix (for example `SUR-0048` -> `SUR`).
+- For both `POST /inspection/generate` and `POST /inspection/report/generate`, omitting `locale` renders Spanish (matching this deployment's current behavior unchanged) — see "English/Spanish localization" above.
 
 ## Quick test commands
 
@@ -216,7 +239,7 @@ curl -u admin:admin -X POST \
 
 curl -u admin:admin -X POST \
   -H "Content-Type: application/json" \
-  --data @example/generate-inspection-report-mdpp001-vig.sample.json \
+  --data @example/generate-inspection-report-mdppa0001-sur.sample.json \
   "http://localhost:8080/alfresco/s/api/inspection/report/generate"
 
 curl -u admin:admin -X POST \
@@ -241,7 +264,7 @@ curl -u admin:admin -X POST \
 
 curl -u admin:admin -X POST \
   -H "Content-Type: application/json" \
-  --data @"example/FollowUp MDPP-VIG-2025-02 CAP-10.json" \
+  --data @"example/FollowUp H-MDPPA0001-AVIS-001 01.json" \
   "http://localhost:8080/alfresco/s/api/follow-up/import"
 ```
 
@@ -250,9 +273,9 @@ curl -u admin:admin -X POST \
 Templates (generated — see `tools/generate-smart-folder-templates.js`, do not hand-edit):
 
 - `templates/pilot/vigilancia-pilot-template-base-comun.json`
-- `templates/pilot/vigilancia-pilot-template-profile-sna.json`
-- `templates/pilot/vigilancia-pilot-template-profile-met.json`
-- `templates/pilot/vigilancia-pilot-template-profile-aga.json`
+- `templates/pilot/vigilancia-pilot-template-profile-idac.json`
+- `templates/pilot/vigilancia-pilot-template-profile-indomet.json`
+- `templates/pilot/vigilancia-pilot-template-profile-aeropuertos.json`
 
 Operational map:
 

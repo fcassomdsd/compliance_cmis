@@ -16,7 +16,7 @@
     "findingsImported": ${summary.findingsImported!0},
     "requested": ${summary.requested!0},
     "processed": ${summary.processed!0},
-    "findingClosures": ${summary.findingClosures!0},
+    "pendingClosureApprovals": ${summary.pendingClosureApprovals!0},
     "evidenceImported": ${summary.evidenceImported!0},
     "notFound": ${summary.notFound!0},
     "ambiguous": ${summary.ambiguous!0},

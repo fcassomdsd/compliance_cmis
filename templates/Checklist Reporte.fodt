@@ -40,29 +40,29 @@
 </office:automatic-styles>
 <office:body>
 <office:text>
-<text:p text:style-name="DocTitle">Checklist de Inspección / Inspection Checklist</text:p>
+<text:p text:style-name="DocTitle">${labels.inspectionChecklist}</text:p>
 
-<text:p text:style-name="SectionHeading">Datos Generales / General Information</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Código de Inspección / Inspection Code: </text:span>${checklist.inspectionCode}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Ubicación / Location: </text:span>${checklist.locationName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Especialidad / Specialty: </text:span>${checklist.specialtyName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Proveedor / Provider: </text:span>${checklist.providerName}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Alcance / Scope: </text:span>${checklist.scope}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Fecha de Finalización / Completion Date: </text:span>${checklist.completionDate}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Entrevistado / Interviewee: </text:span>${checklist.interviewee}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">ID de Checklist / Checklist ID: </text:span>${checklist.checklistId}</text:p>
+<text:p text:style-name="SectionHeading">${labels.generalInformation}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.inspectionCode} </text:span>${checklist.inspectionCode}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.location} </text:span>${checklist.locationName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.specialty} </text:span>${checklist.specialtyName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.provider} </text:span>${checklist.providerName}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.scope} </text:span>${checklist.scope}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.completionDate} </text:span>${checklist.completionDate}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.interviewee} </text:span>${checklist.interviewee}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.checklistId} </text:span>${checklist.checklistId}</text:p>
 
-<text:p text:style-name="SectionHeading">Elementos de Verificación / Checklist Items</text:p>
+<text:p text:style-name="SectionHeading">${labels.checklistItems}</text:p>
 [#list items as item]
 <text:p text:style-name="SubHeading">${item.itemCode} — ${item.requirementText}${item.requirement}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Método de Verificación / Verification Method: </text:span>${item.itemVerificationMethod}${item.verificationMethod}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Estado de Cumplimiento / Compliance Status: </text:span>${item.complianceStatus}${item.compliance}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Nivel de Riesgo / Risk Level: </text:span>${item.riskClassification}${item.nominalRisk}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Comentario del Inspector / Inspector Comment: </text:span>${item.inspectorComment}${item.comment}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Referencia OACI / ICAO Reference: </text:span>${item.reference.icaoReference}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Reglamento Nacional / National Regulation: </text:span>${item.reference.nationalRegulation}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Artículo / Regulation Item: </text:span>${item.reference.regulationItem}</text:p>
-<text:p text:style-name="FieldLine"><text:span text:style-name="Label">Hallazgo Previo Abierto / Open Prior Finding: </text:span>${item.hasOpenPriorFinding}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.verificationMethod} </text:span>${item.itemVerificationMethod}${item.verificationMethod}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.complianceStatus} </text:span>${item.complianceStatus}${item.compliance}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.riskLevel} </text:span>${item.riskClassification}${item.nominalRisk}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.inspectorComment} </text:span>${item.inspectorComment}${item.comment}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.iCAOReference} </text:span>${item.reference.icaoReference}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.nationalRegulation} </text:span>${item.reference.nationalRegulation}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.regulationItem} </text:span>${item.reference.regulationItem}</text:p>
+<text:p text:style-name="FieldLine"><text:span text:style-name="Label">${labels.openPriorFinding} </text:span>${item.hasOpenPriorFinding}</text:p>
 <table:table table:name="EvidenceTable_${item.itemCode}" table:style-name="EvidenceTable">
 <table:table-column table:style-name="EvColHead"/>
 <table:table-column table:style-name="EvColHead"/>
@@ -70,11 +70,11 @@
 <table:table-column table:style-name="EvColHead"/>
 <table:table-column table:style-name="EvColHead"/>
 <table:table-row>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>ID de Evidencia / Evidence ID</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Tipo / Type</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Rol / Role</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Fuente / Source</text:p></table:table-cell>
-<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>Fecha de Recolección / Collection Date</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.evidenceId}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.type}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.role}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.source}</text:p></table:table-cell>
+<table:table-cell table:style-name="HeaderCell" office:value-type="string"><text:p>${labels.collectionDate}</text:p></table:table-cell>
 </table:table-row>
 [#list item.evidenceItems as evidence]
 <table:table-row>

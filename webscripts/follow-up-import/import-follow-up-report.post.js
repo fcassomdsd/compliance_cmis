@@ -56,7 +56,7 @@ function resolveFollowUpHelpers() {
       if (normalized === null) {
         return null;
       }
-      if (normalized.indexOf("CA-") === 0) {
+      if (normalized.indexOf("P-") === 0) {
         return normalized;
       }
       if (normalized.indexOf("CAP-") === 0) {
@@ -96,17 +96,17 @@ function resolveFollowUpHelpers() {
       if (normalized === null) {
         return null;
       }
-      var match = String(normalized).toUpperCase().match(/^([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,})$/);
+      var match = String(normalized).toUpperCase().match(/^(?:H-)?([A-Z0-9]+)-([A-Z0-9]+)-(\d{1,3})$/);
       if (!match) {
         return null;
       }
-      var findingSequence = this.padNumber(match[3], 2);
+      var findingSequence = this.padNumber(match[3], 3);
       if (findingSequence === null) {
         return null;
       }
       return {
-        findingId: match[1] + "-" + match[2] + "-" + findingSequence,
-        reducedFindingId: match[1] + match[2] + "-" + findingSequence,
+        findingId: "H-" + match[1] + "-" + match[2] + "-" + findingSequence,
+        reducedFindingId: match[1] + "-" + match[2] + findingSequence,
         findingSequence: findingSequence
       };
     },
@@ -116,7 +116,7 @@ function resolveFollowUpHelpers() {
       if (!findingParts || capSequence === null) {
         return null;
       }
-      return "CA-" + findingParts.reducedFindingId + "-" + capSequence;
+      return "P-" + findingParts.reducedFindingId + "-" + capSequence;
     },
     buildFollowUpId: function(findingId, followUpSequence) {
       var findingParts = this.parseFindingParts(findingId);
@@ -131,7 +131,7 @@ function resolveFollowUpHelpers() {
       if (!sequence) {
         return null;
       }
-      return "FU-" + findingParts.reducedFindingId + "-" + sequence;
+      return "S-" + findingParts.reducedFindingId + "-" + sequence;
     },
     parseFollowUpSequenceFromId: function(followUpId, findingId) {
       var normalizedId = trimToNull(followUpId);
@@ -139,7 +139,7 @@ function resolveFollowUpHelpers() {
       if (!normalizedId || !findingParts) {
         return null;
       }
-      var prefix = "FU-" + findingParts.reducedFindingId + "-";
+      var prefix = "S-" + findingParts.reducedFindingId + "-";
       if (normalizedId.indexOf(prefix) !== 0) {
         return null;
       }
@@ -260,7 +260,7 @@ function parseFollowUpSequenceFromId(followUpId, findingId) {
 
 function validateFollowUpIdFormat(followUpId, findingId) {
   if (parseFollowUpSequenceFromId(followUpId, findingId) === null) {
-    fail(400, "followUpReport.followUpId must match FU-XXXXNNNYYY-MM-VV for the provided findingId");
+    fail(400, "followUpReport.followUpId must match S-XXXXT####-EEE###-## for the provided findingId");
   }
 }
 
@@ -786,14 +786,14 @@ function normalizeRequest(payloadRoot) {
 
   var normalizedFinding = parseFindingParts(normalized.findingId);
   if (!normalizedFinding) {
-    fail(400, "followUpReport.findingId must match XXXXNNN-YYY-MM");
+    fail(400, "followUpReport.findingId must match H-XXXXT####-EEE-###");
   }
   normalized.findingId = normalizedFinding.findingId;
 
   if (normalized.capId !== null) {
     normalized.capId = buildCorrectiveActionId(normalized.findingId, normalized.capId) || normalizeCapIdentifier(normalized.capId);
-    if (normalized.capId === null || normalized.capId.indexOf("CA-") !== 0) {
-      fail(400, "followUpReport.capId must contain a corrective action sequence to build CA-XXXXNNNYYY-MM-SS");
+    if (normalized.capId === null || normalized.capId.indexOf("P-") !== 0) {
+      fail(400, "followUpReport.capId must contain a corrective action sequence to build P-XXXXT####-EEE###-##");
     }
   }
 

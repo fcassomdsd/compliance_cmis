@@ -1,0 +1,9 @@
+<webscript>
+   <shortname>Generate Provider History Report</shortname>
+   <description>Generate a bounded oversight-history report for a specific provider: previous findings, corrective actions, follow-ups, checklist items, and evidence</description>
+   <url>/api/providers/provider-history-report</url>
+   <format default="json"/>
+   <content-type>application/json</content-type>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>

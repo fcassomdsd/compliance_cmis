@@ -1,7 +1,8 @@
 {
-  "inspectionCode": "MDPP-2026-0226",
+  "inspectionCode": "AV-MDPP-A-0226",
   "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
   "reportDate": "2026-03-31",
+  "locale": "es",
   "mainInspector": "Ing. Laura Gómez",
   "inspectors": [
     {
@@ -13,7 +14,7 @@
     {
       "name": "Téc. Rafael Pérez",
       "specialty": [
-        "Vigilancia (VIG)"
+        "Vigilancia (SUR)"
       ]
     }
   ]

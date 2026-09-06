@@ -3,6 +3,7 @@
   "destinationPath": "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data",
   "inspectionNo": "INSP-2026-0225",
   "title": "Plan de inspección MDSD - DNA",
+  "locale": "es",
   "startDate": "2026-03-26",
   "endDate": "2026-03-27",
   "locationId": "MDSD",
@@ -18,7 +19,7 @@
     },
     {
       "name": "Téc. Rafael Pérez",
-      "specialty": "VIG"
+      "specialty": "SUR"
     }
   ],
   "checklistItems": [
@@ -29,7 +30,7 @@
       "comment": "Evidencia actualizada y disponible"
     },
     {
-      "itemCode": "VIG-2.3",
+      "itemCode": "SUR-2.3",
       "question": "¿Se ejecutan rutinas de inspección programadas?",
       "complianceStatus": "Non-Compliant",
       "comment": "Se detectaron registros incompletos"

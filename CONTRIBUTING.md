@@ -69,6 +69,12 @@ bash scripts/verify-resolve-paths.sh
 
 This checks that key path patterns are consistent across every Web Script that has a `resolveVsoPaths()` definition.
 
+### xmlEscapeDeep() follows the same pattern — but isn't covered by the script above
+
+`xmlEscapeDeep()` (escapes free-text values before FODT template substitution, since the renderer does plain string substitution with no escaping of its own) is defined once in the shared `webscripts/common/vso-paths.lib.js`, with local fallback copies inline in `generate-inspection-report.post.js` and `generate-inspection-plan.post.js`'s own `TemplateGeneration` objects — the same "self-contained, degrades gracefully" design as `resolveVsoPaths()` above.
+
+`scripts/verify-resolve-paths.sh` only checks `resolveVsoPaths()` — it will not catch a copy of `xmlEscapeDeep()` drifting out of sync. If you change its logic, update all copies by hand and verify manually (e.g. generate a report with a provider/entity name containing `&`, `<`, or `>` and confirm the output is still valid XML).
+
 ### Conventional Commits
 
 Use Conventional Commits for clear change history.
