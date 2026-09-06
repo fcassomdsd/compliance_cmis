@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<!--
+  Registers the Share-side VSO aspect-label bundle (configs/share/messages/vsoModel-share*.properties)
+  with Share's existing "webscripts.resources" ResourceBundleBootstrapComponent bean.
+
+  This overrides (replaces, same bean id) the bean declared in Share's own
+  alfresco/slingshot-application-context.xml. A same-id bean definition in a
+  later-loaded context REPLACES the whole bean, it does not merge collection
+  properties automatically (confirmed: an earlier attempt using list
+  merge="true" without a parent="" relationship silently dropped every
+  original bundle, breaking Share's own built-in message resolution). So all
+  of Share's original bundles are reproduced explicitly here, with our
+  bundle appended - do not remove any of the first five entries below when
+  editing this file.
+-->
+<beans>
+  <bean id="webscripts.resources" class="org.springframework.extensions.surf.util.ResourceBundleBootstrapComponent">
+    <property name="resourceBundles">
+      <list>
+        <value>webscripts.messages.webscripts</value>
+        <value>alfresco.messages.common</value>
+        <value>alfresco.messages.cmm</value>
+        <value>alfresco.messages.slingshot</value>
+        <value>alfresco.messages.smartfolder</value>
+        <value>alfresco.web-extension.messages.vsoModel-share</value>
+      </list>
+    </property>
+  </bean>
+</beans>
