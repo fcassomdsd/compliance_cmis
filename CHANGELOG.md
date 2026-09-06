@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-09-06] — English/Spanish Localization & Message-Bundle Title Fixes
+
+### Added
+- **English/Spanish localization for report generation**: `generate-inspection-report.post.js` and `generate-inspection-plan.post.js` now accept a `locale` parameter (default `es`), selecting from new `INFORME_FINAL_LABELS`/`PLAN_LABELS` dictionaries. `templates/*.fodt` gained ~60 `${labels.*}` placeholders replacing hardcoded Spanish text.
+- **`entity-profile.json`**: new config for entity branding defaults (name, logo) used in generated report/plan headers, in the same effort as locale support so both concerns land together for the template's header section.
+- **Model title bundles**: all 157 inline `<title>` overrides removed from `configs/model/vsoModel.xml` in favor of `configs/messages/vsoModel` (English) and the new `configs/messages/vsoModel_es` (Spanish), resolved via Alfresco's model message-bundle mechanism.
+
+### Fixed
+- **Share showed raw QNames (e.g. `vso:specialtyName`) instead of property/type/aspect labels**: the message-bundle keys used abbreviated category words (`prop.`, `assoc.`) and were missing the required model-scope prefix. Confirmed via `javap` disassembly of the running container's own `alfresco-data-model-25.2.0.64.jar` that Alfresco's `M2Label.getLabel()` builds keys as `<model-prefix>.<category>.<qname>.title` with the *unabbreviated* category word (`property`, `association`, not `prop`/`assoc`). Every key in `configs/messages/vsoModel`/`vsoModel_es` rewritten to `vso_vsoModel.<type|aspect|property|association>.vso_<name>.title`; 8 associations that had never had a bundle entry at all (an authoring gap from the original localization pass) were added in both locales.
+- **Share's "Manage Aspects" dialog also showed raw QNames**: this dialog uses a wholly separate label mechanism from the model dictionary — Share's own `aspect.<prefix>_<name>=<label>` flat bundle. Added `configs/share/messages/vsoModel-share.properties` and `vsoModel-share_es.properties` (labels for the 7 VSO aspects in `share-config-custom.xml`'s `<aspects><visible>`), registered via a new `configs/share/vso-share-context.xml` Spring bean override of `webscripts.resources`. Note for future editors: this override must reproduce Share's original 5 bundle entries verbatim alongside the new one — an initial attempt using `<list merge="true">` without a `parent=` relationship replaced (rather than merged into) the list and silently broke Share's own built-in message resolution.
+- **Stale verification guidance**: `README.md` and `docs/model-reload-validation-and-smoke-tests.md` recommended checking `/alfresco/service/api/classes/{id}` to confirm bundle resolution; that legacy webscript reads the model's raw XML `<title>` directly and never consults the message bundle, so it cannot validate this either way. Both docs corrected to recommend checking an actual Share-rendered page instead.
+
 ## [2026-09-02] — Nomenclatura ID Formats & Three Bug Fixes
 
 ### Changed
