@@ -245,6 +245,7 @@
         <list>
           <value>Chain-derived</value>
           <value>Direct</value>
+          <value>Derived</value>
         </list>
       </parameter>
     </constraint>
