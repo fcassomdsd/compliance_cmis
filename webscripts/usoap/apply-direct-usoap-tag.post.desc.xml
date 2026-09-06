@@ -1,0 +1,9 @@
+<webscript>
+   <shortname>Apply Direct USOAP Tag</shortname>
+   <description>Manually apply a USOAP CE/area/PQ tag (tagSource=Direct) to a whole-artifact node -- a checklist, inspection, corrective action, follow-up report, or plain document -- that the citation-chain import does not tag automatically</description>
+   <url>/api/usoap/direct-tag</url>
+   <format default="json"/>
+   <content-type>application/json</content-type>
+   <authentication>user</authentication>
+   <transaction>required</transaction>
+</webscript>

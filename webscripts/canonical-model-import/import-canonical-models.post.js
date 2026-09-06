@@ -308,6 +308,82 @@ function resolveFollowUpHelpers() {
 
 var FOLLOW_UP_HELPERS = resolveFollowUpHelpers();
 
+function resolveUsoapTagHelpers() {
+  if (typeof __VSO_USOAP_TAG_HELPERS !== "undefined" && __VSO_USOAP_TAG_HELPERS) {
+    return __VSO_USOAP_TAG_HELPERS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-usoap-tags.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-usoap-tags.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_USOAP_TAG_HELPERS !== "undefined" && __VSO_USOAP_TAG_HELPERS) {
+          return __VSO_USOAP_TAG_HELPERS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  // Fallback: reimplements the same two functions using this file's own
+  // ensureAspect/setPropertyIfPresent/setMultiPropertyIfPresent, in case the
+  // shared lib cannot be imported in this environment.
+  return {
+    applyChainDerivedUsoapTags: function(node, usoapPqReference) {
+      if (!usoapPqReference || !usoapPqReference.length) {
+        return;
+      }
+      ensureAspect(node, "vso:usoapEvidenceContext");
+
+      var pqCodes = [];
+      var ceValues = [];
+      var areaValues = [];
+      for (var i = 0; i < usoapPqReference.length; i++) {
+        var entry = usoapPqReference[i] || {};
+        if (entry.code) pqCodes.push(entry.code);
+        if (entry.criticalElement) ceValues.push(entry.criticalElement);
+        if (entry.areaCode) areaValues.push(entry.areaCode);
+      }
+
+      setMultiPropertyIfPresent(node, "vso:usoapPqReference", pqCodes);
+      setMultiPropertyIfPresent(node, "vso:ceMapping", ceValues);
+      setMultiPropertyIfPresent(node, "vso:areaMapping", areaValues);
+      setPropertyIfPresent(node, "vso:usoapCriticalElement", usoapPqReference[0].criticalElement);
+      setPropertyIfPresent(node, "vso:usoapAreaCode", usoapPqReference[0].areaCode);
+      setPropertyIfPresent(node, "vso:usoapTagSource", "Chain-derived");
+    },
+    inheritUsoapTags: function(targetNode, sourceNode) {
+      if (!sourceNode || !sourceNode.hasAspect("vso:usoapEvidenceContext")) {
+        return;
+      }
+      ensureAspect(targetNode, "vso:usoapEvidenceContext");
+
+      var scalarProps = ["vso:usoapCriticalElement", "vso:usoapAreaCode", "vso:usoapTagSource"];
+      for (var si = 0; si < scalarProps.length; si++) {
+        var value = sourceNode.properties[scalarProps[si]];
+        if (value !== null && value !== undefined && value !== "") {
+          targetNode.properties[scalarProps[si]] = value;
+        }
+      }
+
+      var multiProps = ["vso:usoapPqReference", "vso:ceMapping", "vso:areaMapping"];
+      for (var mi = 0; mi < multiProps.length; mi++) {
+        var multiValue = sourceNode.properties[multiProps[mi]];
+        if (multiValue && multiValue.length) {
+          targetNode.properties[multiProps[mi]] = multiValue;
+        }
+      }
+    }
+  };
+}
+
+var USOAP_TAG_HELPERS = resolveUsoapTagHelpers();
+
 function trimToNull(value) {
   if (value === null || value === undefined) {
     return null;
@@ -572,71 +648,10 @@ function setMultiPropertyIfPresent(node, propertyName, values) {
   }
 }
 
-/**
- * Applies chain-derived USOAP PQ/CE/area tags resolved by the Node-RED
- * citation chain (ICAO PQ -> Annex paragraph -> national regulation article
- * -> checklist item), as opposed to a manually/directly assigned tag.
- * usoapPqReference is an array of { code, criticalElement, areaCode }.
- */
-function applyChainDerivedUsoapTags(node, usoapPqReference) {
-  if (!usoapPqReference || !usoapPqReference.length) {
-    return;
-  }
-  ensureAspect(node, "vso:usoapEvidenceContext");
-
-  var pqCodes = [];
-  var ceValues = [];
-  var areaValues = [];
-  for (var index = 0; index < usoapPqReference.length; index++) {
-    var entry = usoapPqReference[index] || {};
-    if (entry.code) {
-      pqCodes.push(entry.code);
-    }
-    if (entry.criticalElement) {
-      ceValues.push(entry.criticalElement);
-    }
-    if (entry.areaCode) {
-      areaValues.push(entry.areaCode);
-    }
-  }
-
-  setMultiPropertyIfPresent(node, "vso:usoapPqReference", pqCodes);
-  setMultiPropertyIfPresent(node, "vso:ceMapping", ceValues);
-  setMultiPropertyIfPresent(node, "vso:areaMapping", areaValues);
-  setPropertyIfPresent(node, "vso:usoapCriticalElement", usoapPqReference[0].criticalElement);
-  setPropertyIfPresent(node, "vso:usoapAreaCode", usoapPqReference[0].areaCode);
-  setPropertyIfPresent(node, "vso:usoapTagSource", "Chain-derived");
-}
-
-/**
- * Copies already-materialized USOAP tags from one saved node onto another,
- * e.g. from a finding onto its follow-up evidence. Unlike
- * applyChainDerivedUsoapTags, this reads real Alfresco property values
- * rather than the raw {code, criticalElement, areaCode} chain-resolution
- * shape.
- */
-function inheritUsoapTags(targetNode, sourceNode) {
-  if (!sourceNode || !sourceNode.hasAspect("vso:usoapEvidenceContext")) {
-    return;
-  }
-  ensureAspect(targetNode, "vso:usoapEvidenceContext");
-
-  var scalarProps = ["vso:usoapCriticalElement", "vso:usoapAreaCode", "vso:usoapTagSource"];
-  for (var index = 0; index < scalarProps.length; index++) {
-    var value = sourceNode.properties[scalarProps[index]];
-    if (value !== null && value !== undefined && value !== "") {
-      targetNode.properties[scalarProps[index]] = value;
-    }
-  }
-
-  var multiProps = ["vso:usoapPqReference", "vso:ceMapping", "vso:areaMapping"];
-  for (var multiIndex = 0; multiIndex < multiProps.length; multiIndex++) {
-    var multiValue = sourceNode.properties[multiProps[multiIndex]];
-    if (multiValue && multiValue.length) {
-      targetNode.properties[multiProps[multiIndex]] = multiValue;
-    }
-  }
-}
+// applyChainDerivedUsoapTags / inheritUsoapTags now live in
+// USOAP_TAG_HELPERS (webscripts/common/vso-usoap-tags.lib.js), shared with
+// webscripts/usoap/apply-direct-usoap-tag.post.js. See resolveUsoapTagHelpers()
+// above.
 
 function setDatePropertyIfPresent(node, propertyName, value) {
   var normalized = trimToNull(value);
@@ -1457,7 +1472,7 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
     if (evidencePayload.immutable !== null && evidencePayload.immutable !== undefined) {
       evidenceNode.properties["vso:immutable"] = !!evidencePayload.immutable;
     }
-    inheritUsoapTags(evidenceNode, findingNode);
+    USOAP_TAG_HELPERS.inheritUsoapTags(evidenceNode, findingNode);
     evidenceNode.save();
 
     ensureAssociation(followUpNode, evidenceNode, "vso:relatedEvidence");
@@ -2323,7 +2338,7 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     } else {
       evidenceNode.properties["vso:immutable"] = false;
     }
-    applyChainDerivedUsoapTags(evidenceNode, itemPayload.reference && itemPayload.reference.usoapPqReference);
+    USOAP_TAG_HELPERS.applyChainDerivedUsoapTags(evidenceNode, itemPayload.reference && itemPayload.reference.usoapPqReference);
     evidenceNode.save();
 
     if (sourceKey && importedBySource && sourceFile) {
@@ -2382,7 +2397,7 @@ function upsertChecklistItem(checklistNode, checklistData, itemPayload, summary)
     setPropertyIfPresent(itemNode, "vso:icaoReference", itemPayload.reference.icaoReference);
     setPropertyIfPresent(itemNode, "vso:nationalRegulation", itemPayload.reference.nationalRegulation);
     setPropertyIfPresent(itemNode, "vso:regulationItem", itemPayload.reference.regulationItem);
-    applyChainDerivedUsoapTags(itemNode, itemPayload.reference.usoapPqReference);
+    USOAP_TAG_HELPERS.applyChainDerivedUsoapTags(itemNode, itemPayload.reference.usoapPqReference);
   }
 
   itemNode.save();
@@ -2454,7 +2469,7 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
     "vso:regulationItem",
     firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null)
   );
-  applyChainDerivedUsoapTags(
+  USOAP_TAG_HELPERS.applyChainDerivedUsoapTags(
     findingNode,
     (findingPayload.usoapPqReference && findingPayload.usoapPqReference.length)
       ? findingPayload.usoapPqReference

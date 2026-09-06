@@ -122,7 +122,39 @@ A single artifact can legitimately be relevant to more than one Critical Element
 
 ### Direct/manual tagging
 
-For PQs that apply to an entire document, checklist, or inspection rather than one specific checklist item, apply the `vso:usoapEvidenceContext` aspect directly to that node (it is a generic aspect, already attachable to any content node, and is addable — not mandatory — on `vso:inspection` and `vso:inspectionChecklist`). Set `vso:usoapTagSource = "Direct"` on manually-applied tags so reports can distinguish them from chain-derived ones.
+For PQs that ask examiners to look at one specific, identifiable whole-artifact document — an aerodrome/SMS manual, a license or personnel file, an oversight plan, an aerodrome dossier — rather than one checklist item, apply the `vso:usoapEvidenceContext` aspect directly to that node via `POST /api/usoap/direct-tag`. The aspect is generic and already attachable to any content node; this endpoint is what actually wires up the previously-manual-only "Direct" tag source with validation and a node-type allow-list.
+
+```bash
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+        "nodeId": "12345678-90ab-cdef-1234-567890abcdef",
+        "criticalElement": "CE-6",
+        "areaCode": "AGA",
+        "ceMapping": ["CE-6"],
+        "areaMapping": ["AGA"],
+        "pqReferences": ["PQ 8.111", "PQ 8.115"],
+        "evidenceBasis": "Oversight Record"
+      }' \
+  "http://localhost:8080/alfresco/s/api/usoap/direct-tag"
+```
+
+`nodeId` accepts either a bare node UUID or a full `workspace://SpacesStore/<uuid>` nodeRef. At least one of `criticalElement`, `areaCode`, `ceMapping`, `areaMapping`, or `pqReferences` is required; each value (including `evidenceBasis`, if given) is validated against the same `vso:ceList`/`vso:usoapAreaList`/`vso:usoapEvidenceBasisList` constraint lists and PQ-code pattern (`PQ \d{1,2}\.\d{3}`) the model itself enforces — invalid values return `400` rather than being silently accepted (or, previously, rejected only at save time with an opaque Alfresco integrity-violation error).
+
+The endpoint only accepts a fixed node-type allow-list, checked via `node.isSubType(...)` against `vso:inspectionChecklist`, `vso:inspection`, `vso:correctiveAction`, `vso:followUpReport`, `cm:content` (plain documents — manuals, licenses, training/personnel records, aerodrome dossiers), plus the chain-derived leaf types (`vso:checklistItem`, `vso:evidenceItem`, `vso:finding`) for idempotent re-tagging/correction. Any other node type is rejected with `400`. Note that `cm:content` is Alfresco's base content type, so this allow-list entry is intentionally broad — it permits any content subtype, including out-of-box system content types (e.g. `cm:dictionaryModel`), relying on normal Alfresco ACLs/permissions rather than this webscript to restrict who can write where; in practice only documents intentionally surfaced by the `compliance_web` UI's tagging feature get tagged this way. `vso:usoapTagSource` is always set to `"Direct"` by this endpoint — it can never be used to write `"Chain-derived"` tags, which remain exclusively the canonical-import path's responsibility.
+
+The tagging logic itself (`applyDirectUsoapTags`, plus the validation helpers `isValidCe`/`isValidArea`/`isValidPqCode`/`isDirectTagAllowedType`) lives in `webscripts/common/vso-usoap-tags.lib.js`, alongside `applyChainDerivedUsoapTags`/`inheritUsoapTags` — the same shared library the canonical-import webscript uses, so both tagging paths stay in lockstep as required by the citation-chain consistency rule above.
+
+Direct-tagged whole-artifacts surface automatically in the existing `Evidence`/`QC` smart folders once tagged — those folders already query on `ceMapping`/generic USOAP-aspect presence, so no new smart-folder template is needed (see `docs/smart-folders-operational-map.md`).
+
+### Type-2 (sampled population) resolution
+
+Some PQ guidance doesn't point at one identifiable document at all — it asks the examiner to sample across a *population* of artifacts ("muestra de listas de verificación," "muestra de informes de inspección/auditoría," "seguimiento de la ejecución de los planes de medidas correctivas"). Tagging every document in that population individually doesn't scale and isn't what the guidance means, so these PQs are resolved by live query instead, against a catalog of expectations:
+
+- `atrocore-docker`'s `UsoapEvidenceExpectation` entity records, per PQ, which artifact category ICAO guidance expects sampled (`Checklist`, `InspectionReport`, `AuditReport`, `CAPExecution`, `TrainingRecord`, `PersonnelFile`, `Manual`, `License`, `OversightPlan`, `AerodromeDossier`), plus CE/area/specialty scope and an optional date-range hint. It is queryable via the generic Node-RED passthrough (`/queryEntity?entity=UsoapEvidenceExpectation`) — no dedicated flow was needed.
+- `compliance_cmis` stays stateless with respect to AtroCore: `POST /api/usoap/ce-evidence-report` accepts an optional `populationQueries` array (see below) that the caller — `compliance_web`, which owns the catalog — builds from those expectation rows, and this webscript only resolves the Alfresco-side candidate documents for each one.
+
+`resolvePopulationCandidates()` maps `artifactCategory` to an Alfresco `TYPE:` predicate (`Checklist` → `vso:inspectionChecklist`; `InspectionReport`/`AuditReport` → `vso:inspection`; `CAPExecution` → `vso:correctiveAction` OR `vso:followUpReport`; everything else → plain `cm:content`, since manuals/licenses/training/personnel records/oversight plans/aerodrome dossiers have no dedicated content type today), optionally narrowed by `vso:specialtyCode` and a `cm:modified` date range derived from `monthsBack`, and returns up to 50 candidate nodes plus a total count. A `candidateCount` of `0` adds a `"population"`-type entry to the report's `gaps` array.
 
 ### Retired: regex/bulk-area auto-population
 
@@ -146,6 +178,18 @@ curl -u admin:admin -X POST \
   -H "Content-Type: application/json" \
   -d '{"ce": "CE-5", "year": "2026"}' \
   "http://localhost:8080/alfresco/s/api/usoap/ce-evidence-report"
+
+# Report for CE-7 including Type-2 (sampled-population) resolution:
+curl -u admin:admin -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+        "ce": "CE-7",
+        "year": "2026",
+        "populationQueries": [
+          {"pqCode": "PQ 8.403", "artifactCategory": "OversightPlan", "specialtyCode": "AGA", "monthsBack": 24}
+        ]
+      }' \
+  "http://localhost:8080/alfresco/s/api/usoap/ce-evidence-report"
 ```
 
 ### Response structure
@@ -161,13 +205,24 @@ curl -u admin:admin -X POST \
     "byType": { "finding": 43, "evidence": 89, "checklistItem": 24 },
     "byPq": { "PQ 7.035": 18, "PQ 7.101": 12, "Sin PQ": 7 },
     "byArea": { "CNS": 52, "ATS": 48, "AGA": 34, "Sin area": 22 },
-    "gaps": [{"type":"finding","id":"H-MDPPA0001-SUR-001","gap":"Missing ICAO reference"}]
+    "gaps": [
+      {"type":"finding","id":"H-MDPPA0001-SUR-001","gap":"Missing ICAO reference"},
+      {"type":"population","pqCode":"PQ 8.403","gap":"No candidate documents found in expected population"}
+    ]
   },
   "byPq": {
     "PQ 7.035": [ { "type": "finding", "findingId": "...", ... } ]
   },
-  "artifacts": [ ... ]
+  "artifacts": [ ... ],
+  "sampledPopulations": [
+    {
+      "pqCode": "PQ 8.403",
+      "artifactCategory": "OversightPlan",
+      "candidateCount": 3,
+      "candidates": [ { "nodeRef": "workspace://SpacesStore/...", "name": "...", "path": "...", "modifiedAt": "..." } ]
+    }
+  ]
 }
 ```
 
-The `gaps` array flags artifacts missing ICAO references or evidence basis classification — useful for audit preparation quality control.
+The `gaps` array flags artifacts missing ICAO references or evidence basis classification, or Type-2 PQs whose expected population resolved zero candidates — useful for audit preparation quality control. `sampledPopulations` is only present in the response when the request included `populationQueries` — omitting it preserves the exact response shape this endpoint had before Type-2 support existed.

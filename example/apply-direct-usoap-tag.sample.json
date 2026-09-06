@@ -1,0 +1,9 @@
+{
+  "nodeId": "12345678-90ab-cdef-1234-567890abcdef",
+  "criticalElement": "CE-6",
+  "areaCode": "AGA",
+  "ceMapping": ["CE-6"],
+  "areaMapping": ["AGA"],
+  "pqReferences": ["PQ 8.111", "PQ 8.115"],
+  "evidenceBasis": "Oversight Record"
+}
