@@ -162,6 +162,92 @@ function groupByPq(artifacts) {
   return byPq;
 }
 
+// Maps a UsoapEvidenceExpectation artifactCategory (atrocore-docker) to the
+// Alfresco node type(s) that represent it, for Type-2 (sampled-population)
+// PQ resolution. Categories with no dedicated content type today (manuals,
+// licenses, training/personnel records, oversight plans, aerodrome dossiers)
+// fall back to plain cm:content, narrowed by specialtyCode when given -- see
+// docs/usoap-evidence-structure.md, "Type-2 (sampled population) resolution".
+var POPULATION_CATEGORY_TYPES = {
+  "Checklist": ["vso:inspectionChecklist"],
+  "InspectionReport": ["vso:inspection"],
+  "AuditReport": ["vso:inspection"],
+  "CAPExecution": ["vso:correctiveAction", "vso:followUpReport"],
+  "TrainingRecord": ["cm:content"],
+  "PersonnelFile": ["cm:content"],
+  "Manual": ["cm:content"],
+  "License": ["cm:content"],
+  "OversightPlan": ["cm:content"],
+  "AerodromeDossier": ["cm:content"]
+};
+
+var MAX_POPULATION_CANDIDATES = 50;
+
+function resolvePopulationCandidates(query) {
+  var pqCode = trimToNull(query.pqCode);
+  var artifactCategory = trimToNull(query.artifactCategory);
+  var specialtyCode = trimToNull(query.specialtyCode);
+  var monthsBack = query.monthsBack;
+
+  var types = POPULATION_CATEGORY_TYPES[artifactCategory];
+  if (!artifactCategory || !types) {
+    return {
+      pqCode: pqCode,
+      artifactCategory: artifactCategory,
+      candidateCount: 0,
+      candidates: [],
+      error: "Unknown or unsupported artifactCategory: " + artifactCategory
+    };
+  }
+
+  var typeClauses = [];
+  for (var i = 0; i < types.length; i++) {
+    typeClauses.push('TYPE:"' + types[i] + '"');
+  }
+  var luceneQuery = "+(" + typeClauses.join(" OR ") + ")";
+
+  if (specialtyCode) {
+    luceneQuery += ' AND +@vso\\:specialtyCode:"' + specialtyCode + '"';
+  }
+
+  if (monthsBack && !isNaN(monthsBack)) {
+    var since = new Date();
+    since.setMonth(since.getMonth() - Number(monthsBack));
+    luceneQuery += ' AND +@cm\\:modified:["' + since.toISOString() + '" TO NOW]';
+  }
+
+  var results;
+  try {
+    results = search.luceneSearch(luceneQuery);
+  } catch (error) {
+    return {
+      pqCode: pqCode,
+      artifactCategory: artifactCategory,
+      candidateCount: 0,
+      candidates: [],
+      error: "Query failed: " + error.message
+    };
+  }
+
+  var candidates = [];
+  for (var j = 0; j < results.length && candidates.length < MAX_POPULATION_CANDIDATES; j++) {
+    var r = results[j];
+    candidates.push({
+      nodeRef: String(r.nodeRef),
+      name: r.name || null,
+      path: r.displayPath || null,
+      modifiedAt: toIsoDate(safeProp(r, "cm:modified"))
+    });
+  }
+
+  return {
+    pqCode: pqCode,
+    artifactCategory: artifactCategory,
+    candidateCount: results.length,
+    candidates: candidates
+  };
+}
+
 function summarize(artifacts) {
   var summary = {
     total: artifacts.length,
@@ -213,6 +299,27 @@ function main() {
   var byPq = groupByPq(artifacts);
   var summary = summarize(artifacts);
 
+  // Type-2 (sampled-population) PQs: the caller (compliance_web, which owns
+  // the UsoapEvidenceExpectation catalog) supplies what to query for; this
+  // webscript stays stateless with respect to AtroCore and only resolves the
+  // Alfresco-side candidate documents. Omitting populationQueries preserves
+  // the exact response shape this endpoint had before Type-2 support existed.
+  var sampledPopulations = null;
+  if (requestBody.populationQueries && requestBody.populationQueries.length) {
+    sampledPopulations = [];
+    for (var i = 0; i < requestBody.populationQueries.length; i++) {
+      var resolved = resolvePopulationCandidates(requestBody.populationQueries[i] || {});
+      sampledPopulations.push(resolved);
+      if (resolved.candidateCount === 0) {
+        summary.gaps.push({
+          type: "population",
+          pqCode: resolved.pqCode,
+          gap: "No candidate documents found in expected population" + (resolved.error ? " (" + resolved.error + ")" : "")
+        });
+      }
+    }
+  }
+
   var report = {
     success: true,
     ce: ce,
@@ -222,6 +329,9 @@ function main() {
     byPq: byPq,
     artifacts: artifacts.slice(0, 500)
   };
+  if (sampledPopulations !== null) {
+    report.sampledPopulations = sampledPopulations;
+  }
 
   model.json = jsonUtils.toJSONString(report);
 }

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Runs ST-01 through ST-13 against Alfresco public REST API.
+# Runs ST-01 through ST-18 against Alfresco public REST API (ST-01..ST-13)
+# and the custom USOAP webscripts (ST-14..ST-18).
 # Required env vars:
 #   BASE_URL, USERNAME, PASSWORD, PARENT_ID
 
@@ -45,6 +46,10 @@ fi
 
 WORKDIR="${WORKDIR:-/tmp/vso-smoke-tests}"
 mkdir -p "$WORKDIR"
+
+# ST-14+ hit the custom webscripts under /alfresco/s/api/usoap/..., which live
+# on a different base path than the ACS public REST API used by ST-01..ST-13.
+WS_BASE_URL="${BASE_URL%%/api/-default-*}/s"
 
 PASS=0
 FAIL=0
@@ -507,6 +512,85 @@ if [[ -n "$CA_ID" ]]; then
   fi
 else
   report_fail "ST-13" "Missing correctiveAction node for residualRisk/effectivenessVerification test"
+fi
+
+# ST-14 Direct-tagging webscript: applies a tag to an already-allowed leaf
+# type (the checklist item created for ST-05) and checks it persists with
+# tagSource=Direct.
+if [[ -n "$CHECKLIST_ITEM_ID" ]]; then
+  payload="$WORKDIR/payload-direct-tag-st14.json"
+  cat > "$payload" <<EOF
+{
+  "nodeId": "$CHECKLIST_ITEM_ID",
+  "criticalElement": "CE-7",
+  "areaCode": "AGA",
+  "pqReferences": ["PQ 8.315"],
+  "evidenceBasis": "Oversight Record"
+}
+EOF
+  status=$(api_request "POST" "$WS_BASE_URL/api/usoap/direct-tag" "$payload")
+  if assert_status_2xx "$status" && grep -q '"usoapTagSource": *"Direct"' "$last_response_file" 2>/dev/null; then
+    report_pass "ST-14" "Direct tag applied to vso:checklistItem node persists usoapTagSource=Direct"
+  else
+    report_fail "ST-14" "Direct tag did not apply or did not persist tagSource=Direct"
+  fi
+else
+  report_fail "ST-14" "Missing checklist item node for direct-tag test"
+fi
+
+# ST-15 Direct-tagging webscript: rejects a node type outside the allow-list
+# (the smoke-test PARENT_ID folder itself, which is not cm:content-derived).
+payload="$WORKDIR/payload-direct-tag-st15.json"
+cat > "$payload" <<EOF
+{"nodeId": "$PARENT_ID", "criticalElement": "CE-7"}
+EOF
+status=$(api_request "POST" "$WS_BASE_URL/api/usoap/direct-tag" "$payload")
+if [[ "$status" == "500" || "$status" == "400" ]] && grep -q "not supported for node type" "$last_response_file" 2>/dev/null; then
+  report_pass "ST-15" "Direct tag rejected for disallowed node type"
+else
+  report_fail "ST-15" "Direct tag was not rejected for a disallowed node type"
+fi
+
+# ST-16 Direct-tagging webscript: rejects a malformed PQ code.
+if [[ -n "$CHECKLIST_ITEM_ID" ]]; then
+  payload="$WORKDIR/payload-direct-tag-st16.json"
+  cat > "$payload" <<EOF
+{"nodeId": "$CHECKLIST_ITEM_ID", "pqReferences": ["8.999"]}
+EOF
+  status=$(api_request "POST" "$WS_BASE_URL/api/usoap/direct-tag" "$payload")
+  if [[ "$status" == "500" || "$status" == "400" ]] && grep -q "Invalid value in pqReferences" "$last_response_file" 2>/dev/null; then
+    report_pass "ST-16" "Direct tag rejected for malformed PQ code"
+  else
+    report_fail "ST-16" "Malformed PQ code was not rejected"
+  fi
+else
+  report_fail "ST-16" "Missing checklist item node for malformed-PQ-code test"
+fi
+
+# ST-17 CE evidence report: populationQueries resolves a Type-2 (sampled
+# population) PQ and returns a matching sampledPopulations entry.
+payload="$WORKDIR/payload-ce-evidence-report-st17.json"
+cat > "$payload" <<'EOF'
+{"ce":"CE-1","populationQueries":[{"pqCode":"PQ TEST","artifactCategory":"Checklist"}]}
+EOF
+status=$(api_request "POST" "$WS_BASE_URL/api/usoap/ce-evidence-report" "$payload")
+if assert_status_2xx "$status" && grep -q '"artifactCategory": *"Checklist"' "$last_response_file" 2>/dev/null; then
+  report_pass "ST-17" "ce-evidence-report resolved a Checklist populationQuery into sampledPopulations"
+else
+  report_fail "ST-17" "ce-evidence-report did not return sampledPopulations for a Checklist populationQuery"
+fi
+
+# ST-18 CE evidence report: a populationQuery with zero matching candidates
+# adds a "population"-type gap entry.
+payload="$WORKDIR/payload-ce-evidence-report-st18.json"
+cat > "$payload" <<'EOF'
+{"ce":"CE-1","populationQueries":[{"pqCode":"PQ TEST","artifactCategory":"Checklist","specialtyCode":"ZZZ-NONEXISTENT-SPECIALTY"}]}
+EOF
+status=$(api_request "POST" "$WS_BASE_URL/api/usoap/ce-evidence-report" "$payload")
+if assert_status_2xx "$status" && grep -q '"type": *"population"' "$last_response_file" 2>/dev/null; then
+  report_pass "ST-18" "Zero-candidate population produced a population-type gap entry"
+else
+  report_fail "ST-18" "Zero-candidate population did not produce the expected gap entry"
 fi
 
 echo ""

@@ -1,0 +1,18 @@
+{
+  "ce": "CE-7",
+  "year": "2026",
+  "populationQueries": [
+    {
+      "pqCode": "PQ 8.403",
+      "artifactCategory": "OversightPlan",
+      "specialtyCode": "AGA",
+      "monthsBack": 24
+    },
+    {
+      "pqCode": "PQ 8.385",
+      "artifactCategory": "AuditReport",
+      "specialtyCode": "AGA",
+      "monthsBack": 24
+    }
+  ]
+}

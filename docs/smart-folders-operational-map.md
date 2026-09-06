@@ -110,6 +110,8 @@ Two templates, deployed under `Sites/vigilancia-de-la-so/documentLibrary/Datos/U
 - **`Evidence` anchor → `templates/usoap-evidence-smart-folder.json`.** Per-CE (CE-1...CE-8) and per-area evidence browsing, plus a "Control de calidad" branch per CE/area (evidence without an attachment, without a specific regulatory reference, or without minimum classification).
 - **`QC` anchor → `templates/usoap-quality-control-smart-folder.json`.** A global (not per-CE) cross-cutting quality-control tree, scoped to anything under the Vigilancia site with a `vso:ceMapping` value set: items missing PQ assignment, missing evidence basis, findings missing an ICAO/SARPs reference, and findings missing a national-regulation reference. Complements the `Evidence` anchor's per-CE QC branches with one global view.
 
+Whole-artifact nodes (checklists, inspections, CAPs, follow-up reports, manuals/licenses/other plain documents) that get a manual "Direct" USOAP tag via `POST /api/usoap/direct-tag` (see `docs/usoap-evidence-structure.md`, "Direct/manual tagging") surface automatically in both anchors above once tagged — both templates query on `ceMapping`/generic `vso:usoapEvidenceContext` presence, not on node type, so no new smart-folder template is needed for this feature.
+
 ## Deployment procedure (Share)
 
 1. Upload all four JSON files into `Repository/Data Dictionary/Smart Folder Templates`.
