@@ -151,6 +151,14 @@ vso_vsoModel.association.vso_hasRiskAssessment.title=Risk Assessment
 vso_vsoModel.association.vso_hasActionItem.title=Corrective Action Items
 vso_vsoModel.association.vso_hasResidualRisk.title=Expected Residual Risk
 vso_vsoModel.association.vso_hasEffectivenessVerification.title=Effectiveness Verification
+vso_vsoModel.association.vso_hasChecklistItem.title=Checklist Items
+vso_vsoModel.association.vso_hasCorrectiveAction.title=Corrective Action
+vso_vsoModel.association.vso_verifiedBy.title=Verified By
+vso_vsoModel.association.vso_hasContainmentMeasures.title=Immediate Containment Measures
+vso_vsoModel.association.vso_hasEvaluation.title=CAP Evaluation
+vso_vsoModel.association.vso_hasCriterion.title=CAP Evaluation Criteria
+vso_vsoModel.association.vso_hasFinding.title=Findings
+vso_vsoModel.association.vso_relatedPriorFinding.title=Related Prior Finding
 
 # Added for localization pass (previously unset in either XML titles or bundle)
 vso_vsoModel.type.vso_vsoContent.title=VSO Content

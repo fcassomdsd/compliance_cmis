@@ -151,6 +151,14 @@ vso_vsoModel.association.vso_hasRiskAssessment.title=Evaluación de Riesgo
 vso_vsoModel.association.vso_hasActionItem.title=Elementos del Plan de Acción Correctiva
 vso_vsoModel.association.vso_hasResidualRisk.title=Riesgo Residual Esperado
 vso_vsoModel.association.vso_hasEffectivenessVerification.title=Verificación de Efectividad
+vso_vsoModel.association.vso_hasChecklistItem.title=Elementos de Lista de Verificación
+vso_vsoModel.association.vso_hasCorrectiveAction.title=Acción Correctiva
+vso_vsoModel.association.vso_verifiedBy.title=Verificado Por
+vso_vsoModel.association.vso_hasContainmentMeasures.title=Medidas Inmediatas de Contención
+vso_vsoModel.association.vso_hasEvaluation.title=Evaluación de PAC
+vso_vsoModel.association.vso_hasCriterion.title=Criterios de Evaluación de PAC
+vso_vsoModel.association.vso_hasFinding.title=Hallazgos
+vso_vsoModel.association.vso_relatedPriorFinding.title=Hallazgo Previo Relacionado
 
 # Added for localization pass (previously unset in either XML titles or bundle)
 vso_vsoModel.type.vso_vsoContent.title=Contenido VSO
