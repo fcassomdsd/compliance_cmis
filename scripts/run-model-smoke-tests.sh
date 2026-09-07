@@ -593,6 +593,23 @@ else
   report_fail "ST-18" "Zero-candidate population did not produce the expected gap entry"
 fi
 
+# ST-19 CE evidence report: a cm:content-fallback populationQuery (no dedicated
+# Alfresco type) is scoped to the Vigilancia site's document library rather
+# than the whole repository -- regression guard for the bug where these
+# categories matched Data Dictionary content models, smart-folder template
+# JSON, other sites' sample content, etc. Asserts the response reports the
+# specific folder(s) it scoped the search to.
+payload="$WORKDIR/payload-ce-evidence-report-st19.json"
+cat > "$payload" <<'EOF'
+{"ce":"CE-8","populationQueries":[{"pqCode":"PQ TEST","artifactCategory":"Manual"}]}
+EOF
+status=$(api_request "POST" "$WS_BASE_URL/api/usoap/ce-evidence-report" "$payload")
+if assert_status_2xx "$status" && grep -q '"scopedFolders"' "$last_response_file" 2>/dev/null; then
+  report_pass "ST-19" "Manual populationQuery scoped to the Vigilancia site's document library folders"
+else
+  report_fail "ST-19" "Manual populationQuery did not report scopedFolders (site/folder scoping regressed)"
+fi
+
 echo ""
 echo "Finished: PASS=$PASS FAIL=$FAIL"
 if [[ "$FAIL" -gt 0 ]]; then
