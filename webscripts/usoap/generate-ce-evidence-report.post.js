@@ -166,8 +166,8 @@ function groupByPq(artifacts) {
 // Alfresco node type(s) that represent it, for Type-2 (sampled-population)
 // PQ resolution. Categories with no dedicated content type today (manuals,
 // licenses, training/personnel records, oversight plans, aerodrome dossiers)
-// fall back to plain cm:content, narrowed by specialtyCode when given -- see
-// docs/usoap-evidence-structure.md, "Type-2 (sampled population) resolution".
+// fall back to plain cm:content -- see docs/usoap-evidence-structure.md,
+// "Type-2 (sampled population) resolution".
 var POPULATION_CATEGORY_TYPES = {
   "Checklist": ["vso:inspectionChecklist"],
   "InspectionReport": ["vso:inspection"],
@@ -181,7 +181,59 @@ var POPULATION_CATEGORY_TYPES = {
   "AerodromeDossier": ["cm:content"]
 };
 
+// vso: custom types are only ever created by this app's own import/creation
+// paths (canonical-model-import, CAP/follow-up routers) inside the site
+// folders below, and always carry vso:serviceContext (vso:specialtyCode).
+// Plain cm:content documents (the fallback types above) are ordinary Share
+// uploads: they can live anywhere in the repository (Data Dictionary, other
+// sites' sample content, discussion posts, smart-folder template JSON, etc.)
+// and never carry vso:specialtyCode unless someone has explicitly tagged
+// them, so specialty filtering by that property silently zeroes out real
+// candidates for these categories. Folder scoping (POPULATION_CATEGORY_FOLDERS
+// below) is the only reliable relevance signal available for them today.
+var CATEGORIES_WITH_SPECIALTY_PROPERTY = {
+  "Checklist": true,
+  "InspectionReport": true,
+  "AuditReport": true,
+  "CAPExecution": true
+};
+
+var SITE_DOCLIB_PATH = "Sites/vigilancia-de-la-so/documentLibrary";
+
+// Relative to SITE_DOCLIB_PATH. Mapped from the folders actually present in
+// the live instance (verified 2026-09-07) closest to each category's real-
+// world evidence. License and AerodromeDossier have no dedicated folder yet
+// in this instance -- scoped to the closest existing parent as a documented
+// gap rather than left unscoped; a candidateCount of 0 there is expected
+// until those folders/documents exist, and surfaces as a normal "population"
+// gap rather than a flood of unrelated repository content.
+var POPULATION_CATEGORY_FOLDERS = {
+  "TrainingRecord": ["Capacitacion y competencia/Registros de capacitacion", "Capacitacion y competencia/Programas y planes de capacitacion"],
+  "PersonnelFile": ["Capacitacion y competencia"],
+  "Manual": ["Documentos/Manuales externos"],
+  "License": ["Documentos"],
+  "OversightPlan": ["Vigilancia/Planificacion anual"],
+  "AerodromeDossier": ["Datos/AGA", "Vigilancia/Datos de campo"]
+};
+
 var MAX_POPULATION_CANDIDATES = 50;
+
+var ancestorNodeRefCache = {};
+
+// Resolves a documentLibrary-relative path to its nodeRef via childByNamePath
+// (the established idiom in this codebase -- see webscripts/common/vso-paths.lib.js
+// and canonical-model-import) rather than hand-building a Lucene PATH:
+// expression, which would require ISO9075 QName-encoding every folder name
+// (including diacritics and spaces like "Capacitacion y competencia").
+function resolveAncestorNodeRef(relativePath) {
+  if (ancestorNodeRefCache.hasOwnProperty(relativePath)) {
+    return ancestorNodeRefCache[relativePath];
+  }
+  var folder = companyhome.childByNamePath(relativePath);
+  var nodeRef = folder ? String(folder.nodeRef) : null;
+  ancestorNodeRefCache[relativePath] = nodeRef;
+  return nodeRef;
+}
 
 function resolvePopulationCandidates(query) {
   var pqCode = trimToNull(query.pqCode);
@@ -200,14 +252,60 @@ function resolvePopulationCandidates(query) {
     };
   }
 
+  // Always scope to the Vigilancia site's document library, never the whole
+  // repository -- otherwise cm:content fallback categories match Data
+  // Dictionary content models, smart-folder template JSON, other sites'
+  // sample content (swsdp), discussion posts, etc.
+  var siteRootRef = resolveAncestorNodeRef(SITE_DOCLIB_PATH);
+  if (!siteRootRef) {
+    return {
+      pqCode: pqCode,
+      artifactCategory: artifactCategory,
+      candidateCount: 0,
+      candidates: [],
+      error: "Could not resolve site document library path: " + SITE_DOCLIB_PATH
+    };
+  }
+
   var typeClauses = [];
   for (var i = 0; i < types.length; i++) {
     typeClauses.push('TYPE:"' + types[i] + '"');
   }
   var luceneQuery = "+(" + typeClauses.join(" OR ") + ")";
+  luceneQuery += ' AND +ANCESTOR:"' + siteRootRef + '"';
 
-  if (specialtyCode) {
-    luceneQuery += ' AND +@vso\\:specialtyCode:"' + specialtyCode + '"';
+  // Narrow further to the specific folder(s) that hold this category's real
+  // evidence, when known -- the primary "is this actually relevant to the
+  // PQ" signal for categories with no dedicated content type/property.
+  var folderPaths = POPULATION_CATEGORY_FOLDERS[artifactCategory];
+  var scopedFolders = [];
+  if (folderPaths && folderPaths.length) {
+    var folderClauses = [];
+    for (var f = 0; f < folderPaths.length; f++) {
+      var relPath = SITE_DOCLIB_PATH + "/" + folderPaths[f];
+      var folderRef = resolveAncestorNodeRef(relPath);
+      if (folderRef) {
+        folderClauses.push('ANCESTOR:"' + folderRef + '"');
+        scopedFolders.push(folderPaths[f]);
+      }
+    }
+    if (folderClauses.length) {
+      luceneQuery += " AND +(" + folderClauses.join(" OR ") + ")";
+    }
+  }
+
+  if (specialtyCode && CATEGORIES_WITH_SPECIALTY_PROPERTY[artifactCategory]) {
+    var specialtyCodes = specialtyCode.split(",");
+    var specialtyClauses = [];
+    for (var s = 0; s < specialtyCodes.length; s++) {
+      var code = trimToNull(specialtyCodes[s]);
+      if (code) {
+        specialtyClauses.push('@vso\\:specialtyCode:"' + code + '"');
+      }
+    }
+    if (specialtyClauses.length) {
+      luceneQuery += " AND +(" + specialtyClauses.join(" OR ") + ")";
+    }
   }
 
   if (monthsBack && !isNaN(monthsBack)) {
@@ -240,12 +338,16 @@ function resolvePopulationCandidates(query) {
     });
   }
 
-  return {
+  var result = {
     pqCode: pqCode,
     artifactCategory: artifactCategory,
     candidateCount: results.length,
     candidates: candidates
   };
+  if (scopedFolders.length) {
+    result.scopedFolders = scopedFolders;
+  }
+  return result;
 }
 
 function summarize(artifacts) {
