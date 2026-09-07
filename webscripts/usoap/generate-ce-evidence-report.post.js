@@ -207,13 +207,20 @@ var SITE_DOCLIB_PATH = "Sites/vigilancia-de-la-so/documentLibrary";
 // gap rather than left unscoped; a candidateCount of 0 there is expected
 // until those folders/documents exist, and surfaces as a normal "population"
 // gap rather than a flood of unrelated repository content.
+//
+// "Vigilancia/Datos de campo" is deliberately excluded from every mapping:
+// it holds canonical field-collection data that already exists in final
+// form elsewhere (checklist items, evidence items, findings -- all queried
+// directly by type in loadArtifactsByCe) and its contents are not USOAP-
+// tagged, so including it here would reintroduce untagged, already-
+// represented noise into a sampled-population result.
 var POPULATION_CATEGORY_FOLDERS = {
   "TrainingRecord": ["Capacitacion y competencia/Registros de capacitacion", "Capacitacion y competencia/Programas y planes de capacitacion"],
   "PersonnelFile": ["Capacitacion y competencia"],
   "Manual": ["Documentos/Manuales externos"],
   "License": ["Documentos"],
   "OversightPlan": ["Vigilancia/Planificacion anual"],
-  "AerodromeDossier": ["Datos/AGA", "Vigilancia/Datos de campo"]
+  "AerodromeDossier": ["Datos/AGA"]
 };
 
 var MAX_POPULATION_CANDIDATES = 50;
