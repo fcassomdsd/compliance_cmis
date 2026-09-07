@@ -98,9 +98,9 @@ AcapiteOACI (Annex paragraph)  ──belongsTo──▶ DocumentoOACI (ICAO Anne
       │ hasMany
       ▼
 Normativa (national regulation article)  ──belongsTo──▶ Reglamento (national regulation)
-      │ many-to-many (NormativaProtocolQuestion)
+      │ many-to-many (NormativaChecklistQuestion)
       ▼
-ProtocolQuestion (local checklist-question catalog)
+ChecklistQuestion (local checklist-question catalog; renamed from ProtocolQuestion in 2026-09 to disambiguate from UsoapProtocolQuestion)
 ```
 
 `compliance_flow`'s Node-RED "getChecklistQuestion" flow resolves this chain for each checklist question and returns the matched PQ(s) — code, critical element, and area — as `reference.normativa.usoapPqReference` in the `/checklist` response. `compliance_checklist` carries that array through in the canonical checklist-item/finding export, and `compliance_cmis`'s `import-canonical-models.post.js` writes it onto the resulting `vso:checklistItem` node (and mirrors it onto any finding created against that item via `vso:checklistItemCode`) as `vso:usoapPqReference`, `vso:usoapCriticalElement`, `vso:usoapAreaCode`, `vso:ceMapping`, `vso:areaMapping`, with `vso:usoapTagSource = "Chain-derived"`.
