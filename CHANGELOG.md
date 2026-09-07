@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on Keep a Changelog and this project follows Semantic Versioning principles.
 
+## [2026-09-06] — ProtocolQuestion Renamed to ChecklistQuestion (atrocore-docker)
+
+### Changed
+- **`ProtocolQuestion` (AtroCore checklist-question catalog entity) renamed to `ChecklistQuestion`** to disambiguate it from the unrelated `UsoapProtocolQuestion` (ICAO Protocol Question) entity, which the shared "ProtocolQuestion" name fragment had already caused confusion around (e.g. generically-named fields in `compliance_web`'s `usoapDirectTagStore.js` that actually query `UsoapProtocolQuestion`). Implemented in `atrocore-docker` as a same-shape DB rename (tables/columns/indexes, no data migration/loss) plus git-tracked metadata for the new entity, replacing the entity's previous gap of never being version-controlled. The citation chain referenced elsewhere in this repo's docs is now `UsoapProtocolQuestion → AcapiteOACI → Normativa → ChecklistQuestion`, with the join relation renamed `NormativaProtocolQuestion → NormativaChecklistQuestion`. `compliance_flow`'s "getChecklistQuestion" Node-RED flow and `compliance_web`'s question-catalog store (`protocolQuestionStore.js → checklistQuestionStore.js`) were updated in lockstep. `compliance_cmis` itself has no direct model/code dependency on the old name — only `docs/usoap-evidence-structure.md`'s citation-chain diagram referenced it, updated accordingly.
+
 ## [2026-09-06] — English/Spanish Localization & Message-Bundle Title Fixes
 
 ### Added
