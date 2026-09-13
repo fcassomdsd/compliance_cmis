@@ -13,7 +13,7 @@
     "specialtyCode": "AVIS",
     "specialtyName": "Ayudas Visuales",
     "capId": "01",
-    "evidence": [
+    "evidenceItems": [
       {
         "evidenceId": "FUEV-0001-01",
         "evidenceType": "document",

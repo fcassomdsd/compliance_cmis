@@ -1,5 +1,6 @@
 stages:
   - lint
+  - validate
   - release
 
 # Guards against the parse errors the previous ecmaVersion: 5 config silently
@@ -10,6 +11,26 @@ lint:
   script:
     - npm ci
     - npm run lint
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# The example payloads are the contract documentation for most endpoints, and
+# they had drifted (a follow-up file that did not exist, and an "evidence" key
+# the importer ignores). Validate them, plus the helper shell scripts.
+validate:examples:
+  stage: validate
+  image: node:20-alpine
+  before_script:
+    - apk add --no-cache bash
+  script:
+    - node scripts/validate-examples.cjs
+    - |
+      for script in scripts/*.sh; do
+        echo "bash -n $script"
+        bash -n "$script"
+      done
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "develop"'
