@@ -1,113 +1,108 @@
 # Contributing Guide
 
-Thank you for considering contributing to compliance-CMIS.
-We welcome contributions of all sizes, from documentation improvements to model and endpoint enhancements.
+Thank you for contributing to **Compliance CMIS**. Contributions of all sizes are welcome — documentation, bug fixes, refactors, tests, and new features.
 
-Please read CODE_OF_CONDUCT.md before contributing.
+Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before participating.
+
+---
 
 ## 1. Branch workflow
 
-This repository follows a main/develop model:
+This repository follows a **main / develop** model:
 
-- `main`: stable and production-ready.
-- `develop`: active development branch. Open Merge Requests against this branch unless maintainers specify otherwise.
-- `feature/*`: new features, for example `feature/add-follow-up-validation`.
-- `fix/*`: bug fixes, for example `fix/follow-up-id-format`.
-- `hotfix/*`: urgent production fixes, for example `hotfix/repository-startup-fix`.
+- `main` — stable and production-ready.
+- `develop` — active integration branch. **All merge requests target `develop`** unless maintainers specify otherwise.
+- `feature/*` — new features, for example `feature/add-logging-module`.
+- `fix/*` — bug fixes, for example `fix/ui-freeze`.
+- `hotfix/*` — urgent fixes to `main`, for example `hotfix/crash-fix`.
 
-Example feature workflow:
+### Example workflow
 
 ```bash
-# 1) Start from develop
+# 1. Start from develop and pull the latest changes
 git checkout develop
 git pull
 
-# 2) Create your branch
+# 2. Create a branch from develop
 git checkout -b feature/awesome-improvement
 
-# 3) Commit with Conventional Commits
-# work...
+# 3. Commit with Conventional Commits
+git add .
 git commit -m "feat: add awesome improvement"
 
-# 4) Push
+# 4. Push the branch
 git push origin feature/awesome-improvement
 ```
 
-Then open a Merge Request targeting `develop`.
+Then open a merge request targeting `develop`.
 
-## 2. Code style and tooling
+> Never commit directly to `develop` or `main`.
 
-Consistency is key.
+---
 
-- Follow existing project style and naming patterns.
-- Keep model, webscripts, and docs aligned when changing behavior.
-- Use ESLint configuration present in the repository where applicable.
+## 2. Commit convention
 
-### ESLint
+Use [Conventional Commits](https://www.conventionalcommits.org/) for every commit message.
 
-Run before committing changes to Web Scripts:
+| Type | When to use | Example |
+|---|---|---|
+| `feat:` | A new feature | `feat: add awesome improvement` |
+| `fix:` | A bug fix | `fix: correct null handling` |
+| `chore:` | Maintenance, tooling, or dependency updates | `chore: update dependencies` |
+| `docs:` | Documentation-only changes | `docs: clarify setup instructions` |
+| `test:` | Tests added or updated | `test: add unit test for new behavior` |
+| `refactor:` | Internal change with no behavior change | `refactor: simplify initialization` |
+
+Write meaningful messages:
+
+- Good: `fix: correct null handling in diagnostics route`
+- Poor: `update stuff`
+
+---
+
+## 3. Code style and tooling
+
+These principles apply to every repository in this platform:
+
+- Follow the conventions of the files you touch; keep diffs focused and readable.
+- Avoid unrelated reformatting or refactoring in the same merge request.
+- Update documentation when behavior, contracts, or configuration change.
+- Add or update tests when changing logic.
+- Never commit secrets, tokens, credentials, or private keys.
+- Do not commit generated artifacts or local environment directories (`node_modules/`, `venv/`, `dist/`, database dumps, editor backups).
+
+### Repository-specific tooling
+
+- Web Scripts run on Alfresco's server-side JavaScript engine; follow the existing self-contained pattern in `webscripts/`.
+- Lint Web Scripts and scripts before committing:
 
 ```bash
 npm run lint
-```
-
-Auto-fix common warnings:
-
-```bash
 npm run lint:fix
 ```
 
-### resolveVsoPaths() consistency
-
-Web Scripts that need Alfresco folder paths include a local `resolveVsoPaths()` function with an `importScript()` fallback to the shared library in `webscripts/common/vso-paths.lib.js`. This is by design — each Web Script is self-contained and degrades gracefully.
-
-When you change folder paths or routing, update ALL copies of `resolveVsoPaths()` (3 files). Then run the verification script:
+- **Folder paths (`resolveVsoPaths()`):** Web Scripts that need Alfresco folder paths include a local `resolveVsoPaths()` with an `importScript()` fallback to the shared library in `webscripts/common/vso-paths.lib.js`. This is by design — each Web Script stays self-contained and degrades gracefully. When you change folder paths or routing, update **all** copies of `resolveVsoPaths()`, then verify:
 
 ```bash
 bash scripts/verify-resolve-paths.sh
 ```
 
-This checks that key path patterns are consistent across every Web Script that has a `resolveVsoPaths()` definition.
+- **`xmlEscapeDeep()`** escapes free-text values before FODT template substitution and follows the same self-contained pattern, but `scripts/verify-resolve-paths.sh` does **not** cover it. If you change its logic, update every copy by hand and verify manually — for example, generate a report with a provider or entity name containing `&`, `<`, or `>` and confirm the output is still valid XML.
+- Update `example/` payloads and the README endpoint table whenever a request or response contract changes.
 
-### xmlEscapeDeep() follows the same pattern — but isn't covered by the script above
+---
 
-`xmlEscapeDeep()` (escapes free-text values before FODT template substitution, since the renderer does plain string substitution with no escaping of its own) is defined once in the shared `webscripts/common/vso-paths.lib.js`, with local fallback copies inline in `generate-inspection-report.post.js` and `generate-inspection-plan.post.js`'s own `TemplateGeneration` objects — the same "self-contained, degrades gracefully" design as `resolveVsoPaths()` above.
+## 4. Testing
 
-`scripts/verify-resolve-paths.sh` only checks `resolveVsoPaths()` — it will not catch a copy of `xmlEscapeDeep()` drifting out of sync. If you change its logic, update all copies by hand and verify manually (e.g. generate a report with a provider/entity name containing `&`, `<`, or `>` and confirm the output is still valid XML).
+Run the relevant checks locally before opening a merge request, and include the exact commands and their outcomes in the merge request description.
 
-### Conventional Commits
-
-Use Conventional Commits for clear change history.
-
-| Type | When to use | Example |
-|---|---|---|
-| `feat:` | New feature | `feat: add follow-up closure validation` |
-| `fix:` | Bug fix | `fix: correct follow-up id normalization` |
-| `chore:` | Tooling/maintenance | `chore: update smoke test docs` |
-| `docs:` | Documentation only | `docs: clarify quick start` |
-| `test:` | Test additions/updates | `test: add smoke check for follow-up import` |
-| `refactor:` | Internal code change without behavior change | `refactor: simplify follow-up helper usage` |
-
-Meaningful messages:
-
-- Good: `fix: correct follow-up sequence generation for existing findings`
-- Bad: `update stuff`
-
-## 3. Testing expectations
-
-Before opening a Merge Request, validate your change locally.
-
-Suggested checks:
-
-1. Start the local stack if your change is runtime-related.
+### Repository-specific checks
 
 ```bash
+# Start the local stack when your change is runtime-related
 docker compose up -d
-```
 
-2. Run smoke tests when model/API behavior is affected.
-
-```bash
+# Smoke-test model and API behavior (requires a parent node id)
 export BASE_URL="http://localhost:8080/alfresco/api/-default-/public/alfresco/versions/1"
 export USERNAME="admin"
 export PASSWORD="admin"
@@ -116,37 +111,68 @@ export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 ./scripts/run-model-smoke-tests.sh
 ```
 
-3. If you changed model definitions, restart repository services and re-validate.
+After editing `configs/model/vsoModel.xml`, restart the repository container — model changes are not picked up live:
 
 ```bash
 docker compose restart alfresco
 ```
 
-If you add Node-based tooling/tests in your branch, run those too and include results.
+If you add Node-based tooling or tests in your branch, run those too and include the results.
 
-## 4. Merge Request checklist
+---
 
-Please include in your Merge Request description:
+## 5. Merge request checklist
 
-- Summary: what changed and why.
-- Type: `feat`, `fix`, `refactor`, `docs`, `test`, or `chore`.
-- Testing: exact commands run and their outcomes.
+Include the following in your merge request description:
+
+- **Summary** — what changed and why.
+- **Type** — `feat`, `fix`, `docs`, `refactor`, `test`, or `chore`.
+- **Testing** — exact commands run and their outcomes.
+- **Scope** — affected modules, APIs, contracts, and documentation.
 
 Checklist:
 
-- [ ] My code follows existing project style and conventions.
-- [ ] I have self-reviewed my changes.
-- [ ] I updated docs where needed.
-- [ ] I validated behavior locally (and ran smoke tests when applicable).
-- [ ] My commits follow Conventional Commits.
+- [ ] My change follows this repository's style and tooling rules.
+- [ ] I performed a self-review before requesting review.
+- [ ] I updated or added documentation where needed.
+- [ ] Relevant tests and checks pass locally.
+- [ ] My commit messages follow Conventional Commits.
+- [ ] I did not commit secrets, credentials, or generated artifacts.
 
-## 5. Documentation and compatibility
+---
 
-- Update README/examples when request/response contracts change.
-- Keep backward compatibility in mind for identifiers and payload aliases.
-- Avoid unrelated refactors in the same Merge Request.
+## 6. Documentation and compatibility
 
-## 6. Licensing and notices
+- Update the README, `docs/`, and `example/` payloads whenever a contract changes — API routes, payload fields, schemas, document ID formats, or Alfresco folder paths.
+- Keep identifiers and payload aliases backward compatible where practical, and call out breaking changes explicitly in the merge request.
+- When a change spans more than one repository in this platform, open one merge request per repository and link them to each other.
 
-By contributing, you agree your contributions are provided under this repository's Apache-2.0 license.
-Do not add third-party code or assets without preserving required license notices.
+---
+
+## 7. Security and secrets
+
+- Never commit secrets, tokens, credentials, or private keys.
+- Configure sensitive values through environment variables or the repository's documented secret mechanism.
+- Call out security impact explicitly in the merge request when a change touches authentication, authorization, or data access.
+
+---
+
+## 8. Licensing and notices
+
+This repository is licensed under the **Apache License 2.0** — see [LICENSE](LICENSE).
+
+- Do not add third-party code or assets without preserving the required license notices.
+- Keep existing third-party and upstream copyright headers intact.
+
+---
+
+## 9. Reporting issues and proposing changes
+
+For large or cross-cutting changes, open an issue first to align on scope and approach before implementing.
+
+When reporting a bug, include:
+
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Environment details (OS, runtime and tool versions)
