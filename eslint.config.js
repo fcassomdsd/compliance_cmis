@@ -5,7 +5,7 @@ export default [
   {
     files: ["webscripts/**/*.js", "scripts/**/*.js"],
     languageOptions: {
-      ecmaVersion: 5,
+      ecmaVersion: 2022,
       sourceType: "script",
       globals: {
         logger: "readonly",
@@ -17,12 +17,14 @@ export default [
         model: "readonly",
         __VSO_PATHS: "readonly",
         __VSO_FOLLOW_UP_HELPERS: "readonly",
+        __VSO_SECURITY: "readonly",
         TemplateGeneration: "readonly",
         context: "readonly",
         args: "readonly",
         url: "readonly",
         json: "readonly",
         people: "readonly",
+        person: "readonly",
         search: "readonly",
         space: "readonly"
       }
