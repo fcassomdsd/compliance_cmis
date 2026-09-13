@@ -639,6 +639,46 @@ function resolveAssocNodesByShortName(node, shortName) {
   return collectAssocNodesByShortName(reloadedNode, shortName);
 }
 
+// Mutation endpoints are restricted to Alfresco administrators by default.
+// Widen access without a code change by injecting a __VSO_SECURITY global (the
+// same mechanism as __VSO_PATHS) shaped like
+//   { "mutationGroups": ["GROUP_VSO_EDITORS"] }
+// using fully-qualified cm:authorityName values.
+function requireMutationAccess(operation) {
+  if (people.isAdmin(person)) {
+    return;
+  }
+
+  var allowed = [];
+  if (typeof __VSO_SECURITY !== "undefined" && __VSO_SECURITY && __VSO_SECURITY.mutationGroups) {
+    allowed = __VSO_SECURITY.mutationGroups;
+  }
+
+  if (allowed.length > 0) {
+    var groups = people.getContainerGroups(person) || [];
+    for (var i = 0; i < groups.length; i++) {
+      var authority = groups[i] && groups[i].properties ? groups[i].properties["cm:authorityName"] : null;
+      for (var j = 0; j < allowed.length; j++) {
+        if (authority === allowed[j]) {
+          return;
+        }
+      }
+    }
+  }
+
+  TemplateGeneration.fail(403, "Access denied: " + operation +
+    " requires an Alfresco administrator or a member of a configured mutation group.");
+}
+
+// Node names come from caller-supplied identifiers and are concatenated into
+// repository paths. Reject anything that could escape the intended folder.
+function assertSafeNodeName(value, fieldName) {
+  if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/.test(value) || value.indexOf("..") !== -1) {
+    TemplateGeneration.fail(400, "Invalid " + fieldName + ": expected a plain identifier without path separators");
+  }
+  return value;
+}
+
 function lookupInspectionData(inspectionCode, providerId) {
   var inspectionFolderPath = VSO_PATHS.inspectionInProcessPath + "/" + inspectionCode;
   var inspectionFolder = companyhome.childByNamePath(inspectionFolderPath);
@@ -990,12 +1030,14 @@ var INFORME_FINAL_LABELS = {
 importTemplateGenerationLibrary();
 
 try {
+  requireMutationAccess("generating an inspection report");
   var inputData = TemplateGeneration.parseJsonPayload(requestbody.content);
 
   var inspectionCode = TemplateGeneration.trimToNull(inputData.inspectionCode);
   if (inspectionCode === null) {
     TemplateGeneration.fail(400, "Missing required field: inspectionCode");
   }
+  assertSafeNodeName(inspectionCode, "inspectionCode");
 
   var providerId = TemplateGeneration.trimToNull(inputData.providerId);
   if (providerId === null) {
@@ -1045,8 +1087,10 @@ try {
   reportData.docControlVersion = entityProfile.docControlVersion;
   reportData.labels = INFORME_FINAL_LABELS[reportLocale];
 
-  var templatePath = TemplateGeneration.trimToNull(inputData.templatePath) || TEMPLATE_PATH;
-  var destinationPath = TemplateGeneration.trimToNull(inputData.destinationPath) || DESTINATION_PATH;
+  // Repository paths are resolved from vso-paths.lib.js only. A caller must not
+  // be able to redirect template reads or document writes with request fields.
+  var templatePath = TEMPLATE_PATH;
+  var destinationPath = DESTINATION_PATH;
 
   var templateNode = companyhome.childByNamePath(templatePath);
   if (!templateNode || !templateNode.exists()) {

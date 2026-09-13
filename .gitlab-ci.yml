@@ -1,5 +1,19 @@
 stages:
+  - lint
   - release
+
+# Guards against the parse errors the previous ecmaVersion: 5 config silently
+# allowed: `npm run lint` is now a required check on every merge request.
+lint:
+  stage: lint
+  image: node:20-alpine
+  script:
+    - npm ci
+    - npm run lint
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
 
 compute_release_tag:
   stage: release

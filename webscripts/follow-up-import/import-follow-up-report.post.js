@@ -19,6 +19,37 @@ function trimProp(node, propName) {
   return value === null || value === undefined ? "" : String(value).replace(/^\s+|\s+$/g, "");
 }
 
+// Mutation endpoints are restricted to Alfresco administrators by default.
+// Widen access without a code change by injecting a __VSO_SECURITY global (the
+// same mechanism as __VSO_PATHS) shaped like
+//   { "mutationGroups": ["GROUP_VSO_EDITORS"] }
+// using fully-qualified cm:authorityName values.
+function requireMutationAccess(operation) {
+  if (people.isAdmin(person)) {
+    return;
+  }
+
+  var allowed = [];
+  if (typeof __VSO_SECURITY !== "undefined" && __VSO_SECURITY && __VSO_SECURITY.mutationGroups) {
+    allowed = __VSO_SECURITY.mutationGroups;
+  }
+
+  if (allowed.length > 0) {
+    var groups = people.getContainerGroups(person) || [];
+    for (var i = 0; i < groups.length; i++) {
+      var authority = groups[i] && groups[i].properties ? groups[i].properties["cm:authorityName"] : null;
+      for (var j = 0; j < allowed.length; j++) {
+        if (authority === allowed[j]) {
+          return;
+        }
+      }
+    }
+  }
+
+  fail(403, "Access denied: " + operation +
+    " requires an Alfresco administrator or a member of a configured mutation group.");
+}
+
 // Sets error via model.json string (consumed by FTL template as ${model.json})
 function fail(code, message) {
   status.code = code;
@@ -809,6 +840,7 @@ function normalizeRequest(payloadRoot) {
 }
 
 try {
+  requireMutationAccess("importing follow-up reports");
   var parsed = parsePayload(requestbody.content);
   var normalizedRequest = normalizeRequest(parsed);
   var summary = {

@@ -206,11 +206,13 @@ Sample payload files are in `example/`.
 
 Base URL used below: `http://localhost:8080/alfresco/s/api`
 
+All mutation endpoints (`/inspection/generate`, `/inspection/report/generate`, `/inspection/import-canonical`, `/follow-up/import`, `/api/usoap/direct-tag`) are restricted to Alfresco administrators by default. To allow additional groups, inject a `__VSO_SECURITY` global (the same mechanism as `__VSO_PATHS`) shaped like `{ "mutationGroups": ["GROUP_VSO_EDITORS"] }`.
+
 | Endpoint | Purpose | Required fields (minimum) | Common optional fields | Example payload file |
 |---|---|---|---|---|
-| `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `inspectionsPath`, `destinationPath`, `templatePath`, `locale` (`en`/`es`, default `es`) | `example/generate-inspection-plan.sample.json` |
+| `POST /inspection/generate` | Generate inspection plan document from template | Contract depends on inspection plan payload; use sample as baseline | `locale` (`en`/`es`, default `es`). Repository paths are server-resolved — `inspectionsPath`/`destinationPath`/`templatePath` in the payload are ignored. | `example/generate-inspection-plan.sample.json` |
 | `POST /inspection/report/generate` | Generate inspection report and support derived findings path | Contract depends on report payload; use sample as baseline | report generation options embedded in payload, `locale` (`en`/`es`, default `es`) | `example/generate-inspection-report.sample.json`, `example/generate-inspection-report-mdppa0001-sur.sample.json` |
-| `POST /inspection/import-canonical` | Import canonical follow-up data by file names or ids | Either `followUpFiles` or `followUpIds`, or array of follow-up file names | `sourceBasePath`, `sourceSpecialtyFolderName`, `specialtyFolderName` | `example/process-followups-by-files.sample.json` |
+| `POST /inspection/import-canonical` | Import canonical follow-up data by file names or ids | Either `followUpFiles` or `followUpIds`, or array of follow-up file names | `sourceSpecialtyFolderName`, `specialtyFolderName` (validated folder-name hints). The canonical base path is server-resolved — `sourceBasePath` in the payload is ignored. | `example/process-followups-by-files.sample.json` |
 | `POST /follow-up/import` | Upsert one follow-up report and optionally close finding | `followUpReport.findingId`, `followUpReport.followUpDate`, `followUpReport.followUpType` | `capId`, `followUpId`, `percentComplete`, `effectivenessConfirmed`, context ids | `example/FollowUp H-MDPPA0001-AVIS-001 01.json` |
 | `POST /findings/open/query` | Query open findings by location and specialty context | one of `locationId/locationCode/icaoCode` and one of `specialtyId/specialtyCode/domain` | `skipCount`, `maxItems` | `example/get-open-findings.sample.json` |
 | `POST /checklist/prior-findings/open` | Get checklist items with open prior findings | `inspectionId` or `inspectionCode`, plus `specialtyId` or `specialtyCode` or `domain` | `refreshBeforeQuery`, `refreshDryRun`, `priorOnly` | `example/get-prior-finding-flags.sample.json` |

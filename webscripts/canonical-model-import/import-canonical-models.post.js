@@ -249,6 +249,47 @@ function setError(code, message) {
   model.importedSources = [];
 }
 
+// Mutation endpoints are restricted to Alfresco administrators by default.
+// Widen access without a code change by injecting a __VSO_SECURITY global (the
+// same mechanism as __VSO_PATHS) shaped like
+//   { "mutationGroups": ["GROUP_VSO_EDITORS"] }
+// using fully-qualified cm:authorityName values.
+function requireMutationAccess(operation) {
+  if (people.isAdmin(person)) {
+    return;
+  }
+
+  var allowed = [];
+  if (typeof __VSO_SECURITY !== "undefined" && __VSO_SECURITY && __VSO_SECURITY.mutationGroups) {
+    allowed = __VSO_SECURITY.mutationGroups;
+  }
+
+  if (allowed.length > 0) {
+    var groups = people.getContainerGroups(person) || [];
+    for (var i = 0; i < groups.length; i++) {
+      var authority = groups[i] && groups[i].properties ? groups[i].properties["cm:authorityName"] : null;
+      for (var j = 0; j < allowed.length; j++) {
+        if (authority === allowed[j]) {
+          return;
+        }
+      }
+    }
+  }
+
+  fail(403, "Access denied: " + operation +
+    " requires an Alfresco administrator or a member of a configured mutation group.");
+}
+
+// Folder-name hints come from the request and are resolved relative to the
+// canonical base path. Reject anything that could escape that folder.
+function assertSafeFolderName(value, fieldName) {
+  if (value === "." || value === ".." || value.charAt(0) === "." ||
+      /[\/\\]/.test(value) || value.indexOf("..") !== -1 || value.length > 128) {
+    fail(400, "Invalid " + fieldName + ": expected a plain folder name without path separators");
+  }
+  return value;
+}
+
 // Sets error via model properties (consumed by FTL template as ${success}, ${error}, etc.)
 function fail(code, message) {
   setError(code, message);
@@ -1074,9 +1115,10 @@ function validateImportRequest(requestBody) {
   return {
     inspectionCode: inspectionCode,
     inspectionId: trimToNull(requestBody.inspectionId),
-    sourceBasePath: trimToNull(requestBody.sourceBasePath) || DEFAULT_SOURCE_BASE_PATH,
-    destinationBasePath: trimToNull(requestBody.destinationBasePath) || DEFAULT_DESTINATION_BASE_PATH,
-    findingsBasePath: trimToNull(requestBody.findingsBasePath) || DEFAULT_FINDINGS_BASE_PATH,
+    // Base paths are server-resolved; request-supplied overrides are ignored.
+    sourceBasePath: DEFAULT_SOURCE_BASE_PATH,
+    destinationBasePath: DEFAULT_DESTINATION_BASE_PATH,
+    findingsBasePath: DEFAULT_FINDINGS_BASE_PATH,
     locationId: trimToNull(requestBody.locationId),
     locationCode: trimToNull(requestBody.locationCode) || trimToNull(requestBody.icaoCode),
     locationName: trimToNull(requestBody.locationName) || trimToNull(requestBody.icaoName),
@@ -1112,10 +1154,8 @@ function extractFollowUpFileNamesRequest(requestBody) {
   return null;
 }
 
-function resolveFollowUpSourceBasePath(requestBody) {
-  if (requestBody && typeof requestBody === "object") {
-    return trimToNull(requestBody.sourceBasePath) || DEFAULT_SOURCE_BASE_PATH;
-  }
+function resolveFollowUpSourceBasePath(_requestBody) {
+  // Server-resolved only: the request body cannot redirect source reads.
   return DEFAULT_SOURCE_BASE_PATH;
 }
 
@@ -1161,6 +1201,9 @@ function resolveFollowUpSourceFolder(sourceBasePath, requestBody) {
   var specialtyFolderName = resolveFollowUpSpecialtyFolderHint(requestBody);
 
   specialtyFolderName = trimToNull(specialtyFolderName);
+  if (specialtyFolderName !== null) {
+    assertSafeFolderName(specialtyFolderName, "specialtyFolderName");
+  }
   if (specialtyFolderName === null) {
     return {
       folder: baseFolder,
@@ -2520,6 +2563,7 @@ function upsertFindingsYearFolder(findingsBaseFolder, year, checklistPayload, su
 }
 
 try {
+  requireMutationAccess("importing canonical models");
   model.success = false;
   model.error = null;
   model.inspection = null;
