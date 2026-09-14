@@ -1,7 +1,9 @@
 # Alfresco REST Curl Examples for Model Smoke Tests (ST-01 to ST-09)
 
-This guide provides curl-based examples to execute the smoke tests defined in:
-- docs/model-reload-validation-and-smoke-tests.md
+This guide provides curl-based examples for the first nine smoke tests. The
+script it documents (`scripts/run-model-smoke-tests.sh`) runs the full suite,
+ST-01 through ST-19; see `docs/model-reload-validation-and-smoke-tests.md` for
+the complete list.
 
 ## Assumptions
 1. Alfresco Repo is reachable at http://localhost:8080.
@@ -22,7 +24,7 @@ export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 ```
 
 ## Run All Tests Automatically
-You can execute ST-01 through ST-09 with one command:
+You can execute the full smoke suite (ST-01 through ST-19) with one command:
 
 ```bash
 ./scripts/run-model-smoke-tests.sh

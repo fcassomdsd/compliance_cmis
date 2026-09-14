@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Runs ST-01 through ST-18 against Alfresco public REST API (ST-01..ST-13)
-# and the custom USOAP webscripts (ST-14..ST-18).
+# Runs ST-01 through ST-19 against Alfresco public REST API (ST-01..ST-13)
+# and the custom USOAP webscripts (ST-14..ST-19).
 # Required env vars:
 #   BASE_URL, USERNAME, PASSWORD, PARENT_ID
 
