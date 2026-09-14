@@ -1,6 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Alfresco's Lucene search returns up to its configured maximum; this Web
+// Script only needs a bounded working set of findings/CAPs, so cap it
+// explicitly and log truncation instead of silently processing everything.
+var MAX_QUERY_RESULTS = 1000;
+
+function searchCapped(query, maxResults) {
+  var limit = maxResults || MAX_QUERY_RESULTS;
+  var results = search.luceneSearch(query) || [];
+
+  if (results.length > limit) {
+    logger.warn("[vso] query returned " + results.length + " nodes; using the first " + limit +
+      " (" + String(query).substring(0, 120) + ")");
+    results = results.slice(0, limit);
+  }
+
+  return results;
+}
+
 function trimToNull(value) {
   if (value === null || value === undefined) {
     return null;
@@ -177,7 +195,7 @@ function findCorrectiveActionByProperty(findingNode) {
       "OR @vso\\:capId:\"" + escapeLuceneValue(assocText) + "\" " +
       "OR @vso\\:capId:\"" + escapeLuceneValue(normalizedCapId) + "\")";
 
-    var capMatches = search.luceneSearch(capQuery) || [];
+    var capMatches = searchCapped(capQuery) || [];
     var capNode = selectFirstNodeBySubtype(capMatches, "vso:correctiveAction");
     if (capNode) {
       return capNode;
@@ -291,7 +309,7 @@ try {
     "+" + specialtyFilter.queryField + ":\"" + escapeLuceneValue(specialtyFilter.value) + "\" " +
     "-@vso\\:findingStatus:\"Closed\"";
 
-  var matched = search.luceneSearch(query) || [];
+  var matched = searchCapped(query) || [];
   var findings = [];
 
   for (var index = skipCount; index < matched.length && findings.length < maxItems; index++) {
