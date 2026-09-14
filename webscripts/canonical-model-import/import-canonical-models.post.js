@@ -2839,6 +2839,13 @@ try {
       }
     }
 
+    // The checklist node is mutated by much of the work above (item upserts,
+    // evidence associations and the PDF content replacement). Applying the
+    // operator attribution inside upsertChecklist() alone did not survive on the
+    // persisted node, so re-apply it once the checklist node is final.
+    applyOperatorAttribution(checklistNode, checklistPayload);
+    checklistNode.save();
+
     status.code = 200;
     model.success = true;
     model.error = null;
