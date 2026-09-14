@@ -206,7 +206,7 @@ Sample payload files are in `example/`.
 
 Base URL used below: `http://localhost:8080/alfresco/s/api`
 
-All mutation endpoints (`/inspection/generate`, `/inspection/report/generate`, `/inspection/import-canonical`, `/follow-up/import`, `/api/usoap/direct-tag`) are restricted to Alfresco administrators by default. To allow additional groups, inject a `__VSO_SECURITY` global (the same mechanism as `__VSO_PATHS`) shaped like `{ "mutationGroups": ["GROUP_VSO_EDITORS"] }`.
+All mutation endpoints (`/inspection/generate`, `/inspection/report/generate`, `/inspection/import-canonical`, `/follow-up/import`, `/api/usoap/direct-tag`) allow Alfresco administrators and any member of the groups listed in `__VSO_SECURITY.mutationGroups`. The allowlist is `webscripts/common/vso-security.lib.js` (currently `GROUP_U-VSO-WS_MUTATORS`); values are fully-qualified `cm:authorityName` names and the comparison is case-sensitive. Every mutation Web Script keeps an inline copy of the list because `importScript` is not available in every execution context, so a change must be applied to all five — run `bash scripts/verify-vso-security.sh` to confirm they agree. The authorisation applies to the authenticated user of the request, so callers must forward the user's `X-Alfresco-Ticket`; otherwise the call is authorised as the calling service account. After changing a Web Script, restart the repository (`docker compose restart alfresco`) to reload it.
 
 | Endpoint | Purpose | Required fields (minimum) | Common optional fields | Example payload file |
 |---|---|---|---|---|

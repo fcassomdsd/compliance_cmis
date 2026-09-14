@@ -399,19 +399,50 @@ function describeError(error) {
   return parts.join(" | ");
 }
 
-// Mutation endpoints are restricted to Alfresco administrators by default.
-// Widen access without a code change by injecting a __VSO_SECURITY global (the
-// same mechanism as __VSO_PATHS) shaped like
-//   { "mutationGroups": ["GROUP_VSO_EDITORS"] }
-// using fully-qualified cm:authorityName values.
+// Mutation endpoints allow Alfresco administrators and any member of the
+// groups listed in __VSO_SECURITY.mutationGroups (see
+// webscripts/common/vso-security.lib.js); values are fully-qualified
+// cm:authorityName values.
+
+// Resolve the mutation-group allowlist. Mirrors the __VSO_PATHS pattern: try
+// to import the shared library, then fall back to an inline copy because
+// importScript is not available in every Web Script execution context.
+function resolveVsoSecurity() {
+  if (typeof __VSO_SECURITY !== "undefined" && __VSO_SECURITY) {
+    return __VSO_SECURITY;
+  }
+
+  var defaults = { mutationGroups: ["GROUP_U-VSO-WS_MUTATORS"] };
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-security.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-security.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_SECURITY !== "undefined" && __VSO_SECURITY) {
+          return __VSO_SECURITY;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return defaults;
+}
+
 function requireMutationAccess(operation) {
   if (people.isAdmin(person)) {
     return;
   }
 
   var allowed = [];
-  if (typeof __VSO_SECURITY !== "undefined" && __VSO_SECURITY && __VSO_SECURITY.mutationGroups) {
-    allowed = __VSO_SECURITY.mutationGroups;
+  var security = resolveVsoSecurity();
+  if (security && security.mutationGroups) {
+    allowed = security.mutationGroups;
   }
 
   if (allowed.length > 0) {
