@@ -443,6 +443,23 @@ function setDatePropertyIfPresent(node, propertyName, value) {
   }
 }
 
+// Canonical nodes are written by the service identity, so cm:creator names the
+// service rather than the inspector. Copy the operator attribution that
+// compliance_import verified and stamped onto the ingested payload.
+function applyOperatorAttribution(node, payload) {
+  if (!node || !payload) {
+    return;
+  }
+
+  ensureAspect(node, "vso:operatorAttribution");
+  setTextPropertyIfPresent(node, "vso:enteredBy", payload.enteredBy);
+  setTextPropertyIfPresent(node, "vso:enteredByDisplayName", payload.enteredByDisplayName);
+  setDatePropertyIfPresent(node, "vso:enteredAt", payload.enteredAt);
+  setTextPropertyIfPresent(node, "vso:inspectorId", payload.inspectorId);
+  setTextPropertyIfPresent(node, "vso:enteredVia", payload.enteredVia);
+  setTextPropertyIfPresent(node, "vso:declaredBy", payload.declaredBy);
+}
+
 function assocContains(nodeCollection, candidate) {
   if (!nodeCollection || !candidate) {
     return false;
@@ -726,6 +743,7 @@ function ensureFollowUpNode(findingNode, payload, rawPayload, correctiveActionNo
   ensureVersionable(followUpNode);
   ensureAspect(followUpNode, "vso:inspectionContext");
   ensureAspect(followUpNode, "vso:serviceContext");
+  applyOperatorAttribution(followUpNode, payload);
 
   followUpNode.content = JSON.stringify(rawPayload, null, 2);
   followUpNode.mimetype = "text/plain";

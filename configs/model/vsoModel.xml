@@ -8,7 +8,7 @@
 
   <description>Operational Safety Oversight Model for Alfresco 25.2</description>
   <author>VSO Team</author>
-  <version>1.7</version>
+  <version>1.8</version>
 
   <!-- ========================================================= -->
   <!-- Imports -->
@@ -1419,6 +1419,44 @@
         <property name="vso:sealedDate">
           <description>Date evidence was sealed</description>
           <type>d:date</type>
+        </property>
+      </properties>
+    </aspect>
+
+    <!-- Operator attribution carried by the canonical payload written by
+         compliance_import. Canonical nodes are created by the Node-RED service
+         account, so cm:creator names the service, not the inspector; these
+         properties record the authenticated operator instead. -->
+    <aspect name="vso:operatorAttribution">
+      <properties>
+        <property name="vso:enteredBy">
+          <description>Alfresco user name of the inspector who entered the record. Verified server-side by compliance_import against the Alfresco authentication API; distinct from cm:creator, which is the service identity performing the import write.</description>
+          <type>d:text</type>
+          <index enabled="true">
+            <atomic>true</atomic>
+            <stored>false</stored>
+            <tokenised>false</tokenised>
+          </index>
+        </property>
+        <property name="vso:enteredByDisplayName">
+          <description>Display-name snapshot for vso:enteredBy</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:enteredAt">
+          <description>Server-side UTC timestamp recorded when compliance_import accepted the payload</description>
+          <type>d:datetime</type>
+        </property>
+        <property name="vso:inspectorId">
+          <description>AtroCore Inspector record identifier of the operator who entered the record</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:enteredVia">
+          <description>How attribution was established: operator-login (verified Alfresco ticket) or service (no operator ticket)</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:declaredBy">
+          <description>Operator selected in the checklist app at data-entry time, before server-side verification; retained for mismatch auditing</description>
+          <type>d:text</type>
         </property>
       </properties>
     </aspect>
