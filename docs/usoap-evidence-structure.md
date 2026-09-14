@@ -209,6 +209,14 @@ curl -u admin:admin -X POST \
   "http://localhost:8080/alfresco/s/api/usoap/ce-evidence-report"
 ```
 
+### Year filtering
+
+`year` narrows every artifact type by the date that type actually carries. Findings use `vso:dateIssued` and evidence items use `vso:collectionDate`; those are pushed into the query as AFTS date-range clauses.
+
+Checklist items have **no date property of their own** — a checklist item is dated by the inspection it belongs to. The webscript walks from the item up to its nearest `vso:inspection` ancestor (item → checklist document → specialty folder → inspection folder) and uses that inspection's `vso:startDate`, falling back to `vso:endDate`. Because that value lives on an ancestor rather than on the item, this filter is applied in the webscript after the query, and an item whose inspection records no window is omitted from a year-filtered report (it is still returned when `year` is omitted).
+
+Do not add an item-level date property to the content model to make this filter pushable: the inspection window is the single source of truth for everything filed under it.
+
 ### Response structure
 
 ```json

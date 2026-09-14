@@ -1924,13 +1924,17 @@ function extractYear(value) {
 }
 
 function resolveFindingYear(importRequest, checklistPayload) {
+  // Candidates are the inspection window (request, then the canonical
+  // checklist's own dates) and then the dates the canonical checklist
+  // actually carries. There is deliberately no "inspectionDate" candidate:
+  // checklist items have no date of their own either - they are dated by the
+  // inspection folder (see upsertInspectionFolder).
   var candidates = [
     importRequest.startDate,
     importRequest.endDate,
     checklistPayload.startDate,
     checklistPayload.endDate,
     checklistPayload.completionDate,
-    checklistPayload.inspectionDate,
     checklistPayload.reportDate,
     checklistPayload.date
   ];
@@ -2049,8 +2053,21 @@ function upsertInspectionFolder(destinationBaseFolder, importRequest, checklistD
   setPropertyIfPresent(inspectionFolder, "vso:activityTypeId", importRequest.activityTypeId);
   setPropertyIfPresent(inspectionFolder, "vso:activityTypeCode", importRequest.activityTypeCode);
   setPropertyIfPresent(inspectionFolder, "vso:activityTypeName", importRequest.activityTypeName);
-  setDatePropertyIfPresent(inspectionFolder, "vso:startDate", importRequest.startDate);
-  setDatePropertyIfPresent(inspectionFolder, "vso:endDate", importRequest.endDate);
+  // The inspection folder is the only node that carries the oversight window;
+  // its descendants (checklist items above all) have no date of their own and
+  // are dated by it. The import request may omit the dates (/importCanonical
+  // sends only inspectionCode + specialtyName), so fall back to the canonical
+  // checklist payload: "endDate" when a producer sends the field window
+  // explicitly, otherwise "completionDate" - which is where the checklist app
+  // records the visit's closing date (it maps its own "endDate" onto
+  // completionDate). resolveFindingYear() already treats completionDate as the
+  // authorization for the findings year, so this keeps both consistent.
+  // Neither fallback invents a date: when the payload has none either, the
+  // window simply stays unset.
+  var inspectionStartDate = firstNonEmpty(importRequest.startDate, checklistData.startDate);
+  var inspectionEndDate = firstNonEmpty(importRequest.endDate, checklistData.endDate, checklistData.completionDate);
+  setDatePropertyIfPresent(inspectionFolder, "vso:startDate", inspectionStartDate);
+  setDatePropertyIfPresent(inspectionFolder, "vso:endDate", inspectionEndDate);
   setPropertyIfPresent(inspectionFolder, "vso:inspectionStatus", importRequest.inspectionStatus);
   setPropertyIfPresent(inspectionFolder, "vso:locationId", contextValues.locationId);
   setPropertyIfPresent(inspectionFolder, "vso:locationCode", contextValues.locationCode);

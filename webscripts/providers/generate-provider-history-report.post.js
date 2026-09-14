@@ -67,6 +67,63 @@ function escapeAftsValue(value) {
   return String(value).replace(/"/g, '\\"');
 }
 
+// vso:checklistItem has no date of its own, and must not grow one: a checklist
+// item is dated by the inspection it belongs to. The chain is item -> checklist
+// document -> specialty folder -> vso:inspection folder, so walk the
+// primary-parent chain to the nearest vso:inspection ancestor (the nearest one
+// wins: a folder can itself be typed vso:inspection higher up the tree).
+// Windows are cached per inspection nodeRef so an item-heavy report resolves
+// each inspection once instead of re-walking for every item.
+var inspectionWindowCache = {};
+
+function resolveInspectionWindow(node) {
+  var current = node;
+  var depth = 0;
+
+  // Bounded: the hierarchy is 4 levels deep today, so 8 is a generous ceiling
+  // that still terminates if a node's parents ever form an unexpected chain.
+  while (current && depth < 8) {
+    var isInspection = false;
+    try {
+      isInspection = !!(current.isSubType && current.isSubType("vso:inspection"));
+    } catch (typeError) {
+      isInspection = false;
+    }
+
+    if (isInspection) {
+      var inspectionRef = String(current.nodeRef);
+      if (!inspectionWindowCache.hasOwnProperty(inspectionRef)) {
+        inspectionWindowCache[inspectionRef] = {
+          start: toIsoDate(safeProp(current, "vso:startDate")),
+          end: toIsoDate(safeProp(current, "vso:endDate"))
+        };
+      }
+      return inspectionWindowCache[inspectionRef];
+    }
+
+    try {
+      current = current.parent;
+    } catch (parentError) {
+      current = null;
+    }
+    depth++;
+  }
+
+  return null;
+}
+
+// The effective date of a checklist item is its inspection's start date, or
+// its end date when no start date was recorded - either end of the window
+// identifies the calendar year the item is reported under.
+function resolveChecklistItemDate(itemNode) {
+  var inspectionWindow = resolveInspectionWindow(itemNode);
+  if (!inspectionWindow) {
+    return null;
+  }
+
+  return inspectionWindow.start || inspectionWindow.end;
+}
+
 // Restricts a query to one calendar year. A range clause is used rather than a
 // "2026*" wildcard: Solr rejects the wildcard form for date fields with a 400.
 function buildYearClause(fieldName, year) {
@@ -177,11 +234,15 @@ function loadArtifactsByProvider(providerId, year) {
   var checklistItems = searchCapped(checklistQuery);
   for (var m = 0; m < checklistItems.length; m++) {
     var ci = checklistItems[m];
-    // Cannot be pushed into the query: vso:inspectionDate is read here but is
-    // not defined in vsoModel.xml, so a clause on it would match nothing and
-    // silently drop every checklist item. Items are therefore kept as before.
-    var ciDate = toIsoDate(safeProp(ci, "vso:inspectionDate"));
-    if (year && ciDate && String(ciDate).indexOf(String(year)) !== 0) continue;
+    // The item's date comes from the vso:inspection ancestor, so a year clause
+    // cannot be pushed into this query (a child-association item carries no
+    // date property or parent-date condition of its own). The derived date is
+    // filtered here instead. Items whose inspection has no window are excluded
+    // from a year-filtered report for the same reason the pushdown excludes
+    // nodes with no value on the date property: an undated item cannot be
+    // claimed for the requested year. They remain in the unfiltered report.
+    var ciDate = resolveChecklistItemDate(ci);
+    if (year && (!ciDate || String(ciDate).indexOf(String(year)) !== 0)) continue;
     artifacts.push({
       type: "checklistItem",
       nodeRef: String(ci.nodeRef),
