@@ -26,6 +26,7 @@ validate:examples:
     - apk add --no-cache bash
   script:
     - node scripts/validate-examples.cjs
+    - node scripts/domain-rules.mjs verify
     - |
       for script in scripts/*.sh; do
         echo "bash -n $script"

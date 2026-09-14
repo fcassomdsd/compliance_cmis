@@ -37,5 +37,28 @@ export default [
       "indent": ["warn", 2],
       "eqeqeq": ["warn", "always"]
     }
+  },
+  {
+    // Operator scripts that need ESM (the domain-rule checker is shared with
+    // the vendored-spec tooling). Kept separate so the Rhino webscripts stay
+    // in script mode.
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        process: "readonly",
+        console: "readonly"
+      }
+    },
+    rules: {
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_", caughtErrors: "none" }],
+      "semi": ["warn", "always"],
+      // The checker mirrors the single-quoted style used by the vendored-spec
+      // tooling in the consumer repositories.
+      "quotes": "off",
+      "indent": ["warn", 2],
+      "eqeqeq": ["warn", "always"]
+    }
   }
 ];
