@@ -1,6 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Alfresco's Lucene search returns up to its configured maximum; the Web
+// Scripts only ever need a bounded working set, so cap it explicitly and log
+// truncation instead of silently processing whatever comes back.
+var MAX_QUERY_RESULTS = 1000;
+
+function searchCapped(query, maxResults) {
+  var limit = maxResults || MAX_QUERY_RESULTS;
+  var results = search.luceneSearch(query) || [];
+
+  if (results.length > limit) {
+    logger.warn("[vso] query returned " + results.length + " nodes; using the first " + limit +
+      " (" + String(query).substring(0, 120) + ")");
+    results = results.slice(0, limit);
+  }
+
+  return results;
+}
+
 function trimToNull(value) {
   if (value === null || value === undefined) {
     return null;
@@ -71,7 +89,7 @@ function loadArtifactsByProvider(providerId, year) {
   var providerClause = '+@vso\\:providerId:"' + escapeAftsValue(providerId) + '"';
 
   var findingQuery = '+TYPE:"vso:finding" AND ' + providerClause;
-  var findings = search.luceneSearch(findingQuery);
+  var findings = searchCapped(findingQuery);
   for (var i = 0; i < findings.length; i++) {
     var f = findings[i];
     var fDate = toIsoDate(safeProp(f, "vso:dateIssued"));
@@ -96,7 +114,7 @@ function loadArtifactsByProvider(providerId, year) {
   }
 
   var capQuery = '+TYPE:"vso:correctiveAction" AND ' + providerClause;
-  var caps = search.luceneSearch(capQuery);
+  var caps = searchCapped(capQuery);
   for (var j = 0; j < caps.length; j++) {
     var cap = caps[j];
     var capDate = toIsoDate(safeProp(cap, "vso:dueDate"));
@@ -119,7 +137,7 @@ function loadArtifactsByProvider(providerId, year) {
   }
 
   var followUpQuery = '+TYPE:"vso:followUpReport" AND ' + providerClause;
-  var followUps = search.luceneSearch(followUpQuery);
+  var followUps = searchCapped(followUpQuery);
   for (var k = 0; k < followUps.length; k++) {
     var fu = followUps[k];
     var fuDate = toIsoDate(safeProp(fu, "vso:followUpDate"));
@@ -143,7 +161,7 @@ function loadArtifactsByProvider(providerId, year) {
   }
 
   var checklistQuery = '+TYPE:"vso:checklistItem" AND ' + providerClause;
-  var checklistItems = search.luceneSearch(checklistQuery);
+  var checklistItems = searchCapped(checklistQuery);
   for (var m = 0; m < checklistItems.length; m++) {
     var ci = checklistItems[m];
     var ciDate = toIsoDate(safeProp(ci, "vso:inspectionDate"));
@@ -164,7 +182,7 @@ function loadArtifactsByProvider(providerId, year) {
   }
 
   var evidenceQuery = '+TYPE:"vso:evidenceItem" AND ' + providerClause;
-  var evidenceItems = search.luceneSearch(evidenceQuery);
+  var evidenceItems = searchCapped(evidenceQuery);
   for (var n = 0; n < evidenceItems.length; n++) {
     var ev = evidenceItems[n];
     var evDate = toIsoDate(safeProp(ev, "vso:collectionDate"));

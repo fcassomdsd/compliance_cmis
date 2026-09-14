@@ -1,6 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Alfresco's Lucene search returns up to its configured maximum; the Web
+// Scripts only ever need a bounded working set, so cap it explicitly and log
+// truncation instead of silently processing whatever comes back.
+var MAX_QUERY_RESULTS = 1000;
+
+function searchCapped(query, maxResults) {
+  var limit = maxResults || MAX_QUERY_RESULTS;
+  var results = search.luceneSearch(query) || [];
+
+  if (results.length > limit) {
+    logger.warn("[vso] query returned " + results.length + " nodes; using the first " + limit +
+      " (" + String(query).substring(0, 120) + ")");
+    results = results.slice(0, limit);
+  }
+
+  return results;
+}
+
 function trimToNull(value) {
   if (value === null || value === undefined) {
     return null;
@@ -56,7 +74,7 @@ function loadArtifactsByCe(ce, year) {
 
   // Query findings
   var findingQuery = '+TYPE:"vso:finding" AND ' + query;
-  var findings = search.luceneSearch(findingQuery);
+  var findings = searchCapped(findingQuery);
   for (var i = 0; i < findings.length; i++) {
     var f = findings[i];
     var fYear = toIsoDate(safeProp(f, "vso:dateIssued"));
@@ -85,7 +103,7 @@ function loadArtifactsByCe(ce, year) {
 
   // Query evidence items
   var evQuery = '+TYPE:"vso:evidenceItem" AND ' + query;
-  var evItems = search.luceneSearch(evQuery);
+  var evItems = searchCapped(evQuery);
   for (var j = 0; j < evItems.length; j++) {
     var ev = evItems[j];
     artifacts.push({
@@ -111,7 +129,7 @@ function loadArtifactsByCe(ce, year) {
 
   // Query checklist items
   var ciQuery = '+TYPE:"vso:checklistItem" AND ' + query;
-  var ciItems = search.luceneSearch(ciQuery);
+  var ciItems = searchCapped(ciQuery);
   for (var k = 0; k < ciItems.length; k++) {
     var ci = ciItems[k];
     var ciYear = toIsoDate(safeProp(ci, "vso:inspectionDate"));
@@ -323,7 +341,7 @@ function resolvePopulationCandidates(query) {
 
   var results;
   try {
-    results = search.luceneSearch(luceneQuery);
+    results = searchCapped(luceneQuery);
   } catch (error) {
     return {
       pqCode: pqCode,

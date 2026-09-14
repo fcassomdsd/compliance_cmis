@@ -181,6 +181,40 @@ var REPORT_LABELS = {
   },
 };
 
+// Alfresco's Lucene search returns up to its configured maximum; the Web
+// Scripts only ever need a bounded working set, so cap it explicitly and log
+// truncation instead of silently processing whatever comes back.
+var MAX_QUERY_RESULTS = 1000;
+
+function searchCapped(query, maxResults) {
+  var limit = maxResults || MAX_QUERY_RESULTS;
+  var results = search.luceneSearch(query) || [];
+
+  if (results.length > limit) {
+    logger.warn("[vso] query returned " + results.length + " nodes; using the first " + limit +
+      " (" + String(query).substring(0, 120) + ")");
+    results = results.slice(0, limit);
+  }
+
+  return results;
+}
+
+// Recursive folder walks enumerate a whole tree; cap the working set so a
+// pathological tree cannot exhaust memory during an import.
+var MAX_TREE_FILES = 2000;
+
+function listFilesCapped(folderNode, recursive, includeFiles) {
+  var nodes = folderNode.childFileFolders(!!recursive, !!includeFiles) || [];
+
+  if (nodes.length > MAX_TREE_FILES) {
+    logger.warn("[vso] " + folderNode.name + " has " + nodes.length +
+      " child file/folder nodes; using the first " + MAX_TREE_FILES);
+    nodes = nodes.slice(0, MAX_TREE_FILES);
+  }
+
+  return nodes;
+}
+
 function resolveReportLocale(requestBody) {
   var locale = trimToNull(requestBody && requestBody.locale);
   return (locale === "en") ? "en" : "es";
@@ -1291,7 +1325,7 @@ function findCanonicalFilesByName(rootFolder, fileName) {
   }
 
   var matches = [];
-  var allDocuments = rootFolder.childFileFolders(true, false);
+  var allDocuments = listFilesCapped(rootFolder, true, false);
   var expectedName = String(fileName).toLowerCase();
   for (var index = 0; index < allDocuments.length; index++) {
     var candidate = allDocuments[index];
@@ -1312,7 +1346,7 @@ function buildCanonicalFileNameIndex(rootFolder) {
     return names;
   }
 
-  var allDocuments = rootFolder.childFileFolders(true, false);
+  var allDocuments = listFilesCapped(rootFolder, true, false);
   for (var index = 0; index < allDocuments.length; index++) {
     var candidate = allDocuments[index];
     if (!candidate || !candidate.isDocument) {
@@ -1406,7 +1440,7 @@ function findFindingNodesById(findingId) {
   var query =
     "+TYPE:\"vso:finding\" " +
     "+@vso\\:findingId:\"" + escapeLuceneValue(findingId) + "\"";
-  return search.luceneSearch(query) || [];
+  return searchCapped(query) || [];
 }
 
 function findCorrectiveActionByCapId(capId) {
@@ -1421,7 +1455,7 @@ function findCorrectiveActionByCapId(capId) {
     "OR @cm\\:name:\"" + escapeLuceneValue(normalizedCapId) + ".json\" " +
     "OR @cm\\:name:\"" + escapeLuceneValue(normalizedCapId) + "\")";
 
-  return search.luceneSearch(query) || [];
+  return searchCapped(query) || [];
 }
 
 function buildFollowUpNodeName(reportPayload, sourceFileName) {
@@ -1938,7 +1972,7 @@ function normalizeInspectionCodeForCompare(value) {
 }
 
 function loadCanonicalDocuments(domainFolder, inspectionCode) {
-  var documents = domainFolder.childFileFolders(true, false);
+  var documents = listFilesCapped(domainFolder, true, false);
   var checklistDocument = null;
   var findingDocuments = [];
   var importedSources = [];
@@ -2313,7 +2347,7 @@ function findEvidenceFileByName(folderNode, fileName, recursive) {
     return directNode;
   }
 
-  var childFiles = folderNode.childFileFolders(!!recursive, false);
+  var childFiles = listFilesCapped(folderNode, recursive, false);
   var targetName = String(fileName).toLowerCase();
   for (var fileIndex = 0; fileIndex < childFiles.length; fileIndex++) {
     var candidate = childFiles[fileIndex];
@@ -2371,7 +2405,7 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     }
 
     if (!sourceFile && sourceDomainFolder && sourceDomainFolder !== sourceEvidenceFolder) {
-      var domainFiles = sourceDomainFolder.childFileFolders(true, false);
+      var domainFiles = listFilesCapped(sourceDomainFolder, true, false);
       for (var domainIdx = 0; domainIdx < domainFiles.length; domainIdx++) {
         var domainCandidate = domainFiles[domainIdx];
         if (domainCandidate.isDocument && domainCandidate.name.indexOf(evidencePayload.evidenceId) === 0) {
