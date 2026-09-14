@@ -713,6 +713,26 @@ function ensureVersionable(node) {
   }
 }
 
+// Canonical nodes are written by the Node-RED service account, so cm:creator
+// names the service rather than the inspector. Copy the operator attribution
+// that compliance_import verified and stamped onto the ingested payload.
+function applyOperatorAttribution(node, payload, fallbackPayload) {
+  if (!node) {
+    return;
+  }
+
+  var primary = payload || {};
+  var fallback = fallbackPayload || {};
+
+  ensureAspect(node, "vso:operatorAttribution");
+  setPropertyIfPresent(node, "vso:enteredBy", firstNonEmpty(primary.enteredBy, fallback.enteredBy));
+  setPropertyIfPresent(node, "vso:enteredByDisplayName", firstNonEmpty(primary.enteredByDisplayName, fallback.enteredByDisplayName));
+  setDatePropertyIfPresent(node, "vso:enteredAt", firstNonEmpty(primary.enteredAt, fallback.enteredAt));
+  setPropertyIfPresent(node, "vso:inspectorId", firstNonEmpty(primary.inspectorId, fallback.inspectorId));
+  setPropertyIfPresent(node, "vso:enteredVia", firstNonEmpty(primary.enteredVia, fallback.enteredVia));
+  setPropertyIfPresent(node, "vso:declaredBy", firstNonEmpty(primary.declaredBy, fallback.declaredBy));
+}
+
 function ensureFolder(baseFolder, folderName, folderType) {
   var folder = baseFolder.childByNamePath(folderName);
 
@@ -1488,6 +1508,7 @@ function upsertFollowUpEvidence(followUpNode, findingNode, reportPayload, source
     ensureAspect(evidenceNode, "vso:evidenceIntegrity");
     ensureAspect(evidenceNode, "vso:inspectionContext");
     ensureAspect(evidenceNode, "vso:serviceContext");
+    applyOperatorAttribution(evidenceNode, reportPayload);
 
     setPropertyIfPresent(evidenceNode, "cm:title", evidenceId);
     setPropertyIfPresent(evidenceNode, "vso:contentType", "evidenceItem");
@@ -1562,6 +1583,7 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
   ensureVersionable(followUpNode);
   ensureAspect(followUpNode, "vso:inspectionContext");
   ensureAspect(followUpNode, "vso:serviceContext");
+  applyOperatorAttribution(followUpNode, report);
 
   setPropertyIfPresent(followUpNode, "cm:title", trimToNull(report.followUpId) || followUpNodeName);
   setPropertyIfPresent(followUpNode, "vso:contentType", "followUpReport");
@@ -2016,6 +2038,7 @@ function upsertChecklist(domainFolder, checklistPayload, summary) {
   var checklistNode = checklistResult.node;
 
   ensureVersionable(checklistNode);
+  applyOperatorAttribution(checklistNode, checklistPayload);
   ensureAspect(checklistNode, "vso:inspectionContext");
   ensureAspect(checklistNode, "vso:serviceContext");
 
@@ -2357,6 +2380,7 @@ function upsertEvidence(evidenceFolder, checklistData, itemPayload, sourceEviden
     ensureAspect(evidenceNode, "vso:evidenceIntegrity");
     ensureAspect(evidenceNode, "vso:inspectionContext");
     ensureAspect(evidenceNode, "vso:serviceContext");
+    applyOperatorAttribution(evidenceNode, checklistData);
 
     setPropertyIfPresent(evidenceNode, "cm:title", evidencePayload.evidenceId);
     setPropertyIfPresent(evidenceNode, "vso:contentType", "evidenceItem");
@@ -2459,6 +2483,7 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
   ensureAspect(findingNode, "vso:regulatoryTraceability");
   ensureAspect(findingNode, "vso:inspectionContext");
   ensureAspect(findingNode, "vso:serviceContext");
+  applyOperatorAttribution(findingNode, findingPayload, checklistData);
 
   var findingContextValues = resolveContextValues(findingPayload, null);
   var checklistContextValues = resolveContextValues(checklistData, null);
