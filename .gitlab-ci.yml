@@ -27,6 +27,7 @@ validate:examples:
   script:
     - node scripts/validate-examples.cjs
     - node scripts/domain-rules.mjs verify
+    - bash scripts/verify-vso-security.sh
     - |
       for script in scripts/*.sh; do
         echo "bash -n $script"
