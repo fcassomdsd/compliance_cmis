@@ -67,6 +67,22 @@ function escapeAftsValue(value) {
   return String(value).replace(/"/g, '\\"');
 }
 
+// Restricts a query to one calendar year. A range clause is used rather than a
+// "2026*" wildcard: Solr rejects the wildcard form for date fields with a 400.
+function buildYearClause(fieldName, year) {
+  if (!year) {
+    return "";
+  }
+
+  var normalizedYear = String(year);
+  if (!/^\d{4}$/.test(normalizedYear)) {
+    return "";
+  }
+
+  return " AND +@vso\\:" + fieldName + ":[" + normalizedYear + "-01-01T00:00:00.000Z TO " +
+    normalizedYear + "-12-31T23:59:59.999Z]";
+}
+
 // Rhino's plain-object property access can misbehave for purely-numeric
 // string keys (e.g. a "2026" year bucket) - a bare `map[key] || 0` read
 // can come back as a Scriptable NOT_FOUND sentinel instead of undefined,
@@ -88,12 +104,11 @@ function loadArtifactsByProvider(providerId, year) {
   var artifacts = [];
   var providerClause = '+@vso\\:providerId:"' + escapeAftsValue(providerId) + '"';
 
-  var findingQuery = '+TYPE:"vso:finding" AND ' + providerClause;
+  var findingQuery = '+TYPE:"vso:finding" AND ' + providerClause + buildYearClause("dateIssued", year);
   var findings = searchCapped(findingQuery);
   for (var i = 0; i < findings.length; i++) {
     var f = findings[i];
     var fDate = toIsoDate(safeProp(f, "vso:dateIssued"));
-    if (year && fDate && String(fDate).indexOf(String(year)) !== 0) continue;
     artifacts.push({
       type: "finding",
       nodeRef: String(f.nodeRef),
@@ -113,12 +128,11 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var capQuery = '+TYPE:"vso:correctiveAction" AND ' + providerClause;
+  var capQuery = '+TYPE:"vso:correctiveAction" AND ' + providerClause + buildYearClause("dueDate", year);
   var caps = searchCapped(capQuery);
   for (var j = 0; j < caps.length; j++) {
     var cap = caps[j];
     var capDate = toIsoDate(safeProp(cap, "vso:dueDate"));
-    if (year && capDate && String(capDate).indexOf(String(year)) !== 0) continue;
     artifacts.push({
       type: "correctiveAction",
       nodeRef: String(cap.nodeRef),
@@ -136,12 +150,11 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var followUpQuery = '+TYPE:"vso:followUpReport" AND ' + providerClause;
+  var followUpQuery = '+TYPE:"vso:followUpReport" AND ' + providerClause + buildYearClause("followUpDate", year);
   var followUps = searchCapped(followUpQuery);
   for (var k = 0; k < followUps.length; k++) {
     var fu = followUps[k];
     var fuDate = toIsoDate(safeProp(fu, "vso:followUpDate"));
-    if (year && fuDate && String(fuDate).indexOf(String(year)) !== 0) continue;
     artifacts.push({
       type: "followUpReport",
       nodeRef: String(fu.nodeRef),
@@ -164,6 +177,9 @@ function loadArtifactsByProvider(providerId, year) {
   var checklistItems = searchCapped(checklistQuery);
   for (var m = 0; m < checklistItems.length; m++) {
     var ci = checklistItems[m];
+    // Cannot be pushed into the query: vso:inspectionDate is read here but is
+    // not defined in vsoModel.xml, so a clause on it would match nothing and
+    // silently drop every checklist item. Items are therefore kept as before.
     var ciDate = toIsoDate(safeProp(ci, "vso:inspectionDate"));
     if (year && ciDate && String(ciDate).indexOf(String(year)) !== 0) continue;
     artifacts.push({
@@ -181,12 +197,11 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var evidenceQuery = '+TYPE:"vso:evidenceItem" AND ' + providerClause;
+  var evidenceQuery = '+TYPE:"vso:evidenceItem" AND ' + providerClause + buildYearClause("collectionDate", year);
   var evidenceItems = searchCapped(evidenceQuery);
   for (var n = 0; n < evidenceItems.length; n++) {
     var ev = evidenceItems[n];
     var evDate = toIsoDate(safeProp(ev, "vso:collectionDate"));
-    if (year && evDate && String(evDate).indexOf(String(year)) !== 0) continue;
     artifacts.push({
       type: "evidence",
       nodeRef: String(ev.nodeRef),
