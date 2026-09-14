@@ -63,6 +63,63 @@ function toIsoDate(val) {
   }
 }
 
+// vso:checklistItem has no date of its own, and must not grow one: a checklist
+// item is dated by the inspection it belongs to. The chain is item -> checklist
+// document -> specialty folder -> vso:inspection folder, so walk the
+// primary-parent chain to the nearest vso:inspection ancestor (the nearest one
+// wins: a folder can itself be typed vso:inspection higher up the tree).
+// Windows are cached per inspection nodeRef so an item-heavy report resolves
+// each inspection once instead of re-walking for every item.
+var inspectionWindowCache = {};
+
+function resolveInspectionWindow(node) {
+  var current = node;
+  var depth = 0;
+
+  // Bounded: the hierarchy is 4 levels deep today, so 8 is a generous ceiling
+  // that still terminates if a node's parents ever form an unexpected chain.
+  while (current && depth < 8) {
+    var isInspection = false;
+    try {
+      isInspection = !!(current.isSubType && current.isSubType("vso:inspection"));
+    } catch (typeError) {
+      isInspection = false;
+    }
+
+    if (isInspection) {
+      var inspectionRef = String(current.nodeRef);
+      if (!inspectionWindowCache.hasOwnProperty(inspectionRef)) {
+        inspectionWindowCache[inspectionRef] = {
+          start: toIsoDate(safeProp(current, "vso:startDate")),
+          end: toIsoDate(safeProp(current, "vso:endDate"))
+        };
+      }
+      return inspectionWindowCache[inspectionRef];
+    }
+
+    try {
+      current = current.parent;
+    } catch (parentError) {
+      current = null;
+    }
+    depth++;
+  }
+
+  return null;
+}
+
+// The effective date of a checklist item is its inspection's start date, or
+// its end date when no start date was recorded - either end of the window
+// identifies the calendar year the item is reported under.
+function resolveChecklistItemDate(itemNode) {
+  var inspectionWindow = resolveInspectionWindow(itemNode);
+  if (!inspectionWindow) {
+    return null;
+  }
+
+  return inspectionWindow.start || inspectionWindow.end;
+}
+
 function loadArtifactsByCe(ce, year) {
   var artifacts = [];
   // Query on ceMapping (multi-valued) rather than usoapCriticalElement
@@ -132,8 +189,12 @@ function loadArtifactsByCe(ce, year) {
   var ciItems = searchCapped(ciQuery);
   for (var k = 0; k < ciItems.length; k++) {
     var ci = ciItems[k];
-    var ciYear = toIsoDate(safeProp(ci, "vso:inspectionDate"));
-    if (year && ciYear && String(ciYear).indexOf(String(year)) !== 0) continue;
+    // The item's date comes from the vso:inspection ancestor, so it cannot be
+    // pushed into the query (a checklist item carries no date property of its
+    // own). Items whose inspection has no window are excluded from a
+    // year-filtered report; they remain in the unfiltered report.
+    var ciDate = resolveChecklistItemDate(ci);
+    if (year && (!ciDate || String(ciDate).indexOf(String(year)) !== 0)) continue;
     artifacts.push({
       type: "checklistItem",
       nodeRef: String(ci.nodeRef),
