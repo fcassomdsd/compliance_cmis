@@ -1,6 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Alfresco's Lucene search returns up to its configured maximum; the Web
+// Scripts only ever need a bounded working set, so cap it explicitly and log
+// truncation instead of silently processing whatever comes back.
+var MAX_QUERY_RESULTS = 1000;
+
+function searchCapped(query, maxResults) {
+  var limit = maxResults || MAX_QUERY_RESULTS;
+  var results = search.luceneSearch(query) || [];
+
+  if (results.length > limit) {
+    logger.warn("[vso] query returned " + results.length + " nodes; using the first " + limit +
+      " (" + String(query).substring(0, 120) + ")");
+    results = results.slice(0, limit);
+  }
+
+  return results;
+}
+
 function trimToNull(value) {
   if (value === null || value === undefined) {
     return null;
@@ -582,14 +600,14 @@ function chooseEvidenceCandidate(candidates, evidencePayload) {
 
 function findEvidenceNode(evidencePayload, context) {
   var strictQuery = buildEvidenceSearchQuery(evidencePayload, context);
-  var strictMatches = search.luceneSearch(strictQuery) || [];
+  var strictMatches = searchCapped(strictQuery) || [];
   var strictCandidate = chooseEvidenceCandidate(strictMatches, evidencePayload);
   if (strictCandidate) {
     return strictCandidate;
   }
 
   var fallbackQuery = "+TYPE:\"vso:evidenceItem\" +@vso\\:evidenceId:\"" + escapeLuceneValue(evidencePayload.evidenceId) + "\"";
-  var fallbackMatches = search.luceneSearch(fallbackQuery) || [];
+  var fallbackMatches = searchCapped(fallbackQuery) || [];
   return chooseEvidenceCandidate(fallbackMatches, evidencePayload);
 }
 
@@ -638,7 +656,7 @@ function buildFindingSearchQuery(request) {
 
 function findFindingNode(request) {
   var query = buildFindingSearchQuery(request);
-  var matches = search.luceneSearch(query) || [];
+  var matches = searchCapped(query) || [];
 
   if (matches.length === 0) {
     fail(404, "Finding not found for findingId: " + request.findingId);

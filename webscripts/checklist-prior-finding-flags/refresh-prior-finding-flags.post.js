@@ -1,6 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// Alfresco's Lucene search returns up to its configured maximum; the Web
+// Scripts only ever need a bounded working set, so cap it explicitly and log
+// truncation instead of silently processing whatever comes back.
+var MAX_QUERY_RESULTS = 1000;
+
+function searchCapped(query, maxResults) {
+  var limit = maxResults || MAX_QUERY_RESULTS;
+  var results = search.luceneSearch(query) || [];
+
+  if (results.length > limit) {
+    logger.warn("[vso] query returned " + results.length + " nodes; using the first " + limit +
+      " (" + String(query).substring(0, 120) + ")");
+    results = results.slice(0, limit);
+  }
+
+  return results;
+}
+
 function trimToNull(value) {
   if (value === null || value === undefined) {
     return null;
@@ -176,7 +194,7 @@ function hasOpenPriorFindingByItemCode(itemCode, specialtyFilter, inspectionId, 
     return false;
   }
 
-  var findingNodes = search.luceneSearch(buildOpenFindingsByItemCodeQuery(itemCode, specialtyFilter, inspectionId, priorOnly)) || [];
+  var findingNodes = searchCapped(buildOpenFindingsByItemCodeQuery(itemCode, specialtyFilter, inspectionId, priorOnly)) || [];
   return findingNodes.length > 0;
 }
 
@@ -196,7 +214,7 @@ try {
   var dryRun = parseBoolean(input.dryRun, false);
   var priorOnly = parseBoolean(input.priorOnly, true);
   var query = buildChecklistQuery(inspectionId, specialtyFilter);
-  var checklistItems = search.luceneSearch(query) || [];
+  var checklistItems = searchCapped(query) || [];
 
   var inspected = 0;
   var updated = 0;
