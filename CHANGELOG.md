@@ -9,6 +9,7 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 ### Changed
 
 - **Versioning and tagging standardised across the platform.** Releases are tagged `YYYY-MM-DD` (CalVer) after the date of the newest `## [YYYY-MM-DD]` CHANGELOG section, with `YYYY-MM-DD.2` for a second release on the same day. The release jobs now run `scripts/release-tag.sh`, which fails when that section is missing, when `CHANGELOG.md` is unchanged since the previous release, or when the tag already exists; `scripts/release-tag.test.sh` is its self-test. See CONTRIBUTING.md, "Versioning and releases".
+- **README endpoint manifest now CI-checked and completed.** Added the three Web Scripts missing from the Mini API reference (`/api/providers/provider-history-report`, `/api/usoap/ce-evidence-report`, `/api/usoap/direct-tag`), normalised the table paths to the descriptor `<url>` form (`/api/...`, base URL now `/alfresco/s`), corrected the `import-canonical` row to its actual contract, and added `scripts/verify-endpoints.mjs` (run by `validate:examples`) so the table cannot drift from `webscripts/*/*.desc.xml` again. Also fixed the smoke-test docs: `run-model-smoke-tests.sh` runs ST-01…ST-19 (its header said ST-18), and `docs/model-smoke-tests-rest-curl.md` claimed the script ran ST-01…ST-09.
 
 ## [2026-09-06] — ProtocolQuestion Renamed to ChecklistQuestion (atrocore-docker)
 
