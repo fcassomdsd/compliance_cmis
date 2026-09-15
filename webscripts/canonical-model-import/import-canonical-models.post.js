@@ -1724,6 +1724,15 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
     var now = new Date();
     findingNode.properties["vso:findingStatus"] = "Pending Closure Approval";
     findingNode.properties["vso:lastStatusChange"] = now;
+    // Record who declared it: the reviewer must not be the declarer, and the
+    // finding is where the review route looks that up. enteredBy is the operator
+    // identity when the follow-up came through an operator session; declaredBy is
+    // the fallback for payloads that set it directly.
+    findingNode.properties["vso:closureRequestedBy"] =
+      trimToNull(report.enteredBy) || trimToNull(report.declaredBy);
+    // A fresh declaration supersedes any earlier rejection: clear the reason so a
+    // stale one can never be read as belonging to this request.
+    findingNode.properties["vso:closureRejectionReason"] = null;
     findingNode.save();
     summary.pendingClosureApprovals++;
   }
