@@ -588,6 +588,11 @@ try {
   inputData.docControlCode = planEntityProfile.docControlCodes.planDeInspeccion;
   inputData.docControlVersion = planEntityProfile.docControlVersion;
   inputData.labels = PLAN_LABELS[planLocale];
+  // The template iterates "[#list providers as provider]" (plural), but callers
+  // only ever send a single "provider" object (this endpoint is scoped to one
+  // provider per site-visit inspection) — alias it into a one-element array so
+  // the Entity(ies)-to-be-Inspected/Team Members sections actually render.
+  inputData.providers = inputData.provider ? [inputData.provider] : [];
   var templateRenderData = TemplateGeneration.xmlEscapeDeep(inputData);
 
   var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, templateRenderData);
