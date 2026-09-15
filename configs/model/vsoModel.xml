@@ -599,6 +599,14 @@
           <description>Date on which the finding was formally closed by the oversight authority</description>
           <type>d:date</type>
         </property>
+        <property name="vso:closureRequestedBy">
+          <description>User who declared the closure (the follow-up's enteredBy). The closure review must not be performed by this user: the two-step gate separates declaring effectiveness from verifying it</description>
+          <type>d:text</type>
+        </property>
+        <property name="vso:closureRejectionReason">
+          <description>Why the closure review was rejected and the finding returned to In Progress. Null unless the reviewer rejected, and cleared when a new closure is declared</description>
+          <type>d:text</type>
+        </property>
         <property name="vso:dateIssued">
           <description>Date the finding was formally raised, set on creation from the checklist upload</description>
           <type>d:date</type>
