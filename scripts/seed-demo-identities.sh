@@ -9,7 +9,8 @@
 # *records*, and `compliance_web`'s migration creates the `closure_reviewer` role
 # mapping — but neither creates an Alfresco user. Without one, only `admin` can log
 # in, and the closure review cannot be walked as the supervising authority it is
-# supposed to be. This script closes that gap (COMPLIANCE_INTEGRATION_RUNBOOK.md §7.3).
+# supposed to be. This script closes that gap
+# (atrocore-docker/docs/COMPLIANCE_INTEGRATION_RUNBOOK.md §7.3).
 #
 # WHAT IT CREATES (all idempotent — safe to re-run)
 #   groups:  U-VSO-IN_ClosureReviewer   (the reviewer role's group)

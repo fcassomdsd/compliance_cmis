@@ -107,6 +107,16 @@ export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 
 If you change `configs/model/vsoModel.xml`, restart the repository container before validating behavior.
 
+## Whole-platform demo quickstart
+
+To take a running stack to a demonstrable dataset and a walked finding-closure
+workflow — including the demo identities this repository owns and the closure
+review rules the model enforces — follow §7 of the runbook kept in the
+`atrocore-docker` repository:
+`../atrocore-docker/docs/COMPLIANCE_INTEGRATION_RUNBOOK.md`
+("Demo Quickstart — clean clone to a demonstrable system"). The executable form of
+that section is `atrocore-docker/scripts/demo-quickstart.sh`.
+
 ## Security configuration
 
 ### Secrets management
