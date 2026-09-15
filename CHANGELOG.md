@@ -6,6 +6,10 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+
+### Added
+
+- **`scripts/seed-demo-identities.sh` — the demo identities, so the office half of the platform can be exercised without hand-creating users.** Idempotent, additive, with `--remove`. It creates the `U-VSO-IN_ClosureReviewer` and `U-VSO-IN_Inspector` groups, the users `closure.reviewer` and `demo.inspector1` (the latter matching the demo inspector's `external_user_i_d`), their memberships and their repository access on `vigilancia-de-la-so`. Verified: both log in through `compliance_web` with the expected roles (`closure_reviewer`, `inspector`). Two findings are recorded in the script header and the runbook: an application role does not grant an Alfresco permission, so a writing role's account also needs repository access; and no scripted *group*-level grant works in this deployment (v1 site-members → 404 for a group id, v1 node-permissions → 404, legacy memberships → 500 for `groupId`, and it ignores the parameter entirely when the body is JSON rather than form-encoded) — hence per-user membership, with the group grant still manual in Share.
 ### Changed
 
 
