@@ -56,6 +56,39 @@ for (const file of jsonFiles) {
       problems.push(`${file}: followUpReport.evidenceItems must be an array`);
     }
   }
+
+  // import-canonical reads its context from the REQUEST ROOT
+  // (validateImportRequest -> requestBody.inspectionCode) and fetches the actual
+  // checklist/finding content from the canonical *.json documents itself. A
+  // canonical *document* payload ({ "checklist": {...} }) is therefore not a
+  // valid request: posting one answers "400 Missing required field:
+  // inspectionCode". Nothing checked that, so the two were documented as the
+  // endpoint's example payloads for months.
+  if (file.startsWith('import-canonical-request')) {
+    if (payload.inspectionCode === undefined) {
+      problems.push(`${file}: import-canonical reads inspectionCode from the request root; it must be a flat request, not a nested document payload`);
+    }
+    if (payload.checklist !== undefined || payload.finding !== undefined) {
+      problems.push(`${file}: import-canonical request must not wrap its fields in "checklist"/"finding"`);
+    }
+  }
+
+  // A canonical document payload is what compliance_import writes into Alfresco
+  // and import-canonical reads back. Keep the shape honest.
+  if (file.startsWith('canonical-') && file.endsWith('-document.sample.json')) {
+    const wrapper = file.includes('checklist') ? 'checklist' : 'finding';
+    if (payload[wrapper] === undefined || typeof payload[wrapper] !== 'object') {
+      problems.push(`${file}: expected a "${wrapper}" object (the stored canonical document payload)`);
+    }
+  }
+
+  // regulationBreached is a legacy alias: compliance_checklist copies it into
+  // requirementBreached and then deletes it before upload
+  // (compliance_checklist/electron/ipc/ipcHandles.js), and the model has only
+  // vso:requirementBreached. No canonical document should still carry it.
+  if (JSON.stringify(payload).includes('"regulationBreached"')) {
+    problems.push(`${file}: carries the legacy field "regulationBreached"; the pipeline normalises it to "requirementBreached" before upload`);
+  }
 }
 
 if (problems.length > 0) {

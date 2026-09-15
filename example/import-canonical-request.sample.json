@@ -1,0 +1,17 @@
+{
+  "inspectionCode": "AV-MDPP-A-0001",
+  "inspectionId": "a01m1xst8faebz93nas6xdht053",
+  "specialtyName": "Sistemas de Vigilancia",
+  "specialtyCode": "SUR",
+  "specialtyId": "a01k0f67dskef2a475yzd8a5dxd",
+  "providerId": "a01kkq6arvbeef8ssmsd2aqnvyb",
+  "locationId": "a01k5qc0yxte2xts3r9btk77ft6",
+  "locationName": "Aeropuerto Internacional Gregorio Luperon",
+  "icaoCode": "MDPP",
+  "activityTypeId": "a01k7r2mnpqef3b881xzc4t6ghs",
+  "activityTypeCode": "A",
+  "activityTypeName": "Auditoría",
+  "startDate": "2025-03-26",
+  "endDate": "2025-03-27",
+  "locale": "es"
+}
