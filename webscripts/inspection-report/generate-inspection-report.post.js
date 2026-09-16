@@ -954,6 +954,52 @@ function lookupInspectionData(inspectionCode, providerId) {
   };
 }
 
+// Files a generated document as a PDF inside its inspection folder.
+//
+// Same reasoning as the plan webscript: this used to be a Share folder rule ("fodt to odt") on
+// the template-data folder, which is repository content rather than code, is not installed by
+// anything in this repository, and cannot be installed through an API in this ACS build — so a
+// clean clone rendered the .fodt and left it there. The caller only reaches this when no PDF
+// was filed, i.e. when no such rule is installed.
+function fileGeneratedDocumentPdf(sourceNode, inspectionFolder) {
+  if (!sourceNode || !sourceNode.exists()) {
+    TemplateGeneration.fail(500, "Generated report source document is gone before it could be filed");
+  }
+  if (!inspectionFolder || !inspectionFolder.exists() || !inspectionFolder.isContainer) {
+    TemplateGeneration.fail(500, "Inspection folder not found for the generated report");
+  }
+
+  var fileName = sourceNode.name.replace(/\.fodt$/, ".pdf");
+  var existingPdf = inspectionFolder.childByNamePath(fileName);
+
+  var transformedPdf = sourceNode.transformDocument("application/pdf");
+  if (!transformedPdf || !transformedPdf.exists()) {
+    TemplateGeneration.fail(500, "PDF transformation failed for document: " + sourceNode.name);
+  }
+
+  var pdfNode = null;
+  if (existingPdf && existingPdf.isDocument) {
+    // One report PDF per inspection and provider suffix: rewrite it instead of adding a copy.
+    if (!existingPdf.hasAspect("cm:versionable")) {
+      existingPdf.addAspect("cm:versionable");
+    }
+    existingPdf.properties["content"].write(transformedPdf.properties["content"]);
+    existingPdf.save();
+    pdfNode = existingPdf;
+  } else {
+    var copied = transformedPdf.copy(inspectionFolder);
+    pdfNode = inspectionFolder.childByNamePath(fileName) || copied || null;
+  }
+
+  transformedPdf.remove();
+  sourceNode.remove();
+
+  if (!pdfNode || !pdfNode.exists()) {
+    TemplateGeneration.fail(500, "The generated report PDF was not filed in " + inspectionFolder.name);
+  }
+  return pdfNode;
+}
+
 var VSO_PATHS = resolveVsoPaths();
 var TEMPLATE_PATH = VSO_PATHS.inspectionReportTemplatePath || "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/Informe Final.fodt";
 var DESTINATION_PATH = VSO_PATHS.inspectionReportTemplateDataPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data";
@@ -1167,17 +1213,20 @@ try {
   var outputFile = result.node;
   status.code = result.isNewVersion ? 200 : 201;
 
-  // As in the plan webscript: what is written here is the .fodt *source*, and the folder rule on
-  // "Template data" transforms it, files the PDF under the inspection folder and deletes the
-  // source — so reporting the source's nodeRef / path / version described a document that is
-  // gone by the time the caller reads the response. Report the PDF: from the node when the rule
-  // has already filed it, from the destination it will use when it has not.
+  // The .fodt written above is the *source*: it is transformed, the PDF is filed under the
+  // inspection folder and the source is removed — by a Share folder rule where one is
+  // installed, and by fileGeneratedDocumentPdf where none is. Reporting the source's
+  // nodeRef / path / version described a document that is gone by the time the caller reads the
+  // response, so the response describes the PDF.
   var pdfName = outputName.replace(/\.fodt$/, ".pdf");
   var reportInspectionFolder = companyhome.childByNamePath(VSO_PATHS.inspectionInProcessPath + "/" + inspectionCode);
   if (reportInspectionFolder && !reportInspectionFolder.isContainer) {
     reportInspectionFolder = null;
   }
   var pdfNode = reportInspectionFolder ? reportInspectionFolder.childByNamePath(pdfName) : null;
+  if (!pdfNode) {
+    pdfNode = fileGeneratedDocumentPdf(result.node, reportInspectionFolder);
+  }
   // `displayPath` is the parent path, so the folder's own name has to be appended.
   var pdfFolderPath = reportInspectionFolder
     ? reportInspectionFolder.displayPath + "/" + reportInspectionFolder.name
@@ -1185,23 +1234,22 @@ try {
 
   model.success = true;
   model.result = {
-    nodeRef: pdfNode ? pdfNode.nodeRef.toString() : null,
+    nodeRef: pdfNode.nodeRef.toString(),
     name: pdfName,
-    downloadUrl: pdfNode ? pdfNode.downloadUrl : null,
+    downloadUrl: pdfNode.downloadUrl,
     inputData : (inputData ? JSON.stringify(inputData) : "No input data"),
     reportData : (reportData ? JSON.stringify(reportData) : "No report data"),
     path: pdfFolderPath + "/" + pdfName,
     inspectionFolder: pdfFolderPath,
-    sourceName: outputFile.name,
-    createdDate: outputFile.properties["cm:created"],
-    version: pdfNode ? pdfNode.properties["cm:versionLabel"] : null,
+    sourceName: outputName,
+    version: pdfNode.properties["cm:versionLabel"],
     isNewVersion: result.isNewVersion
   };
 
   logger.info(
     (result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") +
-      outputFile.name +
-      (pdfNode ? " (report filed as " + pdfName + ")" : " (report PDF not filed yet: " + pdfName + ")")
+      outputName +
+      " (report filed as " + pdfName + ")"
   );
 } catch (error) {
   logger.error("Unexpected error in inspection report generation: " + error.message);
