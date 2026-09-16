@@ -544,6 +544,54 @@ function populateInspectionFolderData(folder, inputData) {
   }
 }
 
+// Files a generated document as a PDF inside its inspection folder.
+//
+// This step used to be a Share folder rule ("fodt to odt") on the template-data folder. A rule
+// is repository *content*, not code: nothing in this repository installs it, ACS 25.2 exposes no
+// rules API to install one, and a checkout therefore could not reproduce the artifact — a clean
+// clone rendered the .fodt and left it there. The rule's other work (specialising the folder as
+// vso:inspection and populating its inspection context) is already done by
+// ensureInspectionFolder/populateInspectionFolderData above, so this covers the rest.
+//
+// Where such a rule is still installed it wins the race — it runs as the .fodt is written — and
+// the PDF is already there, so the caller only reaches this when no PDF was filed.
+function fileGeneratedDocumentPdf(sourceNode, inspectionFolder) {
+  if (!sourceNode || !sourceNode.exists()) {
+    TemplateGeneration.fail(500, "Generated source document is gone before it could be filed");
+  }
+  if (!inspectionFolder || !inspectionFolder.exists()) {
+    TemplateGeneration.fail(500, "Inspection folder not found for the generated plan");
+  }
+
+  var fileName = sourceNode.name.replace(/\.fodt$/, ".pdf");
+  var existingPdf = inspectionFolder.childByNamePath(fileName);
+
+  var transformedPdf = sourceNode.transformDocument("application/pdf");
+  if (!transformedPdf || !transformedPdf.exists()) {
+    TemplateGeneration.fail(500, "PDF transformation failed for document: " + sourceNode.name);
+  }
+
+  var pdfNode = null;
+  if (existingPdf && existingPdf.isDocument) {
+    // One PDF per inspection: rewrite it rather than adding a copy on every run.
+    ensureAspect(existingPdf, "cm:versionable");
+    existingPdf.properties["content"].write(transformedPdf.properties["content"]);
+    existingPdf.save();
+    pdfNode = existingPdf;
+  } else {
+    var copied = transformedPdf.copy(inspectionFolder);
+    pdfNode = inspectionFolder.childByNamePath(fileName) || copied || null;
+  }
+
+  transformedPdf.remove();
+  sourceNode.remove();
+
+  if (!pdfNode || !pdfNode.exists()) {
+    TemplateGeneration.fail(500, "The generated PDF was not filed in " + inspectionFolder.name);
+  }
+  return pdfNode;
+}
+
 try {
   requireMutationAccess("generating an inspection plan");
   var inputData = TemplateGeneration.parseJsonPayload(requestbody.content);
@@ -630,35 +678,32 @@ try {
   // generated). Report the PDF the rule files; when the rule has not run yet, report the
   // destination it will use, with no version or URL to promise.
   var pdfName = outputName.replace(/\.fodt$/, ".pdf");
-  var inspectionFolderNode = inspectionsFolder.childByNamePath(inspectionNo);
-  if (inspectionFolderNode && !inspectionFolderNode.isContainer) {
-    inspectionFolderNode = null;
+  var pdfNode = inspectionFolder.childByNamePath(pdfName);
+  if (!pdfNode) {
+    // Nothing filed it — a deployment with no "fodt to odt" rule — so file it here.
+    pdfNode = fileGeneratedDocumentPdf(result.node, inspectionFolder);
   }
-  var pdfNode = inspectionFolderNode ? inspectionFolderNode.childByNamePath(pdfName) : null;
-  // `displayPath` is the *parent* path (Alfresco's ScriptNode convention — see the same
+  // `displayPath` is the parent path (Alfresco's ScriptNode convention — see the same
   // `displayPath + "/" + name` in scripts/transformInspectionPlan.js), so the folder's own
   // name has to be appended.
-  var pdfFolderPath = inspectionFolderNode
-    ? inspectionFolderNode.displayPath + "/" + inspectionFolderNode.name
-    : inspectionsFolder.displayPath + "/" + inspectionNo;
+  var pdfFolderPath = inspectionFolder.displayPath + "/" + inspectionFolder.name;
 
   model.success = true;
   model.result = {
     name: pdfName,
     path: pdfFolderPath + "/" + pdfName,
     inspectionFolder: pdfFolderPath,
-    version: pdfNode ? pdfNode.properties["cm:versionLabel"] : null,
-    downloadUrl: pdfNode ? pdfNode.downloadUrl : null,
-    nodeRef: pdfNode ? pdfNode.nodeRef.toString() : null,
-    sourceName: outputFile.name,
-    createdDate: outputFile.properties["cm:created"],
+    version: pdfNode.properties["cm:versionLabel"],
+    downloadUrl: pdfNode.downloadUrl,
+    nodeRef: pdfNode.nodeRef.toString(),
+    sourceName: outputName,
     isNewVersion: result.isNewVersion
   };
 
   logger.info(
     (result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") +
-      outputFile.name +
-      (pdfNode ? " (plan filed as " + pdfName + ")" : " (plan PDF not filed yet: " + pdfName + ")")
+      outputName +
+      " (plan filed as " + pdfName + ")"
   );
 } catch (error) {
   logger.error("Unexpected error in document generation: " + error.message);
