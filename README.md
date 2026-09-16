@@ -332,7 +332,7 @@ export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 
 - Model changes not visible: restart repository container to reload model dictionary.
 - Import script helper not picked up: ensure Web Script resources are reloaded or restart repository.
-- Content store write errors in Docker bind mounts: verify mounted `data/alf_data/contentstore*` permissions match container runtime user/group.
+- Content store write errors in Docker bind mounts: run `scripts/bootstrap-alf-data.sh`. `data/alf_data` is a bind mount and `data*/` is gitignored, so on a fresh checkout Docker creates it `root:root 0755` while the repository container runs as uid 33000 — Alfresco then fails with `Failed to create store root: ./alf_data/contentstore.deleted`, the `/alfresco` webapp never deploys and the container reports `unhealthy`. The script creates the directory with the ownership (as root) or the permissions (otherwise) the container needs.
 
 ## Licensing
 
