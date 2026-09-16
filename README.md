@@ -332,6 +332,7 @@ export PARENT_ID="REPLACE_WITH_PARENT_NODE_ID"
 
 - Model changes not visible: restart repository container to reload model dictionary.
 - Import script helper not picked up: ensure Web Script resources are reloaded or restart repository.
+- Starting from an empty Alfresco: run `scripts/bootstrap-site-content.sh` (it creates the `vigilancia-de-la-so` site, its `Vigilancia/{Inspecciones,Datos de campo,Hallazgos,Template data}` and `Documentos/Formatos` folders and uploads the five `.fodt` templates from `templates/`). Nothing else creates them — every path in `webscripts/common/vso-paths.lib.js` lives under that site, so without it the first canonical import fails with *"Destination base folder not found"*. Idempotent; `demo-quickstart.sh` runs it for the demo.
 - Content store write errors in Docker bind mounts: run `scripts/bootstrap-alf-data.sh`. `data/alf_data` is a bind mount and `data*/` is gitignored, so on a fresh checkout Docker creates it `root:root 0755` while the repository container runs as uid 33000 — Alfresco then fails with `Failed to create store root: ./alf_data/contentstore.deleted`, the `/alfresco` webapp never deploys and the container reports `unhealthy`. The script creates the directory with the ownership (as root) or the permissions (otherwise) the container needs.
 
 ## Licensing
