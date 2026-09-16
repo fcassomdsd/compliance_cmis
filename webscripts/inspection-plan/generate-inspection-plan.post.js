@@ -620,19 +620,46 @@ try {
 
   var outputFile = result.node;
   status.code = result.isNewVersion ? 200 : 201;
+
+  // What this script writes is the .fodt *source*. The folder rule on "Template data"
+  // (scripts/transformInspectionPlan.js) transforms it to PDF, copies that PDF into the
+  // inspection folder named by the document's vso:inspectionId and deletes the source — so
+  // reporting the source's nodeRef, path, version and download URL described a document that
+  // is gone by the time the caller reads the response (and the path pointed at the folder the
+  // source was removed from, which is why a caller could not find the plan it had just
+  // generated). Report the PDF the rule files; when the rule has not run yet, report the
+  // destination it will use, with no version or URL to promise.
+  var pdfName = outputName.replace(/\.fodt$/, ".pdf");
+  var inspectionFolderNode = inspectionsFolder.childByNamePath(inspectionNo);
+  if (inspectionFolderNode && !inspectionFolderNode.isContainer) {
+    inspectionFolderNode = null;
+  }
+  var pdfNode = inspectionFolderNode ? inspectionFolderNode.childByNamePath(pdfName) : null;
+  // `displayPath` is the *parent* path (Alfresco's ScriptNode convention — see the same
+  // `displayPath + "/" + name` in scripts/transformInspectionPlan.js), so the folder's own
+  // name has to be appended.
+  var pdfFolderPath = inspectionFolderNode
+    ? inspectionFolderNode.displayPath + "/" + inspectionFolderNode.name
+    : inspectionsFolder.displayPath + "/" + inspectionNo;
+
   model.success = true;
   model.result = {
-    nodeRef: outputFile.nodeRef.toString(),
-    name: outputFile.name,
-    url: outputFile.url,
-    downloadUrl: outputFile.downloadUrl,
-    path: templateDataFolder.displayPath + "/" + outputFile.name,
+    name: pdfName,
+    path: pdfFolderPath + "/" + pdfName,
+    inspectionFolder: pdfFolderPath,
+    version: pdfNode ? pdfNode.properties["cm:versionLabel"] : null,
+    downloadUrl: pdfNode ? pdfNode.downloadUrl : null,
+    nodeRef: pdfNode ? pdfNode.nodeRef.toString() : null,
+    sourceName: outputFile.name,
     createdDate: outputFile.properties["cm:created"],
-    version: outputFile.properties["cm:versionLabel"],
     isNewVersion: result.isNewVersion
   };
 
-  logger.info((result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") + outputFile.name);
+  logger.info(
+    (result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") +
+      outputFile.name +
+      (pdfNode ? " (plan filed as " + pdfName + ")" : " (plan PDF not filed yet: " + pdfName + ")")
+  );
 } catch (error) {
   logger.error("Unexpected error in document generation: " + error.message);
   if (!model || !model.error) {

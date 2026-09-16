@@ -1166,21 +1166,43 @@ try {
 
   var outputFile = result.node;
   status.code = result.isNewVersion ? 200 : 201;
+
+  // As in the plan webscript: what is written here is the .fodt *source*, and the folder rule on
+  // "Template data" transforms it, files the PDF under the inspection folder and deletes the
+  // source — so reporting the source's nodeRef / path / version described a document that is
+  // gone by the time the caller reads the response. Report the PDF: from the node when the rule
+  // has already filed it, from the destination it will use when it has not.
+  var pdfName = outputName.replace(/\.fodt$/, ".pdf");
+  var reportInspectionFolder = companyhome.childByNamePath(VSO_PATHS.inspectionInProcessPath + "/" + inspectionCode);
+  if (reportInspectionFolder && !reportInspectionFolder.isContainer) {
+    reportInspectionFolder = null;
+  }
+  var pdfNode = reportInspectionFolder ? reportInspectionFolder.childByNamePath(pdfName) : null;
+  // `displayPath` is the parent path, so the folder's own name has to be appended.
+  var pdfFolderPath = reportInspectionFolder
+    ? reportInspectionFolder.displayPath + "/" + reportInspectionFolder.name
+    : destinationFolder.displayPath + "/" + destinationFolder.name;
+
   model.success = true;
   model.result = {
-    nodeRef: outputFile.nodeRef.toString(),
-    name: outputFile.name,
-    url: outputFile.url,
+    nodeRef: pdfNode ? pdfNode.nodeRef.toString() : null,
+    name: pdfName,
+    downloadUrl: pdfNode ? pdfNode.downloadUrl : null,
     inputData : (inputData ? JSON.stringify(inputData) : "No input data"),
     reportData : (reportData ? JSON.stringify(reportData) : "No report data"),
-    downloadUrl: outputFile.downloadUrl,
-    path: destinationFolder.displayPath + "/" + outputFile.name,
+    path: pdfFolderPath + "/" + pdfName,
+    inspectionFolder: pdfFolderPath,
+    sourceName: outputFile.name,
     createdDate: outputFile.properties["cm:created"],
-    version: outputFile.properties["cm:versionLabel"],
+    version: pdfNode ? pdfNode.properties["cm:versionLabel"] : null,
     isNewVersion: result.isNewVersion
   };
 
-  logger.info((result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") + outputFile.name);
+  logger.info(
+    (result.isNewVersion ? "New minor version created for: " : "Successfully created document: ") +
+      outputFile.name +
+      (pdfNode ? " (report filed as " + pdfName + ")" : " (report PDF not filed yet: " + pdfName + ")")
+  );
 } catch (error) {
   logger.error("Unexpected error in inspection report generation: " + error.message);
   if (!model || !model.error) {
