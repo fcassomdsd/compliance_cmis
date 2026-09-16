@@ -848,7 +848,19 @@ function updateFindingStatusFromFollowUp(findingNode, payload) {
     findingNode.properties["vso:achievedResidualRisk"] = payload.currentResidualRisk;
   }
   findingNode.properties["vso:findingStatus"] = "Pending Closure Approval";
-  findingNode.properties["vso:findingClosureDate"] = normalizeDate(payload.followUpClosureDate || payload.followUpDate, "followUpReport.followUpDate");
+  // A declaration only makes the finding eligible; the closure date is written by the review
+  // route (compliance_web's PATCH /findings/:findingId/closure-review) when a reviewer
+  // approves. Stamping `followUpClosureDate || followUpDate` here dated the closure before
+  // anyone approved it, and because nothing cleared it the date then survived a rejection —
+  // leaving an In Progress finding that read as closed. Clearing it keeps this path in step
+  // with the canonical import.
+  findingNode.properties["vso:findingClosureDate"] = null;
+  // Record who declared it, exactly as the canonical import does. Never inherit: a name left
+  // by a superseded declaration would attribute this closure to someone who did not declare
+  // it, and separation of duties hangs off that field — the review refuses a finding with no
+  // recorded declarer rather than trusting an unattributable one.
+  findingNode.properties["vso:closureRequestedBy"] =
+    trimToNull(payload.enteredBy) || trimToNull(payload.declaredBy);
   findingNode.properties["vso:lastStatusChange"] = new Date();
   findingNode.save();
   return true;
@@ -877,6 +889,10 @@ function normalizeRequest(payloadRoot) {
     closureVerificationMethod: trimToNull(report.closureVerificationMethod),
     followUpId: trimToNull(report.followUpId),
     followUpComment: trimToNull(report.followUpComment),
+    // Carried for the closure declaration below, which records who declared it. Dropping them
+    // here is what made this path unable to attribute a closure to anybody.
+    enteredBy: trimToNull(report.enteredBy),
+    declaredBy: trimToNull(report.declaredBy),
     evidenceItems: normalizeEvidence(report.evidenceItems)
   };
 

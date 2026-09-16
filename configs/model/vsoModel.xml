@@ -596,7 +596,7 @@
           <type>d:date</type>
         </property>
         <property name="vso:findingClosureDate">
-          <description>Date on which the finding was formally closed by the oversight authority</description>
+          <description>Date on which the finding was formally closed by the oversight authority. Written only by the closure review, when a reviewer approves, so it is null unless vso:findingStatus is Closed: a declaration (Pending Closure Approval) and a rejection (In Progress) both clear it, and no import may set it</description>
           <type>d:date</type>
         </property>
         <property name="vso:closureRequestedBy">
