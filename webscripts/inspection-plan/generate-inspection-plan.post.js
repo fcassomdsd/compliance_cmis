@@ -563,7 +563,12 @@ function fileGeneratedDocumentPdf(sourceNode, inspectionFolder) {
     TemplateGeneration.fail(500, "Inspection folder not found for the generated plan");
   }
 
-  var fileName = sourceNode.name.replace(/\.fodt$/, ".pdf");
+  // `ScriptNode.name` is a *Java* String, and Rhino cannot choose between Java's
+  // replace(char, char) and replace(CharSequence, CharSequence) for a regex argument:
+  // "The choice of Java method java.lang.String.replace matching JavaScript argument types
+  // (function,string) is ambiguous". String(...) makes it a JavaScript string, which is how
+  // the rest of this file already handles node properties.
+  var fileName = String(sourceNode.name).replace(/\.fodt$/, ".pdf");
   var existingPdf = inspectionFolder.childByNamePath(fileName);
 
   var transformedPdf = sourceNode.transformDocument("application/pdf");
