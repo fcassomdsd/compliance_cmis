@@ -1733,6 +1733,12 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
     // A fresh declaration supersedes any earlier rejection: clear the reason so a
     // stale one can never be read as belonging to this request.
     findingNode.properties["vso:closureRejectionReason"] = null;
+    // Declaring a closure is not closing it, so the declaration must leave no closure date
+    // behind. Clearing (rather than not writing) matters when the finding was already closed
+    // once — by an approval, or by a first declaration through the standalone
+    // /api/follow-up/import — because that date would otherwise survive into this new pending
+    // state and make an unclosed finding read as closed.
+    findingNode.properties["vso:findingClosureDate"] = null;
     findingNode.save();
     summary.pendingClosureApprovals++;
   }
@@ -2597,7 +2603,16 @@ function upsertFinding(inspectionFolder, checklistData, findingPayload, findingI
     firstNonEmpty(findingPayload.dateIssued, findingPayload.openedDate, findingPayload.dateOpened)
   );
   setDatePropertyIfPresent(findingNode, "vso:submissionDeadline", findingPayload.submissionDeadline);
-  setDatePropertyIfPresent(findingNode, "vso:findingClosureDate", findingPayload.findingClosureDate);
+  // vso:findingClosureDate means "formally closed by the oversight authority", so it is only
+  // valid alongside a Closed status. The field app exports the property for any finding it
+  // carries, so copying it unconditionally let an open finding keep (or re-acquire) a closure
+  // date. The status is set immediately above, so read it back and decide on the value this
+  // import leaves behind.
+  if (trimToNull(findingNode.properties["vso:findingStatus"]) === "Closed") {
+    setDatePropertyIfPresent(findingNode, "vso:findingClosureDate", findingPayload.findingClosureDate);
+  } else {
+    findingNode.properties["vso:findingClosureDate"] = null;
+  }
   setDatePropertyIfPresent(findingNode, "vso:lastStatusChange", findingPayload.lastStatusChange);
   setDatePropertyIfPresent(findingNode, "vso:resolutionDeadline", findingPayload.resolutionDeadline);
   setPropertyIfPresent(findingNode, "vso:inspectionId", inspectionIdentifier);
