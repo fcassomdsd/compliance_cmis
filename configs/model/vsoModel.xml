@@ -1171,7 +1171,7 @@
           <type>d:text</type>
         </property>
         <property name="vso:evidenceReviewStatus">
-          <description>Whether a reviewer has judged this follow-up's evidence adequate. A follow-up cannot affect vso:findingStatus until this is Adequate</description>
+          <description>Records a reviewer's judgment of this follow-up's evidence adequacy. Informational only: NOT currently enforced as a gate anywhere in this model or its webscripts -- a follow-up can affect vso:findingStatus regardless of this value, including the default Pending Review. Whether to enforce it as a real precondition or retire the property is an open product decision (see the platform's TECHNICAL_DEBT_ANALYSIS.md), deferred pending validation of how evidence review actually happens in practice</description>
           <type>d:text</type>
           <default>Pending Review</default>
           <constraints>
