@@ -109,6 +109,10 @@ If you change `configs/model/vsoModel.xml`, restart the repository container bef
 
 ## Whole-platform demo quickstart
 
+First time running this platform? See the root-level
+[`GETTING_STARTED_FOR_ADOPTERS.md`](../GETTING_STARTED_FOR_ADOPTERS.md) for hardware
+requirements, timing expectations, and what the demo dataset actually is before diving in.
+
 To take a running stack to a demonstrable dataset and a walked finding-closure
 workflow — including the demo identities this repository owns and the closure
 review rules the model enforces — follow §7 of the runbook kept in the
