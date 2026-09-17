@@ -7,6 +7,10 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 ## [Unreleased]
 
 
+### Changed
+
+- **Alfresco's `mem_limit` raised `1900m` → `2560m`.** `FOOTPRINT_AUDIT.md` (platform root, 2026-09-15) measured it idling at 1.759 GiB of a 1.855 GiB cap — already 95-97% utilized before any real load — which risks GC-thrashing or an OOM kill under actual demo activity (imports, PDF generation). Applies on the next `docker compose up -d`; does not force-restart a running container.
+
 ### Fixed
 
 - **`fileGeneratedDocumentPdf` no longer fails on a Java `String` in Rhino.** It did `sourceNode.name.replace(/\.fodt$/, ".pdf")`, and `ScriptNode.name` is a **Java** String, so Rhino cannot choose between Java's `replace(char, char)` and `replace(CharSequence, CharSequence)` for a regex argument: *"The choice of Java method java.lang.String.replace matching JavaScript argument types (function,string) is ambiguous"*. `String(sourceNode.name)` makes it a JavaScript string — how the rest of the file already handles node properties. **Only reachable when the "fodt to odt" Share rule is absent**, i.e. on exactly the fresh instances the filing was written for: with the rule present it files the PDF first and this code is never reached, which is why the development instance never hit it and the CI guard failed all ten retry attempts with `HTTP 500`. Verified by disabling the rule locally (database flag, repository restarted), deleting both filed PDFs and regenerating them — plan and report each filed their artifact — then restoring the rule.

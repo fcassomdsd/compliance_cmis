@@ -14,7 +14,12 @@
 services:
   alfresco:
     image: alfresco/alfresco-governance-repository-community:25.2.0
-    mem_limit: 1900m
+    # 1900m left ~145m of headroom above the JVM's 80%-of-limit heap ceiling, and
+    # FOOTPRINT_AUDIT.md (2026-09-15) measured it idling at 1.759-1.799 GiB of that
+    # 1.855 GiB cap -- already 95-97% utilized before any real load. Raised so plan/
+    # report generation and larger imports have room to run without GC-thrashing or
+    # OOM-killing the container. See FOOTPRINT_AUDIT.md "Actions this audit suggests" #1.
+    mem_limit: 2560m
     environment:
       JAVA_TOOL_OPTIONS: >-
         -Dencryption.keystore.type=JCEKS
