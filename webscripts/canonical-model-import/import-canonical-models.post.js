@@ -1436,7 +1436,55 @@ function parseFollowUpCanonicalPayload(node) {
   }
 }
 
+// Findings are filed at a deterministic path -- <findingBasePath>/<year>/<findingId>.json
+// (see upsertFinding below) -- so a node lookup by path resolves instantly against the
+// repository itself, unlike the AFTS/Lucene search this falls back to: that index lags
+// writes by its commit interval, so importing a checklist and then its follow-up seconds
+// later can answer "not found" for a finding that unquestionably exists. Enumerating the
+// (typically few) year folders under Hallazgos and trying childByNamePath in each avoids
+// the index entirely for the common case; only a finding filed somewhere unexpected falls
+// through to the search.
+//
+// The filename is NOT stable at ".json": replaceContentWithPdf() above renames the node to
+// <findingId>.pdf the moment its PDF renders, synchronously within the same request that
+// creates it -- so by the time any later request looks it up, it is normally already
+// <findingId>.pdf. Both extensions are tried; .pdf first, since that is the state a finding
+// is in for the rest of its life (the .fodt/.json name only exists in the narrow window
+// before the first successful render, or never if the transform service is unavailable).
+function findFindingNodeByPath(findingId) {
+  var findingsBaseFolder = companyhome.childByNamePath(DEFAULT_FINDINGS_BASE_PATH);
+  if (!findingsBaseFolder || !findingsBaseFolder.exists()) {
+    return [];
+  }
+
+  var yearFolders = findingsBaseFolder.children || [];
+  var matches = [];
+  var fileNames = [findingId + ".pdf", findingId + ".json"];
+
+  for (var index = 0; index < yearFolders.length; index++) {
+    var yearFolder = yearFolders[index];
+    if (!yearFolder || !yearFolder.isContainer) {
+      continue;
+    }
+
+    for (var nameIndex = 0; nameIndex < fileNames.length; nameIndex++) {
+      var candidate = yearFolder.childByNamePath(fileNames[nameIndex]);
+      if (candidate && candidate.exists() && candidate.isSubType && candidate.isSubType("vso:finding")) {
+        matches.push(candidate);
+        break;
+      }
+    }
+  }
+
+  return matches;
+}
+
 function findFindingNodesById(findingId) {
+  var pathMatches = findFindingNodeByPath(findingId);
+  if (pathMatches.length > 0) {
+    return pathMatches;
+  }
+
   var query =
     "+TYPE:\"vso:finding\" " +
     "+@vso\\:findingId:\"" + escapeLuceneValue(findingId) + "\"";

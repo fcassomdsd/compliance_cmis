@@ -654,9 +654,90 @@ function buildFindingSearchQuery(request) {
   return clauses.join(" ");
 }
 
+// Path configuration is centralized.
+// Maintain folder paths in README.md -> "Path configuration (Alfresco)" and webscripts/common/vso-paths.lib.js.
+function resolveVsoPaths() {
+  var defaults = {
+    findingBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Hallazgos"
+  };
+
+  if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+    return __VSO_PATHS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-paths.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-paths.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+          return __VSO_PATHS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return defaults;
+}
+
+var VSO_PATHS = resolveVsoPaths();
+
+// Findings are filed at deterministic paths -- Hallazgos/<year>/<findingId>.json
+// (see import-canonical-models.post.js's upsertFinding) -- so a node lookup by
+// path resolves instantly against the repository itself. The AFTS/Lucene search
+// findFindingNode() falls back to below only lags behind writes by design (index
+// commit interval), so importing a checklist and then its follow-up seconds later
+// can answer "not found" for a finding that unquestionably exists. Enumerating the
+// (typically few) year folders and trying childByNamePath in each avoids the
+// index entirely for the common case; only a finding filed somewhere unexpected
+// falls through to the search.
+//
+// The filename is NOT stable at ".json": import-canonical-models.post.js's
+// replaceContentWithPdf() renames the node to <findingId>.pdf the moment its PDF
+// renders, synchronously within the same request that creates it -- so by the
+// time any later request looks it up, it is normally already <findingId>.pdf.
+// Both extensions are tried; .pdf first, since that is the state a finding is in
+// for the rest of its life.
+function findFindingNodeByPath(findingId) {
+  var findingsBaseFolder = companyhome.childByNamePath(VSO_PATHS.findingBasePath);
+  if (!findingsBaseFolder || !findingsBaseFolder.exists()) {
+    return [];
+  }
+
+  var yearFolders = findingsBaseFolder.children || [];
+  var matches = [];
+  var fileNames = [findingId + ".pdf", findingId + ".json"];
+
+  for (var index = 0; index < yearFolders.length; index++) {
+    var yearFolder = yearFolders[index];
+    if (!yearFolder || !yearFolder.isContainer) {
+      continue;
+    }
+
+    for (var nameIndex = 0; nameIndex < fileNames.length; nameIndex++) {
+      var candidate = yearFolder.childByNamePath(fileNames[nameIndex]);
+      if (candidate && candidate.exists() && candidate.isSubType && candidate.isSubType("vso:finding")) {
+        matches.push(candidate);
+        break;
+      }
+    }
+  }
+
+  return matches;
+}
+
 function findFindingNode(request) {
-  var query = buildFindingSearchQuery(request);
-  var matches = searchCapped(query) || [];
+  var matches = findFindingNodeByPath(request.findingId);
+
+  if (matches.length === 0) {
+    var query = buildFindingSearchQuery(request);
+    matches = searchCapped(query) || [];
+  }
 
   if (matches.length === 0) {
     fail(404, "Finding not found for findingId: " + request.findingId);
