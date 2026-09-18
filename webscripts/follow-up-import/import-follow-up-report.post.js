@@ -942,6 +942,12 @@ function updateFindingStatusFromFollowUp(findingNode, payload) {
   // recorded declarer rather than trusting an unattributable one.
   findingNode.properties["vso:closureRequestedBy"] =
     trimToNull(payload.enteredBy) || trimToNull(payload.declaredBy);
+  // A fresh declaration supersedes any earlier rejection, exactly as the canonical import
+  // does: the model documents vso:closureRejectionReason as "cleared when a new closure is
+  // declared", so a stale reason must not survive into this request. This path used to leave
+  // it in place, which meant a declaration after a rejection carried an explanation that
+  // belonged to the previous attempt.
+  findingNode.properties["vso:closureRejectionReason"] = null;
   findingNode.properties["vso:lastStatusChange"] = new Date();
   findingNode.save();
   return true;

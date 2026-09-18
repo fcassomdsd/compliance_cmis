@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 //
-// Verifies the one rule that governs `vso:findingClosureDate` in this repository:
+// Verifies the two source-level rules that govern finding closure in this repository:
 //
-//     The property records the date on which the oversight authority formally closed the
-//     finding, so within the import Web Scripts it is only ever CLEARED (assigned null) or
-//     COPIED for a finding this import leaves Closed. Only the closure review in
-//     compliance_web may set a new one.
+//   1. `vso:findingClosureDate` records the date on which the oversight authority formally
+//      closed the finding, so within the import Web Scripts it is only ever CLEARED (assigned
+//      null) or COPIED for a finding this import leaves Closed. Only the closure review in
+//      compliance_web may set a new one.
+//
+//   2. Every Web Script that declares a closure writes the whole declaration invariant: status
+//      `Pending Closure Approval`, closure date cleared, `vso:closureRequestedBy` recorded, and
+//      `vso:closureRejectionReason` cleared. The transition is duplicated by necessity —
+//      `importScript` is unavailable in the canonical import's execution context, so the shared
+//      vso-follow-up.lib.js helpers cannot be reached there — and this guard is what keeps the
+//      two copies from drifting.
 //
 // It is a source check, not a behaviour test, because these Rhino Web Scripts have no unit
 // harness — and because the rule has already regressed once: `/api/follow-up/import` stamped
@@ -32,6 +39,14 @@ const PROPERTY = 'vso:findingClosureDate';
 const CLEAR = /properties\s*\[\s*"vso:findingClosureDate"\s*\]\s*=\s*null\s*;/;
 const ASSIGN = /properties\s*\[\s*"vso:findingClosureDate"\s*\]\s*=/;
 const COPY = /setDatePropertyIfPresent\s*\(\s*findingNode\s*,\s*"vso:findingClosureDate"/;
+
+// Rule 2: the declaration invariant every closure-declaring Web Script must write in full.
+const DECLARATION_STATUS =
+  /properties\s*\[\s*"vso:findingStatus"\s*\]\s*=\s*"Pending Closure Approval"\s*;/;
+const DECLARATION_ATTRIBUTE = /properties\s*\[\s*"vso:closureRequestedBy"\s*\]\s*=/;
+const DECLARATION_CLEAR_DATE = /properties\s*\[\s*"vso:findingClosureDate"\s*\]\s*=\s*null\s*;/;
+const DECLARATION_CLEAR_REJECTION =
+  /properties\s*\[\s*"vso:closureRejectionReason"\s*\]\s*=\s*null\s*;/;
 
 function walk(dir) {
   const files = [];
@@ -115,6 +130,46 @@ if (clears === 0) {
   );
 }
 
+// Rule 2: every Web Script that declares a closure must write the full declaration invariant.
+let declarationSites = 0;
+
+for (const file of walk(webscriptsDir)) {
+  const name = relative(webscriptsDir, file);
+  const text = readFileSync(file, 'utf8');
+  if (!DECLARATION_STATUS.test(text)) {
+    continue;
+  }
+
+  declarationSites += 1;
+
+  if (!DECLARATION_CLEAR_DATE.test(text)) {
+    problems.push(
+      `${name} declares a closure but never clears ${PROPERTY}, so a superseded approval's ` +
+        `date would survive into the new pending state.`,
+    );
+  }
+  if (!DECLARATION_ATTRIBUTE.test(text)) {
+    problems.push(
+      `${name} declares a closure but never records vso:closureRequestedBy, so the review ` +
+        `cannot tell who declared it (compliance_web answers 409 CLOSURE_DECLARER_UNKNOWN).`,
+    );
+  }
+  if (!DECLARATION_CLEAR_REJECTION.test(text)) {
+    problems.push(
+      `${name} declares a closure but does not clear vso:closureRejectionReason. The model ` +
+        `documents it as cleared when a new closure is declared, so a fresh declaration must ` +
+        `not inherit a rejected attempt's reason.`,
+    );
+  }
+}
+
+if (declarationSites === 0) {
+  problems.push(
+    'no Web Script declares a closure (`vso:findingStatus = "Pending Closure Approval"`), so ' +
+      'the closure workflow this guard protects no longer exists.',
+  );
+}
+
 if (problems.length > 0) {
   console.error(`FAIL: ${problems.length} ${PROPERTY} write(s) violate the closure-date rule:`);
   for (const problem of problems) {
@@ -129,5 +184,6 @@ if (problems.length > 0) {
 }
 
 console.log(
-  `OK: ${PROPERTY} honoured — ${clears} clear(s), ${gatedCopies} guarded copy(ies), no unguarded write`,
+  `OK: closure rules honoured — ${PROPERTY}: ${clears} clear(s), ${gatedCopies} guarded ` +
+    `copy(ies), no unguarded write; declaration invariant complete at ${declarationSites} site(s)`,
 );

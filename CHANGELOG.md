@@ -8,6 +8,17 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ### Fixed
 
+- **`findCorrectiveActionByCapId` now tries a deterministic node lookup before the search index, closing the CAP half of the same race the finding lookups fixed.** A CAP is created as a child of its finding (`ensureCorrectiveActionNode`: `findingNode.createNode(capId + ".json", "vso:correctiveAction", …)`), but the canonical import looked it up with an AFTS/Lucene query only — so a CAP created seconds earlier was not indexed yet and the import answered `cap-not-found`, exactly as findings did before. The lookup now takes the finding node and checks `<capId>.json` / `<capId>` on it first, falling back to the search when the finding is unknown or the child is absent. The finding path lookup and this one now share the same "path first, search as fallback" shape.
+- **`POST /api/follow-up/import` now clears `vso:closureRejectionReason` when it declares a new closure.** The model documents the property as "cleared when a new closure is declared", and the canonical import did clear it, but the standalone path did not — so a declaration made after a rejection kept a reason that belonged to the superseded attempt and read as an explanation for the new one. Both declaration sites are now in lockstep.
+
+### Documentation
+
+- **README's "API endpoints at a glance" list was missing three of the ten Web Scripts** (`provider-history-report`, `ce-evidence-report`, `direct-tag`) and used paths without the `/api` prefix. Both fixed, and `scripts/verify-endpoints.mjs` now checks that list as well as the "Mini API reference" table, so the two cannot drift apart again.
+
+## [2026-09-18]
+
+### Fixed
+
 - **Finding lookups no longer depend on the search index, closing the "import a checklist, immediately import its follow-up, get `finding-not-found`" race.** `findFindingNodesById` (`import-canonical-models.post.js`) and `findFindingNode` (`import-follow-up-report.post.js`) both went straight to an AFTS/Lucene search, which lags writes by its commit interval — a finding created seconds earlier could silently fail to resolve, exactly what the demo quickstart's retry loop was working around. Both now try a deterministic node-path lookup first — findings are filed at `Hallazgos/<year>/<findingId>.{pdf,json}` (`upsertFinding`/`replaceContentWithPdf`) — enumerating the (typically few) year folders and checking both extensions, since the node is renamed from `.json` to `.pdf` synchronously the moment its PDF renders, which is normally within the same request that creates it. Falls back to the search only if the deterministic lookup finds nothing (e.g. a finding filed somewhere unexpected), so no existing behavior is lost. **Verified live**: imported the demo follow-up payload against a real finding **with Solr stopped entirely** — it still succeeded, proving the deterministic path resolves it independent of the search index.
 - **`vso:evidenceReviewStatus`'s description no longer claims an enforcement gate that doesn't exist.** It previously said "a follow-up cannot affect `vso:findingStatus` until this is Adequate" — untrue; nothing in the model or webscripts enforces it, so a public reference implementation was actively misdescribing its own behavior. Reworded to state plainly that it's informational only, and that enforcing it vs. retiring the property is an open product decision (recorded in `TECHNICAL_DEBT_ANALYSIS.md`, deferred pending validation of how evidence review actually happens). No behavior changed — description text only.
 
