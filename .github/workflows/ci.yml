@@ -1,0 +1,44 @@
+name: CI
+
+# Mirror of this repository's GitLab CI validation jobs, published on GitHub purely for public
+# visibility (GitLab remains the source of truth for development — see CONTRIBUTING.md). Only
+# the correctness-signal jobs are mirrored here; release automation and anything else specific
+# to the GitLab workflow stays GitLab-only.
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: npm run lint
+
+  validate-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # They had drifted (a follow-up file that did not exist, and an "evidence" key the
+      # importer ignores). Validate them, plus the helper shell scripts.
+      - run: node scripts/validate-examples.cjs
+      - run: node scripts/domain-rules.mjs verify
+      - run: node scripts/verify-endpoints.mjs
+      - run: node scripts/verify-closure-date.mjs
+      - run: bash scripts/verify-vso-security.sh
+      - name: Syntax-check every shell script
+        run: |
+          for script in scripts/*.sh; do
+            echo "bash -n $script"
+            bash -n "$script"
+          done

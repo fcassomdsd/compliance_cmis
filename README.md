@@ -1,5 +1,7 @@
 # compliance-CMIS
 
+[![CI](https://github.com/fcassomdsd/compliance_cmis/actions/workflows/ci.yml/badge.svg)](https://github.com/fcassomdsd/compliance_cmis/actions/workflows/ci.yml)
+
 compliance-CMIS is an Alfresco Content Services (ACS) customization for compliance and oversight workflows.
 It defines a custom VSO content model, Share form configuration, and Web Script endpoints for:
 
