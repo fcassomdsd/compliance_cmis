@@ -1491,10 +1491,26 @@ function findFindingNodesById(findingId) {
   return searchCapped(query) || [];
 }
 
-function findCorrectiveActionByCapId(capId) {
+function findCorrectiveActionByCapId(capId, parentNode) {
   var normalizedCapId = FOLLOW_UP_HELPERS.normalizeCapIdentifier(capId);
   if (normalizedCapId === null) {
     return [];
+  }
+
+  // A CAP is created as a child of its finding (see the follow-up importer's
+  // ensureCorrectiveActionNode: findingNode.createNode(capId + ".json", "vso:correctiveAction",
+  // ...)), so when the finding node is known a deterministic child lookup is tried before the
+  // search index. Otherwise a CAP created seconds earlier is not indexed yet and this answers
+  // cap-not-found -- the same search-lag that findFindingNodesById avoids by trying the path
+  // first. Both the .json name and the bare name are tried, matching the search fallback.
+  if (parentNode) {
+    var candidateNames = [normalizedCapId + ".json", normalizedCapId];
+    for (var candidateIndex = 0; candidateIndex < candidateNames.length; candidateIndex++) {
+      var candidate = parentNode.childByNamePath(candidateNames[candidateIndex]);
+      if (candidate && candidate.exists() && candidate.isSubType && candidate.isSubType("vso:correctiveAction")) {
+        return [candidate];
+      }
+    }
   }
 
   var query =
@@ -1725,7 +1741,7 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
 
   var capId = trimToNull(report.capId);
   if (capId !== null) {
-    var capMatches = findCorrectiveActionByCapId(capId);
+    var capMatches = findCorrectiveActionByCapId(capId, findingNode);
     if (capMatches.length === 0) {
       return {
         status: "cap-not-found",

@@ -206,15 +206,20 @@ Guidelines:
 
 ## API endpoints at a glance
 
-All endpoints below are repository Web Scripts mounted under `http://localhost:8080/alfresco/s/api`.
+All endpoints below are repository Web Scripts mounted under `http://localhost:8080/alfresco/s`. The authoritative contract for each — required fields and a sample payload — is the "Mini API reference" table below.
 
-- `POST /inspection/generate`: generate inspection plan documents.
-- `POST /inspection/report/generate`: generate inspection report documents.
-- `POST /inspection/import-canonical`: import canonical data and process follow-ups by file names or ids.
-- `POST /follow-up/import`: import/upsert one follow-up report payload directly.
-- `POST /findings/open/query`: query open findings by location and specialty context.
-- `POST /checklist/prior-findings/open`: query checklist items with open prior findings.
-- `POST /checklist/prior-findings/refresh-flags`: recompute persisted prior-finding flags.
+- `POST /api/inspection/generate`: generate inspection plan documents.
+- `POST /api/inspection/report/generate`: generate inspection report documents.
+- `POST /api/inspection/import-canonical`: import canonical data and process follow-ups by file names or ids.
+- `POST /api/follow-up/import`: import/upsert one follow-up report payload directly.
+- `POST /api/findings/open/query`: query open findings by location and specialty context.
+- `POST /api/checklist/prior-findings/open`: query checklist items with open prior findings.
+- `POST /api/checklist/prior-findings/refresh-flags`: recompute persisted prior-finding flags.
+- `POST /api/providers/provider-history-report`: bounded oversight-history report for a provider.
+- `POST /api/usoap/ce-evidence-report`: USOAP evidence report grouped by Protocol Question/area for a Critical Element.
+- `POST /api/usoap/direct-tag`: apply a direct USOAP tag to a node.
+
+`scripts/verify-endpoints.mjs` (run by CI) checks **both** this list and the table below against `webscripts/*/*.desc.xml` — update all three together.
 
 Sample payload files are in `example/`.
 

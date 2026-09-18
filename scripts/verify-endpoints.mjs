@@ -50,36 +50,57 @@ walk(webscriptsDir);
 
 const readme = readFileSync(readmePath, 'utf8');
 
-const sectionStart = readme.indexOf('## Mini API reference');
-if (sectionStart === -1) {
-  console.error('FAIL: no "## Mini API reference" section found in README.md');
-  process.exit(1);
+function sectionText(heading) {
+  const start = readme.indexOf(heading);
+  if (start === -1) {
+    console.error(`FAIL: no "${heading}" section found in README.md`);
+    process.exit(1);
+  }
+  const end = readme.indexOf('\n## ', start + 1);
+  return end === -1 ? readme.slice(start) : readme.slice(start, end);
 }
-const sectionEnd = readme.indexOf('\n## ', sectionStart + 1);
-const section = sectionEnd === -1 ? readme.slice(sectionStart) : readme.slice(sectionStart, sectionEnd);
 
-// Endpoint cells look like: | `POST /api/inspection/generate` | ...
-const rowPattern = /^\s*\|\s*`?(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+?)`?\s*\|/gmi;
+// The Mini API reference is a table ("| `POST /api/x` | ... |"); the glance list is a
+// bullet list ("- `POST /api/x`: ..."). Each section is parsed separately, so an endpoint
+// documented in both is expected rather than a duplicate.
+const tableRowPattern = /^\s*\|\s*`?(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+?)`?\s*\|/gmi;
+const glanceRowPattern = /^\s*-\s*`?(GET|POST|PUT|PATCH|DELETE)\s+(\/\S+?)`?\s*:/gmi;
 
-const documented = new Map();
-for (const match of section.matchAll(rowPattern)) {
-  const endpoint = `${match[1].toUpperCase()} ${match[2]}`;
-  documented.set(endpoint, (documented.get(endpoint) ?? 0) + 1);
+function documentedEndpoints(section, pattern) {
+  const found = new Map();
+  for (const match of section.matchAll(pattern)) {
+    const endpoint = `${match[1].toUpperCase()} ${match[2]}`;
+    found.set(endpoint, (found.get(endpoint) ?? 0) + 1);
+  }
+  return found;
 }
+
+const sections = [
+  {
+    label: 'Mini API reference table',
+    documented: documentedEndpoints(sectionText('## Mini API reference'), tableRowPattern),
+  },
+  {
+    label: 'API endpoints at a glance list',
+    documented: documentedEndpoints(sectionText('## API endpoints at a glance'), glanceRowPattern),
+  },
+];
 
 const problems = [];
 
-for (const endpoint of actual) {
-  if (!documented.has(endpoint)) {
-    problems.push(`Web Script exists but is missing from the README API reference: ${endpoint}`);
+for (const { label, documented } of sections) {
+  for (const endpoint of actual) {
+    if (!documented.has(endpoint)) {
+      problems.push(`${label} is missing a Web Script: ${endpoint}`);
+    }
   }
-}
 
-for (const [endpoint, count] of documented) {
-  if (!actual.has(endpoint)) {
-    problems.push(`README documents a Web Script that does not exist: ${endpoint}`);
-  } else if (count > 1) {
-    problems.push(`README documents the same Web Script ${count} times: ${endpoint}`);
+  for (const [endpoint, count] of documented) {
+    if (!actual.has(endpoint)) {
+      problems.push(`${label} documents a Web Script that does not exist: ${endpoint}`);
+    } else if (count > 1) {
+      problems.push(`${label} documents the same Web Script ${count} times: ${endpoint}`);
+    }
   }
 }
 
@@ -95,4 +116,6 @@ if (problems.length > 0) {
   process.exit(1);
 }
 
-console.log(`OK: README API reference matches webscripts/ — ${actual.size} Web Script endpoints documented`);
+console.log(
+  `OK: README endpoint manifest matches webscripts/ — ${actual.size} Web Script endpoints documented in both the glance list and the reference table`,
+);
