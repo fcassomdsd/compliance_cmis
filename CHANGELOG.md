@@ -6,6 +6,10 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Added
+
+- **`POST /api/providers/provider-history-report` accepts an optional comma-separated `specialtyCode` filter.** `compliance_web` serves this report to a specialty-scoped session (a user who may only act on their own specialties), and the filter is pushed into every artifact query — findings, corrective actions, follow-up reports, checklist items and evidence all carry `vso:specialtyCode` through the shared `vso:serviceContext` aspect — rather than applied to the artifact list afterwards. That matters because the report's `summary` and `byInspection` counts are computed from the artifacts: filtering the list in the caller would leave counts describing records the caller may not see. Same idiom the CE-evidence report already uses. Omitting the parameter returns the whole report, unchanged.
+
 ### Fixed
 
 - **`findCorrectiveActionByCapId` now tries a deterministic node lookup before the search index, closing the CAP half of the same race the finding lookups fixed.** A CAP is created as a child of its finding (`ensureCorrectiveActionNode`: `findingNode.createNode(capId + ".json", "vso:correctiveAction", …)`), but the canonical import looked it up with an AFTS/Lucene query only — so a CAP created seconds earlier was not indexed yet and the import answered `cap-not-found`, exactly as findings did before. The lookup now takes the finding node and checks `<capId>.json` / `<capId>` on it first, falling back to the search when the finding is unknown or the child is absent. The finding path lookup and this one now share the same "path first, search as fallback" shape.

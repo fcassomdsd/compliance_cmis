@@ -140,6 +140,31 @@ function buildYearClause(fieldName, year) {
     normalizedYear + "-12-31T23:59:59.999Z]";
 }
 
+// Narrows every artifact query to the specialties the caller may see. The
+// report is what compliance_web serves a specialty-scoped session, and the
+// summary and per-inspection counts must describe the same population as the
+// artifact list, so the filter is pushed into the queries rather than applied
+// to the list afterwards. Same comma-separated `specialtyCode` parameter the
+// CE-evidence report takes; every content type this script reads carries
+// vso:specialtyCode through the shared vso:serviceContext aspect.
+function buildSpecialtyClause(specialtyCode) {
+  var raw = trimToNull(specialtyCode);
+  if (!raw) {
+    return "";
+  }
+
+  var codes = raw.split(",");
+  var clauses = [];
+  for (var i = 0; i < codes.length; i++) {
+    var code = trimToNull(codes[i]);
+    if (code) {
+      clauses.push('@vso\\:specialtyCode:"' + escapeAftsValue(code) + '"');
+    }
+  }
+
+  return clauses.length > 0 ? " AND +(" + clauses.join(" OR ") + ")" : "";
+}
+
 // Rhino's plain-object property access can misbehave for purely-numeric
 // string keys (e.g. a "2026" year bucket) - a bare `map[key] || 0` read
 // can come back as a Scriptable NOT_FOUND sentinel instead of undefined,
@@ -157,11 +182,12 @@ function incrementCount(map, key) {
 // oversight results" specifically means CAP and follow-up outcomes, not
 // just findings. All five carry vso:providerId/vso:providerName via the
 // shared vso:serviceContext aspect.
-function loadArtifactsByProvider(providerId, year) {
+function loadArtifactsByProvider(providerId, year, specialtyCode) {
   var artifacts = [];
   var providerClause = '+@vso\\:providerId:"' + escapeAftsValue(providerId) + '"';
+  var specialtyClause = buildSpecialtyClause(specialtyCode);
 
-  var findingQuery = '+TYPE:"vso:finding" AND ' + providerClause + buildYearClause("dateIssued", year);
+  var findingQuery = '+TYPE:"vso:finding" AND ' + providerClause + specialtyClause + buildYearClause("dateIssued", year);
   var findings = searchCapped(findingQuery);
   for (var i = 0; i < findings.length; i++) {
     var f = findings[i];
@@ -185,7 +211,7 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var capQuery = '+TYPE:"vso:correctiveAction" AND ' + providerClause + buildYearClause("dueDate", year);
+  var capQuery = '+TYPE:"vso:correctiveAction" AND ' + providerClause + specialtyClause + buildYearClause("dueDate", year);
   var caps = searchCapped(capQuery);
   for (var j = 0; j < caps.length; j++) {
     var cap = caps[j];
@@ -207,7 +233,7 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var followUpQuery = '+TYPE:"vso:followUpReport" AND ' + providerClause + buildYearClause("followUpDate", year);
+  var followUpQuery = '+TYPE:"vso:followUpReport" AND ' + providerClause + specialtyClause + buildYearClause("followUpDate", year);
   var followUps = searchCapped(followUpQuery);
   for (var k = 0; k < followUps.length; k++) {
     var fu = followUps[k];
@@ -230,7 +256,7 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var checklistQuery = '+TYPE:"vso:checklistItem" AND ' + providerClause;
+  var checklistQuery = '+TYPE:"vso:checklistItem" AND ' + providerClause + specialtyClause;
   var checklistItems = searchCapped(checklistQuery);
   for (var m = 0; m < checklistItems.length; m++) {
     var ci = checklistItems[m];
@@ -258,7 +284,7 @@ function loadArtifactsByProvider(providerId, year) {
     });
   }
 
-  var evidenceQuery = '+TYPE:"vso:evidenceItem" AND ' + providerClause + buildYearClause("collectionDate", year);
+  var evidenceQuery = '+TYPE:"vso:evidenceItem" AND ' + providerClause + specialtyClause + buildYearClause("collectionDate", year);
   var evidenceItems = searchCapped(evidenceQuery);
   for (var n = 0; n < evidenceItems.length; n++) {
     var ev = evidenceItems[n];
@@ -348,12 +374,15 @@ function main() {
   var requestBody = parseJsonPayload(requestbody.content);
   var providerId = trimToNull(requestBody.providerId);
   var year = trimToNull(requestBody.year) || null;
+  // Optional: the specialties the caller may see (compliance_web passes the
+  // session's scope). Absent means the whole report.
+  var specialtyCode = trimToNull(requestBody.specialtyCode);
 
   if (!providerId) {
     fail(400, "Missing required parameter: providerId");
   }
 
-  var artifacts = loadArtifactsByProvider(providerId, year);
+  var artifacts = loadArtifactsByProvider(providerId, year, specialtyCode);
   var byInspection = groupByInspection(artifacts);
   var summary = summarize(artifacts);
 
