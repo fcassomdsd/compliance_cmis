@@ -659,63 +659,83 @@
    <number:text> de </number:text>
    <number:year number:style="long"/>
   </number:date-style>
- </office:automatic-styles>
+ 
+<style:style style:name="RptHeader" style:family="table"><style:table-properties style:width="7.2in" table:align="left" style:writing-mode="page"/></style:style>
+<style:style style:name="RptHeader.A" style:family="table-column"><style:table-column-properties style:column-width="1.55in"/></style:style>
+<style:style style:name="RptHeader.B" style:family="table-column"><style:table-column-properties style:column-width="2.9in"/></style:style>
+<style:style style:name="RptHeader.C" style:family="table-column"><style:table-column-properties style:column-width="0.65in"/></style:style>
+<style:style style:name="RptHeader.D" style:family="table-column"><style:table-column-properties style:column-width="0.4in"/></style:style>
+<style:style style:name="RptHeader.E" style:family="table-column"><style:table-column-properties style:column-width="1.7in"/></style:style>
+<style:style style:name="RptHeader.R1" style:family="table-row"><style:table-row-properties style:min-row-height="0.4354in" fo:keep-together="auto"/></style:style>
+<style:style style:name="RptHeader.R2" style:family="table-row"><style:table-row-properties style:min-row-height="0.2951in" fo:keep-together="auto"/></style:style>
+<style:style style:name="RptHeader.R3" style:family="table-row"><style:table-row-properties style:min-row-height="0.1875in" fo:keep-together="auto"/></style:style>
+<style:style style:name="RptHeader.Cell" style:family="table-cell"><style:table-cell-properties fo:padding-left="0.0104in" fo:padding-right="0.0104in" fo:padding-top="0in" fo:padding-bottom="0in" fo:border="1.5pt solid #000000"/></style:style>
+<style:style style:name="RptHeaderLogoPara" style:family="paragraph"><style:paragraph-properties fo:margin-left="0.0866in" fo:margin-top="0.02in" fo:margin-bottom="0in"/></style:style>
+<style:style style:name="RptHeaderEntityPara" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.0764in" fo:margin-bottom="0in" fo:text-align="center" style:justify-single-word="false"/></style:style>
+<style:style style:name="RptHeaderKickerPara" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.0764in" fo:margin-bottom="0in" fo:text-align="center" style:justify-single-word="false"/></style:style>
+<style:style style:name="RptHeaderTitlePara" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.1189in" fo:margin-bottom="0in" fo:text-align="center" style:justify-single-word="false"/></style:style>
+<style:style style:name="RptHeaderSubtitlePara" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.02in" fo:margin-bottom="0in" fo:text-align="center" style:justify-single-word="false"/></style:style>
+<style:style style:name="RptHeaderLabelPara" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.0354in" fo:margin-bottom="0in" fo:text-align="center" style:justify-single-word="false"/></style:style>
+<style:style style:name="RptHeaderValuePara" style:family="paragraph"><style:paragraph-properties fo:margin-top="0.0354in" fo:margin-bottom="0in" fo:text-align="center" style:justify-single-word="false"/></style:style>
+<style:style style:name="RptHeaderEntityText" style:family="text"><style:text-properties fo:font-size="9pt" fo:font-weight="bold"/></style:style>
+<style:style style:name="RptHeaderKickerText" style:family="text"><style:text-properties fo:font-size="10pt" fo:font-weight="bold"/></style:style>
+<style:style style:name="RptHeaderTitleText" style:family="text"><style:text-properties fo:font-size="10pt" fo:font-weight="bold"/></style:style>
+<style:style style:name="RptHeaderSubtitleText" style:family="text"><style:text-properties fo:font-size="8pt"/></style:style>
+<style:style style:name="RptHeaderLabelText" style:family="text"><style:text-properties fo:font-size="9pt"/></style:style>
+<style:style style:name="RptHeaderValueText" style:family="text"><style:text-properties fo:font-size="9pt" fo:font-weight="bold"/></style:style>
+<style:style style:name="RptHeaderLogoFrame" style:family="graphic"><style:graphic-properties style:vertical-pos="top" style:vertical-rel="baseline" fo:background-color="transparent" draw:fill="none" style:mirror="none"/></style:style>
+</office:automatic-styles>
  <office:master-styles>
   <style:master-page style:name="Standard" style:page-layout-name="pm1" draw:style-name="dp1">
    <style:header>
-    <table:table table:name="Table1" table:style-name="Table1">
-     <table:table-column table:style-name="Table1.A"/>
-     <table:table-column table:style-name="Table1.B"/>
-     <table:table-column table:style-name="Table1.C"/>
-     <table:table-column table:style-name="Table1.D"/>
-     <table:table-column table:style-name="Table1.E"/>
-     <table:table-row table:style-name="Table1.1">
-      <table:table-cell table:style-name="Table1.A1" table:number-rows-spanned="3" office:value-type="string">
-       <text:p text:style-name="P1" loext:marker-style-name="T1"/>
-       <text:p text:style-name="P2" loext:marker-style-name="T2"><draw:frame draw:style-name="fr1" draw:name="Image 1" text:anchor-type="as-char" svg:width="1.3898in" svg:height="0.8571in" draw:z-index="1"><draw:image draw:mime-type="image/jpeg">
-          <office:binary-data>${entityLogoBase64}</office:binary-data>
-         </draw:image>
-        </draw:frame></text:p>
-      </table:table-cell>
-      <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-       <text:p text:style-name="P3"><text:span text:style-name="T3">${entityName}</text:span></text:p>
-      </table:table-cell>
-      <table:table-cell table:style-name="Table1.A1" table:number-columns-spanned="3" office:value-type="string">
-       <text:p text:style-name="P4" loext:marker-style-name="T2"/>
-       <text:p text:style-name="P5" loext:marker-style-name="T6"><text:span text:style-name="T7">${labels.formHeading}</text:span></text:p>
-      </table:table-cell>
-      <table:covered-table-cell/>
-      <table:covered-table-cell/>
-     </table:table-row>
-     <table:table-row table:style-name="Table1.2">
-      <table:covered-table-cell table:style-name="Table1.A2"/>
-      <table:table-cell table:style-name="Table1.A1" table:number-rows-spanned="2" office:value-type="string">
-       <text:p text:style-name="P6" loext:marker-style-name="T2"><text:span text:style-name="T2">${labels.docTitle}</text:span></text:p>
-      </table:table-cell>
-      <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-       <text:p text:style-name="P7" loext:marker-style-name="T2"><text:span text:style-name="T8">${labels.codeLabel}</text:span></text:p>
-      </table:table-cell>
-      <table:table-cell table:style-name="Table1.A1" table:number-columns-spanned="2" office:value-type="string">
-       <text:p text:style-name="P8" loext:marker-style-name="T3"><text:span text:style-name="T9">${docControlCode}</text:span></text:p>
-      </table:table-cell>
-      <table:covered-table-cell/>
-     </table:table-row>
-     <table:table-row table:style-name="Table1.3">
-      <table:covered-table-cell table:style-name="Table1.A2"/>
-      <table:covered-table-cell table:style-name="Table1.A2"/>
-      <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-       <text:p text:style-name="P9" loext:marker-style-name="T2"><text:span text:style-name="T8">${labels.versionLabel}</text:span></text:p>
-      </table:table-cell>
-      <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-       <text:p text:style-name="P10" loext:marker-style-name="T3"><text:span text:style-name="T10">${docControlVersion}</text:span></text:p>
-      </table:table-cell>
-      <table:table-cell table:style-name="Table1.A1" office:value-type="string">
-       <text:p text:style-name="P11" loext:marker-style-name="T3"><text:span text:style-name="T12">08/07/2</text:span><text:span text:style-name="T13">023</text:span></text:p>
-      </table:table-cell>
-     </table:table-row>
-    </table:table>
-    <text:p text:style-name="P12"/>
-   </style:header>
+ <table:table table:name="RptHeader" table:style-name="RptHeader">
+  <table:table-column table:style-name="RptHeader.A"/>
+  <table:table-column table:style-name="RptHeader.B"/>
+  <table:table-column table:style-name="RptHeader.C"/>
+  <table:table-column table:style-name="RptHeader.D"/>
+  <table:table-column table:style-name="RptHeader.E"/>
+  <table:table-row table:style-name="RptHeader.R1">
+   <table:table-cell table:style-name="RptHeader.Cell" table:number-rows-spanned="3" office:value-type="string">
+    <text:p text:style-name="RptHeaderLogoPara"><draw:frame draw:style-name="RptHeaderLogoFrame" draw:name="EntityLogo" text:anchor-type="as-char" svg:width="1.2857in" svg:height="0.8571in" draw:z-index="1"><draw:image draw:mime-type="${entityLogoMimeType}"><office:binary-data>${entityLogoBase64}</office:binary-data></draw:image></draw:frame></text:p>
+   </table:table-cell>
+   <table:table-cell table:style-name="RptHeader.Cell" office:value-type="string">
+    <text:p text:style-name="RptHeaderEntityPara"><text:span text:style-name="RptHeaderEntityText">${entityName}</text:span></text:p>
+   </table:table-cell>
+   <table:table-cell table:style-name="RptHeader.Cell" table:number-columns-spanned="3" office:value-type="string">
+    <text:p text:style-name="RptHeaderKickerPara"><text:span text:style-name="RptHeaderKickerText">${labels.formHeading}</text:span></text:p>
+   </table:table-cell>
+   <table:covered-table-cell/>
+   <table:covered-table-cell/>
+  </table:table-row>
+  <table:table-row table:style-name="RptHeader.R2">
+   <table:covered-table-cell/>
+   <table:table-cell table:style-name="RptHeader.Cell" table:number-rows-spanned="2" office:value-type="string">
+    <text:p text:style-name="RptHeaderTitlePara"><text:span text:style-name="RptHeaderTitleText">${labels.docTitle}</text:span></text:p>
+    <text:p text:style-name="RptHeaderSubtitlePara"><text:span text:style-name="RptHeaderSubtitleText">${labels.docSubtitle}</text:span></text:p>
+   </table:table-cell>
+   <table:table-cell table:style-name="RptHeader.Cell" office:value-type="string">
+    <text:p text:style-name="RptHeaderLabelPara"><text:span text:style-name="RptHeaderLabelText">${labels.codeLabel}</text:span></text:p>
+   </table:table-cell>
+   <table:table-cell table:style-name="RptHeader.Cell" table:number-columns-spanned="2" office:value-type="string">
+    <text:p text:style-name="RptHeaderValuePara"><text:span text:style-name="RptHeaderValueText">${docControlCode}</text:span></text:p>
+   </table:table-cell>
+   <table:covered-table-cell/>
+  </table:table-row>
+  <table:table-row table:style-name="RptHeader.R3">
+   <table:covered-table-cell/>
+   <table:covered-table-cell/>
+   <table:table-cell table:style-name="RptHeader.Cell" office:value-type="string">
+    <text:p text:style-name="RptHeaderLabelPara"><text:span text:style-name="RptHeaderLabelText">${labels.versionLabel}</text:span></text:p>
+   </table:table-cell>
+   <table:table-cell table:style-name="RptHeader.Cell" office:value-type="string">
+    <text:p text:style-name="RptHeaderValuePara"><text:span text:style-name="RptHeaderValueText">${docControlVersion}</text:span></text:p>
+   </table:table-cell>
+   <table:table-cell table:style-name="RptHeader.Cell" office:value-type="string">
+    <text:p text:style-name="RptHeaderValuePara"><text:span text:style-name="RptHeaderValueText">${docControlDate}</text:span></text:p>
+   </table:table-cell>
+  </table:table-row>
+ </table:table>
+</style:header>
   </style:master-page>
  </office:master-styles>
  <office:body>

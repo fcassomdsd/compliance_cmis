@@ -8,6 +8,11 @@ var REPORT_LABELS = {
   findingReport: {
     en: {
       inspectionFinding: "Inspection Finding",
+      formHeading: "FORM",
+      docTitle: "INSPECTION FINDING",
+      docSubtitle: "OPERATIONAL SAFETY OVERSIGHT",
+      codeLabel: "Code",
+      versionLabel: "Version",
       identification: "Identification",
       findingId: "Finding ID:",
       checklistItem: "Checklist Item:",
@@ -40,6 +45,11 @@ var REPORT_LABELS = {
     },
     es: {
       inspectionFinding: "Hallazgo de Inspección",
+      formHeading: "FORMULARIO",
+      docTitle: "HALLAZGO DE INSPECCIÓN",
+      docSubtitle: "VIGILANCIA DE LA SEGURIDAD OPERACIONAL",
+      codeLabel: "Código",
+      versionLabel: "Versión",
       identification: "Identificación",
       findingId: "ID de Hallazgo:",
       checklistItem: "Elemento de Checklist:",
@@ -74,6 +84,11 @@ var REPORT_LABELS = {
   checklistReport: {
     en: {
       inspectionChecklist: "Inspection Checklist",
+      formHeading: "FORM",
+      docTitle: "INSPECTION CHECKLIST",
+      docSubtitle: "OPERATIONAL SAFETY OVERSIGHT",
+      codeLabel: "Code",
+      versionLabel: "Version",
       generalInformation: "General Information",
       inspectionCode: "Inspection Code:",
       location: "Location:",
@@ -100,6 +115,11 @@ var REPORT_LABELS = {
     },
     es: {
       inspectionChecklist: "Checklist de Inspección",
+      formHeading: "FORMULARIO",
+      docTitle: "CHECKLIST DE INSPECCIÓN",
+      docSubtitle: "VIGILANCIA DE LA SEGURIDAD OPERACIONAL",
+      codeLabel: "Código",
+      versionLabel: "Versión",
       generalInformation: "Datos Generales",
       inspectionCode: "Código de Inspección:",
       location: "Ubicación:",
@@ -128,6 +148,11 @@ var REPORT_LABELS = {
   followUpReport: {
     en: {
       followupReport: "Follow-up Report",
+      formHeading: "FORM",
+      docTitle: "FOLLOW-UP REPORT",
+      docSubtitle: "OPERATIONAL SAFETY OVERSIGHT",
+      codeLabel: "Code",
+      versionLabel: "Version",
       identification: "Identification",
       followupId: "Follow-up ID:",
       findingId: "Finding ID:",
@@ -154,6 +179,11 @@ var REPORT_LABELS = {
     },
     es: {
       followupReport: "Reporte de Seguimiento",
+      formHeading: "FORMULARIO",
+      docTitle: "REPORTE DE SEGUIMIENTO",
+      docSubtitle: "VIGILANCIA DE LA SEGURIDAD OPERACIONAL",
+      codeLabel: "Código",
+      versionLabel: "Versión",
       identification: "Identificación",
       followupId: "ID de Seguimiento:",
       findingId: "ID de Hallazgo:",
@@ -223,6 +253,138 @@ function resolveReportLocale(requestBody) {
 function getReportLabels(templateKey, locale) {
   var templateLabels = REPORT_LABELS[templateKey] || {};
   return templateLabels[locale] || templateLabels.es || {};
+}
+
+// Deployment-level header branding, read from the same entity-profile.json the
+// report/plan webscripts use. This is a local copy of
+// webscripts/common/vso-paths.lib.js -> loadEntityProfile because importScript()
+// has been observed unavailable in this script's runtime (see the note there).
+var ENTITY_PROFILE_DIR = "/usr/local/tomcat/shared/classes/alfresco/extension";
+var ENTITY_PROFILE_PATH = ENTITY_PROFILE_DIR + "/entity-profile.json";
+var ENTITY_PROFILE_FALLBACK = {
+  entityName: { es: "AUTORIDAD DE AVIACIÓN CIVIL", en: "CIVIL AVIATION AUTHORITY" },
+  entityLogoPath: "entity-logo.png",
+  docControlCodes: {
+    informeFinal: "",
+    planDeInspeccion: "",
+    checklistReport: "",
+    findingReport: "",
+    followUpReport: ""
+  },
+  docControlVersion: "",
+  docControlDate: ""
+};
+var ENTITY_PROFILE_CACHE = {};
+
+function detectEntityLogoMimeType(base64) {
+  if (!base64 || typeof base64 !== "string") {
+    return "";
+  }
+  if (base64.indexOf("/9j/") === 0) {
+    return "image/jpeg";
+  }
+  if (base64.indexOf("iVBOR") === 0) {
+    return "image/png";
+  }
+  if (base64.indexOf("R0lGOD") === 0) {
+    return "image/gif";
+  }
+  return "";
+}
+
+function resolveLocalizedEntityName(value, locale) {
+  if (typeof value === "string") {
+    return value;
+  }
+  if (!value || typeof value !== "object") {
+    return "";
+  }
+  var order = [locale, "es", "en"];
+  for (var orderIndex = 0; orderIndex < order.length; orderIndex++) {
+    if (typeof value[order[orderIndex]] === "string" && value[order[orderIndex]].length > 0) {
+      return value[order[orderIndex]];
+    }
+  }
+  for (var key in value) {
+    if (value.hasOwnProperty(key) && typeof value[key] === "string") {
+      return value[key];
+    }
+  }
+  return "";
+}
+
+function readEntityLogoBase64(configuredPath) {
+  var candidates = configuredPath ? [configuredPath] : [];
+  candidates.push("entity-logo.png", "entity-logo.jpg", "entity-logo.jpeg");
+  for (var candidateIndex = 0; candidateIndex < candidates.length; candidateIndex++) {
+    var candidate = candidates[candidateIndex];
+    var absolutePath = candidate.charAt(0) === "/" ? candidate : ENTITY_PROFILE_DIR + "/" + candidate;
+    try {
+      var logoFile = new Packages.java.io.File(absolutePath);
+      if (logoFile.exists() && logoFile.isFile()) {
+        var bytes = Packages.org.apache.commons.io.FileUtils.readFileToByteArray(logoFile);
+        return String(Packages.java.util.Base64.getEncoder().encodeToString(bytes));
+      }
+    } catch (logoError) {
+    }
+  }
+  return "";
+}
+
+function loadEntityProfile(locale) {
+  var resolvedLocale = (locale === "en") ? "en" : "es";
+  if (ENTITY_PROFILE_CACHE[resolvedLocale]) {
+    return ENTITY_PROFILE_CACHE[resolvedLocale];
+  }
+
+  var parsed = null;
+  try {
+    var file = new Packages.java.io.File(ENTITY_PROFILE_PATH);
+    if (file.exists()) {
+      parsed = JSON.parse(String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8")));
+    }
+  } catch (loadError) {
+    parsed = null;
+  }
+
+  var source = parsed || {};
+  var codes = source.docControlCodes || ENTITY_PROFILE_FALLBACK.docControlCodes;
+  var logoBase64 = (typeof source.entityLogoBase64 === "string" && source.entityLogoBase64.length > 0)
+    ? source.entityLogoBase64
+    : readEntityLogoBase64(typeof source.entityLogoPath === "string" ? source.entityLogoPath : ENTITY_PROFILE_FALLBACK.entityLogoPath);
+  var mimeType = (typeof source.entityLogoMimeType === "string" && source.entityLogoMimeType.length > 0)
+    ? source.entityLogoMimeType
+    : detectEntityLogoMimeType(logoBase64);
+
+  var profile = {
+    entityName: resolveLocalizedEntityName(source.entityName || ENTITY_PROFILE_FALLBACK.entityName, resolvedLocale),
+    entityLogoBase64: logoBase64,
+    entityLogoMimeType: mimeType || "image/jpeg",
+    docControlCodes: {
+      informeFinal: codes.informeFinal || "",
+      planDeInspeccion: codes.planDeInspeccion || "",
+      checklistReport: codes.checklistReport || "",
+      findingReport: codes.findingReport || "",
+      followUpReport: codes.followUpReport || ""
+    },
+    docControlVersion: (typeof source.docControlVersion === "string") ? source.docControlVersion : "",
+    docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : ""
+  };
+  ENTITY_PROFILE_CACHE[resolvedLocale] = profile;
+  return profile;
+}
+
+// Header fields for one report, ready to merge into a pdf-template data object.
+function getReportHeaderData(locale, reportKey) {
+  var profile = loadEntityProfile(locale);
+  return {
+    entityName: profile.entityName,
+    entityLogoBase64: profile.entityLogoBase64,
+    entityLogoMimeType: profile.entityLogoMimeType,
+    docControlCode: profile.docControlCodes[reportKey] || "",
+    docControlVersion: profile.docControlVersion,
+    docControlDate: profile.docControlDate
+  };
 }
 
 // Path configuration is centralized.
@@ -1807,6 +1969,7 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
     summary.pendingClosureApprovals++;
   }
 
+  var followUpHeader = getReportHeaderData(reportLocale, "followUpReport");
   replaceContentWithPdf(
     followUpNode,
     findingNode.parent,
@@ -1827,6 +1990,12 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
       specialtyName: firstNonEmpty(report.specialtyName, findingNode.properties["vso:specialtyName"]),
       providerName: firstNonEmpty(report.providerName, findingNode.properties["vso:providerName"]),
       labels: getReportLabels("followUpReport", reportLocale),
+      entityName: followUpHeader.entityName,
+      entityLogoBase64: followUpHeader.entityLogoBase64,
+      entityLogoMimeType: followUpHeader.entityLogoMimeType,
+      docControlCode: followUpHeader.docControlCode,
+      docControlVersion: followUpHeader.docControlVersion,
+      docControlDate: followUpHeader.docControlDate,
       evidenceItems: report.evidenceItems
     },
     followUpResult.pdfName,
@@ -2915,11 +3084,22 @@ try {
     }
 
     var checklistReportLocale = resolveReportLocale(importRequest);
+    var checklistHeader = getReportHeaderData(checklistReportLocale, "checklistReport");
     replaceContentWithPdf(
       checklistNode,
       destinationDomainFolder,
       CHECKLIST_PDF_TEMPLATE_PATH,
-      { checklist: checklistPayload, items: checklistItemsForPdf, labels: getReportLabels("checklistReport", checklistReportLocale) },
+      {
+        checklist: checklistPayload,
+        items: checklistItemsForPdf,
+        labels: getReportLabels("checklistReport", checklistReportLocale),
+        entityName: checklistHeader.entityName,
+        entityLogoBase64: checklistHeader.entityLogoBase64,
+        entityLogoMimeType: checklistHeader.entityLogoMimeType,
+        docControlCode: checklistHeader.docControlCode,
+        docControlVersion: checklistHeader.docControlVersion,
+        docControlDate: checklistHeader.docControlDate
+      },
       checklistPayload.checklistId + ".pdf",
       ["vso:inspectionContext", "vso:serviceContext"]
     );
@@ -2932,6 +3112,8 @@ try {
       var findingNode = upsertFinding(destinationFindingsYearFolder, checklistPayload, findingPayload, findingItemCode, relatedItemPayload, summary);
       var findingContextValuesForPdf = resolveContextValues(findingPayload, null);
       var checklistContextValuesForPdf = resolveContextValues(checklistPayload, null);
+      var findingReportLocale = resolveReportLocale(importRequest);
+      var findingHeader = getReportHeaderData(findingReportLocale, "findingReport");
       replaceContentWithPdf(
         findingNode,
         destinationFindingsYearFolder,
@@ -2958,7 +3140,13 @@ try {
           nationalRegulation: firstNonEmpty(findingPayload.nationalRegulation, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.nationalRegulation : null),
           regulationItem: firstNonEmpty(findingPayload.regulationItem, relatedItemPayload && relatedItemPayload.reference ? relatedItemPayload.reference.regulationItem : null),
           correctiveAction: findingPayload.correctiveAction || null,
-          labels: getReportLabels("findingReport", resolveReportLocale(importRequest))
+          labels: getReportLabels("findingReport", findingReportLocale),
+          entityName: findingHeader.entityName,
+          entityLogoBase64: findingHeader.entityLogoBase64,
+          entityLogoMimeType: findingHeader.entityLogoMimeType,
+          docControlCode: findingHeader.docControlCode,
+          docControlVersion: findingHeader.docControlVersion,
+          docControlDate: findingHeader.docControlDate
         },
         findingPayload.findingId + ".pdf",
         ["vso:inspectionContext", "vso:serviceContext", "vso:regulatoryTraceability"]

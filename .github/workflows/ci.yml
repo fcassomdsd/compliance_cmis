@@ -35,6 +35,7 @@ jobs:
       - run: node scripts/domain-rules.mjs verify
       - run: node scripts/verify-endpoints.mjs
       - run: node scripts/verify-closure-date.mjs
+      - run: node scripts/verify-report-headers.mjs
       - run: bash scripts/verify-vso-security.sh
       - name: Syntax-check every shell script
         run: |

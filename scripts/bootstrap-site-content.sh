@@ -23,8 +23,11 @@
 # only ever installed by hand.
 #
 # Idempotent: creates what is missing, leaves everything else alone, and can be re-run.
+# Pass --force to re-upload the templates even when they already exist, so a
+# change to templates/*.fodt (for example a header change) reaches an instance
+# that was bootstrapped before.
 #
-# Usage: bootstrap-site-content.sh [--yes]
+# Usage: bootstrap-site-content.sh [--yes] [--force]
 # Credentials: ALFRESCO_USERNAME/ALFRESCO_PASSWORD, or fall back to
 #              ../compliance_flow/.env (where this platform's dev values live).
 
@@ -36,9 +39,11 @@ SITE_SHORT_NAME="${SITE_SHORT_NAME:-vigilancia-de-la-so}"
 SITE_TITLE="${SITE_TITLE:-Vigilancia de la Seguridad Operacional}"
 
 CONFIRMED=0
+FORCE=0
 for arg in "$@"; do
   case "${arg}" in
     --yes) CONFIRMED=1 ;;
+    --force) FORCE=1 ;;
     *) echo "Unknown argument: ${arg}"; exit 2 ;;
   esac
 done
@@ -50,6 +55,7 @@ This will, in ${ALFRESCO_URL}:
   * create documentLibrary/Vigilancia/{Inspecciones,Datos de campo,Hallazgos,Template data}
   * create documentLibrary/Documentos/Formatos
   * upload the five .fodt templates from this repository's templates/ into Documentos/Formatos
+    (with --force, also replace templates that are already there)
 
 It creates only what is missing, so re-running it is safe.
 Run again with --yes to continue.
@@ -153,8 +159,20 @@ TEMPLATES=(
 for template in "${TEMPLATES[@]}"; do
   source_file="${ROOT_DIR}/templates/${template}"
   [[ -f "${source_file}" ]] || fail "missing template in this repository: templates/${template}"
-  if [[ -n "$(child_id "${formatos}" "${template}")" ]]; then
+  existing_template="$(child_id "${formatos}" "${template}")"
+  if [[ -n "${existing_template}" && "${FORCE}" != "1" ]]; then
     say "Documentos/Formatos/${template} already present"
+    continue
+  fi
+  if [[ -n "${existing_template}" ]]; then
+    # Replace the content of the node that is already there. POST to .../children
+    # would 409 on the duplicate name.
+    updated="$(curl -s -m 120 "${AUTH[@]}" -X PUT "${API}/nodes/${existing_template}/content?majorVersion=false" \
+      -F "filedata=@${source_file};type=application/vnd.oasis.opendocument.text" \
+      -F "name=${template}")"
+    [[ -n "$(printf '%s' "${updated}" | json_field 'd.entry && d.entry.id')" ]] \
+      || fail "could not update ${template}: $(printf '%s' "${updated}" | head -c 200)"
+    say "Documentos/Formatos/${template} updated"
     continue
   fi
   uploaded="$(curl -s -m 120 "${AUTH[@]}" -X POST "${API}/nodes/${formatos}/children" \

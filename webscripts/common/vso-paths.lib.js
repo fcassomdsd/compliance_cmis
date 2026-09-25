@@ -373,37 +373,140 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
       return sourceNode.transformDocument("application/pdf");
     }
 
-    // Deployment-level entity/branding config (name, logo, document-control
-    // codes) for the regulatory report templates - independent of any single
-    // request's `locale`. Mounted into the container at build/deploy time
-    // (see docker-compose.yml) alongside vsoModel.xml/vsoModel.properties.
-    // Falls back to IDAC's own current values if the file can't be read, so a
-    // deployment that never sets this up renders exactly as it did before
-    // entity/locale parametrization was introduced.
+    // Deployment-level entity/branding config for every generated report
+    // header - independent of any single request's `locale`. Mounted into the
+    // container at build/deploy time (see docker-compose.yml) alongside
+    // vsoModel.xml/vsoModel.properties. Falls back to generic,
+    // authority-neutral values if the profile can't be read, so a fresh
+    // deployment still renders a complete header. A deploying CAA overrides
+    // entity-profile.json (and entity-logo.png next to it) rather than editing
+    // the templates.
+    var ENTITY_PROFILE_DIR = "/usr/local/tomcat/shared/classes/alfresco/extension";
+    var ENTITY_PROFILE_PATH = ENTITY_PROFILE_DIR + "/entity-profile.json";
     var ENTITY_PROFILE_FALLBACK = {
-      entityName: "DEPARTAMENTO DE CONTROL DE VIGILANCIA SNA/AGA",
-      entityLogoBase64: "",
-      docControlCodes: { informeFinal: "DVSO-CS-F04", planDeInspeccion: "DVSO-CS-F02" },
-      docControlVersion: "3.0"
+      entityName: { es: "AUTORIDAD DE AVIACIÓN CIVIL", en: "CIVIL AVIATION AUTHORITY" },
+      entityLogoPath: "entity-logo.png",
+      docControlCodes: {
+        informeFinal: "",
+        planDeInspeccion: "",
+        checklistReport: "",
+        findingReport: "",
+        followUpReport: ""
+      },
+      docControlVersion: "",
+      docControlDate: ""
     };
 
-    function loadEntityProfile() {
-      try {
-        var file = new Packages.java.io.File("/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json");
-        if (!file.exists()) {
-          return ENTITY_PROFILE_FALLBACK;
-        }
-        var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
-        var parsed = JSON.parse(text);
-        return {
-          entityName: parsed.entityName || ENTITY_PROFILE_FALLBACK.entityName,
-          entityLogoBase64: parsed.entityLogoBase64 || ENTITY_PROFILE_FALLBACK.entityLogoBase64,
-          docControlCodes: parsed.docControlCodes || ENTITY_PROFILE_FALLBACK.docControlCodes,
-          docControlVersion: parsed.docControlVersion || ENTITY_PROFILE_FALLBACK.docControlVersion
-        };
-      } catch (loadError) {
-        return ENTITY_PROFILE_FALLBACK;
+    // entityName is locale-keyed so one profile serves both shipping locales.
+    // Prefer the requested locale, then Spanish (the reports' default), then
+    // English, then any non-empty value.
+    function resolveLocalizedValue(value, locale) {
+      if (value === null || value === undefined) {
+        return "";
       }
+      if (typeof value === "string") {
+        return value;
+      }
+      if (typeof value === "object") {
+        var order = [locale, "es", "en"];
+        for (var orderIndex = 0; orderIndex < order.length; orderIndex++) {
+          var candidate = value[order[orderIndex]];
+          if (typeof candidate === "string" && candidate.length > 0) {
+            return candidate;
+          }
+        }
+        for (var key in value) {
+          if (value.hasOwnProperty(key) && typeof value[key] === "string") {
+            return value[key];
+          }
+        }
+      }
+      return "";
+    }
+
+    // The templates declare draw:mime-type from this value, so an adopting
+    // authority can drop in a PNG or a JPEG without editing the .fodt files.
+    function detectImageMimeType(base64) {
+      if (!base64 || typeof base64 !== "string") {
+        return "";
+      }
+      if (base64.indexOf("/9j/") === 0) {
+        return "image/jpeg";
+      }
+      if (base64.indexOf("iVBOR") === 0) {
+        return "image/png";
+      }
+      if (base64.indexOf("R0lGOD") === 0) {
+        return "image/gif";
+      }
+      return "";
+    }
+
+    // Inline base64 in the JSON still wins (backward compatible). Otherwise
+    // read the drop-in logo file named by entityLogoPath, defaulting to
+    // entity-logo.png next to the profile.
+    function readEntityLogoBase64(configuredPath) {
+      var candidates = [];
+      if (configuredPath) {
+        candidates.push(configuredPath);
+      }
+      candidates.push("entity-logo.png", "entity-logo.jpg", "entity-logo.jpeg");
+      for (var candidateIndex = 0; candidateIndex < candidates.length; candidateIndex++) {
+        var candidate = candidates[candidateIndex];
+        var absolutePath = candidate.charAt(0) === "/" ? candidate : ENTITY_PROFILE_DIR + "/" + candidate;
+        try {
+          var logoFile = new Packages.java.io.File(absolutePath);
+          if (logoFile.exists() && logoFile.isFile()) {
+            var bytes = Packages.org.apache.commons.io.FileUtils.readFileToByteArray(logoFile);
+            return String(Packages.java.util.Base64.getEncoder().encodeToString(bytes));
+          }
+        } catch (logoError) {
+        }
+      }
+      return "";
+    }
+
+    function loadEntityProfile(locale) {
+      var resolvedLocale = (locale === "en") ? "en" : "es";
+      var parsed = null;
+      try {
+        var file = new Packages.java.io.File(ENTITY_PROFILE_PATH);
+        if (file.exists()) {
+          var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
+          parsed = JSON.parse(text);
+        }
+      } catch (loadError) {
+        parsed = null;
+      }
+
+      var source = parsed || {};
+      var codes = source.docControlCodes || ENTITY_PROFILE_FALLBACK.docControlCodes;
+      var logoBase64 = "";
+      if (typeof source.entityLogoBase64 === "string" && source.entityLogoBase64.length > 0) {
+        logoBase64 = source.entityLogoBase64;
+      } else {
+        logoBase64 = readEntityLogoBase64(
+          typeof source.entityLogoPath === "string" ? source.entityLogoPath : ENTITY_PROFILE_FALLBACK.entityLogoPath
+        );
+      }
+      var logoMimeType = (typeof source.entityLogoMimeType === "string" && source.entityLogoMimeType.length > 0)
+        ? source.entityLogoMimeType
+        : detectImageMimeType(logoBase64);
+
+      return {
+        entityName: resolveLocalizedValue(source.entityName || ENTITY_PROFILE_FALLBACK.entityName, resolvedLocale),
+        entityLogoBase64: logoBase64,
+        entityLogoMimeType: logoMimeType || "image/jpeg",
+        docControlCodes: {
+          informeFinal: codes.informeFinal || "",
+          planDeInspeccion: codes.planDeInspeccion || "",
+          checklistReport: codes.checklistReport || "",
+          findingReport: codes.findingReport || "",
+          followUpReport: codes.followUpReport || ""
+        },
+        docControlVersion: (typeof source.docControlVersion === "string") ? source.docControlVersion : "",
+        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : ""
+      };
     }
 
     return {

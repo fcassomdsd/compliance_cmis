@@ -101,29 +101,109 @@ function importTemplateGenerationLibrary() {
         TemplateGeneration.fail(400, "Invalid JSON: " + error.message);
       }
     },
-    loadEntityProfile: function loadEntityProfile() {
+    loadEntityProfile: function loadEntityProfile(locale) {
       var fallback = {
-        entityName: "DEPARTAMENTO DE CONTROL DE VIGILANCIA SNA/AGA",
-        entityLogoBase64: "",
-        docControlCodes: { informeFinal: "DVSO-CS-F04", planDeInspeccion: "DVSO-CS-F02" },
-        docControlVersion: "3.0"
+        entityName: { es: "AUTORIDAD DE AVIACIÓN CIVIL", en: "CIVIL AVIATION AUTHORITY" },
+        entityLogoPath: "entity-logo.png",
+        docControlCodes: {
+          informeFinal: "",
+          planDeInspeccion: "",
+          checklistReport: "",
+          findingReport: "",
+          followUpReport: ""
+        },
+        docControlVersion: "",
+        docControlDate: ""
       };
-      try {
-        var file = new Packages.java.io.File("/usr/local/tomcat/shared/classes/alfresco/extension/entity-profile.json");
-        if (!file.exists()) {
-          return fallback;
+      var profileDir = "/usr/local/tomcat/shared/classes/alfresco/extension";
+
+      function detectMimeType(base64) {
+        if (!base64) {
+          return "";
         }
-        var text = String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8"));
-        var parsed = JSON.parse(text);
-        return {
-          entityName: parsed.entityName || fallback.entityName,
-          entityLogoBase64: parsed.entityLogoBase64 || fallback.entityLogoBase64,
-          docControlCodes: parsed.docControlCodes || fallback.docControlCodes,
-          docControlVersion: parsed.docControlVersion || fallback.docControlVersion
-        };
-      } catch (loadError) {
-        return fallback;
+        if (base64.indexOf("/9j/") === 0) {
+          return "image/jpeg";
+        }
+        if (base64.indexOf("iVBOR") === 0) {
+          return "image/png";
+        }
+        if (base64.indexOf("R0lGOD") === 0) {
+          return "image/gif";
+        }
+        return "";
       }
+
+      function resolveLocalized(value, resolvedLocale) {
+        if (typeof value === "string") {
+          return value;
+        }
+        if (!value || typeof value !== "object") {
+          return "";
+        }
+        var order = [resolvedLocale, "es", "en"];
+        for (var orderIndex = 0; orderIndex < order.length; orderIndex++) {
+          if (typeof value[order[orderIndex]] === "string" && value[order[orderIndex]].length > 0) {
+            return value[order[orderIndex]];
+          }
+        }
+        for (var key in value) {
+          if (value.hasOwnProperty(key) && typeof value[key] === "string") {
+            return value[key];
+          }
+        }
+        return "";
+      }
+
+      function readLogo(configuredPath) {
+        var candidates = configuredPath ? [configuredPath] : [];
+        candidates.push("entity-logo.png", "entity-logo.jpg", "entity-logo.jpeg");
+        for (var candidateIndex = 0; candidateIndex < candidates.length; candidateIndex++) {
+          var candidate = candidates[candidateIndex];
+          var absolutePath = candidate.charAt(0) === "/" ? candidate : profileDir + "/" + candidate;
+          try {
+            var logoFile = new Packages.java.io.File(absolutePath);
+            if (logoFile.exists() && logoFile.isFile()) {
+              var bytes = Packages.org.apache.commons.io.FileUtils.readFileToByteArray(logoFile);
+              return String(Packages.java.util.Base64.getEncoder().encodeToString(bytes));
+            }
+          } catch (logoError) {
+          }
+        }
+        return "";
+      }
+
+      var resolvedLocale = (locale === "en") ? "en" : "es";
+      var parsed = null;
+      try {
+        var file = new Packages.java.io.File(profileDir + "/entity-profile.json");
+        if (file.exists()) {
+          parsed = JSON.parse(String(Packages.org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8")));
+        }
+      } catch (loadError) {
+        parsed = null;
+      }
+      var source = parsed || {};
+      var codes = source.docControlCodes || fallback.docControlCodes;
+      var logoBase64 = (typeof source.entityLogoBase64 === "string" && source.entityLogoBase64.length > 0)
+        ? source.entityLogoBase64
+        : readLogo(typeof source.entityLogoPath === "string" ? source.entityLogoPath : fallback.entityLogoPath);
+      var mimeType = (typeof source.entityLogoMimeType === "string" && source.entityLogoMimeType.length > 0)
+        ? source.entityLogoMimeType
+        : detectMimeType(logoBase64);
+      return {
+        entityName: resolveLocalized(source.entityName || fallback.entityName, resolvedLocale),
+        entityLogoBase64: logoBase64,
+        entityLogoMimeType: mimeType || "image/jpeg",
+        docControlCodes: {
+          informeFinal: codes.informeFinal || "",
+          planDeInspeccion: codes.planDeInspeccion || "",
+          checklistReport: codes.checklistReport || "",
+          findingReport: codes.findingReport || "",
+          followUpReport: codes.followUpReport || ""
+        },
+        docControlVersion: (typeof source.docControlVersion === "string") ? source.docControlVersion : "",
+        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : ""
+      };
     },
     xmlEscapeDeep: function xmlEscapeDeep(value) {
       if (value === null || value === undefined) {
@@ -1020,6 +1100,7 @@ var INFORME_FINAL_LABELS = {
     codeLabel: "Code",
     versionLabel: "Version",
     docTitle: "FINAL REPORT",
+    docSubtitle: "OPERATIONAL SAFETY OVERSIGHT INSPECTION",
     reportTitleLine1: "FINAL REPORT OF THE OPERATIONAL SAFETY",
     reportTitleLine2: "OVERSIGHT INSPECTION",
     directorateName: "OPERATIONAL SAFETY OVERSIGHT DIRECTORATE",
@@ -1066,6 +1147,7 @@ var INFORME_FINAL_LABELS = {
     codeLabel: "Código",
     versionLabel: "Versión",
     docTitle: "INFORME FINAL",
+    docSubtitle: "INSPECCIÓN DE LA VIGILANCIA DE LA SEGURIDAD OPERACIONAL",
     reportTitleLine1: "INFORME FINAL DE INSPECCIÓN DE LA VIGILANCIA DE LA SEGURIDAD",
     reportTitleLine2: "OPERACIONAL",
     directorateName: "DIRECCIÓN DE VIGILANCIA DE LA SEGURIDAD OPERACIONAL",
@@ -1162,11 +1244,13 @@ try {
   reportData.inspectionType = TemplateGeneration.trimToNull(inputData.inspectionType) || "";
 
   var reportLocale = (TemplateGeneration.trimToNull(inputData.locale) === "en") ? "en" : "es";
-  var entityProfile = TemplateGeneration.loadEntityProfile();
+  var entityProfile = TemplateGeneration.loadEntityProfile(reportLocale);
   reportData.entityName = entityProfile.entityName;
   reportData.entityLogoBase64 = entityProfile.entityLogoBase64;
+  reportData.entityLogoMimeType = entityProfile.entityLogoMimeType;
   reportData.docControlCode = entityProfile.docControlCodes.informeFinal;
   reportData.docControlVersion = entityProfile.docControlVersion;
+  reportData.docControlDate = entityProfile.docControlDate;
   reportData.labels = INFORME_FINAL_LABELS[reportLocale];
 
   // Repository paths are resolved from vso-paths.lib.js only. A caller must not
