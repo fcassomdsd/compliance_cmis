@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "eslint webscripts/ scripts/ --ext .js,.mjs",
     "lint:fix": "eslint webscripts/ scripts/ --ext .js,.mjs --fix",
-    "verify:templates": "node scripts/verify-report-headers.mjs"
+    "verify:templates": "node scripts/verify-report-headers.mjs",
+    "verify:versioning": "node scripts/verify-report-versioning.mjs"
   },
   "devDependencies": {
     "eslint": "^9.36.0"

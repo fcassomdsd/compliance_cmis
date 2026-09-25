@@ -30,6 +30,7 @@ validate:examples:
     - node scripts/verify-endpoints.mjs
     - node scripts/verify-closure-date.mjs
     - node scripts/verify-report-headers.mjs
+    - node scripts/verify-report-versioning.mjs
     - bash scripts/verify-vso-security.sh
     - |
       for script in scripts/*.sh; do

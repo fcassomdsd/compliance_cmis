@@ -381,7 +381,6 @@ function importTemplateGenerationLibrary() {
 
 var VSO_PATHS = resolveVsoPaths();
 var TEMPLATE_PATH = VSO_PATHS.inspectionPlanTemplatePath || "Sites/vigilancia-de-la-so/documentLibrary/Documentos/Formatos/formato plan de inspeccion.fodt";
-var TEMPLATE_DATA_PATH = VSO_PATHS.inspectionPlanTemplateDataPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Template data";
 var INSPECTIONS_PATH = VSO_PATHS.inspectionInProcessPath || "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones";
 var FILE_PREFIX = "Plan de inspeccion - ";
 var FILE_EXTENSION = ".fodt";
@@ -449,10 +448,21 @@ var PLAN_LABELS = {
 importTemplateGenerationLibrary();
 
 function setPropertyIfPresent(node, propertyName, value) {
-  var normalized = TemplateGeneration.trimToNull(value);
-  if (normalized !== null) {
-    node.properties[propertyName] = normalized;
+  if (value === null || value === undefined) {
+    return;
   }
+  if (typeof value === "string") {
+    // Only strings are trimmed. Coercing a Date/typed value to a String here made
+    // Alfresco reject it: a JS Date becomes "Wed Mar 26 2025 00:00:00 GMT-0000 (UTC)"
+    // and properties like vso:startDate are declared as dates.
+    var normalized = value.replace(/^\s+|\s+$/g, "");
+    if (normalized.length === 0) {
+      return;
+    }
+    node.properties[propertyName] = normalized;
+    return;
+  }
+  node.properties[propertyName] = value;
 }
 
 function ensureAspect(node, aspectName) {
@@ -626,57 +636,111 @@ function populateInspectionFolderData(folder, inputData) {
   }
 }
 
-// Files a generated document as a PDF inside its inspection folder.
+// Renders a generated plan into a PDF inside its inspection folder, checking in a new version
+// when the PDF is already there.
 //
-// This step used to be a Share folder rule ("fodt to odt") on the template-data folder. A rule
-// is repository *content*, not code: nothing in this repository installs it, ACS 25.2 exposes no
-// rules API to install one, and a checkout therefore could not reproduce the artifact — a clean
-// clone rendered the .fodt and left it there. The rule's other work (specialising the folder as
-// vso:inspection and populating its inspection context) is already done by
-// ensureInspectionFolder/populateInspectionFolderData above, so this covers the rest.
+// The render's transient .fodt source is created *inside the inspection folder*, not in the
+// "Template data" folder. Template data carries a Share rule that transforms anything written
+// to it (.fodt -> .odt -> .pdf); writing the same .fodt there on a second generation made the
+// rule's .odt output collide with the first run's leftover ("Duplicate child name not allowed:
+// ... .odt"), and the rule's own PDF update rewrote content without creating a version. Rendering
+// here sidesteps that rule entirely and makes regeneration a versioned update, so a plan that was
+// adjusted can be generated again. The inspection folder has no such rule.
 //
-// Where such a rule is still installed it wins the race — it runs as the .fodt is written — and
-// the PDF is already there, so the caller only reaches this when no PDF was filed.
-function fileGeneratedDocumentPdf(sourceNode, inspectionFolder) {
-  if (!sourceNode || !sourceNode.exists()) {
-    TemplateGeneration.fail(500, "Generated source document is gone before it could be filed");
+// One PDF per inspection: the first generation creates it, every later one checks in a new
+// version of the same node.
+// The transform framework creates a temporary sibling node for the source
+// (".<name>.render.bin") and leaks it when the transform fails — re-creating it then
+// collides. Remove anything left under the render prefix before (and after) rendering.
+function removeRenderScratchNodes(folder, scratchPrefix) {
+  var children = folder.children || [];
+  for (var index = 0; index < children.length; index++) {
+    var child = children[index];
+    if (child && String(child.name).indexOf(scratchPrefix) === 0) {
+      try { child.remove(); } catch (cleanupError) { /* best effort */ }
+    }
   }
-  if (!inspectionFolder || !inspectionFolder.exists()) {
+}
+
+function fileRenderedDocumentPdf(renderedContent, inspectionFolder, pdfName, properties, versionComment) {
+  if (!inspectionFolder || !inspectionFolder.exists() || !inspectionFolder.isContainer) {
     TemplateGeneration.fail(500, "Inspection folder not found for the generated plan");
   }
 
-  // `ScriptNode.name` is a *Java* String, and Rhino cannot choose between Java's
-  // replace(char, char) and replace(CharSequence, CharSequence) for a regex argument:
-  // "The choice of Java method java.lang.String.replace matching JavaScript argument types
-  // (function,string) is ambiguous". String(...) makes it a JavaScript string, which is how
-  // the rest of this file already handles node properties.
-  var fileName = String(sourceNode.name).replace(/\.fodt$/, ".pdf");
-  var existingPdf = inspectionFolder.childByNamePath(fileName);
-
-  var transformedPdf = sourceNode.transformDocument("application/pdf");
-  if (!transformedPdf || !transformedPdf.exists()) {
-    TemplateGeneration.fail(500, "PDF transformation failed for document: " + sourceNode.name);
+  var scratchPrefix = "." + String(pdfName).replace(/\.pdf$/i, "") + ".render";
+  var scratchName = scratchPrefix + ".fodt";
+  removeRenderScratchNodes(inspectionFolder, scratchPrefix);
+  var scratchNode = inspectionFolder.createNode(scratchName, "cm:content");
+  if (!scratchNode) {
+    TemplateGeneration.fail(500, "Could not create the plan render document");
   }
 
+  var transformedPdf = null;
+  try {
+    scratchNode.content = renderedContent;
+    scratchNode.mimetype = MIMETYPE;
+    scratchNode.save();
+    transformedPdf = scratchNode.transformDocument("application/pdf");
+  } catch (renderError) {
+    removeRenderScratchNodes(inspectionFolder, scratchPrefix);
+    TemplateGeneration.fail(500, "Plan PDF transformation failed: " + describeError(renderError));
+  }
+
+  if (!transformedPdf || !transformedPdf.exists()) {
+    removeRenderScratchNodes(inspectionFolder, scratchPrefix);
+    TemplateGeneration.fail(500, "PDF transformation failed for document: " + pdfName);
+  }
+
+  var existingPdf = inspectionFolder.childByNamePath(pdfName);
   var pdfNode = null;
+  var isNewVersion = false;
+
   if (existingPdf && existingPdf.isDocument) {
-    // One PDF per inspection: rewrite it rather than adding a copy on every run.
     ensureAspect(existingPdf, "cm:versionable");
-    existingPdf.properties["content"].write(transformedPdf.properties["content"]);
-    existingPdf.save();
-    pdfNode = existingPdf;
+    // A generation that failed mid-flight can leave a working copy behind, and checkout()
+    // cannot start a second one for the same node.
+    var staleWorkingCopy = inspectionFolder.childByNamePath(String(existingPdf.name) + " (Working Copy)");
+    if (staleWorkingCopy) {
+      logger.warn("[inspection-plan] Removing stale working copy before regenerating " + pdfName);
+      staleWorkingCopy.remove();
+    }
+    var workingCopy = existingPdf.checkout();
+    workingCopy.properties["content"].write(transformedPdf.properties["content"]);
+    workingCopy.mimetype = "application/pdf";
+    pdfNode = workingCopy.checkin(versionComment, false);
+    isNewVersion = true;
   } else {
     var copied = transformedPdf.copy(inspectionFolder);
-    pdfNode = inspectionFolder.childByNamePath(fileName) || copied || null;
+    // transformDocument names its output after the source, so the scratch
+    // ".<name>.render.fodt" transforms to ".<name>.render.pdf". Rename the filed copy
+    // to the document's real name; otherwise the next run cannot find it and adds
+    // another "Copy of ..." instead of a version.
+    if (copied && String(copied.name) !== pdfName) {
+      copied.name = pdfName;
+    }
+    pdfNode = copied || inspectionFolder.childByNamePath(pdfName) || null;
+    if (pdfNode) {
+      ensureAspect(pdfNode, "cm:versionable");
+    }
+  }
+
+  if (pdfNode && properties) {
+    for (var propertyName in properties) {
+      if (properties.hasOwnProperty(propertyName)) {
+        setPropertyIfPresent(pdfNode, propertyName, properties[propertyName]);
+      }
+    }
+    pdfNode.save();
   }
 
   transformedPdf.remove();
-  sourceNode.remove();
+  removeRenderScratchNodes(inspectionFolder, scratchPrefix);
 
   if (!pdfNode || !pdfNode.exists()) {
-    TemplateGeneration.fail(500, "The generated PDF was not filed in " + inspectionFolder.name);
+    TemplateGeneration.fail(500, "The generated plan PDF was not filed in " + inspectionFolder.name);
   }
-  return pdfNode;
+
+  return { node: pdfNode, isNewVersion: isNewVersion };
 }
 
 try {
@@ -692,19 +756,12 @@ try {
   // Repository paths are resolved from vso-paths.lib.js only (see the report
   // webscript): request-supplied paths are ignored.
   var templatePath = TEMPLATE_PATH;
-  var destinationPath = TEMPLATE_DATA_PATH;
   var inspectionsPath = INSPECTIONS_PATH;
 
   var templateNode = companyhome.childByNamePath(templatePath);
   if (!templateNode || !templateNode.exists()) {
     logger.error("Template not found at path: " + templatePath);
     TemplateGeneration.fail(500, "Template not found in repository");
-  }
-
-  var templateDataFolder = companyhome.childByNamePath(destinationPath);
-  if (!templateDataFolder || !templateDataFolder.exists()) {
-    logger.error("Destination folder not found at path: " + destinationPath);
-    TemplateGeneration.fail(500, "Destination folder not found");
   }
 
   var inspectionsFolder = companyhome.childByNamePath(inspectionsPath);
@@ -734,16 +791,13 @@ try {
 
   var generatedContent = TemplateGeneration.renderTemplateContent(templateNode, templateRenderData);
   var outputName = FILE_PREFIX + inspectionNo + FILE_EXTENSION;
+  var pdfName = outputName.replace(/\.fodt$/, ".pdf");
 
-  var result = TemplateGeneration.upsertDocument({
-    destinationFolder: templateDataFolder,
-    fileName: outputName,
-    nodeType: "vso:vsoContent",
-    content: generatedContent,
-    mimetype: MIMETYPE,
-    aspects: ["cm:versionable", "vso:inspectionContext"],
-    versionComment: "Update content via script",
-    properties: {
+  var result = fileRenderedDocumentPdf(
+    generatedContent,
+    inspectionFolder,
+    pdfName,
+    {
       "cm:title": inputData.title || "Generated Inspection Plan",
       "cm:description": "Auto-generated on " + new Date().toISOString(),
       "vso:inspectionId": inspectionNo,
@@ -752,26 +806,13 @@ try {
       "vso:locationId": inputData.locationId,
       "vso:locationName": inputData.locationName,
       "vso:inspectionStatus": "Planned"
-    }
-  });
+    },
+    "Update inspection plan via script"
+  );
 
-  var outputFile = result.node;
+  var pdfNode = result.node;
   status.code = result.isNewVersion ? 200 : 201;
 
-  // What this script writes is the .fodt *source*. The folder rule on "Template data"
-  // (scripts/transformInspectionPlan.js) transforms it to PDF, copies that PDF into the
-  // inspection folder named by the document's vso:inspectionId and deletes the source — so
-  // reporting the source's nodeRef, path, version and download URL described a document that
-  // is gone by the time the caller reads the response (and the path pointed at the folder the
-  // source was removed from, which is why a caller could not find the plan it had just
-  // generated). Report the PDF the rule files; when the rule has not run yet, report the
-  // destination it will use, with no version or URL to promise.
-  var pdfName = outputName.replace(/\.fodt$/, ".pdf");
-  var pdfNode = inspectionFolder.childByNamePath(pdfName);
-  if (!pdfNode) {
-    // Nothing filed it — a deployment with no "fodt to odt" rule — so file it here.
-    pdfNode = fileGeneratedDocumentPdf(result.node, inspectionFolder);
-  }
   // `displayPath` is the parent path (Alfresco's ScriptNode convention — see the same
   // `displayPath + "/" + name` in scripts/transformInspectionPlan.js), so the folder's own
   // name has to be appended.
