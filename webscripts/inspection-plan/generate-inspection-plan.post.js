@@ -113,7 +113,14 @@ function importTemplateGenerationLibrary() {
           followUpReport: ""
         },
         docControlVersion: "",
-        docControlDate: ""
+        docControlDate: "",
+        signatures: {
+          planApprovedBy: { es: "", en: "" },
+          planApprovedByPosition: { es: "", en: "" },
+          reportApprovedBy: { es: "", en: "" },
+          reportApprovedByPosition: { es: "", en: "" }
+        },
+        signatureDate: ""
       };
       var profileDir = "/usr/local/tomcat/shared/classes/alfresco/extension";
 
@@ -184,6 +191,7 @@ function importTemplateGenerationLibrary() {
       }
       var source = parsed || {};
       var codes = source.docControlCodes || fallback.docControlCodes;
+      var signatureSource = source.signatures || fallback.signatures;
       var logoBase64 = (typeof source.entityLogoBase64 === "string" && source.entityLogoBase64.length > 0)
         ? source.entityLogoBase64
         : readLogo(typeof source.entityLogoPath === "string" ? source.entityLogoPath : fallback.entityLogoPath);
@@ -202,7 +210,14 @@ function importTemplateGenerationLibrary() {
           followUpReport: codes.followUpReport || ""
         },
         docControlVersion: (typeof source.docControlVersion === "string") ? source.docControlVersion : "",
-        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : ""
+        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : "",
+        signatures: {
+          planApprovedBy: resolveLocalized(signatureSource.planApprovedBy, resolvedLocale),
+          planApprovedByPosition: resolveLocalized(signatureSource.planApprovedByPosition, resolvedLocale),
+          reportApprovedBy: resolveLocalized(signatureSource.reportApprovedBy, resolvedLocale),
+          reportApprovedByPosition: resolveLocalized(signatureSource.reportApprovedByPosition, resolvedLocale)
+        },
+        signatureDate: (typeof source.signatureDate === "string") ? source.signatureDate : ""
       };
     },
     xmlEscapeDeep: function xmlEscapeDeep(value) {
@@ -781,6 +796,15 @@ try {
   inputData.docControlCode = planEntityProfile.docControlCodes.planDeInspeccion;
   inputData.docControlVersion = planEntityProfile.docControlVersion;
   inputData.docControlDate = planEntityProfile.docControlDate;
+  // Signature block: the caller may supply an approver per inspection (the flow
+  // defaults it to the planner who defined the site visit); the deployment profile
+  // is the fallback. Anything still unset renders blank.
+  inputData.planApprovedBy =
+    TemplateGeneration.trimToNull(inputData.approvedBy) || planEntityProfile.signatures.planApprovedBy || "";
+  inputData.planApprovedByPosition =
+    TemplateGeneration.trimToNull(inputData.approvedByPosition) || planEntityProfile.signatures.planApprovedByPosition || "";
+  inputData.signatureDate =
+    TemplateGeneration.trimToNull(inputData.signatureDate) || planEntityProfile.signatureDate || new Date().toISOString().slice(0, 10);
   inputData.labels = PLAN_LABELS[planLocale];
   // The template iterates "[#list providers as provider]" (plural), but callers
   // only ever send a single "provider" object (this endpoint is scoped to one

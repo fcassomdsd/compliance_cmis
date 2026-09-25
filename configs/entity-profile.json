@@ -17,5 +17,14 @@
   "_comment_docControlVersion": "Optional revision/version string shown next to the 'Version' label. Blank by default.",
   "docControlVersion": "",
   "_comment_docControlDate": "Optional date shown in the header (for example a form approval or revision date). Blank by default; the cell renders empty when unset.",
-  "docControlDate": ""
+  "docControlDate": "",
+  "_comment_signatures": "Optional signatory identity for the plan/report body signature blocks. All values are blank by default; a request may supply approvedBy / approvedByPosition / signatureDate per inspection. The plan generation flow defaults approvedBy to the planner who defined the site visit, so this block is only a fallback.",
+  "signatures": {
+    "planApprovedBy": { "es": "", "en": "" },
+    "planApprovedByPosition": { "es": "", "en": "" },
+    "reportApprovedBy": { "es": "", "en": "" },
+    "reportApprovedByPosition": { "es": "", "en": "" }
+  },
+  "_comment_signatureDate": "Optional signature date (ISO YYYY-MM-DD) for the plan signature block. Blank by default; the generation date is used when unset.",
+  "signatureDate": ""
 }

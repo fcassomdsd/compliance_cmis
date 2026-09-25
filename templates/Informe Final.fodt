@@ -1465,7 +1465,7 @@
       <text:p text:style-name="Informe_20_tabla_20_texto"/>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B1" office:value-type="string">
-      <text:p text:style-name="P14">Agustín José De Los Santos</text:p>
+      <text:p text:style-name="P14">${reportApprovedBy}</text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table3.3">
@@ -1476,7 +1476,7 @@
       <text:p text:style-name="Informe_20_tabla_20_texto"/>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.A1" office:value-type="string">
-      <text:p text:style-name="P15"><text:span text:style-name="T5">${labels.divisionHeadTitle}</text:span></text:p>
+      <text:p text:style-name="P15"><text:span text:style-name="T5">${reportApprovedByPosition}</text:span></text:p>
      </table:table-cell>
     </table:table-row>
    </table:table>
