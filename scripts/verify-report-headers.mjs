@@ -56,6 +56,22 @@ const FORBIDDEN_HEADER_LITERALS = [
   "08/07/2023",
 ];
 
+// The body signature block: the plan's approver/position/date and the report's
+// approver/position must be placeholders, not a baked-in signatory name, an IDAC
+// job title, or a fixed date.
+const BODY_SIGNATURE_PLACEHOLDERS = {
+  "formato plan de inspeccion.fodt": ["planApprovedBy", "planApprovedByPosition", "signatureDate"],
+  "Informe Final.fodt": ["reportApprovedBy", "reportApprovedByPosition"],
+};
+
+const FORBIDDEN_BODY_LITERALS = [
+  "Ernesto de la Cruz",
+  "Agustín José De Los Santos",
+  "SNA/AGA",
+  "Vigilancia SNA",
+  "7 de marzo de 2026",
+];
+
 const failures = [];
 
 function fail(message) {
@@ -128,6 +144,17 @@ for (const template of TEMPLATES) {
   if (headers.length > 0 && !/style:page-layout/.test(fodt)) {
     fail(`${template}: header exists but no page layout is defined`);
   }
+
+  for (const placeholder of BODY_SIGNATURE_PLACEHOLDERS[template] || []) {
+    if (!fodt.includes("${" + placeholder + "}")) {
+      fail(`${template}: body signature is missing the ${placeholder} placeholder`);
+    }
+  }
+  for (const literal of FORBIDDEN_BODY_LITERALS) {
+    if (fodt.includes(literal)) {
+      fail(`${template}: contains the baked-in body literal "${literal}"`);
+    }
+  }
 }
 
 // The deployment-level profile must ship generic, blank defaults.
@@ -164,9 +191,20 @@ if (!fs.existsSync(CONFIG_PATH)) {
         fail(`entity-profile.json: docControlCodes.${key} is missing`);
       }
     }
-    for (const key of ["docControlVersion", "docControlDate"]) {
+    for (const key of ["docControlVersion", "docControlDate", "signatureDate"]) {
       if (typeof profile[key] !== "string") {
         fail(`entity-profile.json: ${key} must be a string`);
+      }
+    }
+
+    if (typeof profile.signatures !== "object" || profile.signatures === null) {
+      fail("entity-profile.json: signatures must be an object of locale-keyed blanks");
+    } else {
+      for (const key of ["planApprovedBy", "planApprovedByPosition", "reportApprovedBy", "reportApprovedByPosition"]) {
+        const value = profile.signatures[key];
+        if (typeof value !== "object" || value === null) {
+          fail(`entity-profile.json: signatures.${key} must be locale-keyed (an object)`);
+        }
       }
     }
   }

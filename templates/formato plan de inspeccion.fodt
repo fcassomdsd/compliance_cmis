@@ -879,7 +879,7 @@
       <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.preparedByLabel}</text:span>${mainInspector}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B1" office:value-type="string">
-      <text:p text:style-name="P18">${labels.approvedByLabel}<text:span text:style-name="T15"> </text:span><text:span text:style-name="T16">Ernesto de la Cruz</text:span></text:p>
+      <text:p text:style-name="P18">${labels.approvedByLabel}<text:span text:style-name="T15"> </text:span><text:span text:style-name="T16">${planApprovedBy}</text:span></text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row>
@@ -887,15 +887,15 @@
       <text:p text:style-name="Table_20_Contents"><text:span text:style-name="T14">${labels.positionLabel}</text:span> ${labels.leadSpecialistPositionText}${inspectionNo}</text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B2" office:value-type="string">
-      <text:p text:style-name="P18">${labels.positionLabel} <text:span text:style-name="T16">Enc. Departamento de Control de </text:span><text:span text:style-name="T16">Vigilancia SNA/AGA</text:span></text:p>
+      <text:p text:style-name="P18">${labels.positionLabel} <text:span text:style-name="T16">${planApprovedByPosition}</text:span></text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table3.3">
      <table:table-cell table:style-name="Table3.A2" office:value-type="string">
-      <text:p text:style-name="P18">${labels.dateLabel} <text:span text:style-name="T15"><text:date style:data-style-name="N41" text:date-value="2026-03-07T14:45:39.188786339">7 de marzo de 2026</text:date></text:span></text:p>
+      <text:p text:style-name="P18">${labels.dateLabel} <text:span text:style-name="T15">${signatureDate}</text:span></text:p>
      </table:table-cell>
      <table:table-cell table:style-name="Table3.B2" office:value-type="string">
-      <text:p text:style-name="P18">${labels.dateLabel} <text:span text:style-name="T15"><text:date style:data-style-name="N41" text:date-value="2026-03-07T14:45:39.189136493">7 de marzo de 2026</text:date></text:span><text:span text:style-name="T15"><text:s/></text:span></text:p>
+      <text:p text:style-name="P18">${labels.dateLabel} <text:span text:style-name="T15">${signatureDate}</text:span><text:span text:style-name="T15"><text:s/></text:span></text:p>
      </table:table-cell>
     </table:table-row>
     <table:table-row table:style-name="Table3.4">

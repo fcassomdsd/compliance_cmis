@@ -113,7 +113,14 @@ function importTemplateGenerationLibrary() {
           followUpReport: ""
         },
         docControlVersion: "",
-        docControlDate: ""
+        docControlDate: "",
+        signatures: {
+          planApprovedBy: { es: "", en: "" },
+          planApprovedByPosition: { es: "", en: "" },
+          reportApprovedBy: { es: "", en: "" },
+          reportApprovedByPosition: { es: "", en: "" }
+        },
+        signatureDate: ""
       };
       var profileDir = "/usr/local/tomcat/shared/classes/alfresco/extension";
 
@@ -184,6 +191,7 @@ function importTemplateGenerationLibrary() {
       }
       var source = parsed || {};
       var codes = source.docControlCodes || fallback.docControlCodes;
+      var signatureSource = source.signatures || fallback.signatures;
       var logoBase64 = (typeof source.entityLogoBase64 === "string" && source.entityLogoBase64.length > 0)
         ? source.entityLogoBase64
         : readLogo(typeof source.entityLogoPath === "string" ? source.entityLogoPath : fallback.entityLogoPath);
@@ -202,7 +210,14 @@ function importTemplateGenerationLibrary() {
           followUpReport: codes.followUpReport || ""
         },
         docControlVersion: (typeof source.docControlVersion === "string") ? source.docControlVersion : "",
-        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : ""
+        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : "",
+        signatures: {
+          planApprovedBy: resolveLocalized(signatureSource.planApprovedBy, resolvedLocale),
+          planApprovedByPosition: resolveLocalized(signatureSource.planApprovedByPosition, resolvedLocale),
+          reportApprovedBy: resolveLocalized(signatureSource.reportApprovedBy, resolvedLocale),
+          reportApprovedByPosition: resolveLocalized(signatureSource.reportApprovedByPosition, resolvedLocale)
+        },
+        signatureDate: (typeof source.signatureDate === "string") ? source.signatureDate : ""
       };
     },
     xmlEscapeDeep: function xmlEscapeDeep(value) {
@@ -1207,7 +1222,6 @@ var INFORME_FINAL_LABELS = {
     reviewedByLabel: "Reviewed by:",
     approvedByLabel: "Approved by:",
     leadInspectorTitle: "Lead Inspector",
-    divisionHeadTitle: "Head, SNA Oversight Division",
     performedOnDateLabelLine1: "PERFORMED ON",
     performedOnDateLabelLine2: "THE DATE OF ",
     inspectionNoLabel: "INSPECTION NO. ",
@@ -1254,7 +1268,6 @@ var INFORME_FINAL_LABELS = {
     reviewedByLabel: "Revisado por:",
     approvedByLabel: "Aprobado por:",
     leadInspectorTitle: "Inspector Principal",
-    divisionHeadTitle: "Encargado División de Vigilancia SNA",
     performedOnDateLabelLine1: "REALIZADO EN FECHA",
     performedOnDateLabelLine2: "DEL ",
     inspectionNoLabel: "INSPECCIÓN NO. ",
@@ -1330,6 +1343,12 @@ try {
   reportData.docControlCode = entityProfile.docControlCodes.informeFinal;
   reportData.docControlVersion = entityProfile.docControlVersion;
   reportData.docControlDate = entityProfile.docControlDate;
+  // Signature block: the caller may supply an approver per inspection; the
+  // deployment profile is the fallback. Anything still unset renders blank.
+  reportData.reportApprovedBy =
+    TemplateGeneration.trimToNull(inputData.approvedBy) || entityProfile.signatures.reportApprovedBy || "";
+  reportData.reportApprovedByPosition =
+    TemplateGeneration.trimToNull(inputData.approvedByPosition) || entityProfile.signatures.reportApprovedByPosition || "";
   reportData.labels = INFORME_FINAL_LABELS[reportLocale];
 
   // Repository paths are resolved from vso-paths.lib.js only. A caller must not

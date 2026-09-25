@@ -394,7 +394,14 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
         followUpReport: ""
       },
       docControlVersion: "",
-      docControlDate: ""
+      docControlDate: "",
+      signatures: {
+        planApprovedBy: { es: "", en: "" },
+        planApprovedByPosition: { es: "", en: "" },
+        reportApprovedBy: { es: "", en: "" },
+        reportApprovedByPosition: { es: "", en: "" }
+      },
+      signatureDate: ""
     };
 
     // entityName is locale-keyed so one profile serves both shipping locales.
@@ -481,6 +488,7 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
 
       var source = parsed || {};
       var codes = source.docControlCodes || ENTITY_PROFILE_FALLBACK.docControlCodes;
+      var signatureSource = source.signatures || ENTITY_PROFILE_FALLBACK.signatures;
       var logoBase64 = "";
       if (typeof source.entityLogoBase64 === "string" && source.entityLogoBase64.length > 0) {
         logoBase64 = source.entityLogoBase64;
@@ -505,7 +513,14 @@ if (typeof TemplateGeneration === "undefined" || !TemplateGeneration) {
           followUpReport: codes.followUpReport || ""
         },
         docControlVersion: (typeof source.docControlVersion === "string") ? source.docControlVersion : "",
-        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : ""
+        docControlDate: (typeof source.docControlDate === "string") ? source.docControlDate : "",
+        signatures: {
+          planApprovedBy: resolveLocalizedValue(signatureSource.planApprovedBy, resolvedLocale),
+          planApprovedByPosition: resolveLocalizedValue(signatureSource.planApprovedByPosition, resolvedLocale),
+          reportApprovedBy: resolveLocalizedValue(signatureSource.reportApprovedBy, resolvedLocale),
+          reportApprovedByPosition: resolveLocalizedValue(signatureSource.reportApprovedByPosition, resolvedLocale)
+        },
+        signatureDate: (typeof source.signatureDate === "string") ? source.signatureDate : ""
       };
     }
 

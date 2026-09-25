@@ -166,10 +166,11 @@ for template in "${TEMPLATES[@]}"; do
   fi
   if [[ -n "${existing_template}" ]]; then
     # Replace the content of the node that is already there. POST to .../children
-    # would 409 on the duplicate name.
+    # would 409 on the duplicate name, and PUT /content takes the raw bytes (a
+    # multipart form is rejected with 415 "Cannot update using multipart/form-data").
     updated="$(curl -s -m 120 "${AUTH[@]}" -X PUT "${API}/nodes/${existing_template}/content?majorVersion=false" \
-      -F "filedata=@${source_file};type=application/vnd.oasis.opendocument.text" \
-      -F "name=${template}")"
+      -H "Content-Type: application/vnd.oasis.opendocument.text" \
+      --data-binary "@${source_file}")"
     [[ -n "$(printf '%s' "${updated}" | json_field 'd.entry && d.entry.id')" ]] \
       || fail "could not update ${template}: $(printf '%s' "${updated}" | head -c 200)"
     say "Documentos/Formatos/${template} updated"

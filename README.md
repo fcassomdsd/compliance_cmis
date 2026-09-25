@@ -182,6 +182,8 @@ Header identity lives in deployment-level config, independent of the request's `
 
 Because template *content* changes do not replace templates already filed in Alfresco, re-run `scripts/bootstrap-site-content.sh --yes --force` after editing `templates/` on an instance that was bootstrapped before (plain `--yes` still only uploads what is missing).
 
+**Body signature blocks** are parameterized the same way. `Informe Final.fodt` previously hardcoded a signatory name and `formato plan de inspeccion.fodt` hardcoded a signatory name, an IDAC job title (`Enc. Departamento de Control de Vigilancia SNA/AGA`), and two fixed dates; those are now `${reportApprovedBy}` / `${reportApprovedByPosition}` in the report, and `${planApprovedBy}` / `${planApprovedByPosition}` / `${signatureDate}` in the plan. Both endpoints accept `approvedBy`, `approvedByPosition`, and (plan only) `signatureDate` in the request payload, so an approver can be named per inspection; when absent they fall back to `configs/entity-profile.json`'s `signatures` block (locale-keyed, blank by default), and a blank `signatureDate` falls back to the generation date. `verify-report-headers.mjs` also fails if the old literals reappear in any template body. The `compliance_flow` plan flow supplies `approvedBy` from the planner who defined the site visit, so the common case needs no caller change.
+
 Both report webscripts escape `labels`/`reportData` with `xmlEscapeDeep()` (see "resolveVsoPaths() consistency" in `CONTRIBUTING.md` — the same shared/local-copy pattern now applies to this helper too) before substitution, since the underlying renderer does plain string substitution with no escaping of its own.
 
 ## Checklist/finding/follow-up documents are rendered PDFs, not JSON
