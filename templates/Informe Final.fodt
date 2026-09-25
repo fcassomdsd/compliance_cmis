@@ -1236,7 +1236,7 @@
    <text:p text:style-name="Informe_20_tabla_20_texto"><draw:frame draw:style-name="fr2" draw:name="Imagen 1" text:anchor-type="char" svg:y="0.2in" svg:width="4.6874in" svg:height="2.5626in" draw:z-index="9"><draw:image draw:mime-type="image/jpeg">
       <office:binary-data>${entityLogoBase64}</office:binary-data>
      </draw:image>
-     <svg:desc>logo final idac copy</svg:desc>
+     <svg:desc>${entityName}</svg:desc>
     </draw:frame></text:p>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
    <text:p text:style-name="Informe_20_tabla_20_texto"/>
