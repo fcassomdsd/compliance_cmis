@@ -67,21 +67,31 @@ services:
       - "traefik.http.middlewares.accchain.chain.middlewares=accforceslash,accroot"
       - "traefik.http.routers.acc.middlewares=accchain@docker"
   proxy:
-    image: traefik:3.6
+    image: traefik:3.6@sha256:802adc80a7bb20a6766c9385c2ad547f0de98564cd20d31d0b6d8f726f906f66
     mem_limit: 128m
     command:
-      - "--api.insecure=true"
+      # The API/dashboard is NOT exposed. It was previously served with
+      # --api.insecure=true on its own entrypoint, published to the host on
+      # 8888 with no authentication in front of it, while this same container
+      # mounts the Docker socket. Anyone who could reach the host could read
+      # the full routing table of the stack. --api.dashboard is left off
+      # entirely rather than bound to localhost: nothing in this platform
+      # consumes it, so the safe configuration is the absent one.
       - "--providers.docker=true"
       - "--entrypoints.web.address=:8080"
       - "--entrypoints.web.transport.respondingTimeouts.readTimeout=20m"
-      - "--entryPoints.traefik.address=:8888"
       - "--accesslog=true"
       - "--providers.docker.exposedByDefault=false"
+      # --ping serves /ping on the web entrypoint, which is what the
+      # healthcheck below calls. It needs no API and no second entrypoint.
       - "--ping.entrypoint=web"
       - "--ping=true"
     ports:
+      # 8888 (the dashboard entrypoint) is deliberately no longer published.
+      # 8080 is the stack's HTTP entrypoint and is what the demo, the runbook
+      # and every smoke probe use; P3.3 moves it behind the TLS edge and
+      # resolves its collision with compliance_web's prod profile.
       - "8080:8080"
-      - "8888:8888"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 20s

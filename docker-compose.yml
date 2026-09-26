@@ -13,7 +13,7 @@
 #
 services:
   alfresco:
-    image: alfresco/alfresco-governance-repository-community:25.2.0
+    image: alfresco/alfresco-governance-repository-community:25.2.0@sha256:a795f678d79da93c0988927e36d26d087b1b6bd009465d4a647a8f13e5eb9198
     # 1900m left ~145m of headroom above the JVM's 80%-of-limit heap ceiling, and
     # FOOTPRINT_AUDIT.md (2026-09-15) measured it idling at 1.759-1.799 GiB of that
     # 1.855 GiB cap -- already 95-97% utilized before any real load. Raised so plan/
@@ -83,7 +83,7 @@ services:
       - backend_net
 
   transform-core-aio:
-    image: alfresco/alfresco-transform-core-aio:5.2.0
+    image: alfresco/alfresco-transform-core-aio:5.2.0@sha256:694810dd0a9ab91abdb700419dac84dcead2d8c15c5646102bc6e140897c607f
     mem_limit: 1536m
     environment:
       JAVA_OPTS: >-
@@ -105,7 +105,7 @@ services:
       - alfresco_net
 
   share:
-    image: alfresco/alfresco-governance-share-community:25.2.0
+    image: alfresco/alfresco-governance-share-community:25.2.0@sha256:0c36b2f91b1e272a47d579a0213e49c1ede4bd0c42c5f3b9b0c4ec1285f7bfff
     mem_limit: 1g
     environment:
       CSRF_FILTER_ORIGIN: http://localhost:8080
@@ -137,7 +137,7 @@ services:
       - alfresco_net
 
   postgres:
-    image: postgres:${POSTGRES_TAG:-16.5}
+    image: postgres:${POSTGRES_TAG:-16.5}@${POSTGRES_DIGEST:-sha256:53f3e608f9475ce120ced2d0f430b89458d7faa28530e0b0977a6af64d294877}
     mem_limit: 512m
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required. Copy .env.example to .env and set it}
@@ -158,7 +158,7 @@ services:
       - alfresco_net
 
   solr6:
-    image: alfresco/alfresco-search-services:2.0.16
+    image: alfresco/alfresco-search-services:2.0.16@sha256:107c08ad87b69812c57bff64e718c859e2d4713acf293b9af2fcb1cf92a7d7b3
     mem_limit: 2g
     environment:
       # Solr needs to know how to register itself with Alfresco
@@ -180,7 +180,7 @@ services:
       - alfresco_net
 
   activemq:
-    image: alfresco/alfresco-activemq:5.18-jre17-rockylinux8
+    image: alfresco/alfresco-activemq:5.18-jre17-rockylinux8@sha256:ecc4769fb9eb9bd064da24eb3a722975f3ac7b4ffc35dfb178199f5181051941
     mem_limit: 1g
     ports:
       - "8161:8161" # Web Console
