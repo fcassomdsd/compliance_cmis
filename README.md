@@ -127,7 +127,7 @@ that section is `atrocore-docker/scripts/demo-quickstart.sh`.
 
 ### Secrets management
 
-All sensitive credentials (database passwords, keystore secrets, Solr shared secrets) are configured via environment variables in `.env` with development-only defaults. For any non-local deployment:
+All sensitive credentials (database passwords, keystore secrets, Solr shared secrets) are configured via environment variables in `.env`. **There are no longer any defaults** — `docker compose` refuses to start when `DB_PASSWORD`, `SOLR_SECRET`, `METADATA_KEYSTORE_PASSWORD` or `METADATA_KEYSTORE_METADATA_PASSWORD` is unset, naming the missing variable. Previously each fell back to the value committed in `.env.example`, so an operator who skipped the copy step got a running stack with a database password of `alfresco` and a Solr shared secret of `secret`, with nothing to indicate it. For any non-local deployment:
 
 1. Copy `.env.example` to `.env`: `cp .env.example .env`
 2. Change all values marked with "CHANGE THESE for any non-local deployment"

@@ -26,20 +26,20 @@ services:
         -Dencryption.cipherAlgorithm=DESede/CBC/PKCS5Padding
         -Dencryption.keyAlgorithm=DESede
         -Dencryption.keystore.location=/usr/local/tomcat/shared/classes/alfresco/extension/keystore/keystore
-        -Dmetadata-keystore.password=${METADATA_KEYSTORE_PASSWORD:-mp6yc0UD9e}
+        -Dmetadata-keystore.password=${METADATA_KEYSTORE_PASSWORD:?METADATA_KEYSTORE_PASSWORD is required. Copy .env.example to .env and set it. Changing it on an existing instance makes stored metadata undecryptable.}
         -Dmetadata-keystore.aliases=metadata
-        -Dmetadata-keystore.metadata.password=${METADATA_KEYSTORE_METADATA_PASSWORD:-oKIWzVdEdA}
+        -Dmetadata-keystore.metadata.password=${METADATA_KEYSTORE_METADATA_PASSWORD:?METADATA_KEYSTORE_METADATA_PASSWORD is required. Copy .env.example to .env and set it. Changing it on an existing instance makes stored metadata undecryptable.}
         -Dmetadata-keystore.metadata.algorithm=DESede
       JAVA_OPTS: >-
         -Ddb.driver=org.postgresql.Driver
         -Ddb.username=alfresco
-        -Ddb.password=${DB_PASSWORD:-alfresco}
+        -Ddb.password=${DB_PASSWORD:?DB_PASSWORD is required. Copy .env.example to .env and set it}
         -Ddb.url=jdbc:postgresql://postgres:5432/alfresco
         -Dsolr.host=solr6
         -Dsolr.port=8983
         -Dsolr.http.connection.timeout=1000
         -Dsolr.secureComms=secret
-        -Dsolr.sharedSecret=${SOLR_SECRET:-secret}
+        -Dsolr.sharedSecret=${SOLR_SECRET:?SOLR_SECRET is required. Copy .env.example to .env and set it. It must match on the alfresco and solr6 services}
         -Dsolr.base.url=/solr
         -Dindex.subsystem.name=solr6
         -Dshare.host=localhost
@@ -140,7 +140,7 @@ services:
     image: postgres:${POSTGRES_TAG:-16.5}
     mem_limit: 512m
     environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-alfresco}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required. Copy .env.example to .env and set it}
       - POSTGRES_USER=alfresco
       - POSTGRES_DB=alfresco
     command: postgres -c max_connections=300 -c log_min_messages=LOG
@@ -173,7 +173,7 @@ services:
       ALFRESCO_SECURE_COMMS: "secret"
       # SHARED SECRET VALUE
       JAVA_TOOL_OPTIONS: >-
-        -Dalfresco.secureComms.secret=${SOLR_SECRET:-secret}
+        -Dalfresco.secureComms.secret=${SOLR_SECRET:?SOLR_SECRET is required. Copy .env.example to .env and set it. It must match on the alfresco and solr6 services}
     ports:
       - "8083:8983" # Browser port
     networks:

@@ -6,6 +6,10 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Changed
+
+- **`docker compose` no longer falls back to a weak default for any of the four Alfresco secrets — P3.1 (production secrets).** `DB_PASSWORD`, `SOLR_SECRET`, `METADATA_KEYSTORE_PASSWORD` and `METADATA_KEYSTORE_METADATA_PASSWORD` used `${VAR:-<value>}`, and the fallback values were exactly the ones committed in `.env.example`. An operator who never ran `cp .env.example .env` therefore got a fully working stack with a database password of `alfresco` and a Solr shared secret of `secret`, with nothing anywhere indicating that the "configure your secrets" step had been skipped — the failure mode of forgetting was a silently insecure deployment rather than an error. All six references now use `${VAR:?<message>}`, so compose stops with the variable named and instructions to fix it. `.env.example` states plainly that its four values are public, and warns that the two keystore passwords cannot be rotated on an instance that already holds data without making that data undecryptable. **The demo is unchanged**: it already copies `.env.example` to `.env` (as does `demo-verify-ci.sh` for the sibling repos), and `docker compose --env-file .env.example config` resolves to byte-identical values to before.
+
 ### Added
 
 - **`POST /api/providers/provider-history-report` accepts an optional comma-separated `specialtyCode` filter.** `compliance_web` serves this report to a specialty-scoped session (a user who may only act on their own specialties), and the filter is pushed into every artifact query — findings, corrective actions, follow-up reports, checklist items and evidence all carry `vso:specialtyCode` through the shared `vso:serviceContext` aspect — rather than applied to the artifact list afterwards. That matters because the report's `summary` and `byInspection` counts are computed from the artifacts: filtering the list in the caller would leave counts describing records the caller may not see. Same idiom the CE-evidence report already uses. Omitting the parameter returns the whole report, unchanged.
