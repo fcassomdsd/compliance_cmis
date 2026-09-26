@@ -6,6 +6,31 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Security
+
+- **Container hardening — P3.2.** No service in this platform previously declared a resource limit, a non-root user, a read-only root filesystem, dropped capabilities or `no-new-privileges`. What each service can take differs, and the differences are recorded as comments in the compose files rather than silently skipped:
+
+  - **Full hardening** (read-only rootfs, non-root user, `cap_drop: ALL`, `no-new-privileges`, CPU/memory limits) where the service writes nothing to its own filesystem. Verified by booting each one, not just by rendering the config.
+  - **Partial, with the reason stated in-file**, where a control is structurally inapplicable rather than merely postponed: Postgres chowns its data directory and drops privileges at startup, so `cap_drop: ALL` and a read-only rootfs break it; Node-RED must write `flows.json` into a bind mount, which is its deployment model; AtroCore installs itself into a bind mount at first run and Apache binds `:80` as root; the Alfresco JVM services write caches, logs and indexes inside their own filesystems.
+
+### Added
+
+- **Supply-chain scanning in CI — P3.2.** No repository in this platform had any security scanning before this. A new `security:scan` job (GitLab, mirrored to GitHub Actions) runs Trivy over the dependency tree and produces a CycloneDX SBOM as an artifact.
+
+  The gate policy was chosen from measurement, not aspiration. **CRITICAL is blocking**: measured at zero across all six repos, so the gate is green today and genuinely stops a regression rather than being red on arrival. **HIGH is reported but not blocking**: 33 findings exist today (21 in `compliance_web`, 12 in `compliance_checklist`), every one with a fix available. Blocking on HIGH immediately would red those pipelines and the gate would be switched off within a day — which is worse than no gate, because a disabled gate still reads as protection. Clear the backlog, then raise the bar.
+
+  `--ignore-unfixed` keeps the gate actionable: a CVE with no available fix is information, not a task. `--skip-dirs` excludes generated and bind-mounted runtime trees — `web-data/` in particular is the AtroCore application installed at container bootstrap, gitignored and absent from a fresh checkout, which vendors its own npm tree; scanning it reports upstream's dependencies as if they were ours. It is not clean (upstream vendors a CRITICAL prototype-pollution advisory in `swiper`), but that belongs in an upstream report and in image scanning, not a gate on tracked source.
+
+### Security
+
+- **The Traefik proxy no longer serves an unauthenticated dashboard to the host — P3.2 (container hardening).** `commons/base.yaml` ran `traefik:3.6` with `--api.insecure=true` on a dedicated entrypoint published as `8888:8888`, in a container that also mounts `/var/run/docker.sock`. Anyone who could reach the host could read the stack's full routing table, with no credential. `--api.insecure` is gone, the second entrypoint is gone, and `8888` is no longer published. The dashboard is not bound to localhost either — nothing in this platform consumes it, so the safe configuration is the absent one. `--ping` stays, because the compose healthcheck calls it; verified that the hardened flag set starts and that `traefik healthcheck --ping` still returns `OK: http://:8080/ping`. Port `8080` is unchanged and remains the stack's HTTP entrypoint; moving it behind a TLS edge, and resolving its collision with `compliance_web`'s `prod` profile, is P3.3.
+
+### Changed
+
+- **Every image is now pinned by digest as well as tag.** A tag is a mutable pointer — upstream can re-push `25.2.0` or `16.5` at any time — so a tag-only pin does not describe a reproducible stack, and two installs a month apart could differ with nothing in git changing. All six images in `docker-compose.yml` plus the proxy in `commons/base.yaml` now use `name:tag@sha256:...`, keeping the tag beside the digest so the version stays readable.
+
+- **`.env.example` no longer advertises five variables the compose file never read.** `ALFRESCO_CE_TAG`, `SEARCH_CE_TAG`, `SHARE_TAG`, `TRANSFORM_ENGINE_TAG` and `ACTIVEMQ_TAG` were documented here and hardcoded in the compose file, so editing them looked like it changed the stack and did nothing. They are removed rather than wired up: with digests in play a version is two values that must agree, and splitting that pair across a `.env` invites a mismatch that surfaces only as a confusing pull. `POSTGRES_TAG` — the one that genuinely was consumed — stays, now with a matching `POSTGRES_DIGEST`; override both or neither.
+
 ### Changed
 
 - **`docker compose` no longer falls back to a weak default for any of the four Alfresco secrets — P3.1 (production secrets).** `DB_PASSWORD`, `SOLR_SECRET`, `METADATA_KEYSTORE_PASSWORD` and `METADATA_KEYSTORE_METADATA_PASSWORD` used `${VAR:-<value>}`, and the fallback values were exactly the ones committed in `.env.example`. An operator who never ran `cp .env.example .env` therefore got a fully working stack with a database password of `alfresco` and a Solr shared secret of `secret`, with nothing anywhere indicating that the "configure your secrets" step had been skipped — the failure mode of forgetting was a silently insecure deployment rather than an error. All six references now use `${VAR:?<message>}`, so compose stops with the variable named and instructions to fix it. `.env.example` states plainly that its four values are public, and warns that the two keystore passwords cannot be rotated on an instance that already holds data without making that data undecryptable. **The demo is unchanged**: it already copies `.env.example` to `.env` (as does `demo-verify-ci.sh` for the sibling repos), and `docker compose --env-file .env.example config` resolves to byte-identical values to before.
