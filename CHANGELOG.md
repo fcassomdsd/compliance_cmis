@@ -6,6 +6,14 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Added
+
+- **Supply-chain scanning in CI — P3.2.** No repository in this platform had any security scanning before this. A new `security:scan` job (GitLab, mirrored to GitHub Actions) runs Trivy over the dependency tree and produces a CycloneDX SBOM as an artifact.
+
+  The gate policy was chosen from measurement, not aspiration. **CRITICAL is blocking**: measured at zero across all six repos, so the gate is green today and genuinely stops a regression rather than being red on arrival. **HIGH is reported but not blocking**: 33 findings exist today (21 in `compliance_web`, 12 in `compliance_checklist`), every one with a fix available. Blocking on HIGH immediately would red those pipelines and the gate would be switched off within a day — which is worse than no gate, because a disabled gate still reads as protection. Clear the backlog, then raise the bar.
+
+  `--ignore-unfixed` keeps the gate actionable: a CVE with no available fix is information, not a task. `--skip-dirs` excludes generated and bind-mounted runtime trees — `web-data/` in particular is the AtroCore application installed at container bootstrap, gitignored and absent from a fresh checkout, which vendors its own npm tree; scanning it reports upstream's dependencies as if they were ours. It is not clean (upstream vendors a CRITICAL prototype-pollution advisory in `swiper`), but that belongs in an upstream report and in image scanning, not a gate on tracked source.
+
 ### Security
 
 - **The Traefik proxy no longer serves an unauthenticated dashboard to the host — P3.2 (container hardening).** `commons/base.yaml` ran `traefik:3.6` with `--api.insecure=true` on a dedicated entrypoint published as `8888:8888`, in a container that also mounts `/var/run/docker.sock`. Anyone who could reach the host could read the stack's full routing table, with no credential. `--api.insecure` is gone, the second entrypoint is gone, and `8888` is no longer published. The dashboard is not bound to localhost either — nothing in this platform consumes it, so the safe configuration is the absent one. `--ping` stays, because the compose healthcheck calls it; verified that the hardened flag set starts and that `traefik healthcheck --ping` still returns `OK: http://:8080/ping`. Port `8080` is unchanged and remains the stack's HTTP entrypoint; moving it behind a TLS edge, and resolving its collision with `compliance_web`'s `prod` profile, is P3.3.
