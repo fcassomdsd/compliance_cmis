@@ -91,7 +91,7 @@ services:
       # 8080 is the stack's HTTP entrypoint and is what the demo, the runbook
       # and every smoke probe use; P3.3 moves it behind the TLS edge and
       # resolves its collision with compliance_web's prod profile.
-      - "8080:8080"
+      - "${BIND_IP:-0.0.0.0}:8080:8080"
     healthcheck:
       test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 20s

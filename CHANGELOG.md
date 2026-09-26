@@ -6,6 +6,10 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Changed
+
+- **`BIND_IP` controls which host interface published ports listen on — P3.3.** Every published port in this repo now binds through `${BIND_IP:-0.0.0.0}`. The default preserves current behaviour exactly: the demo quickstart and `demo-verify-ci.sh` reach services over the network, and under dind `DEMO_HOST` is `docker` rather than localhost, so a hardcoded loopback bind would break the whole-stack guard. A production deployment sets `BIND_IP=127.0.0.1`, leaving `compliance_web`'s TLS edge on 443 as the only externally published port. See "An ideal production configuration.md" §2.3.
+
 ### Security
 
 - **Container hardening — P3.2.** No service in this platform previously declared a resource limit, a non-root user, a read-only root filesystem, dropped capabilities or `no-new-privileges`. What each service can take differs, and the differences are recorded as comments in the compose files rather than silently skipped:
