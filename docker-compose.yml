@@ -20,6 +20,16 @@ services:
     # report generation and larger imports have room to run without GC-thrashing or
     # OOM-killing the container. See FOOTPRINT_AUDIT.md "Actions this audit suggests" #1.
     mem_limit: 2560m
+    # Container hardening (P3.2). read_only and a non-root `user:` are NOT
+    # applied to this stack: these are JVM services that write caches, logs,
+    # indexes and temp files inside their own filesystems, and Alfresco in
+    # particular writes into the bind-mounted content store as the uid its
+    # image defines. Forcing either would break the stack rather than harden
+    # it. no-new-privileges, a restart policy and the memory caps above are
+    # the controls that apply without changing how these images work.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       JAVA_TOOL_OPTIONS: >-
         -Dencryption.keystore.type=JCEKS
@@ -85,6 +95,16 @@ services:
   transform-core-aio:
     image: alfresco/alfresco-transform-core-aio:5.2.0@sha256:694810dd0a9ab91abdb700419dac84dcead2d8c15c5646102bc6e140897c607f
     mem_limit: 1536m
+    # Container hardening (P3.2). read_only and a non-root `user:` are NOT
+    # applied to this stack: these are JVM services that write caches, logs,
+    # indexes and temp files inside their own filesystems, and Alfresco in
+    # particular writes into the bind-mounted content store as the uid its
+    # image defines. Forcing either would break the stack rather than harden
+    # it. no-new-privileges, a restart policy and the memory caps above are
+    # the controls that apply without changing how these images work.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       JAVA_OPTS: >-
         -XX:MinRAMPercentage=50
@@ -100,13 +120,22 @@ services:
     depends_on:
       activemq:
         condition: service_healthy
-    restart: unless-stopped
     networks:
       - alfresco_net
 
   share:
     image: alfresco/alfresco-governance-share-community:25.2.0@sha256:0c36b2f91b1e272a47d579a0213e49c1ede4bd0c42c5f3b9b0c4ec1285f7bfff
     mem_limit: 1g
+    # Container hardening (P3.2). read_only and a non-root `user:` are NOT
+    # applied to this stack: these are JVM services that write caches, logs,
+    # indexes and temp files inside their own filesystems, and Alfresco in
+    # particular writes into the bind-mounted content store as the uid its
+    # image defines. Forcing either would break the stack rather than harden
+    # it. no-new-privileges, a restart policy and the memory caps above are
+    # the controls that apply without changing how these images work.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       CSRF_FILTER_ORIGIN: http://localhost:8080
       CSRF_FILTER_REFERER: http://localhost:8080/share/.*
@@ -139,6 +168,16 @@ services:
   postgres:
     image: postgres:${POSTGRES_TAG:-16.5}@${POSTGRES_DIGEST:-sha256:53f3e608f9475ce120ced2d0f430b89458d7faa28530e0b0977a6af64d294877}
     mem_limit: 512m
+    # Container hardening (P3.2). read_only and a non-root `user:` are NOT
+    # applied to this stack: these are JVM services that write caches, logs,
+    # indexes and temp files inside their own filesystems, and Alfresco in
+    # particular writes into the bind-mounted content store as the uid its
+    # image defines. Forcing either would break the stack rather than harden
+    # it. no-new-privileges, a restart policy and the memory caps above are
+    # the controls that apply without changing how these images work.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required. Copy .env.example to .env and set it}
       - POSTGRES_USER=alfresco
@@ -160,6 +199,16 @@ services:
   solr6:
     image: alfresco/alfresco-search-services:2.0.16@sha256:107c08ad87b69812c57bff64e718c859e2d4713acf293b9af2fcb1cf92a7d7b3
     mem_limit: 2g
+    # Container hardening (P3.2). read_only and a non-root `user:` are NOT
+    # applied to this stack: these are JVM services that write caches, logs,
+    # indexes and temp files inside their own filesystems, and Alfresco in
+    # particular writes into the bind-mounted content store as the uid its
+    # image defines. Forcing either would break the stack rather than harden
+    # it. no-new-privileges, a restart policy and the memory caps above are
+    # the controls that apply without changing how these images work.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     environment:
       # Solr needs to know how to register itself with Alfresco
       SOLR_ALFRESCO_HOST: "alfresco"
@@ -182,6 +231,16 @@ services:
   activemq:
     image: alfresco/alfresco-activemq:5.18-jre17-rockylinux8@sha256:ecc4769fb9eb9bd064da24eb3a722975f3ac7b4ffc35dfb178199f5181051941
     mem_limit: 1g
+    # Container hardening (P3.2). read_only and a non-root `user:` are NOT
+    # applied to this stack: these are JVM services that write caches, logs,
+    # indexes and temp files inside their own filesystems, and Alfresco in
+    # particular writes into the bind-mounted content store as the uid its
+    # image defines. Forcing either would break the stack rather than harden
+    # it. no-new-privileges, a restart policy and the memory caps above are
+    # the controls that apply without changing how these images work.
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "8161:8161" # Web Console
       - "5672:5672" # AMQP
