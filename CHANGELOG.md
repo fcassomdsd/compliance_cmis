@@ -6,6 +6,18 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Changed
+
+- **Demo repository permissions are granted to the role *groups*, not to each user, and are narrower — closes a long-standing open item.** `seed-demo-identities.sh` granted each demo user site-wide `SiteCollaborator` directly, with a header note explaining that a group-level grant was impossible to script here. That note was right about the three API paths it had tried and wrong about the conclusion: two genuinely do not work (the v1 site-members endpoint 404s for a group id; there is no `/nodes/{id}/permissions` endpoint), but the legacy `sites/{site}/memberships` webscript **does** accept a group — as JSON with a nested `group.fullName`. It is form-encoded `groupId` that fails. Folder ACLs then go through `PUT /nodes/{id}` with a `permissions` body.
+
+  The result is the intended shape: **`SiteConsumer` for the group on the site, plus `Contributor` on the three working folders**, replacing site-wide `SiteCollaborator` per user. Both halves are required — verified against a live instance, site-wide Consumer alone leaves the reviewer able to read the Hallazgos folder (200) and unable to create in it (403).
+
+  One trap worth recording: `PUT /nodes/{id}` **replaces** `locallySet` rather than appending to it, and returns `200` either way. Granting the reviewer and then the inspector in two calls left only the inspector, with both calls reporting success — caught by testing the resulting write (still 403), not the status codes. Every group for a folder now goes in a single call.
+
+### Changed
+
+- **`BIND_IP` controls which host interface published ports listen on — P3.3.** Every published port in this repo now binds through `${BIND_IP:-0.0.0.0}`. The default preserves current behaviour exactly: the demo quickstart and `demo-verify-ci.sh` reach services over the network, and under dind `DEMO_HOST` is `docker` rather than localhost, so a hardcoded loopback bind would break the whole-stack guard. A production deployment sets `BIND_IP=127.0.0.1`, leaving `compliance_web`'s TLS edge on 443 as the only externally published port. See "An ideal production configuration.md" §2.3.
+
 ### Security
 
 - **Container hardening — P3.2.** No service in this platform previously declared a resource limit, a non-root user, a read-only root filesystem, dropped capabilities or `no-new-privileges`. What each service can take differs, and the differences are recorded as comments in the compose files rather than silently skipped:
