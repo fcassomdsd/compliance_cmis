@@ -30,13 +30,20 @@
 # (surfacing as 502 from the API). Every writing role therefore needs repository
 # access as well.
 #
-# A *group*-level grant is the right shape and this script would prefer it, but no
-# scripted path works in this deployment: the v1 site-members endpoint returns 404 for
-# a group id, the v1 node-permissions API returns 404 for `/nodes/{id}/permissions`,
-# and the legacy `/alfresco/service/api/sites/{site}/memberships` webscript fails with
-# 500 for a `groupId` (form-encoded — as JSON it does not even see the parameter).
-# So membership is granted per **user**, which is what actually takes effect, and the
-# group-level grant stays a manual Share step. Tracked in TECHNICAL_DEBT_ANALYSIS.md.
+# The grant is **group-level**. An earlier note here said no scripted path works; that
+# was right about the paths it tried and wrong about the conclusion. Two of the three
+# genuinely do not work -- the v1 site-members endpoint 404s for a group id, and there
+# is no `/nodes/{id}/permissions` endpoint to call. The third does work, in a shape
+# that had not been tried: the legacy `/alfresco/service/api/sites/{site}/memberships`
+# webscript accepts a group as **JSON** with a nested `group.fullName`. It is
+# form-encoded `groupId` that fails. Folder ACLs then go through `PUT /nodes/{id}`
+# with a `permissions` body.
+#
+# Both halves are needed, verified against a live instance: with site-wide
+# SiteConsumer alone the reviewer reads the Hallazgos folder (200) and cannot create
+# in it (403); adding folder-level Contributor makes the same call return 201. That
+# pair is narrower than the site-wide SiteCollaborator this script used to grant each
+# user directly.
 #
 # DESTRUCTIVE OPTION: `--remove` deletes the two demo users and the two groups.
 #
@@ -176,16 +183,72 @@ add_group_member "${REVIEWER_ROLE_GROUP}"  "${REVIEWER_USER}"
 add_group_member "${INSPECTOR_ROLE_GROUP}" "${INSPECTOR_USER}"
 echo
 
-# --- repository permission (per user; see the header) ---------------------
-add_site_member() { # add_site_member <user>
-  curl -s -m 30 "${AUTH[@]}" -X POST "${API}/sites/${SITE_SHORT_NAME}/members" \
+# --- repository permission (group-level; see the header) ------------------
+#
+# SiteConsumer on the site for the GROUP, plus Contributor on the working
+# folders. Site-wide Consumer alone is not enough and site-wide Collaborator
+# -- what this script used to grant each user directly -- is more than the
+# role needs. Consumer + folder Contributor is the narrow shape.
+warn() { printf '  !!   %s\n' "$1"; }
+
+add_site_group() { # add_site_group <groupFullName> <role>
+  # The v1 endpoint 404s for a group id. The legacy webscript accepts one,
+  # but only as JSON with a nested `group.fullName`; form-encoded `groupId`
+  # is what fails, which is why this was previously believed impossible.
+  local code
+  code="$(curl -s -m 30 -o /dev/null -w '%{http_code}' "${AUTH[@]}" \
+    -X POST "${ALFRESCO_URL}/service/api/sites/${SITE_SHORT_NAME}/memberships" \
     -H 'Content-Type: application/json' \
-    -d "{\"id\":\"$1\",\"role\":\"SiteCollaborator\"}" -o /dev/null || true
-  ok "$1 is SiteCollaborator on ${SITE_SHORT_NAME}"
+    -d "{\"role\":\"$2\",\"group\":{\"fullName\":\"$1\"}}")"
+  case "${code}" in
+    200|201) ok "group $1 is $2 on ${SITE_SHORT_NAME}" ;;
+    409)     info "group $1 already a member of ${SITE_SHORT_NAME}" ;;
+    *)       warn "could not grant $2 to $1 (HTTP ${code}) — grant it in Share" ;;
+  esac
 }
 
-add_site_member "${REVIEWER_USER}"
-add_site_member "${INSPECTOR_USER}"
+grant_folder_contributor() { # grant_folder_contributor <relativePath> <group>...
+  # Folder ACL via PUT /nodes/{id} with a permissions body. There is no
+  # /nodes/{id}/permissions endpoint -- asking for one 404s, which is half of
+  # why this looked blocked.
+  #
+  # `locallySet` is REPLACED by a PUT, not appended to. Granting one group and
+  # then another in two calls silently leaves only the second, and both calls
+  # return 200 while doing it -- so every group for a folder goes in ONE call.
+  # Inheritance stays enabled, so the site-level SiteConsumer still applies;
+  # this sets only the locally-set entries.
+  local path="$1"; shift
+  local encoded node code entries=""
+  encoded="$(printf '%s' "${path}" | sed 's/ /%20/g')"
+  node="$(curl -s -m 30 "${AUTH[@]}" "${API}/nodes/-root-?relativePath=${encoded}" \
+    | sed -n 's/.*"id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
+  if [[ -z "${node}" ]]; then
+    warn "folder ${path} not found — skipping its Contributor grant"
+    return
+  fi
+  local g
+  for g in "$@"; do
+    [[ -n "${entries}" ]] && entries="${entries},"
+    entries="${entries}{\"authorityId\":\"${g}\",\"name\":\"Contributor\",\"accessStatus\":\"ALLOWED\"}"
+  done
+  code="$(curl -s -m 30 -o /dev/null -w '%{http_code}' "${AUTH[@]}" -X PUT "${API}/nodes/${node}" \
+    -H 'Content-Type: application/json' \
+    -d "{\"permissions\":{\"isInheritanceEnabled\":true,\"locallySet\":[${entries}]}}")"
+  if [[ "${code}" == "200" ]]; then
+    ok "$* are Contributor on ${path}"
+  else
+    warn "could not grant Contributor on ${path} (HTTP ${code})"
+  fi
+}
+
+add_site_group "GROUP_${REVIEWER_ROLE_GROUP}"  SiteConsumer
+add_site_group "GROUP_${INSPECTOR_ROLE_GROUP}" SiteConsumer
+
+SITE_DOCLIB="/Sites/${SITE_SHORT_NAME}/documentLibrary"
+for _folder in "Vigilancia/Hallazgos" "Vigilancia/Inspecciones" "Vigilancia/Datos de campo"; do
+  grant_folder_contributor "${SITE_DOCLIB}/${_folder}" \
+    "GROUP_${REVIEWER_ROLE_GROUP}" "GROUP_${INSPECTOR_ROLE_GROUP}"
+done
 echo
 
 cat <<EOF
