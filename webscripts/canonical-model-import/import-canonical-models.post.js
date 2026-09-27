@@ -1,6 +1,69 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright (c) 2026 Fernando A. Casso Rodriguez
 
+// --- BEGIN vso-describe-error (byte-identical across Web Scripts; scripts/verify-error-describer.sh) ---
+// Describe a caught error in a way that survives a Java exception.
+//
+// `error.message` is undefined when a Java exception surfaces into Rhino,
+// which is how most repository failures arrive here. An outer catch that
+// builds its response and its log line from `error.message` directly turns
+// such a failure into `"error": null` in the JSON and the literal text
+// "undefined" in alfresco.log -- a failure that destroys its own diagnosis,
+// costing a full debugging cycle per guess. Found exactly that way: a CI run
+// answered `{"success": false, "error": null}` and neither the response nor
+// the repository log said anything more.
+//
+// This started as a local helper in generate-inspection-plan.post.js, which
+// had it right and was the only Web Script using it. It is now the shared
+// copy: every access is guarded, because this runs while something has
+// already gone wrong and a describer that throws replaces one lost diagnosis
+// with two, and the Java exception's class name is reported explicitly --
+// AccessDeniedException, ContentIOException, IntegrityException -- since the
+// class alone is usually the whole answer.
+function describeError(error) {
+  if (!error) {
+    return "Unknown error";
+  }
+
+  var parts = [];
+
+  try {
+    if (error.message) {
+      parts.push(String(error.message));
+    }
+  } catch (ignoredMessage) {
+    // deliberately empty: a describer must not throw
+  }
+
+  try {
+    if (error.javaException) {
+      parts.push(String(error.javaException.getClass().getName()) + ": " +
+        String(error.javaException.getMessage()));
+    }
+  } catch (ignoredJava) {
+    // deliberately empty
+  }
+
+  if (parts.length === 0) {
+    try {
+      parts.push(String(error));
+    } catch (ignoredString) {
+      parts.push("unprintable error object");
+    }
+  }
+
+  try {
+    if (error.fileName) {
+      parts.push("at " + error.fileName + ":" + error.lineNumber);
+    }
+  } catch (ignoredWhere) {
+    // deliberately empty
+  }
+
+  return parts.join(" | ");
+}
+// --- END vso-describe-error ---
+
 // Locale-keyed label dictionaries for the three routine .fodt report templates
 // (Finding/Checklist/FollowUp Reporte). Keys correspond to ${labels.<key>}
 // placeholders in the templates under templates/. Add new locales here.
@@ -3192,8 +3255,12 @@ try {
     model.importedSources = canonicalDocuments.importedSources;
   }
 } catch (runtimeError) {
+  // describeError, not runtimeError.message: a Java exception surfacing into
+  // Rhino has no `message`, so this reported `"error": null` and logged
+  // "undefined" -- see the describer at the top of this file.
+  var describedRuntimeError = describeError(runtimeError);
   if (!model || model.success !== false) {
-    setError(500, runtimeError.message);
+    setError(500, describedRuntimeError);
   }
-  logger.error("[import-canonical-models] " + runtimeError.message);
+  logger.error("[import-canonical-models] " + describedRuntimeError);
 }

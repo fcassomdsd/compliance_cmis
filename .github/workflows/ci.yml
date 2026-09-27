@@ -38,6 +38,7 @@ jobs:
       - run: node scripts/verify-report-headers.mjs
       - run: node scripts/verify-report-versioning.mjs
       - run: bash scripts/verify-vso-security.sh
+      - run: bash scripts/verify-error-describer.sh
       - name: Syntax-check every shell script
         run: |
           for script in scripts/*.sh; do
