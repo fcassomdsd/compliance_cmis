@@ -8,6 +8,12 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ### Added
 
+- **A CI check that WAL archiving actually works, not just that it is configured — P3.4.** The failure mode this closes is silent: a broken `archive_command` does not stop PostgreSQL. It keeps serving, `failed_count` climbs, and WAL accumulates until the volume fills — at which point the cause is hours old. Every existing job that boots this database would have passed throughout. `scripts/verify-wal-archiving.sh` forces a segment switch and asserts it was archived, so a broken archiver fails at merge time instead of at 3am on a full disk. Byte-identical across the repos that enable archiving, the same convention as `release-tag.sh`.
+
+  Two details it had to get right, both found by testing rather than reasoning. It counts segments **inside the container**, because under docker-in-docker the CLI and daemon have separate filesystems and a host-side count would read zero regardless of what archiving did. And it asserts archiving is healthy **now** — never failed, or succeeded since it last failed — rather than `failed_count = 0`: those counters are cumulative and survive restarts, so one transient blip would make a zero-check fail forever, and a check that cries wolf gets muted.
+
+### Added
+
 - **WAL archiving, for point-in-time recovery — P3.4.** `archive_mode=on` with `archive_timeout=300`, so a segment is switched every five minutes even on an idle database and the exposure window is five minutes rather than the backup interval. PITR was proven end to end on a throwaway instance: a base backup, rows committed either side of a chosen timestamp, then recovery to that timestamp — PostgreSQL logged `recovery stopping before commit of transaction 734` and the recovered database held the "before" rows and not the "after" ones.
 
   The archive directory is bind-mounted and gitignored. `${WAL_ARCHIVE_DIR}` overrides its location; in production it should not share a volume with the data it protects.
