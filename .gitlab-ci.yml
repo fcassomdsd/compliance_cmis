@@ -119,6 +119,35 @@ security:scan:
 # the release trigger: a merge to the default branch that does not touch
 # CHANGELOG.md produces no release. See scripts/release-tag.sh and
 # CONTRIBUTING.md ("Versioning and releases").
+# WAL archiving fails silently: a broken archive_command does not stop
+# PostgreSQL, it just retains every segment until the volume fills, hours
+# later. A job that merely boots the database would pass throughout -- which
+# is what the other jobs here do. This one forces a segment switch and
+# asserts it was archived, so the failure is caught at merge time instead of
+# at 3am on a full disk.
+validate:wal-archiving:
+  stage: validate
+  image: docker:27
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    WAL_SERVICE: "postgres"
+    WAL_USER: "alfresco"
+    WAL_DB: "alfresco"
+    WAL_ENV_FILE: ".env.example"
+  before_script: []
+  script:
+    - apk add --no-cache bash
+    - bash scripts/verify-wal-archiving.sh
+  after_script:
+    - docker compose --env-file .env.example down -v --remove-orphans || true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
 compute_release_tag:
   stage: release
   image: alpine:latest
