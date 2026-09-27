@@ -2,3 +2,5 @@ data*/
 .env
 docker/secrets/*.txt
 node_modules/
+# continuously written WAL archive (P3.4)
+data/wal-archive/

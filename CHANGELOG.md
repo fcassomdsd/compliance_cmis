@@ -6,6 +6,14 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Added
+
+- **WAL archiving, for point-in-time recovery — P3.4.** `archive_mode=on` with `archive_timeout=300`, so a segment is switched every five minutes even on an idle database and the exposure window is five minutes rather than the backup interval. PITR was proven end to end on a throwaway instance: a base backup, rows committed either side of a chosen timestamp, then recovery to that timestamp — PostgreSQL logged `recovery stopping before commit of transaction 734` and the recovered database held the "before" rows and not the "after" ones.
+
+  The archive directory is bind-mounted and gitignored. `${WAL_ARCHIVE_DIR}` overrides its location; in production it should not share a volume with the data it protects.
+
+**Operational hazard, stated because it is how this configuration bites:** with `archive_mode=on` a failing `archive_command` does **not** cause PostgreSQL to discard WAL. It retains every segment until archiving succeeds, and the data volume fills until the database stops — silent until it is sudden. `pg_stat_archiver.failed_count` must be monitored; it is named as an alert in P3.5. The `test ! -f` guard makes the command idempotent so a retry cannot fail on an already-archived segment.
+
 ### Changed
 
 - **Demo repository permissions are granted to the role *groups*, not to each user, and are narrower — closes a long-standing open item.** `seed-demo-identities.sh` granted each demo user site-wide `SiteCollaborator` directly, with a header note explaining that a group-level grant was impossible to script here. That note was right about the three API paths it had tried and wrong about the conclusion: two genuinely do not work (the v1 site-members endpoint 404s for a group id; there is no `/nodes/{id}/permissions` endpoint), but the legacy `sites/{site}/memberships` webscript **does** accept a group — as JSON with a nested `group.fullName`. It is form-encoded `groupId` that fails. Folder ACLs then go through `PUT /nodes/{id}` with a `permissions` body.

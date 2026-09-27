@@ -182,7 +182,18 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required. Copy .env.example to .env and set it}
       - POSTGRES_USER=alfresco
       - POSTGRES_DB=alfresco
-    command: postgres -c max_connections=300 -c log_min_messages=LOG
+    # WAL archiving (P3.4). archive_timeout=300 forces a segment switch every
+    # five minutes even when idle, which is what bounds RPO: without it an
+    # inactive database can hold an unarchived segment indefinitely.
+    #
+    # OPERATIONAL HAZARD, stated because it is the way this configuration
+    # bites: if archive_command starts failing, PostgreSQL does NOT discard
+    # the WAL -- it retains every segment until archiving succeeds, and the
+    # data volume fills until the database stops. Monitor
+    # pg_stat_archiver.failed_count; it is on P3.5's alert list for exactly
+    # this reason. The `test ! -f` guard makes the command idempotent so a
+    # retry cannot fail on an already-archived segment.
+    command: postgres -c max_connections=300 -c log_min_messages=LOG -c archive_mode=on -c "archive_command=test ! -f /wal-archive/%f && cp %p /wal-archive/%f" -c archive_timeout=300 -c wal_level=replica
     ports:
       - "${BIND_IP:-0.0.0.0}:5432:5432"
     healthcheck:
@@ -193,6 +204,7 @@ services:
       start_period: 5s
     volumes:
       - ./data/postgres-data:/var/lib/postgresql/data
+      - ${WAL_ARCHIVE_DIR:-./data/wal-archive}:/wal-archive
     networks:
       - alfresco_net
 
