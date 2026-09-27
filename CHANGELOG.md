@@ -6,6 +6,14 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ## [Unreleased]
 
+### Fixed
+
+- **Web Script failures no longer report themselves as `undefined`.** Every top-level catch built its response and its log line from `error.message`. That is `undefined` when a Java exception surfaces into Rhino — which is how most repository failures arrive — so a real failure produced `"error": null` in the JSON and the literal text `undefined` in `alfresco.log`. A CI run hit exactly this: the canonical import answered `{"success": false, "error": null}`, and neither the response nor the repository log said anything more. A failure that destroys its own diagnosis costs a full debugging cycle per guess.
+
+  The fix was already in the repository. `generate-inspection-plan.post.js` had a local `describeError()` that falls back to the Java exception, used in its inner catches and nowhere else. It is now the shared copy across all **seven** Web Scripts with a top-level catch, with two additions: the Java exception's **class name** is reported explicitly (`AccessDeniedException`, `ContentIOException`, `IntegrityException` — the class alone is usually the whole answer), and every property access is guarded, because this runs while something has already gone wrong and a describer that throws replaces one lost diagnosis with two.
+
+  Duplicated rather than imported, following the same constraint as `__VSO_SECURITY`: `importScript` is not available in every execution context. `scripts/verify-error-describer.sh` therefore checks two things — that every copy is byte-identical, and that no top-level catch has gone back to using `error.message` directly — and runs in both pipelines beside `verify-vso-security.sh`. Both failure modes were mutation-tested.
+
 ### Added
 
 - **A CI check that WAL archiving actually works, not just that it is configured — P3.4.** The failure mode this closes is silent: a broken `archive_command` does not stop PostgreSQL. It keeps serving, `failed_count` climbs, and WAL accumulates until the volume fills — at which point the cause is hours old. Every existing job that boots this database would have passed throughout. `scripts/verify-wal-archiving.sh` forces a segment switch and asserts it was archived, so a broken archiver fails at merge time instead of at 3am on a full disk. Byte-identical across the repos that enable archiving, the same convention as `release-tag.sh`.

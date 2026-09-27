@@ -486,6 +486,25 @@ function ensureAspect(node, aspectName) {
   }
 }
 
+// --- BEGIN vso-describe-error (byte-identical across Web Scripts; scripts/verify-error-describer.sh) ---
+// Describe a caught error in a way that survives a Java exception.
+//
+// `error.message` is undefined when a Java exception surfaces into Rhino,
+// which is how most repository failures arrive here. An outer catch that
+// builds its response and its log line from `error.message` directly turns
+// such a failure into `"error": null` in the JSON and the literal text
+// "undefined" in alfresco.log -- a failure that destroys its own diagnosis,
+// costing a full debugging cycle per guess. Found exactly that way: a CI run
+// answered `{"success": false, "error": null}` and neither the response nor
+// the repository log said anything more.
+//
+// This started as a local helper in generate-inspection-plan.post.js, which
+// had it right and was the only Web Script using it. It is now the shared
+// copy: every access is guarded, because this runs while something has
+// already gone wrong and a describer that throws replaces one lost diagnosis
+// with two, and the Java exception's class name is reported explicitly --
+// AccessDeniedException, ContentIOException, IntegrityException -- since the
+// class alone is usually the whole answer.
 function describeError(error) {
   if (!error) {
     return "Unknown error";
@@ -493,18 +512,42 @@ function describeError(error) {
 
   var parts = [];
 
-  if (error.message) {
-    parts.push(String(error.message));
-  } else {
-    parts.push(String(error));
+  try {
+    if (error.message) {
+      parts.push(String(error.message));
+    }
+  } catch (ignoredMessage) {
+    // deliberately empty: a describer must not throw
   }
 
-  if (error.javaException) {
-    parts.push(String(error.javaException));
+  try {
+    if (error.javaException) {
+      parts.push(String(error.javaException.getClass().getName()) + ": " +
+        String(error.javaException.getMessage()));
+    }
+  } catch (ignoredJava) {
+    // deliberately empty
+  }
+
+  if (parts.length === 0) {
+    try {
+      parts.push(String(error));
+    } catch (ignoredString) {
+      parts.push("unprintable error object");
+    }
+  }
+
+  try {
+    if (error.fileName) {
+      parts.push("at " + error.fileName + ":" + error.lineNumber);
+    }
+  } catch (ignoredWhere) {
+    // deliberately empty
   }
 
   return parts.join(" | ");
 }
+// --- END vso-describe-error ---
 
 // Mutation endpoints allow Alfresco administrators and any member of the
 // groups listed in __VSO_SECURITY.mutationGroups (see
@@ -860,8 +903,12 @@ try {
       " (plan filed as " + pdfName + ")"
   );
 } catch (error) {
-  logger.error("Unexpected error in document generation: " + error.message);
+  // describeError, not error.message: a Java exception surfacing into Rhino
+  // has no `message`, which turned a real failure into the literal text
+  // "undefined" in both the log and the response.
+  var describedError = describeError(error);
+  logger.error("Unexpected error in document generation: " + describedError);
   if (!model || !model.error) {
-    TemplateGeneration.setError(500, "Internal server error: " + error.message);
+    TemplateGeneration.setError(500, "Internal server error: " + describedError);
   }
 }

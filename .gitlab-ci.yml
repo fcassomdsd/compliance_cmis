@@ -32,6 +32,7 @@ validate:examples:
     - node scripts/verify-report-headers.mjs
     - node scripts/verify-report-versioning.mjs
     - bash scripts/verify-vso-security.sh
+    - bash scripts/verify-error-describer.sh
     - |
       for script in scripts/*.sh; do
         echo "bash -n $script"
