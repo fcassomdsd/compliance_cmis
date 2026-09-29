@@ -8,6 +8,24 @@ The format is based on Keep a Changelog and releases are dated — see CONTRIBUT
 
 ### Fixed
 
+- **`scripts/verify-resolve-paths.sh` had been failing on `develop`, and the one thing it existed to catch was the one thing it could not see.** Replaced by `scripts/verify-resolve-paths.mjs` (`npm run verify:paths`), now run by `validate:examples` in both pipelines — nothing ran the old one, which is why all of the below survived.
+
+  Web Scripts each inline their own `resolveVsoPaths()` because Rhino has no module system and `importScript()` is unavailable in at least one webscript's context. That is deliberate, and the cost is duplicated path constants. The old checker grepped each file for seven fixed strings:
+
+  - **It never compared a value.** It grepped for the key *name* (`"inspectionInProcessPath:"`), so every path in every copy could have pointed at the wrong folder and it would still have passed.
+  - **It demanded all seven keys from every copy**, but a copy carries only the keys its own script uses. So it failed `import-follow-up-report.post.js` for two keys that script neither has nor needs — a red check that is wrong, which trains people to ignore it.
+  - **It searched `webscripts/**/*.post.js`**, missing the copy in `scripts/transformInspectionPlan.js` entirely.
+
+  The replacement parses the canonical `__VSO_PATHS` table and compares **values**. Subsets are fine; disagreement is not. It also checks the override chain as an *order* — `__VSO_PATHS` before `importScript` before the inlined defaults — because `__VSO_PATHS` appears twice in every copy and a copy that loses the up-front check still contains the string while silently ignoring a deployment's configuration. It covers the four inline `VSO_PATHS.key || "literal"` fallbacks, a second invisible copy of each default that nothing checked before. And it fails on any canonical entry no copy claims, so a path nobody reads cannot sit in the table rotting.
+
+  Nine mutations, each caught. Two passed on the first attempt and the checker was fixed rather than the mutation dropped: it had been slicing from `function resolveVsoPaths` to end-of-file, so a `return defaults` and an `importScript` candidate belonging to other functions satisfied the ordering; and it used `lastIndexOf("return defaults")`, which made an early `return defaults;` inserted above the `importScript` block invisible.
+
+- **`webscripts/usoap/generate-ce-evidence-report.post.js` hardcoded the site document library root** and took no part in the path mechanism at all — found by the new checker. Every population query is scoped to `Sites/vigilancia-de-la-so/documentLibrary`, so an authority renaming the site (see `COUNTRY_ADAPTATION_GUIDE.md`) moved every other path and left this one pointing at a site that no longer exists. It now resolves `siteDocumentLibraryPath`, a new canonical entry, through its own `resolveVsoPaths()` in the same self-contained shape as the other five.
+
+  Verified live before and after against the running platform: `CE-5` with three population queries returns 22 artifacts and `License` → 8 candidates scoped to `Documentos`, identical either way.
+
+  Worth recording, because it was measured rather than assumed: with the canonical library deliberately pointed at `Sites/does-not-exist` and Alfresco restarted, the endpoint still resolved the real site. **`importScript()` does not reach this context either**, so the inlined default is what actually runs — which is precisely why comparing those inlined values against the canonical table in CI is the only protection there is.
+
 - **`/api/follow-up/import` dropped four of the six operator-attribution properties, and could record a closure nobody was able to review.**
 
   `cm:creator` on these nodes names the service account that performed the write, so `vso:operatorAttribution` is the *only* record of which inspector entered the data. Through this endpoint, four of its six properties — `enteredByDisplayName`, `enteredAt`, `inspectorId`, `enteredVia` — were silently discarded. Confirmed against the running platform before the fix: six supplied, two stored.

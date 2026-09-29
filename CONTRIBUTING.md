@@ -84,10 +84,12 @@ npm run lint:fix
 - **Folder paths (`resolveVsoPaths()`):** Web Scripts that need Alfresco folder paths include a local `resolveVsoPaths()` with an `importScript()` fallback to the shared library in `webscripts/common/vso-paths.lib.js`. This is by design — each Web Script stays self-contained and degrades gracefully. When you change folder paths or routing, update **all** copies of `resolveVsoPaths()`, then verify:
 
 ```bash
-bash scripts/verify-resolve-paths.sh
+npm run verify:paths
 ```
 
-- **`xmlEscapeDeep()`** escapes free-text values before FODT template substitution and follows the same self-contained pattern, but `scripts/verify-resolve-paths.sh` does **not** cover it. If you change its logic, update every copy by hand and verify manually — for example, generate a report with a provider or entity name containing `&`, `<`, or `>` and confirm the output is still valid XML.
+  It compares the **values** each copy declares against the canonical table, not just the key names, so a path changed in one copy and not the others fails. A copy carrying only the keys its own script uses is fine — subsets are expected. It also checks that each copy consults `__VSO_PATHS` before its inlined defaults (otherwise a deployment's path configuration reaches every script but that one), that inline `VSO_PATHS.someKey || "…"` fallbacks match too, and that no Web Script hardcodes a path under the site root outside those forms.
+
+- **`xmlEscapeDeep()`** escapes free-text values before FODT template substitution and follows the same self-contained pattern, but `scripts/verify-resolve-paths.mjs` does **not** cover it. If you change its logic, update every copy by hand and verify manually — for example, generate a report with a provider or entity name containing `&`, `<`, or `>` and confirm the output is still valid XML.
 - Update `example/` payloads and the README endpoint table whenever a request or response contract changes.
 
 ---

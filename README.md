@@ -27,7 +27,7 @@ It defines a custom VSO content model, Share form configuration, and Web Script 
 - `templates/`: FODT templates (inspection plan/report, and checklist/finding/follow-up document rendering) and smart folder templates.
 - `docs/`: model validation and test documentation.
 - `scripts/run-model-smoke-tests.sh`: REST-based smoke test runner.
-- `scripts/verify-resolve-paths.sh`: verify `resolveVsoPaths()` consistency across Web Scripts.
+- `scripts/verify-resolve-paths.mjs` (`npm run verify:paths`): verify that every copy of `resolveVsoPaths()` agrees with the canonical path table in `webscripts/common/vso-paths.lib.js` — values, not just key names — and that no Web Script hardcodes a site path outside it.
 - `docker-compose.yml`: local ACS stack for development and testing.
 
 ## Prerequisites
