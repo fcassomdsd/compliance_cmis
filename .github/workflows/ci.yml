@@ -35,6 +35,7 @@ jobs:
       - run: node scripts/domain-rules.mjs verify
       - run: node scripts/verify-endpoints.mjs
       - run: node scripts/verify-closure-date.mjs
+      - run: node scripts/verify-operator-attribution.mjs
       - run: node scripts/verify-report-headers.mjs
       - run: node scripts/verify-report-versioning.mjs
       - run: bash scripts/verify-vso-security.sh

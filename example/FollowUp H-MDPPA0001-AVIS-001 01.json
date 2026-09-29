@@ -13,6 +13,12 @@
     "specialtyCode": "AVIS",
     "specialtyName": "Ayudas Visuales",
     "capId": "01",
+    "enteredBy": "fernando.casso",
+    "enteredByDisplayName": "Fernando Casso",
+    "enteredAt": "2026-04-14T15:36:31Z",
+    "inspectorId": "a01k5qd1zxte3yts4r9ctk88gu7",
+    "enteredVia": "operator-login",
+    "declaredBy": "fernando.casso",
     "evidenceItems": [
       {
         "evidenceId": "FUEV-0001-01",
