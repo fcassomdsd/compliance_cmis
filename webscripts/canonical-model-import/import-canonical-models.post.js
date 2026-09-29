@@ -2004,6 +2004,26 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
     };
   }
 
+  // The same requirement the standalone /api/follow-up/import enforces, in the shape this
+  // path answers in: a batch reports per-item status rather than aborting, so an
+  // unattributable declaration is `invalid` and the remaining follow-ups still process.
+  //
+  // Without it a follow-up ingested with no operator session (compliance_import stamps
+  // enteredVia "service" and no enteredBy) and no declaredBy declares a closure nobody can
+  // review -- 409 CLOSURE_DECLARER_UNKNOWN, permanently. Reporting it here puts the failure
+  // in the import response, where the caller can still act on it.
+  var canonicalClosureDeclarer = trimToNull(report.enteredBy) || trimToNull(report.declaredBy);
+  if (closurePolicy.shouldClose && canonicalClosureDeclarer === null) {
+    return {
+      status: "invalid",
+      message: "Declaring a closure requires an operator identity: set followUpReport.enteredBy " +
+        "(or followUpReport.declaredBy). Without one the finding cannot be reviewed.",
+      fileName: followUpFileNode.name,
+      followUpId: trimToNull(report.followUpId),
+      findingId: findingId
+    };
+  }
+
   if (closurePolicy.shouldClose) {
     // Closing a finding is a two-step gate: a valid Closure Verification
     // follow-up only makes it eligible for closure, it does not close the
@@ -2017,8 +2037,7 @@ function upsertFollowUpFromCanonicalFile(followUpFileNode, sourceRootFolder, sum
     // finding is where the review route looks that up. enteredBy is the operator
     // identity when the follow-up came through an operator session; declaredBy is
     // the fallback for payloads that set it directly.
-    findingNode.properties["vso:closureRequestedBy"] =
-      trimToNull(report.enteredBy) || trimToNull(report.declaredBy);
+    findingNode.properties["vso:closureRequestedBy"] = canonicalClosureDeclarer;
     // A fresh declaration supersedes any earlier rejection: clear the reason so a
     // stale one can never be read as belonging to this request.
     findingNode.properties["vso:closureRejectionReason"] = null;

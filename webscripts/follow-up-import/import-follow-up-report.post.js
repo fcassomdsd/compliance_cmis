@@ -985,6 +985,25 @@ function updateFindingStatusFromFollowUp(findingNode, payload) {
     return false;
   }
 
+  // Refuse an unattributable declaration instead of recording one.
+  //
+  // vso:closureRequestedBy is never inherited (see below), so a payload carrying neither
+  // enteredBy nor declaredBy used to leave it null -- and this endpoint answered
+  // `"success": true, "findingClosedByImport": true` while parking the finding in
+  // Pending Closure Approval. compliance_web's review route then refuses it forever with
+  // 409 CLOSURE_DECLARER_UNKNOWN, because separation of duties cannot be shown against an
+  // unknown declarer. The failure therefore surfaced days later, to a reviewer who could not
+  // fix it, on a finding whose import had reported success.
+  //
+  // Failing here hands it back to the one caller who can supply the field, at the moment it
+  // is missing. This is a behaviour change for a caller that declares closure with no
+  // operator identity: it now gets a 400 instead of a false success.
+  var closureDeclarer = trimToNull(payload.enteredBy) || trimToNull(payload.declaredBy);
+  if (closureDeclarer === null) {
+    fail(400, "Declaring a closure requires an operator identity: set followUpReport.enteredBy " +
+      "(or followUpReport.declaredBy). Without one the finding cannot be reviewed.");
+  }
+
   ensureAspect(findingNode, "vso:inspectionContext");
   ensureAspect(findingNode, "vso:serviceContext");
 
@@ -1003,8 +1022,7 @@ function updateFindingStatusFromFollowUp(findingNode, payload) {
   // by a superseded declaration would attribute this closure to someone who did not declare
   // it, and separation of duties hangs off that field — the review refuses a finding with no
   // recorded declarer rather than trusting an unattributable one.
-  findingNode.properties["vso:closureRequestedBy"] =
-    trimToNull(payload.enteredBy) || trimToNull(payload.declaredBy);
+  findingNode.properties["vso:closureRequestedBy"] = closureDeclarer;
   // A fresh declaration supersedes any earlier rejection, exactly as the canonical import
   // does: the model documents vso:closureRejectionReason as "cleared when a new closure is
   // declared", so a stale reason must not survive into this request. This path used to leave
@@ -1039,9 +1057,23 @@ function normalizeRequest(payloadRoot) {
     closureVerificationMethod: trimToNull(report.closureVerificationMethod),
     followUpId: trimToNull(report.followUpId),
     followUpComment: trimToNull(report.followUpComment),
-    // Carried for the closure declaration below, which records who declared it. Dropping them
-    // here is what made this path unable to attribute a closure to anybody.
+    // The whole vso:operatorAttribution aspect, not a subset. This used to carry only
+    // enteredBy and declaredBy, and applyOperatorAttribution is handed the normalized object
+    // -- so enteredByDisplayName, enteredAt, inspectorId and enteredVia were read off a field
+    // that did not exist and silently dropped, on every follow-up imported through this
+    // endpoint. The canonical import passes the raw report and keeps all six; a record whose
+    // attribution depends on which of two equivalent endpoints wrote it is not a record.
+    //
+    // enteredAt stays a string here rather than becoming a Date: it is written by
+    // setDatePropertyIfPresent onto a d:datetime, which is exactly what the canonical path
+    // does with the same ISO-8601 value from the same producer, and Alfresco converts it
+    // (verified live -- "2026-09-27T11:59:00Z" in, "2026-09-27T11:59:00.000+0000" stored).
+    // Parsing it here would make the two paths disagree about a malformed timestamp.
     enteredBy: trimToNull(report.enteredBy),
+    enteredByDisplayName: trimToNull(report.enteredByDisplayName),
+    enteredAt: trimToNull(report.enteredAt),
+    inspectorId: trimToNull(report.inspectorId),
+    enteredVia: trimToNull(report.enteredVia),
     declaredBy: trimToNull(report.declaredBy),
     evidenceItems: normalizeEvidence(report.evidenceItems)
   };
