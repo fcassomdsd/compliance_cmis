@@ -3,6 +3,12 @@
 
 if (typeof __VSO_PATHS === "undefined" || !__VSO_PATHS) {
   __VSO_PATHS = {
+    // The site's document library root. Every path below sits under it, and
+    // generate-ce-evidence-report scopes its population queries to it -- it
+    // used to hardcode the literal, which meant an authority renaming the
+    // site (COUNTRY_ADAPTATION_GUIDE.md) moved every other path and left that
+    // one pointing at a site that no longer exists.
+    siteDocumentLibraryPath: "Sites/vigilancia-de-la-so/documentLibrary",
     inspectionInProcessPath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Inspecciones",
     canonicalSourceBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Datos de campo",
     findingBasePath: "Sites/vigilancia-de-la-so/documentLibrary/Vigilancia/Hallazgos",

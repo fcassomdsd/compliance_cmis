@@ -277,7 +277,42 @@ var CATEGORIES_WITH_SPECIALTY_PROPERTY = {
   "CAPExecution": true
 };
 
-var SITE_DOCLIB_PATH = "Sites/vigilancia-de-la-so/documentLibrary";
+// Self-contained, the same shape as every other consumer: prefer a
+// deployment-provided __VSO_PATHS, then importScript the shared library, then
+// fall back to the inlined default. See CONTRIBUTING.md; verified by
+// scripts/verify-resolve-paths.mjs, which is what found this script hardcoding
+// the site root and taking no part in the mechanism at all.
+function resolveVsoPaths() {
+  var defaults = {
+    siteDocumentLibraryPath: "Sites/vigilancia-de-la-so/documentLibrary"
+  };
+
+  if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+    return __VSO_PATHS;
+  }
+
+  if (typeof importScript === "function") {
+    var candidates = [
+      "../common/vso-paths.lib.js",
+      "classpath:alfresco/extension/templates/webscripts/common/vso-paths.lib.js"
+    ];
+
+    for (var index = 0; index < candidates.length; index++) {
+      try {
+        importScript(candidates[index]);
+        if (typeof __VSO_PATHS !== "undefined" && __VSO_PATHS) {
+          return __VSO_PATHS;
+        }
+      } catch (error) {
+      }
+    }
+  }
+
+  return defaults;
+}
+
+var VSO_PATHS = resolveVsoPaths();
+var SITE_DOCLIB_PATH = VSO_PATHS.siteDocumentLibraryPath || "Sites/vigilancia-de-la-so/documentLibrary";
 
 // Relative to SITE_DOCLIB_PATH. Mapped from the folders actually present in
 // the live instance (verified 2026-09-07) closest to each category's real-
